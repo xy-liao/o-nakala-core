@@ -1,0 +1,4 @@
+# Core dependencies for Nakala Connector
+requests>=2.28.0
+pydantic>=1.10.0,<3.0.0
+python-dateutil>=2.8.0
