@@ -1,247 +1,253 @@
 import csv
 import os
 import json
+import logging
+import argparse
 from typing import Dict, Any, List
 import requests
 from datetime import datetime
 import openapi_client
 from openapi_client.rest import ApiException
+from tenacity import retry, stop_after_attempt, wait_exponential
 
-# Configuration
-api_url = "https://apitest.nakala.fr"
-api_key = 'aae99aba-476e-4ff2-2886-0aaf1bfa6fd2'
-configuration = openapi_client.Configuration(host=api_url)
-configuration.api_key['apiKey'] = api_key
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('nakala_upload.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
-# Output file setup
-output = open('output.csv', 'w')
-outputWriter = csv.writer(output)
-header = ['identifier', 'files', 'title', 'status', 'response']
-outputWriter.writerow(header)
+class NakalaUploader:
+    def __init__(self, api_url: str, api_key: str, dataset_path: str, image_dir: str):
+        self.api_url = api_url
+        self.api_key = api_key
+        self.dataset_path = dataset_path
+        self.image_dir = image_dir
+        self.configuration = openapi_client.Configuration(host=api_url)
+        self.configuration.api_key['apiKey'] = api_key
+        self.valid_group_ids = ['de0f2a9b-a198-48a4-8074-db5120187a16']
 
-# Initialize API client
-with openapi_client.ApiClient(configuration) as api_client:
-    # Create API instances
-    datas_api = openapi_client.DatasApi(api_client)
-    
-    # Read the dataset
-    with open('simple-dataset/dataset.csv', newline='') as f:
-        reader = csv.reader(f)
-        dataset = list(reader)
-    dataset.pop(0)  # Remove header row
-
-    # Process each row
-    for num, data in enumerate(dataset):
-        filenames = data[0].split(';')
-        status = data[1]
-        datatype = data[2]
-        title = data[3]
-        authors = data[4].split(';')
-        date = data[5]
-        license = data[6]
-        description = data[7]
-        keywords = data[8].split(';')
-        datarights = data[9].split(';')
-
-        outputData = ['', '', title, '', '']
-
-        print('CREATION DE LA DONNEE ' + str(num) + " : " + title)
-
-        nakala_files: List[Dict[str, Any]] = []
-        outputFiles = []
-
-        # Upload files
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    def upload_file(self, file_path: str, filename: str) -> Dict[str, Any]:
+        """Upload a single file to Nakala with retry mechanism."""
         try:
-            for filename in filenames:
-                print('Envoi du fichier ' + filename + '...')
-                file_path = os.path.join('./simple-dataset/img/', filename)
+            payload: Dict[str, Any] = {}
+            files = [
+                ('file', (filename, open(file_path, 'rb'), 'image/jpeg'))
+            ]
+            headers = {'X-API-KEY': self.api_key}
+            
+            response = requests.request(
+                'POST',
+                f"{self.api_url}/datas/uploads",
+                headers=headers,
+                data=payload,
+                files=files
+            )
+            
+            if response.status_code == 201:
+                file_info = response.json()
+                file_info['embargoed'] = datetime.now().strftime("%Y-%m-%d")
+                return file_info
+            else:
+                raise ApiException(status=response.status_code, reason=response.text)
                 
-                # Upload the file using requests
-                try:
-                    # Prepare multipart form data exactly as in original script
-                    payload: Dict[str, Any] = {}
-                    files = [
-                        (
-                            'file',
-                            (
-                                filename,
-                                open(file_path, 'rb'),
-                                'image/jpeg'
-                            )
-                        )
-                    ]
-                    headers = {'X-API-KEY': api_key}
-                    
-                    # Make the request
-                    response = requests.request(
-                        'POST',
-                        f"{api_url}/datas/uploads",
-                        headers=headers,
-                        data=payload,
-                        files=files
-                    )
-                    
-                    if response.status_code == 201:
-                        file_info = response.json()
-                        # Add embargo date
-                        file_info['embargoed'] = (
-                            datetime.now().strftime("%Y-%m-%d")
-                        )
-                        nakala_files.append(file_info)
-                        # Add to output files
-                        file_str = f"{filename},{file_info['sha1']}"
-                        outputFiles.append(file_str)
-                    else:
-                        raise ApiException(
-                            status=response.status_code,
-                            reason=response.text
-                        )
-                        
-                except Exception as e:
-                    print(f"Error uploading file {filename}: {e}")
-                    outputFiles.append(filename)
-                    outputData[1] = ';'.join(outputFiles)
-                    outputData[3] = 'ERROR'
-                    outputData[4] = str(e)
-                    outputWriter.writerow(outputData)
-                    raise
+        except Exception as e:
+            logger.error(f"Error uploading file {filename}: {e}")
+            raise
 
-            # Update output with file info
-            outputData[1] = ';'.join(outputFiles)
-            
-            # Prepare metadata
-            metas = []
-            
-            # Type metadata
-            metas.append({
-                "value": datatype,
-                "typeUri": "http://www.w3.org/2001/XMLSchema#anyURI",
-                "propertyUri": "http://nakala.fr/terms#type"
-            })
-            
-            # Title metadata
-            metas.append({
-                "value": title,
-                "lang": "fr",
-                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
-                "propertyUri": "http://nakala.fr/terms#title"
-            })
-            
-            # Authors metadata
-            for author in authors:
-                surname_givenname = author.split(',')
-                if len(surname_givenname) == 2:
-                    # Keep author data as an object, not a JSON string
-                    author_data = {
-                        "givenname": surname_givenname[1].strip(),
-                        "surname": surname_givenname[0].strip()
-                    }
-                    metas.append({
-                        "value": [author_data],  # Wrap in array as required
-                        "propertyUri": "http://nakala.fr/terms#creator"
-                    })
-            
-            # Date metadata
-            metas.append({
-                "value": date,
+    def validate_file_exists(self, filename: str) -> bool:
+        """Validate that a file exists in the image directory."""
+        file_path = os.path.join(self.image_dir, filename)
+        if not os.path.exists(file_path):
+            logger.error(f"File not found: {file_path}")
+            return False
+        return True
+
+    def prepare_metadata(self, data: List[str]) -> List[Dict[str, Any]]:
+        """Prepare metadata for a dataset entry."""
+        metas = []
+        
+        # Type metadata
+        metas.append({
+            "value": data[2],
+            "typeUri": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "propertyUri": "http://nakala.fr/terms#type"
+        })
+        
+        # Title metadata
+        metas.append({
+            "value": data[3],
+            "lang": "fr",
+            "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+            "propertyUri": "http://nakala.fr/terms#title"
+        })
+        
+        # Authors metadata
+        for author in data[4].split(';'):
+            surname_givenname = author.split(',')
+            if len(surname_givenname) == 2:
+                author_data = {
+                    "givenname": surname_givenname[1].strip(),
+                    "surname": surname_givenname[0].strip()
+                }
+                metas.append({
+                    "value": [author_data],
+                    "propertyUri": "http://nakala.fr/terms#creator"
+                })
+        
+        # Add other metadata
+        metas.extend([
+            {
+                "value": data[5],
                 "typeUri": "http://www.w3.org/2001/XMLSchema#string",
                 "propertyUri": "http://nakala.fr/terms#created"
-            })
-            
-            # License metadata
-            metas.append({
-                "value": license,
+            },
+            {
+                "value": data[6],
                 "typeUri": "http://www.w3.org/2001/XMLSchema#string",
                 "propertyUri": "http://nakala.fr/terms#license"
-            })
-            
-            # Description metadata
-            metas.append({
-                "value": description,
+            },
+            {
+                "value": data[7],
                 "lang": "fr",
                 "typeUri": "http://www.w3.org/2001/XMLSchema#string",
                 "propertyUri": "http://purl.org/dc/terms/description"
-            })
-            
-            # Keywords metadata
-            for keyword in keywords:
-                if keyword:  # Only add non-empty keywords
-                    metas.append({
-                        "value": keyword,
-                        "lang": "fr",
-                        "typeUri": "http://www.w3.org/2001/XMLSchema#string",
-                        "propertyUri": "http://purl.org/dc/terms/subject"
-                    })
-            
-            # Prepare rights - only include valid group IDs
-            rights = []
-            # Known valid group IDs
-            valid_group_ids = [
-                'de0f2a9b-a198-48a4-8074-db5120187a16'
-            ]
-            for dataright in datarights:
-                if dataright:  # Only process non-empty rights
-                    right_parts = dataright.split(',')
-                    if len(right_parts) == 2:
-                        group_id = right_parts[0].strip()
-                        # Only add if group ID is in valid list
-                        if group_id in valid_group_ids:
-                            rights.append({
-                                "id": group_id,
-                                "role": right_parts[1].strip()
-                            })
-            
-            # Create data payload
-            data_payload = {
-                "status": status,
-                "files": nakala_files,
-                "metas": metas,
-                "rights": rights
             }
+        ])
+        
+        # Keywords metadata
+        for keyword in data[8].split(';'):
+            if keyword:
+                metas.append({
+                    "value": keyword,
+                    "lang": "fr",
+                    "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                    "propertyUri": "http://purl.org/dc/terms/subject"
+                })
+        
+        return metas
+
+    def prepare_rights(self, datarights: List[str]) -> List[Dict[str, Any]]:
+        """Prepare rights information for a dataset entry."""
+        rights = []
+        for dataright in datarights:
+            if dataright:
+                right_parts = dataright.split(',')
+                if len(right_parts) == 2:
+                    group_id = right_parts[0].strip()
+                    if group_id in self.valid_group_ids:
+                        rights.append({
+                            "id": group_id,
+                            "role": right_parts[1].strip()
+                        })
+        return rights
+
+    def process_dataset(self) -> None:
+        """Process the entire dataset and upload to Nakala."""
+        output_path = 'output.csv'
+        with open(output_path, 'w', newline='') as output:
+            output_writer = csv.writer(output)
+            output_writer.writerow(['identifier', 'files', 'title', 'status', 'response'])
             
-            try:
-                # Convert payload to JSON string
-                payload_str = json.dumps(data_payload)
-                headers = {
-                    'Content-Type': 'application/json',
-                    'X-API-KEY': api_key
-                }
-                # Create the data entry using requests
-                response = requests.request(
-                    'POST',
-                    f"{api_url}/datas",
-                    headers=headers,
-                    data=payload_str
-                )
+            with open(self.dataset_path, newline='') as f:
+                reader = csv.reader(f)
+                dataset = list(reader)
+            dataset.pop(0)  # Remove header row
+            
+            total_entries = len(dataset)
+            for num, data in enumerate(dataset, 1):
+                logger.info(f"Processing entry {num}/{total_entries}: {data[3]}")
                 
-                if response.status_code == 201:
-                    result = response.json()
-                    print(
-                        f'La donnée {num} a bien été créée : '
-                        f'{result["payload"]["id"]}\n'
-                    )
-                    outputData[0] = result["payload"]["id"]
-                    outputData[3] = 'OK'
-                    outputData[4] = response.text
-                else:
-                    raise ApiException(
-                        status=response.status_code,
-                        reason=response.text
+                output_data = ['', '', data[3], '', '']
+                nakala_files = []
+                output_files = []
+                
+                try:
+                    # Process files
+                    filenames = data[0].split(';')
+                    for filename in filenames:
+                        if not self.validate_file_exists(filename):
+                            continue
+                            
+                        logger.info(f"Uploading file: {filename}")
+                        file_info = self.upload_file(
+                            os.path.join(self.image_dir, filename),
+                            filename
+                        )
+                        nakala_files.append(file_info)
+                        output_files.append(f"{filename},{file_info['sha1']}")
+                    
+                    # Prepare metadata and rights
+                    metas = self.prepare_metadata(data)
+                    rights = self.prepare_rights(data[9].split(';'))
+                    
+                    # Create data payload
+                    data_payload = {
+                        "status": data[1],
+                        "files": nakala_files,
+                        "metas": metas,
+                        "rights": rights
+                    }
+                    
+                    # Upload to Nakala
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'X-API-KEY': self.api_key
+                    }
+                    response = requests.request(
+                        'POST',
+                        f"{self.api_url}/datas",
+                        headers=headers,
+                        data=json.dumps(data_payload)
                     )
                     
-            except Exception as e:
-                print(f"Error creating data: {e}")
-                outputData[3] = 'ERROR'
-                outputData[4] = str(e)
+                    if response.status_code == 201:
+                        result = response.json()
+                        logger.info(f"Successfully created data: {result['payload']['id']}")
+                        output_data[0] = result["payload"]["id"]
+                        output_data[1] = ';'.join(output_files)
+                        output_data[3] = 'OK'
+                        output_data[4] = response.text
+                    else:
+                        raise ApiException(status=response.status_code, reason=response.text)
+                        
+                except Exception as e:
+                    logger.error(f"Error processing entry: {e}")
+                    output_data[3] = 'ERROR'
+                    output_data[4] = str(e)
                 
-        except Exception as e:
-            # Only update if not already marked as error
-            if outputData[3] != 'ERROR':
-                print(f"Error processing entry: {e}")
-                outputData[3] = 'ERROR'
-                outputData[4] = str(e)
-        
-        outputWriter.writerow(outputData)
+                output_writer.writerow(output_data)
 
-# Close the output file
-output.close()
+def main():
+    parser = argparse.ArgumentParser(description='Upload datasets to Nakala')
+    parser.add_argument('--api-url', default='https://apitest.nakala.fr',
+                      help='Nakala API URL')
+    parser.add_argument('--api-key', required=True,
+                      help='Nakala API key')
+    parser.add_argument('--dataset', default='simple-dataset/dataset.csv',
+                      help='Path to dataset CSV file')
+    parser.add_argument('--image-dir', default='simple-dataset/img',
+                      help='Directory containing images')
+    
+    args = parser.parse_args()
+    
+    uploader = NakalaUploader(
+        api_url=args.api_url,
+        api_key=args.api_key,
+        dataset_path=args.dataset,
+        image_dir=args.image_dir
+    )
+    
+    try:
+        uploader.process_dataset()
+    except Exception as e:
+        logger.error(f"Fatal error: {e}")
+        raise
+
+if __name__ == '__main__':
+    main()
