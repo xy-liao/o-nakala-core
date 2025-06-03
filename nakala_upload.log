@@ -18,3 +18,78 @@
 2025-06-03 10:59:22,973 - INFO - Processing dataset 2: Paon
 2025-06-03 10:59:22,974 - INFO - Uploading file: peafowl.jpg
 2025-06-03 10:59:23,318 - INFO - Dataset 2 created successfully: 10.34847/nkl.7bbak5n3
+2025-06-03 12:07:17,660 - ERROR - Input file not found: dataset.csv
+2025-06-03 12:07:53,767 - ERROR - Error processing row: 1 validation error for Creator
+  Value error, Either 'name' or both 'given_name' and 'family_name' must be provided [type=value_error, input_value={'given_name': 'Jean', 'family_name': 'Dupont'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+Traceback (most recent call last):
+  File "/Users/syl/Documents/GitHub/o-nakala-core/nakala_batch_uploader.py", line 93, in process_row
+    builder.add_creator({
+  File "/Users/syl/Documents/GitHub/o-nakala-core/nakala_connector/metadata/models.py", line 260, in add_creator
+    creator = Creator(**creator)
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/syl/Documents/GitHub/o-nakala-core/venv/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Creator
+  Value error, Either 'name' or both 'given_name' and 'family_name' must be provided [type=value_error, input_value={'given_name': 'Jean', 'family_name': 'Dupont'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-06-03 12:07:53,769 - ERROR - Error processing row: 1 validation error for Creator
+  Value error, Either 'name' or both 'given_name' and 'family_name' must be provided [type=value_error, input_value={'given_name': 'Pierre', 'family_name': 'Martin'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+Traceback (most recent call last):
+  File "/Users/syl/Documents/GitHub/o-nakala-core/nakala_batch_uploader.py", line 93, in process_row
+    builder.add_creator({
+  File "/Users/syl/Documents/GitHub/o-nakala-core/nakala_connector/metadata/models.py", line 260, in add_creator
+    creator = Creator(**creator)
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/syl/Documents/GitHub/o-nakala-core/venv/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Creator
+  Value error, Either 'name' or both 'given_name' and 'family_name' must be provided [type=value_error, input_value={'given_name': 'Pierre', 'family_name': 'Martin'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-06-03 12:07:53,769 - ERROR - Error processing row: 1 validation error for Creator
+  Value error, Either 'name' or both 'given_name' and 'family_name' must be provided [type=value_error, input_value={'given_name': 'Pierre', 'family_name': 'Martin'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+Traceback (most recent call last):
+  File "/Users/syl/Documents/GitHub/o-nakala-core/nakala_batch_uploader.py", line 93, in process_row
+    builder.add_creator({
+  File "/Users/syl/Documents/GitHub/o-nakala-core/nakala_connector/metadata/models.py", line 260, in add_creator
+    creator = Creator(**creator)
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/syl/Documents/GitHub/o-nakala-core/venv/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Creator
+  Value error, Either 'name' or both 'given_name' and 'family_name' must be provided [type=value_error, input_value={'given_name': 'Pierre', 'family_name': 'Martin'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-06-03 12:07:53,769 - INFO - Batch upload completed successfully
+2025-06-03 12:14:20,362 - INFO - Uploading file: simple-dataset/img/kingfisher.jpg
+2025-06-03 12:14:20,789 - ERROR - Error uploading file kingfisher.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:14:20,790 - INFO - Uploading file: simple-dataset/img/owl-1.jpg
+2025-06-03 12:14:20,856 - ERROR - Error uploading file owl-1.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:14:20,857 - INFO - Uploading file: simple-dataset/img/peafowl.jpg
+2025-06-03 12:14:20,939 - ERROR - Error uploading file peafowl.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:14:20,940 - INFO - Batch upload completed successfully
+2025-06-03 12:16:34,796 - INFO - Uploading file: simple-dataset/img/kingfisher.jpg
+2025-06-03 12:16:34,894 - ERROR - Error uploading file kingfisher.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:16:34,894 - INFO - Uploading file: simple-dataset/img/owl-1.jpg
+2025-06-03 12:16:34,954 - ERROR - Error uploading file owl-1.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:16:34,954 - INFO - Uploading file: simple-dataset/img/peafowl.jpg
+2025-06-03 12:16:35,079 - ERROR - Error uploading file peafowl.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:16:35,079 - INFO - Batch upload completed successfully
+2025-06-03 12:17:02,319 - INFO - Uploading file: simple-dataset/img/kingfisher.jpg
+2025-06-03 12:17:02,649 - ERROR - Error uploading file kingfisher.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:17:02,650 - INFO - Uploading file: simple-dataset/img/owl-1.jpg
+2025-06-03 12:17:02,761 - ERROR - Error uploading file owl-1.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:17:02,761 - INFO - Uploading file: simple-dataset/img/peafowl.jpg
+2025-06-03 12:17:02,897 - ERROR - Error uploading file peafowl.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:17:02,898 - INFO - Batch upload completed successfully
+2025-06-03 12:18:23,027 - INFO - Uploading file: simple-dataset/img/kingfisher.jpg
+2025-06-03 12:18:23,212 - ERROR - Error uploading file kingfisher.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:18:23,212 - INFO - Uploading file: simple-dataset/img/owl-1.jpg
+2025-06-03 12:18:23,276 - ERROR - Error uploading file owl-1.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:18:23,276 - INFO - Uploading file: simple-dataset/img/peafowl.jpg
+2025-06-03 12:18:23,396 - ERROR - Error uploading file peafowl.jpg: API request failed with status 400: Invalid json message received
+2025-06-03 12:18:23,396 - INFO - Batch upload completed successfully

@@ -4,6 +4,7 @@ Nakala API client implementation.
 
 import os
 import json
+import logging
 from typing import Dict, Any, Optional, Union
 import requests
 from requests.adapters import HTTPAdapter
@@ -96,16 +97,76 @@ class NakalaClient:
         """
         url = f"{self.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
         
+        # Create a copy of headers to modify
+        headers = {}
+        
+        # For file uploads, don't set Content-Type header (let requests handle it with boundary)
+        if not files:
+            headers.update(self.session.headers)
+        else:
+            # Only include necessary headers for file uploads
+            headers['X-API-KEY'] = self.api_key
+            headers['Accept'] = 'application/json'
+        
         try:
-            response = self.session.request(
-                method=method,
-                url=url,
-                params=params,
-                json=json_data,
-                files=files,
-                stream=stream,
-                timeout=self.timeout
-            )
+            # For file uploads, use data instead of json
+            if files:
+                logger = logging.getLogger(__name__)
+                logger.debug(f"Sending {method} request to {url}")
+                logger.debug(f"Headers: {headers}")
+                logger.debug(f"Files: {list(files.keys())}")
+                
+                # Log file info without the file object itself
+                file_info = {}
+                for field, (filename, fileobj, content_type) in files.items():
+                    file_info[field] = {
+                        'filename': filename,
+                        'content_type': content_type,
+                        'size': getattr(fileobj, 'tell', lambda: 'unknown')()
+                    }
+                logger.debug(f"File details: {file_info}")
+                
+                response = self.session.request(
+                    method=method,
+                    url=url,
+                    headers=headers,
+                    data={},  # Empty dict for multipart/form-data
+                    files=files,
+                    stream=stream,
+                    timeout=self.timeout
+                )
+                
+                logger.debug(f"Response status: {response.status_code}")
+                logger.debug(f"Response headers: {dict(response.headers)}")
+                try:
+                    logger.debug(f"Response body: {response.text[:500]}")
+                except Exception as e:
+                    logger.debug(f"Could not log response body: {str(e)}")
+            else:
+                logger = logging.getLogger(__name__)
+                logger.debug(f"Sending {method} request to {url}")
+                logger.debug(f"Headers: {headers}")
+                if json_data:
+                    logger.debug(f"JSON data: {json_data}")
+                if params:
+                    logger.debug(f"Params: {params}")
+                    
+                response = self.session.request(
+                    method=method,
+                    url=url,
+                    headers=headers,
+                    params=params,
+                    json=json_data,
+                    stream=stream,
+                    timeout=self.timeout
+                )
+                
+                logger.debug(f"Response status: {response.status_code}")
+                logger.debug(f"Response headers: {dict(response.headers)}")
+                try:
+                    logger.debug(f"Response body: {response.text[:500]}")
+                except Exception as e:
+                    logger.debug(f"Could not log response body: {str(e)}")
             
             # Handle error responses
             if response.status_code >= 400:

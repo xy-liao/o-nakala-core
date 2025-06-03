@@ -168,14 +168,10 @@ class NakalaAPI:
         self.close()
 
 
-# Create a default instance for convenience
-nakala = NakalaAPI()
-
-# Make commonly used exceptions available at the package level
+# Export the main classes and functions
 __all__ = [
     'NakalaAPI',
     'NakalaError',
     'NakalaAPIError',
-    'NakalaValidationError',
-    'MetadataBuilder'
+    'NakalaValidationError'
 ]

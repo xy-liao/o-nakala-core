@@ -1,21 +1,34 @@
+#!/usr/bin/env python3
 """
 Basic usage example for the Nakala Python Connector.
 
-This script demonstrates how to use the Nakala API client to:
-1. Initialize the client
-2. Create metadata for a data object
-3. Upload files
-4. Create a data object
-5. Search for data objects
-6. Create and manage collections
+This script demonstrates how to use the Nakala Python Connector to interact with
+the Nakala API, including creating data objects, uploading files, and creating collections.
 """
 
 import os
+import sys
+from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 
+# Add the parent directory to the Python path to allow importing the package
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
+
+# Debug: Print environment variables
+print("Environment variables:")
+print(f"NAKALA_API_KEY is set: {'NAKALA_API_KEY' in os.environ}")
+if 'NAKALA_API_KEY' in os.environ:
+    print(f"NAKALA_API_KEY length: {len(os.environ['NAKALA_API_KEY'])}")
+    print(f"NAKALA_API_KEY starts with: {os.environ['NAKALA_API_KEY'][:4]}...")
+
 # Import the Nakala API client
-from nakala_connector import NakalaAPI, NakalaError
+from nakala_connector.api import NakalaAPI
+from nakala_connector.exceptions import NakalaError
 
 def main():
     # Load environment variables from .env file
@@ -45,11 +58,12 @@ def main():
             builder.add_description("This is a sample dataset uploaded using the Nakala Python Connector.")
             
             # Add creator information
+            # The creator should be a dictionary with either 'name' or both 'given_name' and 'family_name'
             builder.add_creator({
-                "given_name": "John",
-                "family_name": "Doe",
-                "affiliation": "École française d'Extrême-Orient",
-                "identifier": "https://orcid.org/0000-0000-0000-0000"
+                "givenName": "John",  # Using the correct field name from the model
+                "familyName": "Doe",  # Using the correct field name from the model
+                "identifier": "https://orcid.org/0000-0000-0000-0000",
+                "affiliation": "École française d'Extrême-Orient"
             })
             
             # Add a subject

@@ -228,9 +228,14 @@ class MetadataBuilder:
         self.metadata["status"] = status
         return self
     
-    def add_metadata_entry(self, entry: MetadataEntry) -> 'MetadataBuilder':
+    def add_metadata_entry(self, entry: Union[MetadataEntry, Dict[str, Any]]) -> 'MetadataBuilder':
         """Add a metadata entry."""
-        self.metadata["metas"].append(entry.model_dump(by_alias=True, exclude_none=True))
+        if isinstance(entry, dict):
+            # Handle dictionary input
+            self.metadata["metas"].append(entry)
+        else:
+            # Handle MetadataEntry object
+            self.metadata["metas"].append(entry.model_dump(by_alias=True, exclude_none=True))
         return self
     
     def add_title(self, title: str, lang: str = "fr") -> 'MetadataBuilder':
@@ -254,26 +259,33 @@ class MetadataBuilder:
         if isinstance(creator, dict):
             creator = Creator(**creator)
         
-        creator_dict = creator.model_dump(by_alias=True, exclude_none=True)
+        # Convert creator to a string representation
+        creator_str = creator.name or f"{creator.given_name} {creator.family_name}"
+        if creator.affiliation:
+            creator_str += f" ({creator.affiliation})"
+        if creator.identifier:
+            creator_str += f" [{creator.identifier}]"
         
         entry = MetadataEntry(
             propertyUri="http://purl.org/dc/terms/creator",
-            values=[{"value": creator_dict}]
+            values=[creator_str]  # Store as a simple string value
         )
         return self.add_metadata_entry(entry)
     
     def add_subject(self, subject: Union[Subject, Dict[str, Any], str]) -> 'MetadataBuilder':
         """Add a subject or keyword to the metadata."""
         if isinstance(subject, str):
-            subject = Subject(value=subject)
-        elif isinstance(subject, dict):
-            subject = Subject(**subject)
-        
-        subject_dict = subject.model_dump(exclude_none=True)
+            subject_str = subject
+        else:
+            if isinstance(subject, dict):
+                subject = Subject(**subject)
+            subject_str = subject.value
+            if hasattr(subject, 'scheme') and subject.scheme:
+                subject_str = f"{subject.scheme}:{subject_str}"
         
         entry = MetadataEntry(
             propertyUri="http://purl.org/dc/terms/subject",
-            values=[{"value": subject_dict}]
+            values=[subject_str]  # Store as a simple string value
         )
         return self.add_metadata_entry(entry)
     

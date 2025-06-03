@@ -6,8 +6,9 @@ and managing files in Nakala's storage system.
 """
 
 import os
+import logging
 import mimetypes
-from typing import Dict, List, Optional, Union, BinaryIO, Tuple
+from typing import Any, Dict, List, Optional, Union, BinaryIO, Tuple
 
 from ..exceptions import NakalaError, NakalaAPIError
 from .base import BaseService
@@ -44,10 +45,25 @@ class FileService(BaseService):
             if not mime_type:
                 mime_type = 'application/octet-stream'
         
+        filename = os.path.basename(file_path)
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Preparing to upload file: {filename} (MIME type: {mime_type})")
+        
         try:
             with open(file_path, 'rb') as f:
-                files = {'file': (os.path.basename(file_path), f, mime_type)}
-                return self._post("/datas/uploads", files=files)
+                # Log file info
+                file_size = os.path.getsize(file_path)
+                logger.debug(f"File size: {file_size} bytes")
+                
+                # Prepare file for upload
+                files = {'file': (filename, f, mime_type)}
+                logger.debug(f"Sending request to /datas/uploads with file: {filename}")
+                
+                # Make the request with debug info using the public post method
+                response = self.client.post("/datas/uploads", files=files)
+                logger.debug(f"Upload response: {response}")
+                
+                return response
         except OSError as e:
             raise NakalaError(f"Failed to read file {file_path}: {str(e)}") from e
     

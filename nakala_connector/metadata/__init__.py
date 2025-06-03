@@ -13,7 +13,6 @@ from .models import (
     Creator,
     Contributor,
     Subject,
-    Coverage,
     TemporalCoverage,
     SpatialCoverage,
     Relation,
@@ -22,15 +21,23 @@ from .models import (
 )
 
 from .vocabulary import (
+    VocabularyTerm,
+    Vocabulary,
+    VocabularyRegistry,
     load_vocabulary,
+    get_vocabulary,
     validate_against_vocabulary,
     get_controlled_terms
 )
 
 from .validators import (
     validate_metadata,
+    validate_metadata_structure,
     validate_metadata_entry,
-    validate_metadata_value
+    validate_metadata_value,
+    is_valid_uri,
+    is_valid_date,
+    is_valid_language_code
 )
 
 __all__ = [
@@ -40,16 +47,23 @@ __all__ = [
     'Creator',
     'Contributor',
     'Subject',
-    'Coverage',
     'TemporalCoverage',
     'SpatialCoverage',
     'Relation',
     'Rights',
     'License',
+    'VocabularyTerm',
+    'Vocabulary',
+    'VocabularyRegistry',
     'load_vocabulary',
+    'get_vocabulary',
     'validate_against_vocabulary',
     'get_controlled_terms',
     'validate_metadata',
+    'validate_metadata_structure',
     'validate_metadata_entry',
     'validate_metadata_value',
+    'is_valid_uri',
+    'is_valid_date',
+    'is_valid_language_code'
 ]

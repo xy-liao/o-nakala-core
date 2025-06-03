@@ -34,7 +34,9 @@ ENV/
 .DS_Store
 
 # Project specific
-.env
+# .env  # Commented out to allow committing .env for development
+.env.*  # But still ignore other .env files
+!/.env.example  # Keep example file tracked
 *.log
 .coverage
 htmlcov/
