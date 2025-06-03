@@ -93,3 +93,13 @@ pydantic_core._pydantic_core.ValidationError: 1 validation error for Creator
 2025-06-03 12:18:23,276 - INFO - Uploading file: simple-dataset/img/peafowl.jpg
 2025-06-03 12:18:23,396 - ERROR - Error uploading file peafowl.jpg: API request failed with status 400: Invalid json message received
 2025-06-03 12:18:23,396 - INFO - Batch upload completed successfully
+2025-06-03 12:29:11,701 - INFO - Processing dataset 0: Martin-pêcheur
+2025-06-03 12:29:11,702 - INFO - Uploading file: kingfisher.jpg
+2025-06-03 12:29:12,054 - INFO - Dataset 0 created successfully: 10.34847/nkl.a32b32j4
+2025-06-03 12:29:12,054 - INFO - Processing dataset 1: Chouette
+2025-06-03 12:29:12,054 - INFO - Uploading file: owl-1.jpg
+2025-06-03 12:29:12,221 - INFO - Uploading file: owl-2.jpg
+2025-06-03 12:29:12,569 - INFO - Dataset 1 created successfully: 10.34847/nkl.db181b09
+2025-06-03 12:29:12,569 - INFO - Processing dataset 2: Paon
+2025-06-03 12:29:12,569 - INFO - Uploading file: peafowl.jpg
+2025-06-03 12:29:12,938 - INFO - Dataset 2 created successfully: 10.34847/nkl.4f707742

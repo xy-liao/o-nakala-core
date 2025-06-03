@@ -169,37 +169,58 @@ class NakalaBatchUploader:
             for filename in filenames:
                 if not filename.strip():
                     continue
-                    
                 file_path = Path(self.config.files_dir) / filename.strip()
                 logger.info(f"Uploading file: {file_path}")
-                
                 try:
                     # Upload file
                     file_data = self.nakala.files.upload_file(str(file_path))
                     uploaded_files.append({
-                        'filename': filename,
-                        'sha1': file_data.get('sha1', '')
+                        'name': filename,
+                        'sha1': file_data.get('sha1', ''),
+                        'embargoed': file_data.get('embargoed', '')
                     })
                 except NakalaError as e:
                     logger.error(f"Error uploading file {filename}: {e}")
                     return {
                         'identifier': '',
-                        'files': ';'.join(f['filename'] for f in uploaded_files),
+                        'files': ';'.join(f["name"] for f in uploaded_files),
                         'title': title,
                         'status': 'ERROR',
                         'response': str(e)
                     }
-            
             # Create the data object
             metadata = builder.build()
-            metadata['files'] = uploaded_files
-            
+            metadata['files'] = [
+                {k: v for k, v in f.items() if k != 'embargoed' or v}
+                for f in uploaded_files
+            ]
+            # Remove 'rights' if empty or not present
+            if 'rights' in metadata and (not metadata['rights'] or metadata['rights'] == {}):
+                del metadata['rights']
+            # Fix creators and subjects: ensure values are objects with 'value' key
+            for entry in metadata.get('metas', []):
+                if entry['propertyUri'] in [
+                    'http://purl.org/dc/terms/creator',
+                    'http://purl.org/dc/terms/subject']:
+                    entry['values'] = [
+                        v if isinstance(v, dict) and 'value' in v else {'value': v}
+                        for v in entry['values']
+                    ]
+            # Merge duplicate propertyUri entries
+            metas = metadata.get('metas', [])
+            merged = {}
+            for entry in metas:
+                uri = entry['propertyUri']
+                if uri not in merged:
+                    merged[uri] = {'propertyUri': uri, 'values': []}
+                merged[uri]['values'].extend(entry['values'])
+            metadata['metas'] = list(merged.values())
+            logger.debug(f"Metadata payload being sent: {metadata}")
             # Create the data object in Nakala
-            result = self.nakala.data.create_data_object(metadata)
-            
+            result = self.nakala.data.create_data(metadata)
             return {
                 'identifier': result.get('payload', {}).get('id', ''),
-                'files': ';'.join(f['filename'] for f in uploaded_files),
+                'files': ';'.join(f['name'] for f in uploaded_files),
                 'title': title,
                 'status': 'OK',
                 'response': str(result)

@@ -63,10 +63,9 @@ class NakalaClient:
         self.session.mount("https://", adapter)
         self.session.mount("http://", adapter)
         
-        # Set default headers
+        # Set default headers (do not set Content-Type here)
         self.session.headers.update({
             "Accept": "application/json",
-            "Content-Type": "application/json",
             "X-API-KEY": self.api_key
         })
     
@@ -103,8 +102,10 @@ class NakalaClient:
         # For file uploads, don't set Content-Type header (let requests handle it with boundary)
         if not files:
             headers.update(self.session.headers)
+            # Only set Content-Type for JSON requests
+            headers["Content-Type"] = "application/json"
         else:
-            # Only include necessary headers for file uploads
+            # Only include necessary headers for file uploads (no Content-Type)
             headers['X-API-KEY'] = self.api_key
             headers['Accept'] = 'application/json'
         
