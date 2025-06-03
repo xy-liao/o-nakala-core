@@ -1,0 +1,5825 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Nakala - API",
+    "description": "\u003Ch4\u003ECette API vous permet de créer, gérer et administrer vos dépôts sur la plateforme NAKALA.\u003C/h4\u003E\u003Cdiv\u003EPour connaître les dernières mises à jour de l'API : \u003Ca href=\"/releases\" target=\"_blank\"\u003ENotes de version\u003C/a\u003E\u003C/div\u003E",
+    "version": "3.22.0"
+  },
+  "host": "apitest.nakala.fr",
+  "paths": {
+    "/authors/search": {
+      "get": {
+        "summary": "Récupération des auteurs associés aux données de Nakala.",
+        "description": "Retourne des auteurs associés aux données de Nakala en fonction de critères de recherche",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Sens du tri (basé le prénom puis le nom de famille)",
+            "type": "string",
+            "default": "asc",
+            "pattern": "(asc|desc)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Page courante",
+            "type": "string",
+            "default": "1",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "10",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "searchOperator",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Permet de selectionner la recherche en début, fin ou contenu dans l'élément (start, end, partial(default))",
+            "type": "string",
+            "default": "partial",
+            "pattern": "(start|end|partial)"
+          },
+          {
+            "name": "searchField",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Permet de sélectionner le champ de recherche (surname, givenname, orcid, all(default))",
+            "type": "string",
+            "default": "all",
+            "pattern": "(surname|givenname|orcid|all)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne une liste d'auteurs",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Author"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "search"
+        ]
+      }
+    },
+    "/datas/{identifier}/citation": {
+      "get": {
+        "summary": "Citation de la donnée.",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "style",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Style parmi la liste dans https://github.com/citation-style-language/styles",
+            "type": "string",
+            "default": "apa"
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Langue parmi la liste dans https://github.com/citation-style-language/locales",
+            "type": "string",
+            "default": "en-US"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne la citation demandée",
+            "schema": {
+              "example": "Pouyllau, S. (2015). IMOCO (Version 1). NAKALA - https://nakala.fr (Huma-Num - CNRS). https://doi.org/10.34847/NKL.542EPEU3",
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "La donnée n'est pas publique ou n'a pas de DOI valide ou bien l'environnement dans lequel vous êtes ne permet pas la citation"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'a pas de DOI valide"
+          }
+        },
+        "tags": [
+          "datas"
+        ]
+      }
+    },
+    "/datas/{identifier}": {
+      "get": {
+        "summary": "Récupération des informations sur une donnée.",
+        "description": "Retourne l'ensemble des informations relatives à la donnée\n- statut de la donnée\n- liste des métadonnées\n- liste des collections contenant la donnée\n- métadonnées sur les fichiers associés à la donnée\n\nPour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "metadata-format",
+            "in": "query",
+            "description": "format des métadonnées (Attention ! Le format dc est déprécié et sera retiré prochainement)",
+            "type": "string",
+            "enum": [
+              "dc",
+              "qdc"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne l'objet donnée",
+            "schema": {
+              "$ref": "#/definitions/Data"
+            }
+          },
+          "401": {
+            "description": "Donnée non publiée, clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Modification des informations d'une donnée.",
+        "description": "Chaque entrée est facultative (rights, metas, files, status, collectionsIds, relations).\nEn revanche, chaque entrée doit contenir une liste exhaustive.\nPar example, vous souhaitez ajouter un fichier : il faut renseigner l'ensemble des données précédentes en plus du fichier à ajouter.\n\nVous pouvez vider l'ensemble des données pour \"rights\", \"collectionsIds\" et \"relations\" en soumettant un tableau vide.\n\nNote pour \"files\": vous devez uploader le fichier avant afin que l'API vous communique son SHA-1. Le nom du fichier est facultatif si vous ne souhaitez pas le modifier.\n\nNote pour \"collectionsIds\" : seules les collections dont vous êtes au moins éditeur seront prises en compte. Les autres resteront inchangées.\n\nNote pour \"relations\" : seules les relations créées depuis NAKALA seront prises en compte. Les relations créées automatiquement depuis d'autres entrepôts resteront inchangées.\n\nL'édition des champs \"metas\" et \"datas\" requière le ROLE_EDITOR et l'édition des champs \"status\" et \"rights\" requière le ROLE_ADMIN.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "Data",
+            "in": "body",
+            "description": "Donnée à enregistrer",
+            "schema": {
+              "$ref": "#/definitions/Data2"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "La donnée a été modifiée"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits sur la donnée insuffisants"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement de la nouvelle donnée"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression d'une donnée.",
+        "description": "La suppression d'une donnée est autorisée uniquement si la donnée n'est pas publiée",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Donnée supprimée"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas": {
+      "post": {
+        "summary": "Dépôt d'une nouvelle donnée.",
+        "description": "Permet de déposer une donnée dans Nakala\nLes fichiers associés à la donnée sont à déposer avant via POST /uploads\n\n- Statut de la donnée (pending ou published)\n- Liste des identifiants des collections où ranger la donnée. Une collection publique ne peut contenir que des données publiées.\n- Métadonnées descriptives de la donnée :\nlang : la liste des valeurs acceptées est disponible via GET /vocabularies/languages\ntypeUri : la liste des valeurs acceptées est disponible via GET /vocabularies/metadatatypes\npropertyUri : la liste des valeurs acceptées est disponible via GET /vocabularies/properties\nvalue : les valeurs de certaines métadonnées sont validées.\nPar exemple http://nakala.fr/terms#license doit valider les codes retournés par GET /vocabularies/licenses et http://nakala.fr/terms#type ceux retournés par GET /vocabularies/datatypes\nLes métadonnées http://nakala.fr/terms#type, http://nakala.fr/terms#title, http://nakala.fr/terms#creator, http://nakala.fr/terms#created et http://nakala.fr/terms#license sont obligatoires pour publier une donnée.\nhttp://nakala.fr/terms#creator : renseignez un auteur sous la forme d'un objet {givenname, surname, orcid}. Indiquez null si l'auteur est anonyme\nhttp://nakala.fr/terms#created : renseignez une date sous la forme année, année-mois ou année-mois-jour. Indiquez null si la date de création est inconnue\n- Fichier(s) de la donnée :\nname: le nom est facultatif si vous ne souhaitez pas le changer\nsha1 : identifiant du fichier déposé via POST /datas/uploads\ndescription : (optionnel) description sur le fichier\nembargoed: (optionnel, format=Y-m-d) date de fin d'embargo\n- Partage de droits sur cette donnée\n- Relations : voir le schéma d'une relation sur le verbe POST /datas/{identifier}/relations",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Informations sur la donnée à créer",
+            "schema": {
+              "$ref": "#/definitions/Data2"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Enregistrement de la donnée"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "422": {
+            "description": "La donnée ne contient pas les données obligatoires"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement de la donnée"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/files": {
+      "get": {
+        "summary": "Récupération des métadonnées des fichiers associés à une donnée.",
+        "description": "Permet d'obtenir l'ensemble des informations sur les fichiers associés à une donnée. Pour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des métadonnées des fichiers",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/File2"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Donnée non publiée, clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'est pas accessible"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout d'un fichier à une donnée.",
+        "description": "Permet d'ajouter un fichier à une donnée.\n\nAttention, le fichier doit être déposé avant à l'aide de la requête POST /uploads",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "file",
+            "in": "body",
+            "description": "Informations sur le fichier à ajouter",
+            "schema": {
+              "$ref": "#/definitions/File"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fichier ajouter"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'est pas accessible"
+          },
+          "409": {
+            "description": "La donnée contient déjà le fichier à ajouter"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/files/{fileIdentifier}": {
+      "delete": {
+        "summary": "Suppression de fichier à une donnée.",
+        "description": "La suppression d'un fichier ne peut se faire que sur une donnée non publiée",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "fileIdentifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant du fichier",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Fichier supprimé de la donnée"
+          },
+          "401": {
+            "description": "Donnée non publiée, clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'est pas accessible"
+          },
+          "500": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/metadatas": {
+      "get": {
+        "summary": "Récupération de la liste des métadonnées d'une donnée.",
+        "description": "une métadonnée contient\n- une propriété\n- une valeur (string ou objet auteur)\n- un type (optionnel)\n- un format (optionnel)\n\nPour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "metadata-format",
+            "in": "query",
+            "description": "format des métadonnées (Attention ! Le format dc est déprécié et sera retiré prochainement)",
+            "type": "string",
+            "enum": [
+              "dc",
+              "qdc"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste de métadonnées",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Meta2"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Donnée privée, nécessite que l'utilisateur dispose de droits sur la donnée"
+          },
+          "403": {
+            "description": "Donnée privée, droits manquants sur la donnée"
+          },
+          "404": {
+            "description": "Aucune donnée trouvée à partir de l'identifiant"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout d'une nouvelle métadonnée à une donnée.",
+        "description": "La métadonnée contient\n- une propriété\n- une valeur (string ou objet auteur)\n- un type (optionnel)\n- un format (optionnel)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "meta",
+            "in": "body",
+            "description": "Métadonnée à ajouter",
+            "schema": {
+              "$ref": "#/definitions/Meta2"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "La métadonnée a été ajoutée à la donnée"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants pour modifier la donnée"
+          },
+          "404": {
+            "description": "Aucune donnée trouvée à partir de l'identifiant"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression de métadonnées pour une donnée.",
+        "description": "Il est possible de passer un filtre dans le corps de la requête qui permettra de ne supprimer que certaines métadonnées\nPar exemple pour supprimer les dcterms:subject en anglais il faudra passer l'objet suivant\n```\n{\"lang\": \"en\", \"propertyUri\": \"http://purl.org/dc/terms/subject\"}\n```",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "meta",
+            "in": "body",
+            "description": "Modèle de métadonnées à supprimer",
+            "schema": {
+              "$ref": "#/definitions/Meta2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Nombre de métadonnées supprimées"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants"
+          },
+          "404": {
+            "description": "Aucune donnée trouvée à partir de l'identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression de métadonnées"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/relations": {
+      "get": {
+        "summary": "Récupération de la liste des relations d'une donnée.",
+        "description": "Permet de retourner la liste des ressources externes liées à la donnée. Pour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste de relations",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Relation"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Donnée privée ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Donnée privée, droits manquants sur la donnée"
+          },
+          "404": {
+            "description": "Aucune donnée trouvée à partir de l'identifiant"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout de relations sur une donnée.",
+        "description": "Permet de lier une donnée avec d'autres données provenant de NAKALA ou d'autres entrepôts de données (ex: HAL).",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "relations",
+            "in": "body",
+            "description": "tableau des nouvelles relations à ajouter à la donnée",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Relation2"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les relations ont bien été ajoutées à la donnée"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de l'ajout des relations sur la donnée"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Modification du commentaire d'une relation.",
+        "description": "Permet de modifier le commentaire d'une relation.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "relation",
+            "in": "body",
+            "description": "Relation à modifier",
+            "schema": {
+              "$ref": "#/definitions/Relation2"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Le commentaire a été modifié"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "409": {
+            "description": "La relation envoyée correspond à plus d'une relation"
+          },
+          "500": {
+            "description": "Erreur du serveur"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression des relations sur une donnée.",
+        "description": "Permet de supprimer une ou plusieurs relations entre la donnée avec d'autres données provenant de NAKALA ou d'autres entrepôts de données (ex: HAL).\nIl est possible de passer un filtre dans le corps de la requête qui permettra de ne supprimer que certaines relations.\nPar exemple pour supprimer toutes les relations vers les données provenant de l''entrepôt HAL :\n```\n{\"repository\": \"hal\"}\n```",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "relation",
+            "in": "body",
+            "description": "Relation à supprimer",
+            "schema": {
+              "$ref": "#/definitions/Relation2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relations supprimés"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression de la relation"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/rights": {
+      "get": {
+        "summary": "Récupération des groupes et des utilisateurs ayant des droits sur la donnée.",
+        "description": "Permet de retourner une liste contenant\n- l'utilisateur ou le groupe d'utilisateurs\n- le droit sur la donnée\n  - **propriétaire** (ROLE_OWNER) : consultation, modification, suppression, partage des droits de la donnée\n  - **administrateur** (ROLE_ADMIN) : consultation, modification, suppression, partage des droits de la donnée\n  - **modérateur** (ROLE_MODERATOR) : modération de la donnée\n  - **éditeur** (ROLE_EDITOR) :  consultation, modification, suppression de la donnée\n  - **lecteur** (ROLE_READER) :  consultation de la donnée même s'il n'est pas encore publiée\nNote: Seule la personne ayant déposé la donnée peut avoir le droit **propriétaire**",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs et des groupes ayant des droits sur la donnée",
+            "schema": {
+              "$ref": "#/definitions/GetListRights"
+            }
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout de droits sur une donnée.",
+        "description": "Permet de rajouter des droits à un utilisateur ou un group d'utilisateurs sur une donnée.\nLes droits possibles sont :\n- **propriétaire** (ROLE_OWNER) : consultation, modification, suppression, partage des droits de la donnée, cession des droits à une liste d'utilisateurs\n- **administrateur** (ROLE_ADMIN) : consultation, modification, suppression, partage des droits de la donnée\n- **modérateur** (ROLE_MODERATOR) : modération de la donnée\n- **éditeur** (ROLE_EDITOR) :  consultation, modification, suppression de la donnée\n- **lecteur** (ROLE_READER) :  consultation de la donnée même si elle n'est pas encore publiée\nNote: Le droit **propriétaire** (ROLE_OWNER) est attribué automatiquement au déposant de la donnée, mais peut être ré-attributé à une liste d'utilisateurs auquel le déposant appartient",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "rights",
+            "in": "body",
+            "description": "tableau des nouveaux droits à ajouter à la donnée",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/PostRight"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Droits ajoutés sur la donnée"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de l'ajout du droit sur la donnée"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression des droits pour un utilisateur ou un groupe d'utilisateurs sur une donnée.",
+        "description": "La suppression des droits d'une donnée est autorisée aux utilisateurs ayant les droits propriétaire ou administrateur.\nIl est possible de passer un filtre dans le corps de la requête qui permettra de ne supprimer que certains droits.\nPar exemple pour supprimer tous les éditeurs d'une donnée :\n```\n{\"role\": \"ROLE_EDITOR\"}\n```\nNote: le droit **propriétaire** (ROLE_OWNER) d'une donnée ne peut pas être supprimé.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "right",
+            "in": "body",
+            "description": "Droit à supprimer",
+            "schema": {
+              "$ref": "#/definitions/DeleteRight"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Droits supprimés"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression du droit"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/collections": {
+      "get": {
+        "summary": "Récupération de la liste des collections contenant la donnée.",
+        "description": "Retourne la liste des collections contenant la donnée et sur lesquelles l'utilisateur courant a les droits de lecture.\n\nIl est possible de trier les collections en fonction de leur date de création (`creDate,asc` ou `creDate,desc`) ou de leur titre (`title,asc` ou `title,desc`)\nLorsque les collections sont triées en fonction de leur titre, c'est le premier titre disponible dans la langue de l'en-tête `Accept-Language` qui est pris en compte.\nSi aucun en-tête `Accept-Language` n'est renseigné, l'anglais est la langue par défaut. Si aucun titre ne correspond à la langue du header, c'est le premier titre de la collection qui est pris par défaut.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Tri sur les collections",
+            "type": "string",
+            "default": "creDate,desc",
+            "pattern": "((creDate|title),(asc|desc))"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La liste des collections",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Collection2"
+              },
+              "type": "array"
+            }
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout d'une donnée dans un ensemble de collections.",
+        "description": "L'utilisateur doit au minimum avoir les droits de lecture sur la donnée et être éditeur des différentes collections\nUne collection publique ne peut contenir que des données publiées.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "collections",
+            "in": "body",
+            "required": true,
+            "description": "Liste des identifiants des collections à associer à la donnée",
+            "schema": {
+              "example": [
+                "10.34847/nkl.12345678",
+                "10.34847/nkl.fedcba98"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "La donnée a été ajoutée dans les collections"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants pour ajouter la donnée dans les collections"
+          },
+          "404": {
+            "description": "Collection ou donnée non trouvée"
+          },
+          "500": {
+            "description": "Erreur lors de l'ajout de la donnée dans les collections"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Remplacement de l'ensemble des collections d'une donnée.",
+        "description": "Seules les collections dont vous êtes au moins éditeur seront prises en compte. Les autres resteront inchangées.\nL'utilisateur doit au minimum avoir les droits de lecture sur la donnée et être éditeur des différentes collections\nUne collection publique ne peut contenir que des données publiées.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "collections",
+            "in": "body",
+            "required": true,
+            "description": "Liste exhaustive des identifiants des collections (dont vous êtes éditeur) à associer à la donnée",
+            "schema": {
+              "example": [
+                "10.34847/nkl.12345678",
+                "10.34847/nkl.fedcba98"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "La donnée est dans les collections soumises"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants pour ajouter la donnée dans les collections"
+          },
+          "404": {
+            "description": "Collection ou donnée non trouvée"
+          },
+          "500": {
+            "description": "Erreur lors de l'ajout de la donnée dans les collections"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression d'une donnée d'un ensemble de collections.",
+        "description": "L'utilisateur doit au minimum avoir les droits de lecture sur la donnée et être éditeur des différentes collections.\nNi la donnée, ni les collections ne sont supprimées de NAKALA.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "collections",
+            "in": "body",
+            "required": true,
+            "description": "Liste des identifiants des collections d'où la donnée doit être supprimée",
+            "schema": {
+              "example": [
+                "10.34847/nkl.12345678",
+                "10.34847/nkl.fedcba98"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La donnée a été supprimé des collections"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants pour supprimer la donnée des collections"
+          },
+          "404": {
+            "description": "Collection ou donnée non trouvée"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression de la donnée des collections"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/status": {
+      "get": {
+        "summary": "Récupération du statut d'une donnée.",
+        "description": "Retourne le statut de la donnée. Le statut peut être\n- **pending** : donnée déposée mais pas encore en ligne\n- **published** : donnée publiée\n- **moderated** : donnée modérée\n- **deleted** : donnée supprimée\n- **old** : ancienne version d'une donnée publiée\n\nPour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Statut de la donnée"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/status/{status}": {
+      "put": {
+        "summary": "Changement du statut d'une donnée.",
+        "description": "Permet de publier une donnée déposée (non encore publique) ou de modérer une donnée publiée.\nSeuls les modérateurs peuvent modérer une donnée publiée.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "description": "Nouveau statut de la donnée",
+            "type": "string",
+            "enum": [
+              "published",
+              "moderated"
+            ]
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Status changé"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement du nouveau statut"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/uploads": {
+      "get": {
+        "summary": "Récupération pour un utilisateur de la liste des objets fichiers déposés non encore associés à une donnée.",
+        "description": "Les fichiers déposés restent dans un espace temporaire le temps qu'ils soient associés à une donnée de Nakala ou soient automatiquement supprimés (toutes les 24 heures)",
+        "responses": {
+          "200": {
+            "description": "Liste des objets fichiers déposés",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/File3"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Clé d'API non valide ou utilisateur inconnu"
+          },
+          "500": {
+            "description": "Erreur lors de la récupération des fichiers"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Dépôt de fichier.",
+        "description": "Permet de déposer un fichier dans un espace temporaire de NAKALA pour être ensuite associé à une donnée (requête POST /datas)",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "Fichier à déposer",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Retourne l'empreinte SHA1 du fichier déposé sur le serveur",
+            "schema": {
+              "$ref": "#/definitions/File3"
+            }
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Clé d'API non valide ou utilisateur inconnu"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement du fichier"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/uploads/{fileIdentifier}": {
+      "delete": {
+        "summary": "Suppression d'un fichier déposé dans l'espace temporaire",
+        "description": "Permet de supprimer un fichier présent dans l'espace temporaire",
+        "parameters": [
+          {
+            "name": "fileIdentifier",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Le fichier a été supprimé"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Clé d'API non valide ou utilisateur inconnu"
+          },
+          "404": {
+            "description": "Le fichier n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression du fichier"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/datas/{identifier}/versions": {
+      "get": {
+        "summary": "Récupération de la liste des versions d'une donnée.",
+        "description": "Permet de retourner la liste des versions d'une donnée.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Version de la donnée",
+            "type": "string",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "10",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des versions de la donnée",
+            "schema": {
+              "properties": {
+                "total": {
+                  "description": "Nombre de versions",
+                  "example": 10,
+                  "type": "integer"
+                },
+                "currentPage": {
+                  "description": "Page courante",
+                  "example": 3,
+                  "type": "integer"
+                },
+                "lastPage": {
+                  "description": "Dernière page disponible",
+                  "example": 4,
+                  "type": "integer"
+                },
+                "limit": {
+                  "description": "Nombre de versions par page",
+                  "example": 3,
+                  "type": "integer"
+                },
+                "data": {
+                  "description": "Liste paginée des versions de la donnée",
+                  "items": {
+                    "$ref": "#/definitions/Data3"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/data/{identifier}/{fileIdentifier}": {
+      "get": {
+        "summary": "Téléchargement du fichier \"fileIdentifier\" de la donnée \"identifier\".",
+        "description": "Pour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "fileIdentifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant du fichier",
+            "type": "string",
+            "pattern": "[0-9a-f]{40}"
+          },
+          {
+            "name": "content-disposition",
+            "in": "query",
+            "description": "Entête HTTP Content-Disposition. inline : affichage du fichier dans le navigateur ou attachment : le fichier doit être téléchargé",
+            "type": "string",
+            "default": "inline",
+            "enum": [
+              "inline",
+              "attachment"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Le contenu du fichier"
+          },
+          "401": {
+            "description": "Donnée non publiée, clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'est pas accessible"
+          },
+          "500": {
+            "description": "Erreur interne"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/embed/{identifier}/{fileIdentifier}": {
+      "get": {
+        "summary": "Visionneuse NAKALA du fichier \"fileIdentifier\" de la donnée \"identifier\".",
+        "description": "Pour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "fileIdentifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant du fichier",
+            "type": "string",
+            "pattern": "[0-9a-f]{40}"
+          },
+          {
+            "name": "buttons",
+            "in": "query",
+            "description": "Affichage dans la visionneuse des boutons de téléchargement et d'accès au fichier brut",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Le contenu html de la visionneuse du fichier"
+          },
+          "500": {
+            "description": "Erreur interne"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/groups/search": {
+      "get": {
+        "summary": "Récupération des utilisateurs et groupes d'utilisateurs.",
+        "description": "Retourne des utilisateurs et groupes d'utilisateurs en fonction de critères de recherche",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Sens du tri (basé le prénom puis le nom de famille)",
+            "type": "string",
+            "default": "asc",
+            "pattern": "(asc|desc)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Page courante",
+            "type": "string",
+            "default": "1",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "10",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste d'utilisateurs et groupes d'utilisateurs",
+            "schema": {
+              "$ref": "#/definitions/GetListGroups"
+            }
+          }
+        },
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/groups/{id}": {
+      "get": {
+        "summary": "Récupération des informations sur un groupe d'utilisateurs.",
+        "description": "Retourne l'ensemble des informations relatives à un groupe d'utilisateurs",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant du groupe",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Un groupe d'utilisateurs",
+            "schema": {
+              "$ref": "#/definitions/DetailedAbstractGroup"
+            }
+          },
+          "403": {
+            "description": "Groupe inaccessible"
+          },
+          "404": {
+            "description": "Aucun groupe n'existe avec cet identifiant"
+          }
+        },
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Modification d'un groupe d'utilisateurs.",
+        "description": "Le groupe transmis remplacera celui déjà existant.\nNote: Il n'est pas possible de modifier des groupes de type \"user\".",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant du groupe",
+            "type": "string"
+          },
+          {
+            "name": "group",
+            "in": "body",
+            "description": "Groupe d'utilisateurs à modifier",
+            "schema": {
+              "$ref": "#/definitions/PostAndPutGroup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Le groupe a été modifiée"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide"
+          },
+          "403": {
+            "description": "Compte utilisateur inexistant"
+          },
+          "404": {
+            "description": "Aucun groupe n'existe avec cet identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement du groupe"
+          }
+        },
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression d'un groupe d'utilisateurs.",
+        "description": "La suppression d'un groupe entraine la suppression de tous les droits liés à ce groupe.\nNote: Il n'est pas possible de supprimer un groupe de type \"user\" ou un groupe propriétaire d'une donnée ou d'une collection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant du groupe",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Groupe supprimé"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Groupe inaccessible"
+          },
+          "404": {
+            "description": "Aucun groupe n'existe avec cet identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression du groupe"
+          }
+        },
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/groups": {
+      "post": {
+        "summary": "Création d'un nouveau groupe d'utilisateurs.",
+        "description": "Permet de créer un groupe d'utilisateurs.\nNote: L'utilisateur créant le groupe est ajouté automatiquement parmi les membres avec le ROLE_OWNER.",
+        "parameters": [
+          {
+            "name": "group",
+            "in": "body",
+            "description": "Nouveau groupe d'utilisateurs",
+            "schema": {
+              "$ref": "#/definitions/PostAndPutGroup"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Enregistrement du groupe"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "404": {
+            "description": "Compte utilisateur inexistant"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement du groupe"
+          }
+        },
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/iiif/{identifier}/{fileIdentifier}/info.json": {
+      "get": {
+        "summary": "IIIF Image API - Information sur l'image \"fileIdentifier\" de la donnée \"identifier\".",
+        "description": "Pour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "fileIdentifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de l'image",
+            "type": "string",
+            "pattern": "[0-9a-f]{40}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les informations iiif de l'image"
+          },
+          "401": {
+            "description": "Donnée non publiée, clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'est pas accessible"
+          },
+          "500": {
+            "description": "Erreur interne"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/iiif/{identifier}/{fileIdentifier}/{region}/{size}/{rotation}/{quality}.{format}": {
+      "get": {
+        "summary": "IIIF Image API - Transformation de l'image \"fileIdentifier\" de la donnée \"identifier\".",
+        "description": "Pour accéder à la version spécifique d'une donnée, vous pouvez ajouter un numéro de version après l'identifiant de la donnée (ex: **10.34847/nkl.eabbbf68.v2** donne accès à la version 2 de la donnée **10.34847/nkl.eabbbf68**)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la donnée",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "fileIdentifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de l'image",
+            "type": "string",
+            "pattern": "[0-9a-f]{40}"
+          },
+          {
+            "name": "region",
+            "in": "path",
+            "required": true,
+            "description": "Le paramètre région définit la partie rectangulaire du contenu de l'image sous-jacente à renvoyer.",
+            "type": "string",
+            "pattern": "full|square|((pct:)?([0-9.]+),([0-9.]+),([0-9.]+),([0-9.]+))"
+          },
+          {
+            "name": "size",
+            "in": "path",
+            "required": true,
+            "description": "Le paramètre size spécifie les dimensions auxquelles la région extraite, qui peut être l'image complète, doit être mise à l'échelle.",
+            "type": "string",
+            "pattern": "(full)|((\\^)?max)|((\\^)?(!|pct:)?(?:([0-9]+)?,(\\^)?([0-9]+)?|([0-9.]+)))"
+          },
+          {
+            "name": "rotation",
+            "in": "path",
+            "required": true,
+            "description": "Le paramètre de rotation spécifie la mise en miroir et la rotation.",
+            "type": "string",
+            "pattern": "(!)?([0-9]+(\\.[0-9]+)?)"
+          },
+          {
+            "name": "quality",
+            "in": "path",
+            "required": true,
+            "description": "Le paramètre de qualité détermine si l'image est générée en couleur, en niveaux de gris ou en noir et blanc.",
+            "type": "string",
+            "pattern": "default|color|gray|bitonal",
+            "enum": [
+              "default",
+              "color",
+              "gray",
+              "bitonal"
+            ]
+          },
+          {
+            "name": "format",
+            "in": "path",
+            "required": true,
+            "description": "Le format de l'image renvoyée",
+            "type": "string",
+            "pattern": "jpg|tif|png|gif|jp2|pdf|webp",
+            "enum": [
+              "jpg",
+              "tif",
+              "png",
+              "gif",
+              "jp2",
+              "pdf",
+              "webp"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "L'image transformée suivant la requête à l'api IIIF"
+          },
+          "401": {
+            "description": "Donnée non publiée, clé d'API manquante ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La donnée n'existe pas ou n'est pas accessible"
+          },
+          "500": {
+            "description": "Erreur interne"
+          }
+        },
+        "tags": [
+          "datas"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/resources/{identifier}/action": {
+      "get": {
+        "summary": "Demande d'action sur une ressource.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la ressource",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les actions attribuées sur cette ressource",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Task"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/resourceprocessing/{identifier}": {
+      "get": {
+        "summary": "État d'une ressource dans ElasticSearch et Datacite.",
+        "description": "Permet de connaître l'état d'une ressource (donnée ou collection) dans ElasticSearch et Datacite.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la ressource (donnée ou collection)",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne l'état d'une ressource dans ElasticSearch et Datacite",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ResourceProcessing"
+              },
+              "type": "array"
+            }
+          },
+          "404": {
+            "description": "Aucune donnée ou collection trouvée dans ElasticSearch ou Datacite à partir de l'identifiant fourni"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Recherche des données Nakala.",
+        "description": "Retourne des données Nakala en fonction de critères de recherche\n- `q` : requête à effectuer\n- `fq` : filtres pour la requête\n     - Filtres disponibles : scope, status, type, year, created\u003Csup\u003E1\u003C/sup\u003E, modified\u003Csup\u003E1\u003C/sup\u003E language, keyword, collection, license, fileExt, depositor, owner et share\n     - Il est possible de rechercher sur plusieurs filtres ; le caractère de séparation est le point-virgule. La recherche est traduite par un ET entre les filtres.\n     - Il est possible d'ajouter plusieurs valeurs pour un même filtre ; le caractère de séparation est la virgule ou le &. La recherche se fera par un OU entre les\nvaleurs dans le cas de la virgule et par un ET dans le cas du &. Il n'est pas possible de mélanger ces deux opérateurs pour un même filtre.\n     - Exemple : scope=collection;status=public;year=2009,1889\n- `facet` : facette(s) à retourner\n     - Facettes disponibles : scope, status, type, year, created, license, language, keyword, fileExt, fileSize, fileType et collection\n     - Il est possible de retourner plusieurs facettes ; le caractère de séparation est le point-virgule.\n     - Il est possible de configurer la taille et l'ordre d'une facette avec les paramètres size, sort et order\n     - Pour la facette created, size correspond au format date souhaité : yyyy, yyyy-MM ou yyyy-MM-dd\n     - Exemple : type,size=17,sort=item,order=asc;fileExt,size=7,sort=count,order=desc\n- `order` : tri des résultats\n     - Valeurs possibles : relevance ou date,desc ou date,asc ou title,desc ou title,asc\n\n1 : Spécificités du filtre `created` et `modified` :\n- Les opérateurs suivants sont disponibles : `=`, `\u003E`, `\u003C`, `\u003E=` et `\u003C=`\n- Le format complet est `YYYY-MM-DDT00:00:00`\n- Les formats incomplets `YYYY` `YYYY-MM` et `YYYY-MM-DD` peuvent être utilisés. La recherche se traduira selon les règles suivantes :\n     - pour l'opérateur `=` : la recherche se fera dans une période, bornes incluses.\n         - 2023 : entre `2023-01-01T00:00:00` et `2023-12-31T23:59:59`\n         - 2023-05 : entre `2023-05-01T00:00:00` et `2023-05-31T23:59:59`\n         - 2023-05-05 : entre `2023-05-05T00:00:00` et `2023-05-05T23:59:59`\n     - pour les opérateurs `\u003C` et `\u003E=`, la date est complétée en se basant sur le début de journée. Exemple : `2013-05` deviendra `2013-05-01T00:00:00`\n     - pour les opérateurs `\u003E` et `\u003C=`, la date est complétée en se basant sur la fin de journée. Exemple : `2013-05` deviendra `2013-05-01T23:59:59`",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche",
+            "type": "string"
+          },
+          {
+            "name": "fq",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Filtres pour la recherche",
+            "type": "string"
+          },
+          {
+            "name": "facet",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Facettes à créer au retour de la recherche",
+            "type": "string",
+            "pattern": "(scope|status|type|year|created|license|language|keyword|fileExt|fileSize|fileType|collection)(,size=([0-9]+|yyyy-MM-dd|yyyy-MM|yyyy))*(,sort=(item|count))*(,order=(asc|desc))*(;(scope|status|type|year|created|license|language|fileExt|fileSize|keyword|fileType|collection)(,size=([0-9]+|yyyy-MM-dd|yyyy-MM|yyyy))*(,sort=(item|count))*(,order=(asc|desc))*)*"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Tri",
+            "type": "string",
+            "default": "relevance",
+            "pattern": "relevance|((title|date),(asc|desc))"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Page courante",
+            "type": "string",
+            "default": "1",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "25",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne une liste de données"
+          }
+        },
+        "tags": [
+          "search"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections/{identifier}": {
+      "get": {
+        "summary": "Récupération des informations sur une collection.",
+        "description": "Retourne l'ensemble des informations d'une collection\n- Métadonnées techniques de la collection (statut, propriétaire, etc.)\n- Métadonnées descriptives de la collection\n\nSi la clé d'API est transmise, et que vous avez les droits sur la\ncollection, les informations privées seront également retournées",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "metadata-format",
+            "in": "query",
+            "description": "format des métadonnées (Attention ! Le format dc est déprécié et sera retiré prochainement)",
+            "type": "string",
+            "enum": [
+              "dc",
+              "qdc"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informations sur la collection",
+            "schema": {
+              "$ref": "#/definitions/Collection3"
+            }
+          },
+          "401": {
+            "description": "La collection est privée et nécessite une authentification"
+          },
+          "403": {
+            "description": "Accès interdit (mauvaise clé d'API ou droits insuffisants)"
+          },
+          "404": {
+            "description": "Aucune collection n'existe avec cet identifiant"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Modification des informations d'une collection.",
+        "description": "La collection transmise remplacera celle déja existante.\nChaque entrée (rights, metas, status, datas) est facultative, mais doit contenir une liste exhaustive.\nSi vous souhaitez par exemple modifier une seule métadonnée, vous devrez renseigner l'ensemble des métadonnées précédentes en plus de celle portant la modification.\nVous pouvez vider l'ensemble des données pour \"rights\" et \"datas\" en soumettant un tableau vide.\n\nL'édition des champs \"metas\" et \"datas\" requière le ROLE_EDITOR et l'édition des champs \"status\" et \"rights\" requière le ROLE_ADMIN.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "collection",
+            "in": "body",
+            "description": "Collection à modifier",
+            "schema": {
+              "$ref": "#/definitions/Collection4"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "La collection a été modifiée"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide"
+          },
+          "403": {
+            "description": "Compte utilisateur inexistant ou droits sur la collection insuffisants"
+          },
+          "404": {
+            "description": "Aucune collection n'existe avec cet identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement de la collection"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression d'une collection.",
+        "description": "Supprime définitivement la collection.\nLes données contenues dans la collection ne seront pas supprimées\n\nAttention : Il est possible de ne supprimer que certaines informations de la collection\nPour cela, vous pouvez utiliser les routes spécifiques (ex: /collections/{identifier}/rights)\nVous pouvez aussi effectuer une modification partielle d'une collection (ex: cf. PUT /collections/{identifier})",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "La collection a été supprimée"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Compte utilisateur non trouvé"
+          },
+          "404": {
+            "description": "Aucune collection n'existe avec cet identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression de la collection"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections": {
+      "post": {
+        "summary": "Création d'une nouvelle collection.",
+        "description": "Les informations suivantes sont à transmettre\n\n- Statut de la collection (private ou public)\n- Liste des identifiants des données à ajouter à la collection. Une\ncollection publique ne peut contenir que des données publiées.\n- Métadonnées descriptives de la collection :\nlang : la liste des valeurs acceptées est disponible via GET\n/vocabularies/languages typeUri : la liste des valeurs acceptées est\ndisponible via GET /vocabularies/metadatatypes propertyUri : la liste\ndes valeurs acceptées est disponible via GET /vocabularies/properties La\nmétadonnée http://nakala.fr/terms#title est obligatoire.\n- Partage de droits sur cette collection",
+        "parameters": [
+          {
+            "name": "collection",
+            "in": "body",
+            "description": "Informations sur la collection à créer",
+            "schema": {
+              "$ref": "#/definitions/Collection"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "La collection a été correctement créée"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Utilisateur non autorisé"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement de la collection"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections/{identifier}/datas": {
+      "get": {
+        "summary": "Récupération de la liste paginée des données contenues dans la collection.",
+        "description": "Une clé d'API et les droits sur la collection sont nécessaires pour les collections privées",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "La page souhaitée",
+            "type": "integer",
+            "default": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Le nombre de résultat par page",
+            "type": "integer",
+            "default": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La liste paginée des données",
+            "schema": {
+              "properties": {
+                "total": {
+                  "description": "Le nombre de données dans la collection",
+                  "example": "10",
+                  "type": "integer"
+                },
+                "currentPage": {
+                  "description": "La page actuelle",
+                  "example": "1",
+                  "type": "integer"
+                },
+                "lastPage": {
+                  "description": "Le nombre total de page",
+                  "example": "10",
+                  "type": "integer"
+                },
+                "limit": {
+                  "description": "Le nombre de donnée par page, 25 au maximum",
+                  "example": "10",
+                  "type": "integer"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/Data4"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Collection privée, nécessite une clé d'API et les droits sur la collection"
+          },
+          "403": {
+            "description": "Collection privée, nécessite les droits dessus"
+          },
+          "404": {
+            "description": "Aucune collection n'existe pour cet identifiant"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout d'une liste de données dans une collection.",
+        "description": "L'utilisateur doit être au minimum éditeur de la collection et avoir les droits de lecture sur les données\nUne collection publique ne peut contenir que des données publiées.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "datas",
+            "in": "body",
+            "required": true,
+            "description": "Liste des identifiants des données à ajouter à la collection",
+            "schema": {
+              "example": [
+                "10.34847/nkl.12345678",
+                "10.34847/nkl.fedcba98"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Les données ont été ajoutées à la collection"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants pour ajouter les données dans la collection"
+          },
+          "404": {
+            "description": "Collection ou donnée non trouvée"
+          },
+          "500": {
+            "description": "Erreur lors de l'ajout des données dans la collection"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression d'une liste de données d'une collection.",
+        "description": "L'utilisateur doit être au minimum éditeur de la collection et avoir les droits de lecture sur les données.\nNi la collection, ni les données ne sont supprimées de NAKALA.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "datas",
+            "in": "body",
+            "required": true,
+            "description": "Liste des identifiants des données à supprimer de la collection",
+            "schema": {
+              "example": [
+                "10.34847/nkl.12345678",
+                "10.34847/nkl.fedcba98"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les données ont été supprimées de la collection"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droits insuffisants pour supprimer les données de la collection"
+          },
+          "404": {
+            "description": "Collection ou donnée non trouvée"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression des données de la collection"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections/{identifier}/metadatas": {
+      "get": {
+        "summary": "Récupération des métadonnées d'une collection.",
+        "description": "Retourne les métadonnées descriptives de la collection",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "metadata-format",
+            "in": "query",
+            "description": "format des métadonnées (Attention ! Le format dc est déprécié et sera retiré prochainement)",
+            "type": "string",
+            "enum": [
+              "dc",
+              "qdc"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste de métadonnées",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Meta3"
+              },
+              "type": "array"
+            }
+          },
+          "401": {
+            "description": "Collection privée, nécessite que l'utilisateur dispose de droits sur la collection"
+          },
+          "403": {
+            "description": "Collection privée, droits manquants sur la collection"
+          },
+          "404": {
+            "description": "Aucune collection trouvée à partir de l'identifiant"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout d'une nouvelle métadonnée à une collection.",
+        "description": "Permet d'ajouter une métadonnée descriptive de la collection\nLa métadonnée contient\n- une propriété\n- une valeur (string ou objet auteur)\n- un type (optionnel)\n- un format (optionnel)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "meta",
+            "in": "body",
+            "description": "Métadonnée à ajouter",
+            "schema": {
+              "$ref": "#/definitions/Meta3"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "La métadonnée a été ajoutée à la collection"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Utilisateur non trouvé ou droits insuffisants pour modifier la collection"
+          },
+          "404": {
+            "description": "Aucune collection trouvée à partir de l'identifiant"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression de métadonnées pour une collection.",
+        "description": "Toutes les métadonnées correspondant au modèle transmis seront supprimées. Par exemple\n- Pour supprimer tous les \u003Cdcterms:subject\u003E\n```\n{\"propertyUri\": \"http://purl.org/dc/terms/subject\"}\n```\n- Pour supprimer les métadonnées en anglais\n```\n{\"lang\": \"en\"}\n```\n- Pour supprimer les \u003Cdcterms:subject\u003E en anglais :\n```\n{\"lang\": \"en\", \"propertyUri\": \"http://purl.org/dc/terms/subject\"}\n```",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "meta",
+            "in": "body",
+            "description": "Modèle de métadonnées à supprimer",
+            "schema": {
+              "$ref": "#/definitions/Meta3"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Nombre de métadonnées supprimées"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Utilisateur non trouvé ou droits insuffisants"
+          },
+          "404": {
+            "description": "Aucune collection trouvée à partir de l'identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression de métadonnées"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections/{identifier}/rights": {
+      "get": {
+        "summary": "Récupération des utilisateurs et des groupes ayant des droits sur la collection.",
+        "description": "Permet de retourner une liste contenant\n- l'utilisateur ou le groupe d'utilisateurs\n- le droit sur la collection\n  - **propriétaire** (ROLE_OWNER) : consultation, modification, suppression, partage des droits de la donnée\n  - **administrateur** (ROLE_ADMIN) : consultation, modification, suppression, partage des droits de la donnée\n  - **editeur** (ROLE_EDITOR) :  consultation, modification, suppression de la donnée\n  - **lecteur** (ROLE_READER) :  consultation de la donnée\nNote: Seule la personne ayant déposé la collection peut avoir les droits propriétaires.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs et des groupes ayant des droits sur la collection",
+            "schema": {
+              "$ref": "#/definitions/GetListRights"
+            }
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "404": {
+            "description": "La collection n'existe pas"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Ajout de droits sur une collection.",
+        "description": "Permet de rajouter des droits à un utilisateur ou un group d'utilisateurs sur une collection.\nLes droits possibles sont :\n- **administrateur** (ROLE_ADMIN) : consultation, modification, suppression, partage des droits de la collection\n- **éditeur** (ROLE_EDITOR) : consultation, modification de la collection\n- **lecteur** (ROLE_READER) : consultation de la collection même si elle est privée\nNote: Le droit **propriétaire** (ROLE_OWNER) est attribué automatiquement au déposant de la collection et ne peut pas être attribué à une autre utilisateur",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "rights",
+            "in": "body",
+            "description": "tableau des nouveaux droits à ajouter à la collection",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/PostRight"
+              },
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Droits ajoutés sur la collection"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Droit sur la donnée insuffisant"
+          },
+          "404": {
+            "description": "La collection n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de l'ajout du droit sur la collection"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Suppression des droits pour utilisateur ou un groupe d'utilisateurs sur une collection.",
+        "description": "La suppression des droits d'une collection est autorisée aux utilisateurs ayant les droits propriétaire ou administrateur.\nIl est possible de passer un filtre dans le corps de la requête qui permettra de ne supprimer que certains droits.\nPar exemple pour supprimer tous les éditeurs d'une collection :\n```\n{\"role\": \"ROLE_EDITOR\"}\n```\nNote: le droit **propriétaire** (ROLE_OWNER) d'une collection ne peut pas être supprimé.",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "right",
+            "in": "body",
+            "description": "Droit à supprimer",
+            "schema": {
+              "$ref": "#/definitions/DeleteRight"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Droits supprimés"
+          },
+          "401": {
+            "description": "Erreur d'authentification (mauvaise clé d'API) ou compte utilisateur inexistant"
+          },
+          "404": {
+            "description": "La collection n'existe pas"
+          },
+          "500": {
+            "description": "Erreur lors de la suppression du droit"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections/{identifier}/status": {
+      "get": {
+        "summary": "Récupération du statut d'une collection.",
+        "description": "Permet de savoir si une collection est privée ou publique",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Statut de la collection"
+          },
+          "404": {
+            "description": "La collection n'existe pas"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/collections/{identifier}/status/{status}": {
+      "put": {
+        "summary": "Changement du statut d'une collection.",
+        "description": "Permet de gérer le statut de la collection (private ou public)\nUne collection publique ne peut avoir que des données publiées",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Identifiant de la collection",
+            "type": "string",
+            "pattern": "((10.34847/nkl.|11280/)[a-z0-9]{8})(\\.v([0-9]+))?"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "description": "Nouveau statut de la collection",
+            "type": "string",
+            "pattern": "private|public",
+            "enum": [
+              "public",
+              "private"
+            ]
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Le nouveau statut a été enregistré"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Compte utilisateur non trouvé ou droits sur la collection insuffisants"
+          },
+          "404": {
+            "description": "Aucune collection n'existe avec cet identifiant"
+          },
+          "500": {
+            "description": "Erreur lors de l'enregistrement de la donnée"
+          }
+        },
+        "tags": [
+          "collections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Récupération des informations sur l'utilisateur courant.",
+        "description": "Retourne l'ensemble des informations disponibles sur l'utilisateur courant",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Informations sur l'utilisateur courant",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "La clé d'API ne correspond à aucun utilisateur connu"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Mise à jour des informations sur l'utilisateur courant.",
+        "description": "Permet de mettre à jour les informations sur l'utilisateur courant",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Nouvelles données sur l'utilisateur",
+            "schema": {
+              "$ref": "#/definitions/User2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Les données de l'utilisateur courant ont bien été mises à jour"
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "La clé d'API ne correspond à aucun utilisateur connu"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/me/apikey": {
+      "put": {
+        "summary": "Mise à jour de la clé d'API de l'utilisateur courant.",
+        "description": "Permet de mettre à jour la clé d'API de l'utilisateur courant",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "La clé d'API de l'utilisateur a bien été mise à jour",
+            "schema": {
+              "properties": {
+                "apiKey": {
+                  "description": "la nouvelle clé d'API générée",
+                  "example": "d70d4fb2-c0d0-6bfd-a505-7bc8b5227cc2",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "La clé d'API ne correspond à aucun utilisateur connu"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/datas/{scope}": {
+      "post": {
+        "summary": "Récupération des données accessibles par un utilisateur.",
+        "description": "Retourne les données d'un utilisateur en fonction du périmètre choisi :\n- `deposited` : les données déposées par l'utilisateur (ROLE_DEPOSITOR)\n- `owned` : les données dont l'utilisateur est propriétaire (ROLE_OWNER)\n- `shared` : les données partagées avec l'utilisateur (ROLE_ADMIN, ROLE_EDITOR ou ROLE_READER, mais pas ROLE_OWNER)\n- `editable` : les données modifiables par l'utilisateur (ROLE_OWNER, ROLE_ADMIN ou ROLE_EDITOR)\n- `readable` : les données lisibles par l'utilisateur (ROLE_OWNER, ROLE_ADMIN, ROLE_EDITOR ou ROLE_READER)\n- `moderable` : les données modérables par l'utilisateur (ROLE_MODERATOR)\n- `all` : toutes les données auxquelles l'utilisateur à accès (ROLE_OWNER, ROLE_ADMIN, ROLE_EDITOR, ROLE_READER ou ROLE_MODERATOR) ainsi que toutes les données publiées de NAKALA",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "required": true,
+            "description": "Périmètre des données",
+            "type": "string",
+            "pattern": "deposited|owned|shared|editable|readable|moderable|all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "moderable",
+              "all"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/userDatasQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne la liste des données de l'utilisateur",
+            "schema": {
+              "properties": {
+                "totalRecords": {
+                  "type": "integer"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/Data5"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Utilisateur non autorisé"
+          },
+          "404": {
+            "description": "L'utilisateur demandé n'existe pas"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/datas/datatypes": {
+      "get": {
+        "summary": "Récupération des types des données accessibles par un utilisateur.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Périmètre des données",
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "moderable",
+              "all"
+            ]
+          },
+          {
+            "name": "collections[]",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Identifiants des collections auxquelles peuvent appartenir les données",
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des types des données possédées par l'utilisateur",
+            "schema": {
+              "example": [
+                "http://purl.org/coar/resource_type/c_ddb1",
+                "http://purl.org/coar/resource_type/c_5ce6"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/datas/createdyears": {
+      "get": {
+        "summary": "Récupération des différentes années de création des données accessibles par un utilisateur.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Périmètre des données",
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "moderable",
+              "all"
+            ]
+          },
+          {
+            "name": "collections[]",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Identifiants des collections auxquelles peuvent appartenir les données",
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des années de création des données utilisateur concernées par le périmètre",
+            "schema": {
+              "example": [
+                "2002",
+                "2003"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/datas/statuses": {
+      "get": {
+        "summary": "Récupération des différents statuts des données accessibles par un utilisateur.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Périmètre des données",
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "moderable",
+              "all"
+            ]
+          },
+          {
+            "name": "collections[]",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Identifiants des collections auxquelles peuvent appartenir les données",
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des statuts des données utilisateur concernées par le périmètre",
+            "schema": {
+              "example": [
+                "pending",
+                "published",
+                "moderated"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/groups/{scope}": {
+      "get": {
+        "summary": "Récupération des groupes d'un utilisateur.",
+        "description": "Retourne les groupes d'un utilisateur en fonction des ensembles suivants :\n- `owned` : les groupes créés par l'utilisateur\n- `shared` : les groupes créés par d'autres utilisateurs et incluant l'utilisateur\n- `all` : tous les groupes créer par l'utilisateur ou incluant l'utilisateur",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "required": true,
+            "description": "Périmètre des groupes",
+            "type": "string",
+            "pattern": "owned|shared|all",
+            "enum": [
+              "owned",
+              "shared",
+              "all"
+            ]
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Page courante",
+            "type": "string",
+            "default": "1",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "10",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Tri des résultats",
+            "type": "string",
+            "default": "datemodify,desc",
+            "pattern": "(datemodify|name),(asc|desc)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste de groupes d'utilisateurs",
+            "schema": {
+              "$ref": "#/definitions/GetUserListGroups"
+            }
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Utilisateur non autorisé"
+          },
+          "404": {
+            "description": "L'utilisateur demandé n'existe pas"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/collections/{scope}": {
+      "post": {
+        "summary": "Récupération des collections accessibles par un utilisateur.",
+        "description": "Retourne les collections d'un utilisateur en fonction du périmètre choisi :\n- `deposited` : les collections déposées par l'utilisateur (ROLE_DEPOSITOR)\n- `owned` : les collections dont l'utilisateur est propriétaire (ROLE_OWNER)\n- `shared` : les collections partagées avec l'utilisateur (ROLE_ADMIN, ROLE_EDITOR ou ROLE_READER, mais pas ROLE_OWNER)\n- `editable` : les collections modifiables par l'utilisateur (ROLE_OWNER, ROLE_ADMIN ou ROLE_EDITOR)\n- `readable` : les collections lisibles par l'utilisateur (ROLE_OWNER, ROLE_ADMIN, ROLE_EDITOR ou ROLE_READER)\n- `all` : toutes les collections auxquelles l'utilisateur à accès (ROLE_OWNER, ROLE_ADMIN, ROLE_EDITOR ou ROLE_READER) ainsi que toutes les collections publiques de NAKALA",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "required": true,
+            "description": "Périmètre des collections",
+            "type": "string",
+            "pattern": "deposited|owned|shared|editable|all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "all"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/userCollectionsQuery"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne la liste des collections de l'utilisateur",
+            "schema": {
+              "properties": {
+                "totalRecords": {
+                  "type": "integer"
+                },
+                "data": {
+                  "items": {
+                    "$ref": "#/definitions/Collection5"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Clé d'API manquante ou invalide, compte utilisateur inexistant"
+          },
+          "403": {
+            "description": "Utilisateur non autorisé"
+          },
+          "404": {
+            "description": "L'utilisateur demandé n'existe pas"
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/collections/createdyears": {
+      "get": {
+        "summary": "Récupération des différentes années de création des collections accessibles par un utilisateur.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Périmètre des collections",
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "all"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des années de création des collections accessibles par l'utilisateur",
+            "schema": {
+              "example": [
+                "2020",
+                "2029"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/users/collections/statuses": {
+      "get": {
+        "summary": "Récupération des différents statuts des collections accessibles par un utilisateur.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Périmètre des collections",
+            "type": "string",
+            "default": "all",
+            "enum": [
+              "deposited",
+              "owned",
+              "shared",
+              "editable",
+              "readable",
+              "all"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des statuts des collections accessibles par l'utilisateur",
+            "schema": {
+              "example": [
+                "public",
+                "private"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/vocabularies/licenses": {
+      "get": {
+        "summary": "Récupération des licences des données de Nakala.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche sur le code ou le nom des licences",
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Code exact de la licence recherchée",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des licences",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/License"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/dataStatuses": {
+      "get": {
+        "summary": "Récupération des statuts des données de Nakala.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des statuts de données",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/collectionStatuses": {
+      "get": {
+        "summary": "Récupération des statuts des collections de Nakala.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des statuts de collections",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/datatypes": {
+      "get": {
+        "summary": "Récupération des types des données de Nakala.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des types de données",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/properties": {
+      "get": {
+        "summary": "Récupération des propriétés des métadonnées.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des propriétés des métadonnées",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/metadatatypes": {
+      "get": {
+        "summary": "Récupération des types des métadonnées.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des types des métadonnées",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/languages": {
+      "get": {
+        "summary": "Récupération des langues des métadonnées.",
+        "description": "Retourne la liste des langues disponibles pour déclarer la langue d'une métadonnée.\nCette liste correspond aux langues répertoriées par l'ISO-639-3.\nLe code donné pour chaque langue correspond à celui de l'ISO-639-1 (sur deux caractères) lorsqu'il est disponible ou à celui l'ISO-639-3 dans le cas contraire.\nLa recherche et le tri sur le label des langues se fait en fonction de l'entête `Accept-Language` de la requête. L'anglais est la valeur par défaut.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche sur le code ou le label des langues",
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Code exact de la langue recherchée",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Sens du tri (basé sur le label des langues)",
+            "type": "string",
+            "default": "asc",
+            "pattern": "(asc|desc)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Page courante",
+            "type": "string",
+            "default": "1",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "10",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des langues disponibles",
+            "schema": {
+              "items": {
+                "properties": {
+                  "id": {
+                    "description": "code ISO de la langue",
+                    "example": "fr",
+                    "type": "string"
+                  },
+                  "label": {
+                    "description": "nom de la langue",
+                    "example": "français",
+                    "type": "string"
+                  }
+                }
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/dcmitypes": {
+      "get": {
+        "summary": "Récupération des types DCMI.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des types DCMI",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/vocabularies/countryCodes": {
+      "get": {
+        "summary": "Récupération des codes pays ISO 3166 (alpha-2).",
+        "description": "Retourne la liste des codes pays disponibles pour renseigner une métadonnée de type dcterms:ISO3166.\nCette liste correspond aux codes pays répertoriés par l'ISO 3166 (alpha-2).\nLa recherche et le tri sur le label des langues se fait en fonction de l'entête `Accept-Language` de la requête. L'anglais est la valeur par défaut.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Mot clé pour la recherche sur le code ou le label des pays",
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "allowEmptyValue": true,
+            "required": false,
+            "description": "Code exact du pays recherché",
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Sens du tri (basé sur le label des pays)",
+            "type": "string",
+            "default": "asc",
+            "pattern": "(asc|desc)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Page courante",
+            "type": "string",
+            "default": "1",
+            "pattern": "\\d+"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "allowEmptyValue": false,
+            "required": false,
+            "description": "Nombre de résultats par page",
+            "type": "string",
+            "default": "10",
+            "pattern": "\\d+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des pays disponibles",
+            "schema": {
+              "items": {
+                "properties": {
+                  "id": {
+                    "description": "code du pays (ISO 3166 alpha-2)",
+                    "example": "FR",
+                    "type": "string"
+                  },
+                  "label": {
+                    "description": "nom du pays",
+                    "example": "France (la)",
+                    "type": "string"
+                  }
+                }
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "vocabularies"
+        ]
+      }
+    },
+    "/websites": {
+      "get": {
+        "summary": "Renvoie les sites webs.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Retourne l'objet Websites",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/WebsiteDirectory"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "websites"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Collection": {
+      "description": "Informations sur la collection à créer",
+      "properties": {
+        "status": {
+          "example": "public",
+          "type": "string",
+          "default": "private",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta"
+          },
+          "type": "array"
+        },
+        "datas": {
+          "description": "Ajouter ces données à cette collection",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "rights": {
+          "items": {
+            "$ref": "#/definitions/PostRight"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Meta": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      }
+    },
+    "File": {
+      "properties": {
+        "sha1": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "embargoed": {
+          "type": "string"
+        }
+      }
+    },
+    "Role": {
+      "description": "Role",
+      "example": "ROLE_READER",
+      "type": "string",
+      "enum": [
+        "ROLE_ADMIN",
+        "ROLE_EDITOR",
+        "ROLE_READER"
+      ]
+    },
+    "ResourceRightRepresentation": {
+      "description": "Le droit : id du groupe et role",
+      "properties": {
+        "id": {
+          "example": "g67e770c-349b-33ea-a2ea-1243ac1b0007",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        }
+      },
+      "type": "object"
+    },
+    "GetUserListGroups": {
+      "example": [
+        {
+          "id": "g67e770c-349b-33ea-a2ea-1243ac1b0007",
+          "name": "HUMA-NUM",
+          "users": [
+            {
+              "username": "jdubois",
+              "fullname": "Jacques Dubois",
+              "photo": null,
+              "role": "ROLE_OWNER"
+            },
+            {
+              "username": "lmartin",
+              "fullname": "Laure Martin",
+              "photo": null,
+              "role": "ROLE_ADMIN"
+            }
+          ],
+          "datemodify": "2020-04-28T09:39:34+00:00",
+          "isOwner": false,
+          "isAdmin": false,
+          "isMember": false
+        }
+      ],
+      "items": {
+        "$ref": "#/definitions/DetailedMultiUserGroup"
+      },
+      "type": "array"
+    },
+    "GetListGroups": {
+      "example": [
+        {
+          "id": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "user",
+          "username": "pdupont",
+          "name": "Pierre Dupont",
+          "photo": null,
+          "datemodify": "2020-05-10T10:18:24+00:00"
+        },
+        {
+          "id": "g67e770c-349b-33ea-a2ea-1243ac1b0007",
+          "name": "HUMA-NUM",
+          "type": "group",
+          "users": [
+            {
+              "username": "jdubois",
+              "fullname": "Jacques Dubois",
+              "photo": null,
+              "role": "ROLE_OWNER"
+            },
+            {
+              "username": "lmartin",
+              "fullname": "Laure Martin",
+              "photo": null,
+              "role": "ROLE_ADMIN"
+            }
+          ],
+          "datemodify": "2020-04-28T09:39:34+00:00",
+          "isOwner": false,
+          "isAdmin": false,
+          "isMember": false
+        }
+      ],
+      "items": {
+        "$ref": "#/definitions/DetailedAbstractGroup"
+      },
+      "type": "array"
+    },
+    "AbstractGroup": {
+      "description": "Utilisateur ou groupe d'utilisateurs",
+      "example": {
+        "id": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+        "name": "Pierre Dupont",
+        "type": "user",
+        "username": "pdupont",
+        "givenname": "Pierre",
+        "surname": "Dupont",
+        "photo": null
+      },
+      "properties": {
+        "id": {
+          "description": "Uuid d'un groupe ou d'un utilisateur",
+          "example": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "string"
+        },
+        "username": {
+          "description": "Username d'un utilisateur",
+          "example": "pdupont",
+          "type": "string"
+        },
+        "surname": {
+          "description": "Nom de famille d'un utilisateur",
+          "example": "Dupont",
+          "type": "string"
+        },
+        "givenname": {
+          "description": "Prénom d'un utilisateur",
+          "example": "Pierre",
+          "type": "string"
+        },
+        "photo": {
+          "description": "Photo de profil d'un utilisateur",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nom d'un groupe ou d'un utilisateur",
+          "example": "HUMA-NUM",
+          "type": "string"
+        },
+        "users": {
+          "description": "Liste des utilisateurs appartenant au groupe",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          },
+          "type": "array"
+        },
+        "type": {
+          "description": "Type de groupe",
+          "example": "group",
+          "type": "string",
+          "enum": [
+            "user",
+            "group"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "DetailedAbstractGroup": {
+      "description": "Utilisateur ou groupe d'utilisateurs",
+      "example": {
+        "id": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+        "name": "HUMA-NUM",
+        "users": [
+          {
+            "username": "jdubois",
+            "fullname": "Jacques Dubois",
+            "photo": null,
+            "role": "ROLE_OWNER"
+          },
+          {
+            "username": "lmartin",
+            "fullname": "Laure Martin",
+            "photo": null,
+            "role": "ROLE_ADMIN"
+          }
+        ],
+        "type": "group",
+        "datemodify": "2020-04-28T09:39:34+00:00",
+        "isOwner": false,
+        "isAmdin": false,
+        "isMember": false
+      },
+      "properties": {
+        "id": {
+          "description": "Uuid d'un groupe ou d'un utilisateur",
+          "example": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "string"
+        },
+        "username": {
+          "description": "Username d'un utilisateur",
+          "example": "pdupont",
+          "type": "string"
+        },
+        "photo": {
+          "description": "Photo de profil d'un utilisateur",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nom d'un groupe ou d'un utilisateur",
+          "example": "HUMA-NUM",
+          "type": "string"
+        },
+        "users": {
+          "description": "Liste des utilisateurs appartenant au groupe",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          },
+          "type": "array"
+        },
+        "type": {
+          "description": "Type de groupe",
+          "example": "group",
+          "type": "string",
+          "enum": [
+            "user",
+            "group"
+          ]
+        },
+        "datemodify": {
+          "description": "Date de création ou dernière date de modification du groupe",
+          "example": "2020-04-28T09:39:34+00:00",
+          "type": "string",
+          "format": "date"
+        },
+        "isOwner": {
+          "description": "L'utilisateur connecté est le propriétaire du groupe",
+          "type": "boolean"
+        },
+        "isAdmin": {
+          "description": "L'utilisateur connecté fait parti des administrateurs du groupe",
+          "type": "boolean"
+        },
+        "isMember": {
+          "description": "L'utilisteur connecté fait parti des membres du groupe",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "DetailedMultiUserGroup": {
+      "description": "Groupe d'utilisateurs",
+      "example": {
+        "id": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+        "name": "HUMA-NUM",
+        "users": [
+          {
+            "username": "jdubois",
+            "fullname": "Jacques Dubois",
+            "photo": null,
+            "role": "ROLE_OWNER"
+          },
+          {
+            "username": "lmartin",
+            "fullname": "Laure Martin",
+            "photo": null,
+            "role": "ROLE_ADMIN"
+          }
+        ],
+        "type": "group",
+        "datemodify": "2020-04-28T09:39:34+00:00",
+        "isOwner": false,
+        "isAdmin": false,
+        "isMember": false
+      },
+      "properties": {
+        "id": {
+          "description": "Uuid d'un groupe d'utilisateurs",
+          "example": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nom d'un groupe",
+          "example": "HUMA-NUM",
+          "type": "string"
+        },
+        "users": {
+          "description": "Liste des utilisateurs appartenant au groupe",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          },
+          "type": "array"
+        },
+        "datemodify": {
+          "description": "Dernière date de modification du groupe",
+          "example": "2020-04-28T09:39:34+00:00",
+          "type": "string",
+          "format": "date"
+        },
+        "isOwner": {
+          "description": "L'utilisateur connecté est le propriétaire du groupe",
+          "type": "boolean"
+        },
+        "isAdmin": {
+          "description": "L'utilisateur connecté fait parti des administrateurs du groupe",
+          "type": "boolean"
+        },
+        "isMember": {
+          "description": "L'utilisateur connecté fait parti des membres du groupe",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "PostAndPutGroup": {
+      "description": "Nouveau groupe à créer",
+      "properties": {
+        "name": {
+          "description": "Nom du groupe",
+          "example": "HUMA-NUM",
+          "type": "string"
+        },
+        "users": {
+          "description": "Liste des utilisateurs appartenant au groupe avec leur rôle sur la gestion du groupe",
+          "example": [
+            {
+              "username": "pdupont",
+              "role": "ROLE_OWNER"
+            },
+            {
+              "username": "jdubois",
+              "role": "ROLE_ADMIN"
+            },
+            {
+              "username": "pmartin",
+              "role": "ROLE_USER"
+            }
+          ],
+          "items": {
+            "$ref": "#/definitions/MinimalUserInfo"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "GetListRights": {
+      "example": [
+        {
+          "id": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "role": "ROLE_EDITOR",
+          "type": "user",
+          "username": "pdupont",
+          "name": "Pierre Dupont",
+          "photo": null
+        },
+        {
+          "id": "g67e770c-349b-33ea-a2ea-1243ac1b0007",
+          "role": "ROLE_ADMIN",
+          "name": "HUMA-NUM",
+          "type": "group",
+          "users": [
+            {
+              "username": "jdubois",
+              "fullname": "Jacques Dubois",
+              "photo": null,
+              "role": "ROLE_OWNER"
+            },
+            {
+              "username": "lmartin",
+              "fullname": "Laure Martin",
+              "photo": null,
+              "role": "ROLE_ADMIN"
+            }
+          ]
+        }
+      ],
+      "items": {
+        "$ref": "#/definitions/DetailedRight"
+      },
+      "type": "array"
+    },
+    "DetailedRight": {
+      "description": "Droit sur une resource de NAKALA",
+      "properties": {
+        "id": {
+          "description": "Uuid d'un groupe ou d'un utilisateur",
+          "example": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "string"
+        },
+        "username": {
+          "description": "Username d'un utilisateur",
+          "example": "pdupont",
+          "type": "string"
+        },
+        "photo": {
+          "description": "Photo de profil d'un utilisateur",
+          "type": "string"
+        },
+        "name": {
+          "description": "Nom d'un groupe ou d'un utilisateur",
+          "example": "HUMA-NUM",
+          "type": "string"
+        },
+        "users": {
+          "description": "Liste des utilisateurs appartenant au groupe",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          },
+          "type": "array"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        },
+        "type": {
+          "description": "Type de groupe",
+          "example": "group",
+          "type": "string",
+          "enum": [
+            "user",
+            "group"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PostRight": {
+      "description": "Nouveau droit à ajouter",
+      "properties": {
+        "id": {
+          "description": "Uuid d'un groupe ou d'un utilisateur",
+          "example": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        }
+      },
+      "type": "object"
+    },
+    "DeleteRight": {
+      "description": "Droit à supprimer",
+      "properties": {
+        "id": {
+          "description": "Uuid d'un groupe ou d'un utilisateur",
+          "example": "b55e770c-849b-11ea-87ea-0242ac1b0003",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        }
+      },
+      "type": "object"
+    },
+    "UserInfo": {
+      "description": "Information sur un utilisateur",
+      "properties": {
+        "username": {
+          "description": "Username d'un utilisateur",
+          "example": "pdupont",
+          "type": "string"
+        },
+        "fullname": {
+          "description": "Nom complet d'un utilisateur",
+          "example": "Pierre Dupont",
+          "type": "string"
+        },
+        "photo": {
+          "description": "Photo de profil d'un utilisateur",
+          "type": "string"
+        },
+        "role": {
+          "description": "Role de l'utilisateur sur la gestion du groupe",
+          "example": "ROLE_USER",
+          "type": "string",
+          "enum": [
+            "ROLE_OWNER",
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "MinimalUserInfo": {
+      "description": "Information minimum sur un utilisateur",
+      "properties": {
+        "username": {
+          "description": "Username d'un utilisateur",
+          "example": "pdupont",
+          "type": "string"
+        },
+        "role": {
+          "description": "Role de l'utilisateur sur la gestion du groupe",
+          "example": "ROLE_USER",
+          "type": "string",
+          "enum": [
+            "ROLE_OWNER",
+            "ROLE_ADMIN",
+            "ROLE_USER"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "userDatasQuery": {
+      "description": "Requête sur les données d'un utilisateur",
+      "properties": {
+        "page": {
+          "description": "La page souhaitée",
+          "example": 1,
+          "type": "integer",
+          "format": "int32",
+          "default": 1
+        },
+        "limit": {
+          "description": "Le nombre de résultats par page",
+          "example": 100,
+          "type": "integer",
+          "default": 100
+        },
+        "orders": {
+          "description": "La liste des tri souhaités",
+          "items": {
+            "description": "Le nom de la colonne sur laquelle trier les données et l'odre (asc, desc) séparé par une virgule",
+            "example": "creDate,desc",
+            "type": "string",
+            "enum": [
+              "type,asc",
+              "type,desc",
+              "title,asc",
+              "title,desc",
+              "creDate,asc",
+              "creDate,desc",
+              "status,asc",
+              "status,desc"
+            ]
+          },
+          "type": "array"
+        },
+        "types": {
+          "description": "URI des types recherchés",
+          "items": {
+            "description": "Uri du type",
+            "example": "http://purl.org/coar/resource_type/c_c513",
+            "type": "string",
+            "enum": [
+              "http://purl.org/coar/resource_type/c_c513",
+              "http://purl.org/coar/resource_type/c_12ce",
+              "http://purl.org/coar/resource_type/c_18cc",
+              "http://purl.org/coar/resource_type/c_6501",
+              "http://purl.org/coar/resource_type/c_6670",
+              "http://purl.org/coar/resource_type/c_c94f",
+              "http://purl.org/coar/resource_type/c_e059",
+              "http://purl.org/coar/resource_type/c_2f33",
+              "http://purl.org/coar/resource_type/c_12cd",
+              "http://purl.org/coar/resource_type/c_ddb1",
+              "http://purl.org/coar/resource_type/c_5ce6",
+              "http://purl.org/coar/resource_type/c_1843",
+              "http://purl.org/library/ArchiveMaterial",
+              "http://purl.org/ontology/bibo/Collection",
+              "http://purl.org/coar/resource_type/c_86bc",
+              "http://purl.org/ontology/bibo/Series",
+              "http://purl.org/coar/resource_type/c_ba08",
+              "http://purl.org/coar/resource_type/c_0040",
+              "http://purl.org/coar/resource_type/c_0857",
+              "http://purl.org/coar/resource_type/c_93fc",
+              "http://purl.org/coar/resource_type/c_2659",
+              "http://purl.org/coar/resource_type/c_816b",
+              "http://purl.org/coar/resource_type/c_efa0",
+              "http://purl.org/coar/resource_type/c_18cw",
+              "https://w3id.org/survey-ontology#SurveyDataSet",
+              "http://purl.org/coar/resource_type/c_18cf",
+              "http://purl.org/coar/resource_type/c_46ec",
+              "http://purl.org/coar/resource_type/c_7ad9",
+              "http://purl.org/coar/resource_type/c_beb9",
+              "http://purl.org/coar/resource_type/c_e9a0"
+            ]
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Un ou plusieurs statut pour la donnée: pending, published, embargoed",
+          "items": {
+            "description": "Statut d'une donnée",
+            "example": "published",
+            "type": "string",
+            "enum": [
+              "pending",
+              "published",
+              "embargoed"
+            ]
+          },
+          "type": "array"
+        },
+        "createdYears": {
+          "description": "Liste des années de création recherchée",
+          "items": {
+            "description": "Une année sur 4 chiffres",
+            "example": "2020",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "collections": {
+          "description": "Liste des collections associées aux données recherchées",
+          "items": {
+            "description": "Identifiant d'une collection",
+            "example": "11280/9f85fbd6",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "titleSearch": {
+          "example": "",
+          "type": "string"
+        },
+        "titleSearchLang": {
+          "description": "Le code de langue (format ISO 639-1) pour la recherche textuelle dans le titre (titleSearch)",
+          "example": "fr",
+          "type": "string"
+        },
+        "orderLang": {
+          "description": "Le code de langue (format ISO 639-1) pour l'ordre des données indiqué par orders",
+          "example": "fr",
+          "type": "string",
+          "default": "fr"
+        }
+      },
+      "type": "object"
+    },
+    "userCollectionsQuery": {
+      "description": "Requête sur les collections d'un utilisateur",
+      "properties": {
+        "page": {
+          "description": "La page souhaitée",
+          "example": 1,
+          "type": "integer",
+          "format": "int32",
+          "default": 1
+        },
+        "limit": {
+          "description": "Le nombre de résultats par page",
+          "example": 100,
+          "type": "integer",
+          "default": 100
+        },
+        "orders": {
+          "description": "La liste des tri souhaités",
+          "items": {
+            "description": "Le nom de la colonne sur laquelle trier les collections et l'odre (asc, desc) séparé par une virgule",
+            "example": "creDate,desc",
+            "type": "string",
+            "enum": [
+              "title,asc",
+              "title,desc",
+              "creDate,asc",
+              "creDate,desc",
+              "status,asc",
+              "status,desc"
+            ]
+          },
+          "type": "array"
+        },
+        "createdYears": {
+          "description": "Liste des années de création recherchée",
+          "items": {
+            "description": "Une année sur 4 chiffres",
+            "example": "2020",
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "status": {
+          "description": "Un ou plusieurs statut pour la collection: public, private",
+          "items": {
+            "description": "Statut d'une collection",
+            "example": "public",
+            "type": "string",
+            "enum": [
+              "public",
+              "private"
+            ]
+          },
+          "type": "array"
+        },
+        "titleSearch": {
+          "example": "",
+          "type": "string"
+        },
+        "titleSearchLang": {
+          "description": "Le code de langue (format ISO 639-1) pour la recherche textuelle dans le titre (titleSearch)",
+          "example": "fr",
+          "type": "string"
+        },
+        "orderLang": {
+          "description": "Le code de langue (format ISO 639-1) pour l'ordre des collections indiqué par orders",
+          "example": "fr",
+          "type": "string",
+          "default": "fr"
+        }
+      },
+      "type": "object"
+    },
+    "Author": {
+      "required": [
+        "givenname",
+        "surname"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "givenname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "orcid": {
+          "type": "string",
+          "pattern": ".*(^\\d{4}-\\d{4}-\\d{4}-\\d{3}(\\d|X)$).*"
+        },
+        "authorId": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Data": {
+      "properties": {
+        "version": {
+          "description": "Numéro de version de la donnée",
+          "example": "1",
+          "type": "integer"
+        },
+        "collectionsIds": {
+          "example": [
+            "10.34847/nkl.12345678"
+          ],
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/definitions/File4"
+          },
+          "type": "array"
+        },
+        "lastModerator": {
+          "$ref": "#/definitions/User3"
+        },
+        "lastModerationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/definitions/Relation3"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "published"
+          ]
+        },
+        "fileEmbargoed": {
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "handleIdentifier": {
+          "type": "string"
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta4"
+          },
+          "type": "array"
+        },
+        "creDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "depositor": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "owner": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "isDepositor": {
+          "type": "boolean"
+        },
+        "isOwner": {
+          "type": "boolean"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "isEditor": {
+          "type": "boolean"
+        },
+        "modDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "Data2": {
+      "properties": {
+        "collectionsIds": {
+          "example": [
+            "10.34847/nkl.12345678"
+          ],
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/definitions/File5"
+          },
+          "type": "array"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/definitions/Relation4"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "published"
+          ]
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta5"
+          },
+          "type": "array"
+        },
+        "rights": {
+          "items": {
+            "$ref": "#/definitions/PostRight"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "File2": {
+      "properties": {
+        "name": {
+          "description": "un nom de fichier",
+          "example": "fichier.txt|null",
+          "type": "string",
+          "x-nullable": true
+        },
+        "extension": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "sha1": {
+          "type": "string"
+        },
+        "embargoed": {
+          "example": "2025-03-27",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "humanReadableEmbargoedDelay": {
+          "description": "Pattern représentant le temps restant d'embargo en année (y) mois (m) et jour (d)",
+          "example": {
+            "y": 1,
+            "m": 2,
+            "d": 3
+          },
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "puid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Meta2": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Relation": {
+      "properties": {
+        "type": {
+          "description": "Le type de relation",
+          "example": "Cites",
+          "type": "string"
+        },
+        "repository": {
+          "description": "Le nom de l'entrepôt cible",
+          "example": "hal",
+          "type": "string"
+        },
+        "target": {
+          "description": "L'identifiant de la ressource cible",
+          "example": "hal-02464318v1",
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comment": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "uri": {
+          "description": "L'URI vers la ressource cible",
+          "example": "https://hal.archives-ouvertes.fr/hal-02464318v1",
+          "type": "string"
+        },
+        "isInferred": {
+          "description": "Indique si la relation a été ajoutée par inférence",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Relation2": {
+      "properties": {
+        "type": {
+          "description": "Le type de relation",
+          "example": "Cites",
+          "type": "string"
+        },
+        "repository": {
+          "description": "Le nom de l'entrepôt cible",
+          "example": "hal",
+          "type": "string"
+        },
+        "target": {
+          "description": "L'identifiant de la ressource cible",
+          "example": "hal-02464318v1",
+          "type": "string"
+        },
+        "comment": {
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "type": "object"
+    },
+    "Collection2": {
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "uri": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta6"
+          },
+          "type": "array"
+        },
+        "creDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "File3": {
+      "properties": {
+        "name": {
+          "description": "un nom de fichier",
+          "example": "fichier.txt|null",
+          "type": "string",
+          "x-nullable": true
+        },
+        "sha1": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Data3": {
+      "properties": {
+        "version": {
+          "description": "Numéro de version de la donnée",
+          "example": "1",
+          "type": "integer"
+        },
+        "versionIdentifier": {
+          "description": "Identifiant donnant accès à une version spécifique de la donnée",
+          "example": "10.34847/nkl.eabbbf68.v2",
+          "type": "string"
+        },
+        "creDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "Task": {
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "taskType": {
+          "$ref": "#/definitions/TaskType"
+        },
+        "taskStep": {
+          "$ref": "#/definitions/TaskStep"
+        }
+      },
+      "type": "object"
+    },
+    "ResourceProcessing": {
+      "properties": {
+        "service": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "datestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Collection3": {
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "websiteEnabled": {
+          "type": "boolean"
+        },
+        "websitePublished": {
+          "type": "boolean"
+        },
+        "websitePrefix": {
+          "type": "string"
+        },
+        "haveData": {
+          "type": "boolean"
+        },
+        "haveAccessibleData": {
+          "title": "Computed in ResourceNormalizer but put here for OpenAPI doc.",
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "handleIdentifier": {
+          "type": "string"
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta7"
+          },
+          "type": "array"
+        },
+        "creDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "depositor": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "owner": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "isDepositor": {
+          "type": "boolean"
+        },
+        "isOwner": {
+          "type": "boolean"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "isEditor": {
+          "type": "boolean"
+        },
+        "modDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "Collection4": {
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta8"
+          },
+          "type": "array"
+        },
+        "rights": {
+          "items": {
+            "$ref": "#/definitions/PostRight"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Data4": {
+      "properties": {
+        "version": {
+          "description": "Numéro de version de la donnée",
+          "example": "1",
+          "type": "integer"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/definitions/File2"
+          },
+          "type": "array"
+        },
+        "lastModerator": {
+          "$ref": "#/definitions/User4"
+        },
+        "lastModerationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/definitions/Relation"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "published"
+          ]
+        },
+        "fileEmbargoed": {
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta2"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Meta3": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "User": {
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "givenname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "mail": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string",
+          "format": "byte"
+        },
+        "firstLogin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastLogin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "apiKey": {
+          "type": "string"
+        },
+        "fullname": {
+          "title": "Construit le nom complet de l'utilisateur.",
+          "type": "string"
+        },
+        "userGroupId": {
+          "description": "Identifiant interne de l'utilisateur",
+          "example": "b0b7fcf8-599f-11ec-be5d-0242ac12000a",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "User2": {
+      "properties": {
+        "givenname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "mail": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string",
+          "format": "byte"
+        }
+      },
+      "type": "object"
+    },
+    "Data5": {
+      "properties": {
+        "version": {
+          "description": "Numéro de version de la donnée",
+          "example": "1",
+          "type": "integer"
+        },
+        "collectionsIds": {
+          "example": [
+            "10.34847/nkl.12345678"
+          ],
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/definitions/File6"
+          },
+          "type": "array"
+        },
+        "lastModerator": {
+          "$ref": "#/definitions/User5"
+        },
+        "lastModerationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/definitions/Relation5"
+          },
+          "type": "array"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "published"
+          ]
+        },
+        "fileEmbargoed": {
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "handleIdentifier": {
+          "type": "string"
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta9"
+          },
+          "type": "array"
+        },
+        "creDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "depositor": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "owner": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "isDepositor": {
+          "type": "boolean"
+        },
+        "isOwner": {
+          "type": "boolean"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "isEditor": {
+          "type": "boolean"
+        },
+        "modDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "Collection5": {
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "websiteEnabled": {
+          "type": "boolean"
+        },
+        "websitePublished": {
+          "type": "boolean"
+        },
+        "websitePrefix": {
+          "type": "string"
+        },
+        "haveData": {
+          "type": "boolean"
+        },
+        "haveAccessibleData": {
+          "title": "Computed in ResourceNormalizer but put here for OpenAPI doc.",
+          "type": "boolean"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "handleIdentifier": {
+          "type": "string"
+        },
+        "metas": {
+          "items": {
+            "$ref": "#/definitions/Meta10"
+          },
+          "type": "array"
+        },
+        "creDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "depositor": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "owner": {
+          "$ref": "#/definitions/AbstractGroup"
+        },
+        "isDepositor": {
+          "type": "boolean"
+        },
+        "isOwner": {
+          "type": "boolean"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "isEditor": {
+          "type": "boolean"
+        },
+        "modDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "type": "object"
+    },
+    "License": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "WebsiteDirectory": {
+      "properties": {
+        "prefix": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "title": {
+          "title": "title",
+          "items": {
+            "properties": {
+              "content": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "description": {
+          "title": "description",
+          "items": {
+            "properties": {
+              "content": {
+                "type": "string"
+              },
+              "lang": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "File4": {
+      "properties": {
+        "name": {
+          "description": "un nom de fichier",
+          "example": "fichier.txt|null",
+          "type": "string",
+          "x-nullable": true
+        },
+        "extension": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "sha1": {
+          "type": "string"
+        },
+        "embargoed": {
+          "example": "2025-03-27",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "humanReadableEmbargoedDelay": {
+          "description": "Pattern représentant le temps restant d'embargo en année (y) mois (m) et jour (d)",
+          "example": {
+            "y": 1,
+            "m": 2,
+            "d": 3
+          },
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "puid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "User3": {
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "givenname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string",
+          "format": "byte"
+        },
+        "fullname": {
+          "title": "Construit le nom complet de l'utilisateur.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Relation3": {
+      "properties": {
+        "type": {
+          "description": "Le type de relation",
+          "example": "Cites",
+          "type": "string"
+        },
+        "repository": {
+          "description": "Le nom de l'entrepôt cible",
+          "example": "hal",
+          "type": "string"
+        },
+        "target": {
+          "description": "L'identifiant de la ressource cible",
+          "example": "hal-02464318v1",
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comment": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "uri": {
+          "description": "L'URI vers la ressource cible",
+          "example": "https://hal.archives-ouvertes.fr/hal-02464318v1",
+          "type": "string"
+        },
+        "isInferred": {
+          "description": "Indique si la relation a été ajoutée par inférence",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Meta4": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "File5": {
+      "properties": {
+        "name": {
+          "description": "un nom de fichier",
+          "example": "fichier.txt|null",
+          "type": "string",
+          "x-nullable": true
+        },
+        "sha1": {
+          "type": "string"
+        },
+        "embargoed": {
+          "example": "2025-03-27",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Relation4": {
+      "properties": {
+        "type": {
+          "description": "Le type de relation",
+          "example": "Cites",
+          "type": "string"
+        },
+        "repository": {
+          "description": "Le nom de l'entrepôt cible",
+          "example": "hal",
+          "type": "string"
+        },
+        "target": {
+          "description": "L'identifiant de la ressource cible",
+          "example": "hal-02464318v1",
+          "type": "string"
+        },
+        "comment": {
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "type": "object"
+    },
+    "Meta5": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Meta6": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TaskType": {
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TaskStep": {
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Meta7": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Meta8": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "User4": {
+      "type": "object"
+    },
+    "File6": {
+      "properties": {
+        "name": {
+          "description": "un nom de fichier",
+          "example": "fichier.txt|null",
+          "type": "string",
+          "x-nullable": true
+        },
+        "extension": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "sha1": {
+          "type": "string"
+        },
+        "embargoed": {
+          "example": "2025-03-27",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "humanReadableEmbargoedDelay": {
+          "description": "Pattern représentant le temps restant d'embargo en année (y) mois (m) et jour (d)",
+          "example": {
+            "y": 1,
+            "m": 2,
+            "d": 3
+          },
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "puid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "User5": {
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "givenname": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string",
+          "format": "byte"
+        },
+        "fullname": {
+          "title": "Construit le nom complet de l'utilisateur.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Relation5": {
+      "properties": {
+        "type": {
+          "description": "Le type de relation",
+          "example": "Cites",
+          "type": "string"
+        },
+        "repository": {
+          "description": "Le nom de l'entrepôt cible",
+          "example": "hal",
+          "type": "string"
+        },
+        "target": {
+          "description": "L'identifiant de la ressource cible",
+          "example": "hal-02464318v1",
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comment": {
+          "type": "string",
+          "maxLength": 255
+        },
+        "uri": {
+          "description": "L'URI vers la ressource cible",
+          "example": "https://hal.archives-ouvertes.fr/hal-02464318v1",
+          "type": "string"
+        },
+        "isInferred": {
+          "description": "Indique si la relation a été ajoutée par inférence",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Meta9": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Meta10": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "typeUri": {
+          "type": "string"
+        },
+        "propertyUri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "name": "search",
+      "description": "Recherche données et collections de Nakala"
+    },
+    {
+      "name": "datas",
+      "description": "Gestion des données"
+    },
+    {
+      "name": "collections",
+      "description": "Gestion des collections"
+    },
+    {
+      "name": "groups",
+      "description": "Gestion des groupes d'utilisateurs"
+    },
+    {
+      "name": "users",
+      "description": "Gestion des utilisateurs"
+    },
+    {
+      "name": "vocabularies",
+      "description": "Accès aux vocabulaires de Nakala"
+    }
+  ],
+  "securityDefinitions": {
+    "apiKey": {
+      "name": "X-API-KEY",
+      "type": "apiKey",
+      "in": "header",
+      "description": "Clé d'API"
+    }
+  }
+}
