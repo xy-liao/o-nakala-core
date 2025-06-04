@@ -35,7 +35,8 @@ class NakalaCollectionManager:
                 'Content-Type': 'application/json',
                 'X-API-KEY': self.api_key
             }
-            
+            # Log the full payload for debugging
+            logger.info(f"Payload: {json.dumps(collection_data, ensure_ascii=False, indent=2)}")
             response = requests.post(
                 f"{self.api_url}/collections",
                 headers=headers,
@@ -211,6 +212,213 @@ class NakalaCollectionManager:
             logger.error(f"Failed to create collection: {e}")
             return None
 
+    def _matches_folder_type(self, folder_path: str, title: str) -> bool:
+        """Check if a folder path matches a data item title."""
+        # Extract the folder name from the path
+        folder_name = folder_path.split('/')[-1]
+        
+        # Check if the folder name appears in the title
+        # Handle both French and English titles
+        return folder_name in title.lower()
+
+    def _parse_multilingual_field(self, value: str) -> list:
+        """Parse a field like 'fr:Texte FR|en:Text EN' into a list of (lang, value) tuples."""
+        if not value:
+            return []
+        result = []
+        for part in value.split('|'):
+            if ':' in part:
+                lang, val = part.split(':', 1)
+                result.append((lang.strip(), val.strip()))
+            else:
+                # fallback: no lang specified
+                result.append((None, part.strip()))
+        return result
+
+    def _prepare_collection_metadata_from_config(self, config: Dict[str, str]) -> List[Dict[str, Any]]:
+        """Prepare metadata for collection from configuration, handling multilingual fields."""
+        metas = []
+        # Title (required, multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('title', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://nakala.fr/terms#title"
+            })
+        # Description (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('description', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/description"
+            })
+        # Keywords (multilingual, multi-value)
+        for kw_field in self._parse_multilingual_field(config.get('keywords', '')):
+            lang, val = kw_field
+            for keyword in val.split(';'):
+                if keyword.strip():
+                    metas.append({
+                        "value": keyword.strip(),
+                        "lang": lang if lang else 'und',
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                        "propertyUri": "http://purl.org/dc/terms/subject"
+                    })
+        # Creator (multilingual, multi-value)
+        for lang, val in self._parse_multilingual_field(config.get('creator', '')):
+            for creator in val.split(';'):
+                if creator.strip():
+                    metas.append({
+                        "value": creator.strip(),
+                        "lang": lang if lang else 'und',
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                        "propertyUri": "http://purl.org/dc/terms/creator"
+                    })
+        # Contributor (multilingual, multi-value)
+        for lang, val in self._parse_multilingual_field(config.get('contributor', '')):
+            for contributor in val.split(';'):
+                if contributor.strip():
+                    metas.append({
+                        "value": contributor.strip(),
+                        "lang": lang if lang else 'und',
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                        "propertyUri": "http://purl.org/dc/terms/contributor"
+                    })
+        # Publisher (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('publisher', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/publisher"
+            })
+        # Date (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('date', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/date"
+            })
+        # Rights (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('rights', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/rights"
+            })
+        # Coverage (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('coverage', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/coverage"
+            })
+        # Relation (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('relation', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/relation"
+            })
+        # Source (multilingual)
+        for lang, val in self._parse_multilingual_field(config.get('source', '')):
+            metas.append({
+                "value": val,
+                "lang": lang if lang else 'und',
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                "propertyUri": "http://purl.org/dc/terms/source"
+            })
+        return metas
+
+    def create_collections_from_folder_config(self, output_csv: str, folder_collections_csv: str) -> List[str]:
+        """Create collections based on folder collections configuration."""
+        created_collection_ids = []
+        
+        # 1. Read uploaded data items and map by folder type
+        uploaded_items = {}
+        try:
+            with open(output_csv, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    if row['status'] == 'OK':
+                        # Extract folder type from title (e.g., "fr:Fichiers de code|en:Code Files")
+                        title = row['title']
+                        uploaded_items[title] = row['identifier']
+            
+            if not uploaded_items:
+                logger.error("No successfully uploaded data found in output CSV")
+                return created_collection_ids
+                
+            logger.info(f"Found {len(uploaded_items)} successfully uploaded data items")
+            
+        except Exception as e:
+            logger.error(f"Error reading output CSV {output_csv}: {e}")
+            return created_collection_ids
+        
+        # 2. Read folder collections configuration
+        try:
+            with open(folder_collections_csv, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for collection_config in reader:
+                    # 3. Create each collection
+                    collection_id = self._create_single_collection_from_config(collection_config, uploaded_items)
+                    if collection_id:
+                        created_collection_ids.append(collection_id)
+            
+            logger.info(f"Created {len(created_collection_ids)} collections from folder configuration")
+            
+        except Exception as e:
+            logger.error(f"Error reading folder collections CSV {folder_collections_csv}: {e}")
+            return created_collection_ids
+        
+        return created_collection_ids
+
+    def _create_single_collection_from_config(self, config: Dict[str, str], uploaded_items: Dict[str, str]) -> Optional[str]:
+        """Create a single collection from folder configuration."""
+        # Parse data items that should be in this collection
+        data_item_folders = config['data_items'].split('|')
+        collection_data_ids = []
+        
+        # Map folder paths to actual uploaded data IDs
+        for folder_path in data_item_folders:
+            # Find corresponding uploaded item
+            for title, data_id in uploaded_items.items():
+                if self._matches_folder_type(folder_path, title):
+                    collection_data_ids.append(data_id)
+        
+        if not collection_data_ids:
+            logger.warning(f"No data items found for collection: {config['title']}")
+            return None
+        
+        # Prepare multilingual metadata
+        metas = self._prepare_collection_metadata_from_config(config)
+        
+        # Create collection
+        collection_data = {
+            "status": config['status'],
+            "datas": collection_data_ids,
+            "metas": metas,
+            "rights": []
+        }
+        
+        try:
+            result = self.create_collection(collection_data)
+            collection_id = result.get('payload', {}).get('id')
+            if collection_id:
+                logger.info(f"Created collection: {config['title']} with ID: {collection_id}")
+                return collection_id
+            else:
+                logger.error(f"Failed to create collection: {config['title']}")
+                return None
+        except Exception as e:
+            logger.error(f"Error creating collection {config['title']}: {e}")
+            return None
+
 def main():
     parser = argparse.ArgumentParser(description='Manage Nakala collections')
     parser.add_argument('--api-url', default='https://apitest.nakala.fr',
@@ -219,7 +427,7 @@ def main():
                       help='Nakala API key')
     
     # Collection creation options
-    parser.add_argument('--title', required=True,
+    parser.add_argument('--title',
                       help='Collection title')
     parser.add_argument('--description', default='',
                       help='Collection description')
@@ -228,17 +436,15 @@ def main():
     parser.add_argument('--status', choices=['private', 'public'], default='private',
                       help='Collection status (private or public)')
     
-    # Data source options (mutually exclusive)
-    source_group = parser.add_mutually_exclusive_group(required=True)
-    source_group.add_argument('--from-upload-output', 
-                            help='Path to upload output CSV file')
-    source_group.add_argument('--data-ids',
-                            help='Comma-separated list of data IDs')
+    # Data source options
+    parser.add_argument('--from-upload-output', 
+                      help='Path to upload output CSV file')
+    parser.add_argument('--data-ids',
+                      help='Comma-separated list of data IDs')
+    parser.add_argument('--from-folder-collections',
+                      help='Path to folder collections CSV file')
     
     args = parser.parse_args()
-    
-    # Parse keywords
-    keywords = [k.strip() for k in args.keywords.split(',') if k.strip()] if args.keywords else []
     
     # Initialize collection manager
     manager = NakalaCollectionManager(
@@ -247,10 +453,27 @@ def main():
     )
     
     try:
-        collection_id = None
-        
-        if args.from_upload_output:
-            # Create collection from upload output CSV
+        if args.from_folder_collections:
+            if not args.from_upload_output:
+                logger.error("--from-upload-output is required when using --from-folder-collections")
+                return
+            
+            collection_ids = manager.create_collections_from_folder_config(
+                output_csv=args.from_upload_output,
+                folder_collections_csv=args.from_folder_collections
+            )
+            
+            if collection_ids:
+                logger.info(f"Successfully created {len(collection_ids)} collections")
+                for collection_id in collection_ids:
+                    logger.info(f"Collection ID: {collection_id}")
+            else:
+                logger.error("No collections were created")
+                
+        elif args.from_upload_output:
+            # Parse keywords
+            keywords = [k.strip() for k in args.keywords.split(',') if k.strip()] if args.keywords else []
+            
             collection_id = manager.create_collection_from_uploaded_data(
                 output_csv=args.from_upload_output,
                 collection_title=args.title,
@@ -258,9 +481,19 @@ def main():
                 keywords=keywords,
                 status=args.status
             )
+            
+            if collection_id:
+                logger.info(f"Successfully created collection with ID: {collection_id}")
+            else:
+                logger.error("Failed to create collection")
+                
         elif args.data_ids:
-            # Create collection from data ID list
+            # Parse keywords
+            keywords = [k.strip() for k in args.keywords.split(',') if k.strip()] if args.keywords else []
+            
+            # Parse data IDs
             data_ids = [id.strip() for id in args.data_ids.split(',') if id.strip()]
+            
             collection_id = manager.create_collection_from_id_list(
                 data_ids=data_ids,
                 collection_title=args.title,
@@ -268,15 +501,14 @@ def main():
                 keywords=keywords,
                 status=args.status
             )
-        
-        if collection_id:
-            print(f"Collection created successfully: {collection_id}")
-        else:
-            print("Collection creation failed")
             
+            if collection_id:
+                logger.info(f"Successfully created collection with ID: {collection_id}")
+            else:
+                logger.error("Failed to create collection")
+                
     except Exception as e:
-        logger.error(f"Fatal error: {e}")
-        raise
+        logger.error(f"Error in main: {e}")
 
 if __name__ == '__main__':
     main()
