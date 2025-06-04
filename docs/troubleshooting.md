@@ -4,6 +4,23 @@
 
 ### Upload Issues
 
+#### Folder Path Issues
+- **Problem**: "No folders found to process" warning
+- **Solution**: 
+  1. Verify the base path in `--dataset` parameter points to the directory containing your `files` folder
+  2. Check folder paths in `folder_data_items.csv` match actual directory structure
+  3. Ensure folder paths use forward slashes (/) and match case exactly
+  4. Example correct structure:
+     ```
+     sample_dataset/
+     ├── files/
+     │   ├── code/
+     │   ├── data/
+     │   └── documents/
+     ├── folder_data_items.csv
+     └── folder_collections.csv
+     ```
+
 #### File Not Found Errors
 - **Problem**: Script cannot find files to upload
 - **Solution**: 
@@ -30,6 +47,31 @@
 
 ### Collection Issues
 
+#### Collection Mapping Issues
+- **Problem**: Collections not matching expected folder structure
+- **Solution**:
+  1. Check collection mapping diagnostics in logs
+  2. Verify folder paths in `folder_collections.csv`
+  3. Ensure data items were successfully uploaded
+  4. Review the mapping output:
+     ```json
+     {
+       "folder": {
+         "code": {
+           "path": "files/code",
+           "matches": [
+             {
+               "title": "fr:Fichiers de code|en:Code Files",
+               "id": "10.34847/nkl.xxxxx"
+             }
+           ]
+         }
+       },
+       "matched_items": ["fr:Fichiers de code|en:Code Files"],
+       "unmatched_folders": []
+     }
+     ```
+
 #### Empty Collections
 - **Problem**: Collections created but no items added
 - **Solution**:
@@ -37,6 +79,7 @@
   2. Verify data IDs in collection creation
   3. Check rights and permissions
   4. Review collection configuration
+  5. Check collection mapping diagnostics for unmatched folders
 
 #### Metadata Problems
 - **Problem**: Metadata not appearing correctly

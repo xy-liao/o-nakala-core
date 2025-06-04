@@ -8,14 +8,18 @@
   - `folder_data_items.csv` for data items
   - `folder_collections.csv` for collections
 - Validate file formats and metadata
+- Ensure folder paths in CSV files match actual directory structure
 
 ### Step 2: Upload Dataset
 ```bash
+# Important: Use the correct base path for your dataset
 python nakala-client-upload.py --mode folder \
-    --dataset "sample_dataset/" \
+    --dataset "sample_dataset" \
     --folder-config "sample_dataset/folder_data_items.csv" \
     --api-key "your-key"
 ```
+
+Note: The `--dataset` parameter should point to the base directory containing your `files` folder. The script will automatically handle the folder structure within it.
 
 ### Step 3: Create Collections
 ```bash
@@ -30,6 +34,7 @@ python nakala-client-collection.py \
 - Check upload results in `output.csv`
 - Verify collection creation in `collections_output.csv`
 - Review collection structure and relationships
+- Check collection mapping diagnostics in the logs
 - Update status from private to public if needed
 
 ## Common Workflows
@@ -43,6 +48,12 @@ python nakala-client-collection.py \
     --from-upload-output "output.csv" \
     --collection-report "collections_output.csv"
 ```
+
+The script will provide detailed collection mapping diagnostics showing:
+- Which folders were matched
+- Which data items were included
+- Any unmatched folders
+- Collection creation status
 
 ### 2. Single Collection Creation
 ```bash

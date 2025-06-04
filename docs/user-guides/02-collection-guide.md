@@ -21,6 +21,12 @@ A Python script for managing collections on the Nakala platform.
 
 5. **Error handling and retry logic**: Implements robust error handling with automatic retries for failed API calls.
 
+6. **Collection mapping diagnostics**: Provides detailed information about:
+   - Folder matching process
+   - Data item inclusion
+   - Collection creation status
+   - Any unmatched folders
+
 ## Usage Examples:
 
 ```bash
@@ -126,3 +132,47 @@ The collection report (`collections_output.csv`) includes:
 - Timestamp
 
 This approach provides a flexible and powerful way to manage collections while maintaining proper metadata standards and supporting multilingual content.
+
+## Collection Mapping Diagnostics
+
+The script provides detailed diagnostics about the collection creation process:
+
+```json
+{
+  "folder": {
+    "code": {
+      "path": "files/code",
+      "matches": [
+        {
+          "title": "fr:Fichiers de code|en:Code Files",
+          "id": "10.34847/nkl.xxxxx"
+        }
+      ]
+    }
+  },
+  "matched_items": ["fr:Fichiers de code|en:Code Files"],
+  "unmatched_folders": []
+}
+```
+
+This output helps you:
+1. Verify correct folder matching
+2. Check data item inclusion
+3. Identify any unmatched folders
+4. Track collection creation status
+
+## Successful Collection Creation
+
+When collections are created successfully, you'll see output like:
+
+```
+Found 5 uploaded data items
+Creating collection: fr:Collection de Code et Données |en:Code and Data Collection
+Created collection: 10.34847/nkl.5aee9iwt
+Created collection: fr:Collection de Code et Données |en:Code and Data Collection with ID: 10.34847/nkl.5aee9iwt
+```
+
+The script will create:
+1. A collection report in `collections_output.csv`
+2. Detailed logs in `nakala_collection.log`
+3. Collection IDs for each created collection
