@@ -2,7 +2,7 @@ import csv
 import json
 import logging
 import argparse
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, TypedDict, Collection
 import requests
 from datetime import datetime
 import openapi_client
@@ -20,6 +20,22 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+class MappingDiagnostics(TypedDict):
+    folder: Dict[str, Dict[str, Any]]
+    matched_items: List[str]
+    unmatched_folders: List[str]
+
+class CollectionResult(TypedDict):
+    title: str
+    status: str
+    data_ids: List[str]
+    data_count: int
+    creation_status: str
+    error: str
+    id: str
+    timestamp: str
+    mapping_diagnostics: Optional[MappingDiagnostics]
+
 class NakalaCollectionManager:
     def __init__(self, api_url: str, api_key: str):
         self.api_url = api_url
@@ -27,7 +43,10 @@ class NakalaCollectionManager:
         self.configuration = openapi_client.Configuration(host=api_url)
         self.configuration.api_key['apiKey'] = api_key
 
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=4, max=10)
+    )
     def create_collection(self, collection_data: Dict[str, Any]) -> Dict[str, Any]:
         """Create a new collection in Nakala."""
         try:
@@ -36,7 +55,9 @@ class NakalaCollectionManager:
                 'X-API-KEY': self.api_key
             }
             # Log the full payload for debugging
-            logger.info(f"Payload: {json.dumps(collection_data, ensure_ascii=False, indent=2)}")
+            payload_str = json.dumps(collection_data, ensure_ascii=False, indent=2)
+            logger.info(f"Payload: {payload_str}")
+            
             response = requests.post(
                 f"{self.api_url}/collections",
                 headers=headers,
@@ -45,10 +66,14 @@ class NakalaCollectionManager:
             
             if response.status_code == 201:
                 result = response.json()
-                logger.info(f"Successfully created collection: {result.get('payload', {}).get('id', 'Unknown ID')}")
+                collection_id = result.get('payload', {}).get('id', 'Unknown ID')
+                logger.info(f"Created collection: {collection_id}")
                 return result
             else:
-                raise ApiException(status=response.status_code, reason=response.text)
+                raise ApiException(
+                    status=response.status_code,
+                    reason=response.text
+                )
                 
         except Exception as e:
             logger.error(f"Error creating collection: {e}")
@@ -213,13 +238,29 @@ class NakalaCollectionManager:
             return None
 
     def _matches_folder_type(self, folder_path: str, title: str) -> bool:
-        """Check if a folder path matches a data item title."""
-        # Extract the folder name from the path
+        """Enhanced matching logic for folder paths to titles."""
         folder_name = folder_path.split('/')[-1]
         
-        # Check if the folder name appears in the title
-        # Handle both French and English titles
-        return folder_name in title.lower()
+        # Create mapping of folder names to expected title patterns
+        folder_mappings = {
+            'code': ['code', 'fichiers de code'],
+            'data': ['data', 'données'],
+            'documents': ['documents', 'research documents'],
+            'images': ['images', 'collection d\'images'],
+            'presentations': ['presentations', 'matériaux de présentation']
+        }
+        
+        title_lower = title.lower()
+        
+        # Check direct folder name match
+        if folder_name in title_lower:
+            return True
+        
+        # Check mapped patterns
+        if folder_name in folder_mappings:
+            return any(pattern in title_lower for pattern in folder_mappings[folder_name])
+        
+        return False
 
     def _parse_multilingual_field(self, value: str) -> list:
         """Parse a field like 'fr:Texte FR|en:Text EN' into a list of (lang, value) tuples."""
@@ -335,18 +376,163 @@ class NakalaCollectionManager:
             })
         return metas
 
-    def create_collections_from_folder_config(self, output_csv: str, folder_collections_csv: str) -> List[str]:
+    def generate_collection_report(self, collection_results: List[CollectionResult], output_file: str = 'collections_output.csv'):
+        """Generate a CSV report of created collections."""
+        try:
+            with open(output_file, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                
+                # Header row
+                writer.writerow([
+                    'collection_id', 'collection_title', 'status', 'data_items_count', 
+                    'data_items_ids', 'creation_status', 'error_message', 'timestamp'
+                ])
+                
+                # Data rows
+                for result in collection_results:
+                    writer.writerow([
+                        result.get('id', ''),
+                        result.get('title', ''),
+                        result.get('status', ''),
+                        result.get('data_count', 0),
+                        ';'.join(result.get('data_ids', [])),
+                        result.get('creation_status', 'ERROR'),
+                        result.get('error', ''),
+                        result.get('timestamp', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                    ])
+                    
+            logger.info(f"Collection report saved to: {output_file}")
+            
+        except Exception as e:
+            logger.error(f"Error generating collection report: {e}")
+
+    def _create_single_collection_with_report(
+        self,
+        config: Dict[str, str],
+        uploaded_items: Dict[str, str]
+    ) -> CollectionResult:
+        """Create collection and return detailed result for reporting."""
+        result: CollectionResult = {
+            'title': config.get('title', 'Unknown'),
+            'status': config.get('status', 'private'),
+            'data_ids': [],
+            'data_count': 0,
+            'creation_status': 'ERROR',
+            'error': '',
+            'id': '',
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'mapping_diagnostics': None
+        }
+        
+        try:
+            # Validate required fields
+            if 'data_items' not in config:
+                result['error'] = "Missing required field: data_items"
+                return result
+                
+            if 'title' not in config:
+                result['error'] = "Missing required field: title"
+                return result
+            
+            # Map folder paths to data IDs
+            data_item_folders = config['data_items'].split('|')
+            collection_data_ids: List[str] = []
+            
+            logger.info(f"Creating collection: {config['title']}")
+            logger.info(f"Looking for folder types: {data_item_folders}")
+            logger.info(f"Available items: {list(uploaded_items.keys())}")
+            
+            # Track mapping diagnostics
+            mapping_diagnostics: MappingDiagnostics = {
+                'folder': {},
+                'matched_items': [],
+                'unmatched_folders': []
+            }
+            
+            for folder_path in data_item_folders:
+                matched_items: List[str] = []
+                folder_name = folder_path.split('/')[-1]
+                mapping_diagnostics['folder'][folder_name] = {
+                    'path': folder_path,
+                    'matches': []
+                }
+                
+                for title, data_id in uploaded_items.items():
+                    if self._matches_folder_type(folder_path, title):
+                        collection_data_ids.append(data_id)
+                        matched_items.append(title)
+                        mapping_diagnostics['folder'][folder_name]['matches'].append({
+                            'title': title,
+                            'id': data_id
+                        })
+                
+                if matched_items:
+                    logger.info(
+                        f"Folder '{folder_path}' matched: {matched_items}"
+                    )
+                    mapping_diagnostics['matched_items'].extend(matched_items)
+                else:
+                    logger.warning(f"Folder '{folder_path}' matched no items")
+                    mapping_diagnostics['unmatched_folders'].append(folder_path)
+            
+            # Log detailed mapping diagnostics
+            logger.info("Collection mapping diagnostics:")
+            logger.info(json.dumps(mapping_diagnostics, indent=2))
+            
+            if not collection_data_ids:
+                result['error'] = (
+                    f"No data items found for folders: {data_item_folders}"
+                )
+                result['mapping_diagnostics'] = mapping_diagnostics
+                return result
+            
+            result['data_ids'] = collection_data_ids
+            result['data_count'] = len(collection_data_ids)
+            result['mapping_diagnostics'] = mapping_diagnostics
+            
+            # Create collection
+            metas = self._prepare_collection_metadata_from_config(config)
+            collection_data = {
+                "status": config['status'],
+                "datas": collection_data_ids,
+                "metas": metas,
+                "rights": []
+            }
+            
+            api_result = self.create_collection(collection_data)
+            collection_id = api_result.get('payload', {}).get('id')
+            
+            if collection_id:
+                result['id'] = collection_id
+                result['creation_status'] = 'SUCCESS'
+                logger.info(
+                    f"Created collection: {config['title']} with ID: {collection_id}"
+                )
+            else:
+                result['error'] = "No collection ID returned from API"
+                
+        except Exception as e:
+            result['error'] = str(e)
+            logger.error(f"Error creating collection {config['title']}: {e}")
+        
+        return result
+
+    def create_collections_from_folder_config(
+        self,
+        output_csv: str,
+        folder_collections_csv: str
+    ) -> List[str]:
         """Create collections based on folder collections configuration."""
-        created_collection_ids = []
+        created_collection_ids: List[str] = []
+        collection_results: List[CollectionResult] = []
         
         # 1. Read uploaded data items and map by folder type
-        uploaded_items = {}
+        uploaded_items: Dict[str, str] = {}
         try:
             with open(output_csv, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     if row['status'] == 'OK':
-                        # Extract folder type from title (e.g., "fr:Fichiers de code|en:Code Files")
                         title = row['title']
                         uploaded_items[title] = row['identifier']
             
@@ -354,70 +540,40 @@ class NakalaCollectionManager:
                 logger.error("No successfully uploaded data found in output CSV")
                 return created_collection_ids
                 
-            logger.info(f"Found {len(uploaded_items)} successfully uploaded data items")
+            logger.info(f"Found {len(uploaded_items)} uploaded data items")
             
         except Exception as e:
             logger.error(f"Error reading output CSV {output_csv}: {e}")
             return created_collection_ids
         
-        # 2. Read folder collections configuration
+        # 2. Read folder collections configuration and create collections
         try:
             with open(folder_collections_csv, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for collection_config in reader:
-                    # 3. Create each collection
-                    collection_id = self._create_single_collection_from_config(collection_config, uploaded_items)
-                    if collection_id:
-                        created_collection_ids.append(collection_id)
+                    result = self._create_single_collection_with_report(
+                        collection_config,
+                        uploaded_items
+                    )
+                    collection_results.append(result)
+                    
+                    if result['creation_status'] == 'SUCCESS':
+                        created_collection_ids.append(result['id'])
             
-            logger.info(f"Created {len(created_collection_ids)} collections from folder configuration")
+            # Generate CSV report
+            self.generate_collection_report(collection_results)
+            
+            logger.info(
+                f"Created {len(created_collection_ids)} collections from config"
+            )
             
         except Exception as e:
-            logger.error(f"Error reading folder collections CSV {folder_collections_csv}: {e}")
+            logger.error(
+                f"Error reading folder collections CSV {folder_collections_csv}: {e}"
+            )
             return created_collection_ids
         
         return created_collection_ids
-
-    def _create_single_collection_from_config(self, config: Dict[str, str], uploaded_items: Dict[str, str]) -> Optional[str]:
-        """Create a single collection from folder configuration."""
-        # Parse data items that should be in this collection
-        data_item_folders = config['data_items'].split('|')
-        collection_data_ids = []
-        
-        # Map folder paths to actual uploaded data IDs
-        for folder_path in data_item_folders:
-            # Find corresponding uploaded item
-            for title, data_id in uploaded_items.items():
-                if self._matches_folder_type(folder_path, title):
-                    collection_data_ids.append(data_id)
-        
-        if not collection_data_ids:
-            logger.warning(f"No data items found for collection: {config['title']}")
-            return None
-        
-        # Prepare multilingual metadata
-        metas = self._prepare_collection_metadata_from_config(config)
-        
-        # Create collection
-        collection_data = {
-            "status": config['status'],
-            "datas": collection_data_ids,
-            "metas": metas,
-            "rights": []
-        }
-        
-        try:
-            result = self.create_collection(collection_data)
-            collection_id = result.get('payload', {}).get('id')
-            if collection_id:
-                logger.info(f"Created collection: {config['title']} with ID: {collection_id}")
-                return collection_id
-            else:
-                logger.error(f"Failed to create collection: {config['title']}")
-                return None
-        except Exception as e:
-            logger.error(f"Error creating collection {config['title']}: {e}")
-            return None
 
 def main():
     parser = argparse.ArgumentParser(description='Manage Nakala collections')
@@ -444,7 +600,22 @@ def main():
     parser.add_argument('--from-folder-collections',
                       help='Path to folder collections CSV file')
     
+    # Report options
+    parser.add_argument('--collection-report', default='collections_output.csv',
+                      help='Filename for collection creation report')
+    
     args = parser.parse_args()
+    
+    # Validate required arguments
+    if args.from_folder_collections and not args.from_upload_output:
+        parser.error("--from-upload-output is required when using --from-folder-collections")
+    
+    if not any([args.from_folder_collections, args.from_upload_output, args.data_ids]):
+        parser.error("One of --from-folder-collections, --from-upload-output, or --data-ids is required")
+    
+    # Only require title for single collection creation
+    if (args.from_upload_output or args.data_ids) and not args.from_folder_collections and not args.title:
+        parser.error("--title is required when creating a single collection")
     
     # Initialize collection manager
     manager = NakalaCollectionManager(
@@ -454,10 +625,6 @@ def main():
     
     try:
         if args.from_folder_collections:
-            if not args.from_upload_output:
-                logger.error("--from-upload-output is required when using --from-folder-collections")
-                return
-            
             collection_ids = manager.create_collections_from_folder_config(
                 output_csv=args.from_upload_output,
                 folder_collections_csv=args.from_folder_collections
