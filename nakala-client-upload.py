@@ -163,9 +163,14 @@ class NakalaUploader:
     def upload_file(self, file_path: str, filename: str) -> Dict[str, Any]:
         """Upload a single file to Nakala with retry mechanism."""
         try:
+            # Detect MIME type dynamically
+            mime_type, _ = mimetypes.guess_type(file_path)
+            if not mime_type:
+                mime_type = 'application/octet-stream'
+            
             payload: Dict[str, Any] = {}
             files = [
-                ('file', (filename, open(file_path, 'rb'), 'image/jpeg'))
+                ('file', (filename, open(file_path, 'rb'), mime_type))
             ]
             headers = {'X-API-KEY': self.api_key}
             
@@ -193,6 +198,16 @@ class NakalaUploader:
         file_path = os.path.join(self.image_dir, filename)
         if not os.path.exists(file_path):
             logger.error(f"File not found: {file_path}")
+            return False
+        return True
+
+    def validate_file_exists_absolute(self, file_path: str) -> bool:
+        """Validate that a file exists using absolute path."""
+        if not os.path.exists(file_path):
+            logger.error(f"File not found: {file_path}")
+            return False
+        if not os.path.isfile(file_path):
+            logger.error(f"Path is not a file: {file_path}")
             return False
         return True
 
@@ -284,10 +299,96 @@ class NakalaUploader:
         else:
             raise ValueError(f"Unsupported mode: {self.mode}")
 
+    def _process_csv_dataset(self) -> None:
+        """Process the entire dataset and upload to Nakala."""
+        output_path = 'output.csv'
+        with open(output_path, 'w', newline='') as output:
+            output_writer = csv.writer(output)
+            output_writer.writerow(['identifier', 'files', 'title', 'status', 'response'])
+            
+            with open(self.dataset_path, newline='') as f:
+                reader = csv.reader(f)
+                dataset = list(reader)
+            dataset.pop(0)  # Remove header row
+            
+            total_entries = len(dataset)
+            for num, data in enumerate(dataset, 1):
+                logger.info(f"Processing entry {num}/{total_entries}: {data[3]}")
+                
+                output_data = ['', '', data[3], '', '']
+                nakala_files = []
+                output_files = []
+                
+                try:
+                    # Process files
+                    filenames = data[0].split(';')
+                    for filename in filenames:
+                        if not self.validate_file_exists(filename):
+                            continue
+                            
+                        logger.info(f"Uploading file: {filename}")
+                        file_info = self.upload_file(
+                            os.path.join(self.image_dir, filename),
+                            filename
+                        )
+                        nakala_files.append(file_info)
+                        output_files.append(f"{filename},{file_info['sha1']}")
+                    
+                    # Prepare metadata and rights
+                    metas = self.prepare_metadata(data)
+                    rights = self.prepare_rights(data[9].split(';'))
+                    
+                    # Create data payload
+                    data_payload = {
+                        "status": data[1],
+                        "files": nakala_files,
+                        "metas": metas,
+                        "rights": rights
+                    }
+                    
+                    # Upload to Nakala
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'X-API-KEY': self.api_key
+                    }
+                    response = requests.request(
+                        'POST',
+                        f"{self.api_url}/datas",
+                        headers=headers,
+                        data=json.dumps(data_payload)
+                    )
+                    
+                    if response.status_code == 201:
+                        result = response.json()
+                        logger.info(f"Successfully created data: {result['payload']['id']}")
+                        output_data[0] = result["payload"]["id"]
+                        output_data[1] = ';'.join(output_files)
+                        output_data[3] = 'OK'
+                        output_data[4] = response.text
+                    else:
+                        raise ApiException(status=response.status_code, reason=response.text)
+                        
+                except Exception as e:
+                    logger.error(f"Error processing entry: {e}")
+                    output_data[3] = 'ERROR'
+                    output_data[4] = str(e)
+                
+                output_writer.writerow(output_data)
+
     def _process_folder_dataset(self) -> None:
         """Process a folder-based dataset."""
+        if not self.folder_config:
+            raise ValueError("Folder config file is required for folder mode")
+        
+        if not os.path.exists(self.folder_config):
+            raise FileNotFoundError(f"Folder config file not found: {self.folder_config}")
+        
         processor = FolderDatasetProcessor(self.dataset_path, self.folder_config)
         results = processor.process_folder()
+        
+        if not results:
+            logger.warning("No folders found to process")
+            return
         
         output_path = 'output.csv'
         with open(output_path, 'w', newline='') as output:
@@ -299,11 +400,17 @@ class NakalaUploader:
                     # Upload all files in the folder
                     file_infos = []
                     for file_path in result['files']:
+                        if not self.validate_file_exists_absolute(file_path):
+                            continue
                         file_info = self.upload_file(
                             file_path,
                             os.path.basename(file_path)
                         )
                         file_infos.append(file_info)
+                    
+                    if not file_infos:
+                        logger.warning(f"No valid files found in folder: {result.get('folder_path', 'unknown')}")
+                        continue
                     
                     # Prepare metadata and rights
                     metadata = result['metadata']
@@ -345,7 +452,7 @@ class NakalaUploader:
                         ])
                     else:
                         raise ApiException(status=response.status_code, reason=response.text)
-                    
+                        
                 except Exception as e:
                     logger.error(f"Error processing folder {result.get('folder_path', 'unknown')}: {e}")
                     file_list = ','.join([os.path.basename(f) for f in result.get('files', [])])
