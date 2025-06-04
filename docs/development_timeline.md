@@ -46,31 +46,33 @@
 ## Phase 3: Documentation and Refinement
 
 ### Script Documentation
-- **Document**: `docs/user-guides/04-upload-guide.md`
+- **Document**: `docs/user-guides/02-collection-guide.md`
 - **Features**:
-  - Multiple upload modes (CSV and folder-based)
-  - Intelligent file processing
-  - Enhanced metadata management
-  - Robust error handling
-  - Detailed logging
+  - Multiple collection creation modes
+  - Folder-based collection organization
+  - Comprehensive metadata support
+  - Collection relationship management
+  - Detailed logging and reporting
 
-### Collection Script Documentation
-- **Document**: `docs/user-guides/05-collection-guide.md`
+### Workflow Documentation
+- **Document**: `docs/user-guides/03-workflow-guide.md`
 - **Features**:
-  - Collection creation from uploaded data
-  - Metadata support
-  - Rights management
-  - Error handling
+  - Complete digital humanities workflow
+  - Best practices for data organization
+  - Multilingual metadata management
+  - Collection relationship guidelines
+  - Common workflow examples
 
 ## Current Status
 
 The project has evolved from a simple CSV-based upload script to a comprehensive solution that supports:
 1. Multiple upload modes (CSV and folder-based)
-2. Multilingual metadata
-3. Hierarchical collections
-4. Robust error handling
-5. Comprehensive logging
+2. Multilingual metadata (French/English)
+3. Hierarchical collections with relationships
+4. Robust error handling and logging
+5. Comprehensive documentation
 6. Dynamic file type detection
+7. Collection relationship management
 
 ## Future Directions
 
@@ -79,8 +81,8 @@ Based on the development timeline, potential future improvements could include:
 2. Batch validation before upload
 3. Progress tracking for large folder uploads
 4. Resume capability for interrupted uploads
-5. Collection hierarchies matching folder structure
-6. Relationship preservation between files
+5. Advanced collection relationship visualization
+6. Automated metadata generation
 7. Search optimization based on folder organization
 
 ## Documentation Structure
@@ -96,5 +98,5 @@ The documentation is organized into three main categories:
 - `03-implementation-review.md`: Implementation review and fixes
 
 ### User Guides (`docs/user-guides/`)
-- `04-upload-guide.md`: Upload script documentation
-- `05-collection-guide.md`: Collection script documentation 
+- `02-collection-guide.md`: Collection script documentation
+- `03-workflow-guide.md`: Complete workflow documentation 

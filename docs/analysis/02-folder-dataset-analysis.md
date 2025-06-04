@@ -22,6 +22,7 @@ sample_dataset/
 3. **Scalability**: Can handle large datasets with many files
 4. **Preservation of Context**: Maintains relationships between related files
 5. **Research Best Practices**: Aligns with FAIR data principles
+6. **Collection Management**: Supports hierarchical collection creation
 
 ### ✅ **Perfect for Digital Humanities**
 
@@ -29,6 +30,7 @@ sample_dataset/
 - **Complex Relationships**: Folder structure preserves intellectual relationships
 - **Collaborative Work**: Teams can easily understand and navigate the structure
 - **Long-term Preservation**: Hierarchical organization aids in data management
+- **Collection Organization**: Supports research-driven collection creation
 
 ## Recommended Implementation Strategy
 
@@ -37,6 +39,7 @@ sample_dataset/
 Rather than completely rewriting, extend your existing scripts to handle both:
 1. **File-based datasets** (current CSV approach)
 2. **Folder-based datasets** (new functionality)
+3. **Collection creation** (based on folder structure)
 
 ### 📋 **Implementation Plan**
 
@@ -56,12 +59,15 @@ parser.add_argument('--folder-config',
 - **Generate metadata** based on folder structure and naming conventions
 - **Batch upload** entire folders as logical units
 - **Maintain folder relationships** in Nakala
+- **Support multilingual metadata** (fr|en format)
 
 #### 3. **Collection Management**
 
 - **Automatic collection creation** based on folder hierarchy
 - **Hierarchical collections** (parent/child relationships)
 - **Bulk operations** for folder-based uploads
+- **Collection relationship management**
+- **Multilingual collection metadata**
 
 ## Proposed Extended Architecture
 
@@ -79,6 +85,9 @@ class MetadataGenerator:
     
 class HierarchicalCollectionManager:
     """Manages nested collection structures"""
+    
+class CollectionRelationshipManager:
+    """Manages relationships between collections"""
 ```
 
 ### 📊 **Enhanced CSV Format**
@@ -90,11 +99,14 @@ Your `folder_data_items.csv` and `folder_collections.csv` show good structure:
 - ✅ Proper metadata fields
 - ✅ Rights management
 - ✅ Semantic typing
+- ✅ Collection relationships
+- ✅ Hierarchical organization
 
 **Suggestions:**
 - Add file path mapping
 - Include MIME type detection
 - Add validation rules
+- Enhance relationship definitions
 
 ## Implementation Recommendations
 
@@ -104,6 +116,7 @@ Your `folder_data_items.csv` and `folder_collections.csv` show good structure:
 2. **Maintain backward compatibility**
 3. **Use existing error handling and retry logic**
 4. **Leverage current metadata handling**
+5. **Implement collection creation**
 
 ### 🎯 **Phase 2: Advanced Features**
 
@@ -111,12 +124,15 @@ Your `folder_data_items.csv` and `folder_collections.csv` show good structure:
 2. **Batch validation** before upload
 3. **Progress tracking** for large folder uploads
 4. **Resume capability** for interrupted uploads
+5. **Collection relationship management**
 
 ### 🎯 **Phase 3: Integration**
 
 1. **Collection hierarchies** matching folder structure
 2. **Relationship preservation** between files
 3. **Search optimization** based on folder organization
+4. **Enhanced collection reporting**
+5. **Multilingual collection support**
 
 ## Code Structure Suggestion
 
@@ -136,6 +152,15 @@ class NakalaUploader:
     def _process_folder_dataset(self):
         # New folder processing logic
         pass
+
+# In nakala-client-collection.py
+class NakalaCollectionManager:
+    def __init__(self, ...):
+        # existing code
+    
+    def create_collections_from_folder(self):
+        # New folder-based collection creation
+        pass
 ```
 
 ## Alternative: Separate Script?
@@ -151,6 +176,7 @@ class NakalaUploader:
 - Code duplication
 - Multiple tools to maintain
 - Less integrated workflow
+- Harder to maintain collection relationships
 
 ## Final Recommendation
 
@@ -163,6 +189,7 @@ class NakalaUploader:
 3. **Preserves your excellent architecture**
 4. **Supports both workflows seamlessly**
 5. **Fits digital humanities research patterns**
+6. **Better collection relationship management**
 
 ### 🚀 **Next Steps**
 
@@ -171,5 +198,6 @@ class NakalaUploader:
 3. Implement batch file processing
 4. Extend collection script for hierarchical collections
 5. Add comprehensive logging for folder operations
+6. Implement collection relationship management
 
 Your folder-based approach is **excellent for digital humanities research** and extending your current well-designed scripts is the optimal path forward.

@@ -42,9 +42,25 @@
 - **Problem**: Metadata not appearing correctly
 - **Solution**:
   1. Verify metadata format in CSV
-  2. Check multilingual syntax
+  2. Check multilingual syntax (fr|en format)
   3. Validate required fields
   4. Review metadata templates
+
+#### Collection Relationship Issues
+- **Problem**: Collection relationships not properly established
+- **Solution**:
+  1. Verify relation types in folder_collections.csv
+  2. Check collection IDs exist
+  3. Ensure proper relation syntax
+  4. Review collection hierarchy
+
+#### Folder-Based Collection Issues
+- **Problem**: Collections not matching folder structure
+- **Solution**:
+  1. Verify folder_collections.csv configuration
+  2. Check folder paths match data items
+  3. Ensure proper folder hierarchy
+  4. Review collection mapping
 
 ### API Issues
 
@@ -67,8 +83,8 @@
 ## Debugging Tips
 
 ### Log Files
-- Check `nakala_upload.log` for upload issues
-- Review `nakala_collection.log` for collection problems
+- Check `nakala_collection.log` for collection issues
+- Review `collections_output.csv` for collection creation status
 - Look for specific error messages
 - Check timestamps for correlation
 
@@ -86,6 +102,10 @@
 - **Cause**: Metadata structure doesn't match requirements
 - **Fix**: Check metadata format in configuration
 
+#### "Invalid collection relation"
+- **Cause**: Collection relationship syntax incorrect
+- **Fix**: Verify relation format in folder_collections.csv
+
 ## Best Practices
 
 ### Prevention
@@ -93,9 +113,11 @@
 2. Test with small datasets first
 3. Use consistent naming conventions
 4. Keep detailed logs
+5. Verify folder structure matches collection design
 
 ### Recovery
-1. Use output.csv to track progress
+1. Use collections_output.csv to track progress
 2. Implement proper error handling
 3. Keep backup of configurations
-4. Document successful workflows 
+4. Document successful workflows
+5. Maintain collection relationship documentation 

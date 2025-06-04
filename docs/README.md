@@ -10,10 +10,9 @@ This documentation covers the Nakala Client tools for uploading and managing dat
 
 ## Quick Start
 
-1. [Upload Guide](user-guides/04-upload-guide.md) - Get started with uploading data
-2. [Collection Guide](user-guides/05-collection-guide.md) - Learn about creating collections
-3. [Workflow Guide](user-guides/03-workflow-guide.md) - Complete workflow examples
-4. [Troubleshooting](troubleshooting.md) - Common issues and solutions
+1. [Collection Guide](user-guides/02-collection-guide.md) - Learn about creating and managing collections
+2. [Workflow Guide](user-guides/03-workflow-guide.md) - Complete workflow examples
+3. [Troubleshooting](troubleshooting.md) - Common issues and solutions
 
 ## Documentation Structure
 
@@ -26,8 +25,7 @@ This documentation covers the Nakala Client tools for uploading and managing dat
 - [Implementation Review](implementation/03-implementation-review.md) - Implementation review and fixes
 
 ### User Guides
-- [Upload Guide](user-guides/04-upload-guide.md) - Upload script documentation
-- [Collection Guide](user-guides/05-collection-guide.md) - Collection script documentation
+- [Collection Guide](user-guides/02-collection-guide.md) - Collection script documentation
 - [Workflow Guide](user-guides/03-workflow-guide.md) - Complete workflow examples
 
 ### Additional Resources
