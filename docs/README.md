@@ -2,48 +2,150 @@
 
 ## Overview
 
-This documentation covers the Nakala Client tools for uploading and managing data on the Nakala platform. The documentation is organized into three main sections:
+The O-Nakala-Core project provides a comprehensive suite of tools for interacting with the Nakala API platform. This documentation covers both the original scripts and the new v2.0 architecture with improved consistency, error handling, and extensibility.
 
-1. **Analysis Documents**: Design decisions and technical analysis
-2. **Implementation Documents**: Technical implementation details
-3. **User Guides**: End-user documentation and guides
+## 🚀 What's New in v2.0
 
-## Quick Start
+### Key Improvements
+- **Unified Architecture**: Common utilities shared across all client modules
+- **Better Error Handling**: Comprehensive validation and error reporting
+- **Enhanced Logging**: Detailed diagnostics and progress tracking
+- **Backward Compatibility**: Original scripts remain functional
+- **Extensible Design**: Foundation for new client modules
 
-1. [Collection Guide](user-guides/02-collection-guide.md) - Learn about creating and managing collections
-2. [Workflow Guide](user-guides/03-workflow-guide.md) - Complete workflow examples
-3. [Troubleshooting](troubleshooting.md) - Common issues and solutions
+### Available Client Modules
+
+#### ✅ **Implemented (v2.0)**
+- **Upload Client** (`nakala-client-upload-v2.py`) - Upload datasets with files and metadata
+- **Collection Client** (`nakala-client-collection-v2.py`) - Create and manage collections
+
+#### 🔄 **Legacy (v1.0 - Still Functional)**
+- `nakala-client-upload.py` - Original upload script
+- `nakala-client-collection.py` - Original collection script
+
+#### 📋 **Planned for Future Development**
+- **Search Client** - Advanced search and retrieval operations
+- **Curator Client** - Data curation and quality management
+- **Metadata Client** - Metadata manipulation and validation
+
+## Quick Start Guide
+
+### 1. Installation
+
+```bash
+# Clone the repository
+git clone [repository-url]
+cd o-nakala-core
+
+# Install dependencies
+pip install -r requirements-new.txt
+
+# Install in development mode (recommended)
+pip install -e .
+```
+
+### 2. Configuration
+
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit with your API credentials
+nano .env
+```
+
+### 3. Basic Usage
+
+#### Upload Datasets
+```bash
+python nakala-client-upload-v2.py \
+  --api-key YOUR_KEY \
+  --dataset sample_dataset/folder_data_items.csv \
+  --folder-config sample_dataset/folder_data_items.csv \
+  --mode folder
+```
+
+#### Create Collections
+```bash
+python nakala-client-collection-v2.py \
+  --api-key YOUR_KEY \
+  --from-folder-collections sample_dataset/folder_collections.csv \
+  --from-upload-output output.csv
+```
 
 ## Documentation Structure
 
-### Analysis Documents
-- [API Client Analysis](analysis/01-api-client-analysis.md) - API client design decisions
-- [Folder Dataset Analysis](analysis/02-folder-dataset-analysis.md) - Dataset organization design
+### 📋 **User Guides**
+- [Upload Guide](user-guides/01-upload-guide.md) - Complete upload workflow
+- [Collection Guide](user-guides/02-collection-guide.md) - Collection management
+- [Workflow Guide](user-guides/03-workflow-guide.md) - End-to-end examples
+- [V2.0 Migration Guide](user-guides/04-v2-migration-guide.md) - Upgrading from v1.0
 
-### Implementation Documents
-- [API Implementation Notes](implementation/01-api-implementation-notes.md) - Technical implementation details
-- [Implementation Review](implementation/03-implementation-review.md) - Implementation review and fixes
+### 🔧 **Technical Documentation**
+- [API Implementation Notes](implementation/01-api-implementation-notes.md) - Technical details
+- [Architecture Overview](implementation/02-architecture-overview.md) - V2.0 system design
+- [Common Utilities Reference](implementation/03-common-utilities.md) - Shared components
 
-### User Guides
-- [Collection Guide](user-guides/02-collection-guide.md) - Collection script documentation
-- [Workflow Guide](user-guides/03-workflow-guide.md) - Complete workflow examples
+### 📊 **Analysis & Design**
+- [API Client Analysis](analysis/01-api-client-analysis.md) - Design decisions
+- [Folder Dataset Analysis](analysis/02-folder-dataset-analysis.md) - Dataset organization
+- [V2.0 Design Review](analysis/03-v2-design-review.md) - Architecture improvements
 
-### Additional Resources
+### 🆘 **Support Resources**
 - [Troubleshooting Guide](troubleshooting.md) - Common issues and solutions
-- [Development Timeline](development_timeline.md) - Project development history
+- [FAQ](user-guides/05-faq.md) - Frequently asked questions
+- [Development Timeline](development_timeline.md) - Project history
+
+## Project Structure
+
+```
+o-nakala-core/
+├── src/nakala_client/           # V2.0 Package Structure
+│   ├── __init__.py             # Package initialization
+│   ├── upload.py               # Upload module (v2.0)
+│   ├── collection.py           # Collection module (v2.0)
+│   └── common/                 # Shared utilities
+│       ├── __init__.py
+│       ├── utils.py            # Common functions
+│       ├── config.py           # Configuration management
+│       └── exceptions.py       # Custom exceptions
+├── nakala-client-*-v2.py       # V2.0 CLI scripts
+├── nakala-client-*.py          # V1.0 CLI scripts (legacy)
+├── config/                     # Configuration templates
+├── docs/                       # Documentation
+├── sample_dataset/             # Example datasets
+└── requirements-new.txt        # V2.0 dependencies
+```
 
 ## Getting Help
 
-If you encounter issues:
-1. Check the [Troubleshooting Guide](troubleshooting.md)
-2. Review the relevant user guide
-3. Check the implementation notes for technical details
-4. Review the error logs for specific issues
+### For Users
+1. Check the [Troubleshooting Guide](troubleshooting.md) for common issues
+2. Review the relevant [User Guide](user-guides/) for your task
+3. Check the [FAQ](user-guides/05-faq.md) for quick answers
+
+### For Developers
+1. Review the [Architecture Overview](implementation/02-architecture-overview.md)
+2. Check the [Common Utilities Reference](implementation/03-common-utilities.md)
+3. See [Development Timeline](development_timeline.md) for project context
+
+### For Migration from V1.0
+1. Read the [V2.0 Migration Guide](user-guides/04-v2-migration-guide.md)
+2. Test with your existing datasets using v2.0 scripts
+3. Both versions remain functional during transition
 
 ## Contributing
 
-When contributing to the documentation:
-1. Follow the existing structure
-2. Update the relevant sections
-3. Keep the documentation up to date
-4. Add examples where helpful 
+When contributing to the project:
+1. Follow the v2.0 architecture patterns in `src/nakala_client/common/`
+2. Update relevant documentation in the `docs/` directory
+3. Add comprehensive error handling and logging
+4. Maintain backward compatibility where possible
+5. Include tests and examples for new features
+
+## Support
+
+- **Documentation Issues**: Update the relevant guide or create a new one
+- **Technical Issues**: Check implementation notes and error logs
+- **Feature Requests**: Review the planned client modules roadmap
+- **Bug Reports**: Include detailed logs and reproduction steps

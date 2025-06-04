@@ -1,0 +1,22 @@
+"""
+Nakala Client Package
+
+A comprehensive Python client for interacting with the Nakala API.
+Provides tools for uploading, managing collections, searching, and curating data.
+"""
+
+__version__ = "1.0.0"
+__author__ = "École française d'Extrême-Orient"
+
+from .common.utils import NakalaCommonUtils, NakalaPathResolver
+from .common.config import NakalaConfig
+from .common.exceptions import NakalaError, NakalaValidationError, NakalaAPIError
+
+__all__ = [
+    'NakalaCommonUtils',
+    'NakalaPathResolver', 
+    'NakalaConfig',
+    'NakalaError',
+    'NakalaValidationError',
+    'NakalaAPIError'
+]
