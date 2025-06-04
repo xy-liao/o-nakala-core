@@ -8,9 +8,18 @@ A Python script for managing collections on the Nakala platform.
 
 2. **Create collection from data ID list**: Allows manual specification of data IDs for collection creation.
 
-3. **Comprehensive metadata support**: Handles title, description, and keywords with proper Nakala metadata formatting.
+3. **Create collections from folder structure**: Automatically creates collections based on folder organization and configuration files.
 
-4. **Error handling and retry logic**: Implements robust error handling with automatic retries for failed API calls.
+4. **Comprehensive metadata support**: Handles multilingual metadata (French/English) including:
+   - Titles and descriptions
+   - Keywords and subjects
+   - Creators and contributors
+   - Publishers and dates
+   - Rights and licenses
+   - Coverage and relations
+   - Sources
+
+5. **Error handling and retry logic**: Implements robust error handling with automatic retries for failed API calls.
 
 ## Usage Examples:
 
@@ -32,43 +41,88 @@ python nakala-client-collection.py \
     --keywords "selection,curated" \
     --status public \
     --data-ids "10.34847/nkl.f1c8y3w0,10.34847/nkl.3bdeo0xj"
+
+# Create collections from folder structure
+python nakala-client-collection.py \
+    --api-key "your-api-key" \
+    --from-folder-collections "folder_collections.csv" \
+    --from-upload-output "output.csv" \
+    --collection-report "collections_output.csv"
 ```
 
-## Integration with Your Workflow:
+## Folder-Based Collection Creation
 
-The script is designed to work seamlessly with your existing upload script. After running `nakala-client-upload.py`, you can immediately use the generated `output.csv` to create collections:
+The script supports creating collections based on folder structure using two CSV files:
 
-```bash
-# Step 1: Upload data
-python nakala-client-upload.py --api-key "your-api-key" --dataset dataset.csv --image-dir img/
+1. **folder_collections.csv**: Defines collection metadata and folder mappings
+   ```csv
+   title,status,description,keywords,language,creator,contributor,publisher,date,rights,coverage,relation,source,data_items
+   fr:Collection Title|en:Collection Title,private,fr:Description|en:Description,fr:keywords|en:keywords,fr,Creator1;Creator2,Contributor1;Contributor2,Publisher,2024-05-21,CC-BY-4.0,fr:coverage|en:coverage,fr:relation|en:relation,fr:source|en:source,folder1|folder2
+   ```
 
-# Step 2: Create collection from uploaded data
-python nakala-client-collection.py --api-key "your-api-key" --title "Birds Collection" --from-upload-output output.csv
+2. **output.csv**: Contains uploaded data items information
+   ```csv
+   file,status,type,title,identifier
+   folder1/file1.txt,OK,type,fr:Title|en:Title,10.34847/nkl.xxxxx
+   ```
+
+## Collection Structure Example
+
+The script creates collections with the following structure:
+
+```
+Collections
+├── Code and Data Collection
+│   ├── Code Files
+│   └── Research Data
+├── Documents Collection
+│   └── Research Documents
+└── Multimedia Collection
+    ├── Image Collection
+    └── Presentation Materials
 ```
 
 ## Command Line Arguments:
 
 - `--api-key`: (Required) Your Nakala API key
 - `--api-url`: (Optional) Nakala API URL (default: https://apitest.nakala.fr)
-- `--title`: (Required) Collection title
-- `--description`: (Optional) Collection description
-- `--keywords`: (Optional) Comma-separated keywords for the collection
-- `--status`: (Optional) Collection status (private or public, default: private)
-- `--from-upload-output`: Path to upload output CSV file (mutually exclusive with --data-ids)
-- `--data-ids`: Comma-separated list of data IDs (mutually exclusive with --from-upload-output)
+- `--title`: Collection title (required for single collection creation)
+- `--description`: Collection description
+- `--keywords`: Comma-separated keywords
+- `--status`: Collection status (private or public, default: private)
+- `--from-upload-output`: Path to upload output CSV file
+- `--data-ids`: Comma-separated list of data IDs
+- `--from-folder-collections`: Path to folder collections configuration CSV
+- `--collection-report`: Path to save collection creation report
 
 ## Output:
 
-The script provides detailed logging information and returns:
-- Collection ID upon successful creation
+The script provides:
+- Detailed logging information
+- Collection IDs upon successful creation
 - Error messages if creation fails
+- Collection report in CSV format
 - Log file: `nakala_collection.log`
 
 ## Example Success Output:
 ```
-Found 3 successfully uploaded data items
-Successfully created collection: 10.34847/nkl.ddb6fj61
-Collection 'Bird Collection' created successfully with ID: 10.34847/nkl.ddb6fj61
+Found 5 uploaded data items
+Created collection: fr:Collection de Code et Données |en:Code and Data Collection with ID: 10.34847/nkl.xxxxx
+Created collection: fr:Collection de Documents|en:Documents Collection with ID: 10.34847/nkl.yyyyy
+Created collection: fr:Collection Multimédia PERFECT|en:Multimedia Collection with ID: 10.34847/nkl.zzzzz
+Collection report saved to: collections_output.csv
 ```
 
-This approach gives you maximum flexibility while keeping the code modular and maintainable. Each script has a clear, focused responsibility, making them easier to test, debug, and extend.
+## Collection Report Format
+
+The collection report (`collections_output.csv`) includes:
+- Collection ID
+- Collection title
+- Status
+- Number of data items
+- Data item IDs
+- Creation status
+- Error messages (if any)
+- Timestamp
+
+This approach provides a flexible and powerful way to manage collections while maintaining proper metadata standards and supporting multilingual content.

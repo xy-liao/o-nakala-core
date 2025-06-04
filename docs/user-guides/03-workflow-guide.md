@@ -3,82 +3,110 @@
 ## Digital Humanities Research Workflow
 
 ### Step 1: Organize Your Data
-- Create folder structure by content type
-- Prepare metadata CSV files
-- Validate file formats
+- Create folder structure by content type (e.g., `files/code`, `files/data`, `files/documents`)
+- Prepare metadata CSV files:
+  - `folder_data_items.csv` for data items
+  - `folder_collections.csv` for collections
+- Validate file formats and metadata
 
 ### Step 2: Upload Dataset
 ```bash
 python nakala-client-upload.py --mode folder \
-    --dataset "research_project_2024/" \
-    --folder-config "research_config.csv" \
+    --dataset "sample_dataset/" \
+    --folder-config "sample_dataset/folder_data_items.csv" \
     --api-key "your-key"
 ```
 
 ### Step 3: Create Collections
 ```bash
 python nakala-client-collection.py \
-    --from-upload-output output.csv \
-    --title "Research Project 2024"
+    --api-key "your-key" \
+    --from-folder-collections "sample_dataset/folder_collections.csv" \
+    --from-upload-output "output.csv" \
+    --collection-report "collections_output.csv"
 ```
 
 ### Step 4: Verify and Publish
-- Check upload results in output.csv
-- Verify collection creation
-- Update status from private to public
+- Check upload results in `output.csv`
+- Verify collection creation in `collections_output.csv`
+- Review collection structure and relationships
+- Update status from private to public if needed
 
 ## Common Workflows
 
-### 1. Single Dataset Upload
+### 1. Folder-Based Collection Creation
 ```bash
-# Upload a single dataset
-python nakala-client-upload.py \
-    --mode csv \
-    --dataset dataset.csv \
-    --image-dir images/ \
-    --api-key "your-key"
+# Create collections based on folder structure
+python nakala-client-collection.py \
+    --api-key "your-key" \
+    --from-folder-collections "folder_collections.csv" \
+    --from-upload-output "output.csv" \
+    --collection-report "collections_output.csv"
 ```
 
-### 2. Hierarchical Collection Creation
+### 2. Single Collection Creation
 ```bash
-# Create main collection
+# Create a single collection
 python nakala-client-collection.py \
-    --title "Research Project 2024" \
+    --api-key "your-key" \
+    --title "fr:Collection Title|en:Collection Title" \
+    --description "fr:Description|en:Description" \
+    --keywords "fr:keywords|en:keywords" \
     --from-upload-output output.csv
-
-# Create sub-collections by file type
-python nakala-client-collection.py \
-    --title "Research Data" \
-    --data-ids "specific,data,ids" \
-    --keywords "data,analysis"
 ```
 
-### 3. Multilingual Dataset Upload
+### 3. Multilingual Dataset Upload and Collection
 ```bash
 # Upload dataset with multilingual metadata
 python nakala-client-upload.py \
     --mode folder \
     --dataset "multilingual_dataset/" \
-    --folder-config "multilingual_config.csv" \
+    --folder-config "folder_data_items.csv" \
     --api-key "your-key"
+
+# Create collections with multilingual metadata
+python nakala-client-collection.py \
+    --api-key "your-key" \
+    --from-folder-collections "folder_collections.csv" \
+    --from-upload-output "output.csv"
 ```
 
 ## Best Practices
 
 ### Data Organization
-1. Use consistent folder structure
-2. Include comprehensive metadata
+1. Use consistent folder structure:
+   ```
+   project/
+   ├── files/
+   │   ├── code/
+   │   ├── data/
+   │   ├── documents/
+   │   ├── images/
+   │   └── presentations/
+   ├── folder_data_items.csv
+   └── folder_collections.csv
+   ```
+2. Include comprehensive metadata in both French and English
 3. Validate files before upload
 4. Use appropriate file formats
 
 ### Metadata Management
-1. Include multilingual descriptions
-2. Add relevant keywords
-3. Specify proper licenses
-4. Document authorship
+1. Include multilingual descriptions (fr|en format)
+2. Add relevant keywords in both languages
+3. Specify proper licenses (CC-BY-4.0, CC-BY-NC-4.0, etc.)
+4. Document authorship and contributions
+5. Include coverage and relations
 
 ### Collection Organization
-1. Create logical hierarchies
-2. Use descriptive titles
-3. Include relevant keywords
-4. Set appropriate access rights 
+1. Create logical hierarchies based on content type
+2. Use descriptive bilingual titles
+3. Include relevant multilingual keywords
+4. Set appropriate access rights
+5. Maintain consistent metadata across collections
+
+### Collection Relationships
+1. Define clear relationships between collections
+2. Use appropriate relation types
+3. Document project associations
+4. Maintain consistent coverage information
+5. Link related collections through metadata 
