@@ -19,7 +19,7 @@
 ### Hybrid API Client Approach
 ```python
 # Using requests for file uploads
-response = requests.post(
+        response = requests.post(
     f"{self.api_url}/datas/uploads",
     headers={'X-API-KEY': self.api_key},
     files=[('file', (filename, open(file_path, 'rb'), mime_type))]

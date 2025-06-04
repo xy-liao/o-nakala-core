@@ -98,35 +98,35 @@ def _create_single_collection_from_config(self, config: Dict, uploaded_items: Di
     }
     
     try:
-        # Parse data items that should be in this collection
-        data_item_folders = config['data_items'].split('|')
-        collection_data_ids = []
-        
-        # Map folder paths to actual uploaded data IDs
-        for folder_path in data_item_folders:
-            # Find corresponding uploaded item
-            for title, data_id in uploaded_items.items():
-                if self._matches_folder_type(folder_path, title):
-                    collection_data_ids.append(data_id)
-        
-        if not collection_data_ids:
+    # Parse data items that should be in this collection
+    data_item_folders = config['data_items'].split('|')
+    collection_data_ids = []
+    
+    # Map folder paths to actual uploaded data IDs
+    for folder_path in data_item_folders:
+        # Find corresponding uploaded item
+        for title, data_id in uploaded_items.items():
+            if self._matches_folder_type(folder_path, title):
+                collection_data_ids.append(data_id)
+    
+    if not collection_data_ids:
             result['error'] = f"No data items found for folders: {data_item_folders}"
             return result
         
         result['data_ids'] = collection_data_ids
         result['data_count'] = len(collection_data_ids)
-        
-        # Prepare multilingual metadata
-        metas = self._prepare_collection_metadata_from_config(config)
-        
-        # Create collection
-        collection_data = {
-            "status": config['status'],
-            "datas": collection_data_ids,
-            "metas": metas,
-            "rights": []
-        }
-        
+    
+    # Prepare multilingual metadata
+    metas = self._prepare_collection_metadata_from_config(config)
+    
+    # Create collection
+    collection_data = {
+        "status": config['status'],
+        "datas": collection_data_ids,
+        "metas": metas,
+        "rights": []
+    }
+    
         api_result = self.create_collection(collection_data)
         collection_id = api_result.get('payload', {}).get('id')
         
