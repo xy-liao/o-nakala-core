@@ -1,104 +1,92 @@
 # Nakala API Implementation Notes
 
+## Current Implementation Status
+
+### ✅ **Issues Resolved**
+1. ~~Hard-coded MIME types~~ → Now uses dynamic detection
+2. ~~Missing CSV processing~~ → Fully implemented
+3. ~~File validation issues~~ → Enhanced validation added
+
+### 🔄 **Current Features**
+- Dynamic MIME type detection: ✅ Implemented
+- Folder processing: ✅ Complete
+- Multilingual support: ✅ Working
+- Error handling: ✅ Robust
+- Retry mechanism: ✅ Implemented with exponential backoff
+
+## Technical Implementation Details
+
+### Hybrid API Client Approach
+```python
+# Using requests for file uploads
+response = requests.post(
+    f"{self.api_url}/datas/uploads",
+    headers={'X-API-KEY': self.api_key},
+    files=[('file', (filename, open(file_path, 'rb'), mime_type))]
+)
+
+# Using OpenAPI client for metadata
+from openapi_client.rest import ApiException
+```
+
+### Dynamic MIME Type Detection
+```python
+# Detect MIME type dynamically
+mime_type, _ = mimetypes.guess_type(file_path)
+if not mime_type:
+    mime_type = 'application/octet-stream'
+```
+
+### Enhanced File Validation
+```python
+def validate_file_exists_absolute(self, file_path: str) -> bool:
+    """Validate that a file exists using absolute path."""
+    if not os.path.exists(file_path):
+        logger.error(f"File not found: {file_path}")
+        return False
+    if not os.path.isfile(file_path):
+        logger.error(f"Path is not a file: {file_path}")
+        return False
+    return True
+```
+
+## Known Issues and Solutions
+
+### 1. API Rate Limiting
+- **Issue**: API may reject requests if too many are made
+- **Solution**: Implemented retry with exponential backoff
+- **Status**: ✅ Resolved
+
+### 2. Large File Uploads
+- **Issue**: Timeout on large file uploads
+- **Solution**: Added chunked upload support
+- **Status**: ✅ Resolved
+
+### 3. Multilingual Metadata
+- **Issue**: Complex metadata format
+- **Solution**: Implemented structured metadata handling
+- **Status**: ✅ Resolved
+
+## Best Practices
+
+### File Upload
+1. Always validate files before upload
+2. Use dynamic MIME type detection
+3. Implement proper error handling
+4. Log all upload attempts
+
+### Metadata Handling
+1. Validate metadata format
+2. Support multilingual content
+3. Use proper property URIs
+4. Include required fields
+
+### Error Handling
+1. Implement retry mechanism
+2. Log detailed error messages
+3. Provide clear user feedback
+4. Handle edge cases gracefully
+
 ## Hybrid Approach: OpenAPI Client and Requests
 
-We needed to implement a hybrid approach using both the OpenAPI generated client and the `requests` library due to specific requirements and limitations encountered during implementation.
-
-### File Upload Implementation
-
-#### Why Use `requests` for File Upload?
-
-1. **Multipart Form Data Handling**
-   - The OpenAPI client had limitations with properly formatting multipart/form-data
-   - The working implementation in `tp-depot-par-lot.py` used `requests` with the following format:
-   ```python
-   postfiles=[('file', (filename, open(file_path, 'rb'), 'image/jpeg'))]
-   ```
-   - This specific format is required by Nakala's API for file uploads
-
-2. **Response Structure**
-   - File upload response only includes minimal fields:
-     - `sha1`: The file's SHA1 hash
-   - Other fields like `size` and `mime_type` are not consistently returned
-
-### OpenAPI Client Usage
-
-#### Data Creation Inconsistencies
-
-1. **Parameter Names**
-   - The OpenAPI generated client expects different parameter names than what the API actually accepts
-   - Current workaround: Use `requests` for file upload and maintain compatibility with the OpenAPI client for metadata
-
-2. **Type Validation**
-   - The OpenAPI client implements strict type validation
-   - Need to ensure proper typing, especially for metadata values that can be either strings or dictionaries
-
-### Working Implementation Structure
-
-```python
-class UploadedFile:
-    """Represents a successfully uploaded file in Nakala."""
-    sha1: str
-    filename: str
-    embargoed: Optional[str] = None
-
-def upload_file(filename: str, file_path: str) -> UploadedFile:
-    """Upload using requests for proper multipart handling."""
-    with open(file_path, 'rb') as f:
-        postfiles = [('file', (filename, f, 'image/jpeg'))]
-        headers = {'X-API-KEY': API_KEY}
-        response = requests.post(
-            f"{API_URL}/datas/uploads",
-            headers=headers,
-            data={},
-            files=postfiles
-        )
-```
-
-### Metadata Structure
-
-Required metadata format for the API:
-```python
-meta = {
-    "value": str | {"surname": str, "givenname": str},
-    "typeUri": str,
-    "propertyUri": str,
-    "lang": Optional[str]
-}
-```
-
-### Known Issues and Solutions
-
-1. **File Upload Response**
-   - Issue: Inconsistent response fields from `/datas/uploads` endpoint
-   - Solution: Only rely on `sha1` field and maintain filename locally
-
-2. **Data Creation Parameters**
-   - Issue: OpenAPI client validation errors for parameter names
-   - Solution: Need to update OpenAPI specification to match actual API requirements
-
-3. **Content Type Handling**
-   - Issue: Must explicitly set `'image/jpeg'` for image uploads
-   - Note: May need to implement MIME type detection for other file types
-
-## Recommendations
-
-1. Consider updating the OpenAPI specification to match actual API requirements
-2. Implement proper MIME type detection based on file extensions
-3. Add validation for required metadata fields before submission
-4. Consider implementing retry logic for file uploads
-5. Add proper error handling for network issues during file upload
-
-## API Endpoint Reference
-
-- File Upload: `POST /datas/uploads`
-  - Headers: `X-API-KEY`
-  - Format: multipart/form-data
-  - Required Fields: `file`
-
-- Data Creation: `POST /datas`
-  - Required Fields:
-    - `status`
-    - `group_identifier`
-    - `files` (array of uploaded file info)
-    - `metas` (array of metadata)
+We needed to implement a hybrid approach using both the OpenAPI generated client and the `
