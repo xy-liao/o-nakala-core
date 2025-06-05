@@ -120,6 +120,9 @@ class NakalaCommonUtils:
         
         metas = []
         
+        # Collect creator/contributor arrays separately to handle them as single metadata entries
+        creator_arrays = {}
+        
         for field_name, property_uri in field_mapping.items():
             if field_name not in config or not config[field_name]:
                 continue
@@ -149,7 +152,10 @@ class NakalaCommonUtils:
                                 "propertyUri": property_uri
                             })
                 elif field_name in ['creator', 'contributor']:
-                    # Handle person fields
+                    # Collect person data for array-based fields
+                    if property_uri not in creator_arrays:
+                        creator_arrays[property_uri] = []
+                    
                     for person in value.split(';'):
                         person = person.strip()
                         if person and ',' in person:
@@ -158,25 +164,33 @@ class NakalaCommonUtils:
                                 "givenname": givenname.strip(),
                                 "surname": surname.strip()
                             }
-                            metas.append({
-                                "value": person_data,
-                                "propertyUri": property_uri
-                            })
+                            creator_arrays[property_uri].append(person_data)
                         elif person:
-                            metas.append({
-                                "value": person,
-                                "lang": lang if lang else 'und',
-                                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
-                                "propertyUri": property_uri
-                            })
+                            # For simple string names, still create person objects
+                            creator_arrays[property_uri].append({"name": person})
+                elif field_name in ['date', 'license']:
+                    # Handle fields that cannot have language attributes
+                    metas.append({
+                        "value": value,
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                        "propertyUri": property_uri
+                    })
                 else:
-                    # Handle regular text fields
+                    # Handle regular text fields with language
                     metas.append({
                         "value": value,
                         "lang": lang if lang else 'und',
                         "typeUri": "http://www.w3.org/2001/XMLSchema#string",
                         "propertyUri": property_uri
                     })
+        
+        # Add creator/contributor arrays as single metadata entries
+        for property_uri, person_array in creator_arrays.items():
+            if person_array:  # Only add if there are actual creators/contributors
+                metas.append({
+                    "value": person_array,
+                    "propertyUri": property_uri
+                })
         
         return metas
     

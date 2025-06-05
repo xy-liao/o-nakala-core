@@ -52,17 +52,35 @@ def validate_file_exists_absolute(self, file_path: str) -> bool:
 
 ## Known Issues and Solutions
 
-### 1. API Rate Limiting
+### 1. Creator Metadata Array Structure (Critical Fix)
+- **Issue**: API returned "The value of metadata nakala:creator must be an array or null"
+- **Root Cause**: V2 implementation was sending individual metadata entries for each creator
+- **Solution**: Fixed `utils.py:154-186` to collect creator/contributor data into arrays and send as single metadata entry
+- **Working Format**: `{"value": [person_array], "propertyUri": "http://nakala.fr/terms#creator"}`
+- **Status**: ✅ Resolved
+
+### 2. System Fields Language Attributes (Critical Fix)
+- **Issue**: API validation errors for `nakala:created` and `nakala:license` having language attributes
+- **Root Cause**: These system fields cannot have `lang` attributes
+- **Solution**: Added special handling in `utils.py:171-177` to exclude language attributes for date/license fields
+- **Status**: ✅ Resolved
+
+### 3. File Resolution in Subdirectories
+- **Issue**: Files referenced in CSV couldn't be found in subdirectories
+- **Solution**: Enhanced file resolution in `upload.py:162-184` to search subdirectories recursively
+- **Status**: ✅ Resolved
+
+### 4. API Rate Limiting
 - **Issue**: API may reject requests if too many are made
 - **Solution**: Implemented retry with exponential backoff
 - **Status**: ✅ Resolved
 
-### 2. Large File Uploads
+### 5. Large File Uploads
 - **Issue**: Timeout on large file uploads
 - **Solution**: Added chunked upload support
 - **Status**: ✅ Resolved
 
-### 3. Multilingual Metadata
+### 6. Multilingual Metadata
 - **Issue**: Complex metadata format
 - **Solution**: Implemented structured metadata handling
 - **Status**: ✅ Resolved

@@ -125,10 +125,18 @@
 
 ## Debugging Tips
 
+### Enhanced Error Handling (V2 Features)
+- **Pre-validation**: Payloads are validated before API calls to catch common errors early
+- **Detailed Error Parsing**: API error responses are parsed to provide specific guidance
+- **Debug Logging**: Set `--log-level DEBUG` to see request payloads for failed API calls
+- **Metadata Validation**: Common metadata format issues are detected and explained
+
 ### Log Files
+- Check `nakala_upload.log` for upload issues
 - Check `nakala_collection.log` for collection issues
 - Review `collections_output.csv` for collection creation status
-- Look for specific error messages
+- Use `--log-level DEBUG` for detailed request/response logging
+- Look for specific error messages and guidance
 - Check timestamps for correlation
 
 ### Common Error Messages
@@ -141,9 +149,19 @@
 - **Cause**: Incorrect file path or permissions
 - **Fix**: Verify file exists and is accessible
 
-#### "Invalid metadata format"
-- **Cause**: Metadata structure doesn't match requirements
-- **Fix**: Check metadata format in configuration
+#### "Invalid metadata format" / "nakala:creator must be an array"
+- **Cause**: Creator/contributor metadata not properly formatted as arrays
+- **Fix**: Ensure creator/contributor fields use proper array structure in metadata
+- **Example**: Creator should be sent as single metadata entry with array value, not multiple individual entries
+
+#### "metadata field must not have lang attribute"
+- **Cause**: System fields like date/license cannot have language attributes
+- **Fix**: Remove language attributes from system fields (date, license, type URIs)
+- **Note**: Only descriptive fields like title/description should have language attributes
+
+#### "Dataset payload validation failed"
+- **Cause**: Pre-validation caught structural issues before API call
+- **Fix**: Check the specific validation error messages in logs for guidance
 
 #### "Invalid collection relation"
 - **Cause**: Collection relationship syntax incorrect

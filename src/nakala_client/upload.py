@@ -159,12 +159,44 @@ class NakalaUploadClient:
         """Prepare rights using common utilities."""
         return self.utils.prepare_rights_list(rights_string, self.config.valid_group_ids)
     
+    def _resolve_file_path(self, filename: str) -> Optional[str]:
+        """
+        Resolve file path by searching in base directory and subdirectories.
+        
+        Args:
+            filename: The filename to search for
+            
+        Returns:
+            Full path to the file if found, None otherwise
+        """
+        # First try direct path in base directory
+        direct_path = os.path.join(self.config.base_path, filename)
+        if os.path.isfile(direct_path):
+            return direct_path
+        
+        # Search in subdirectories
+        for root, _, files in os.walk(self.config.base_path):
+            if filename in files:
+                found_path = os.path.join(root, filename)
+                logger.debug(f"Found file {filename} at {found_path}")
+                return found_path
+        
+        return None
+    
     @retry(
         stop=stop_after_attempt(5),
         wait=wait_exponential(multiplier=2, min=4, max=30)
     )
     def create_dataset(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Create a dataset in Nakala with improved timeout handling."""
+        
+        # Validate payload before sending
+        validation_errors = self._validate_dataset_payload(payload)
+        if validation_errors:
+            error_msg = f"Dataset payload validation failed: {'; '.join(validation_errors)}"
+            logger.error(error_msg)
+            raise NakalaValidationError(error_msg)
+        
         try:
             logger.debug(f"Creating dataset with timeout: {self.config.timeout}s")
             response = requests.post(
@@ -196,8 +228,15 @@ class NakalaUploadClient:
                 )
             else:
                 # Client errors - don't retry
+                error_details = self._parse_api_error(response)
+                logger.error(f"API Error (HTTP {response.status_code}): {error_details}")
+                
+                # Log payload for debugging metadata issues
+                if response.status_code == 400:
+                    logger.debug(f"Request payload that caused error: {json.dumps(payload, indent=2)}")
+                
                 raise NakalaAPIError(
-                    f"Failed to create dataset (HTTP {response.status_code})",
+                    f"Failed to create dataset (HTTP {response.status_code}): {error_details}",
                     status_code=response.status_code,
                     response_text=response.text
                 )
@@ -211,6 +250,83 @@ class NakalaUploadClient:
         except requests.RequestException as e:
             logger.error(f"Unexpected network error: {e}")
             raise NakalaAPIError(f"Network error creating dataset: {e}")
+    
+    def _parse_api_error(self, response) -> str:
+        """Parse API error response to extract meaningful error messages."""
+        try:
+            error_data = response.json()
+            
+            # Handle different error response formats
+            if isinstance(error_data, dict):
+                # Check for specific error patterns
+                if 'message' in error_data:
+                    message = error_data['message']
+                    
+                    # Provide specific guidance for common metadata errors
+                    if 'nakala:creator must be an array' in message:
+                        return f"{message} - Ensure creator metadata is properly formatted as an array"
+                    elif 'must not have' in message and 'lang' in message:
+                        return f"{message} - Remove language attributes from system fields like date/license"
+                    elif 'metadata' in message.lower():
+                        return f"Metadata validation error: {message}"
+                    
+                    return message
+                elif 'error' in error_data:
+                    return str(error_data['error'])
+                elif 'errors' in error_data:
+                    return str(error_data['errors'])
+            
+            # Fallback to raw response text
+            return response.text[:500]  # Limit length
+            
+        except (json.JSONDecodeError, KeyError):
+            return response.text[:500]  # Limit length
+    
+    def _validate_dataset_payload(self, payload: Dict[str, Any]) -> List[str]:
+        """Validate dataset payload to catch common errors early."""
+        errors = []
+        
+        # Check required fields
+        if 'metas' not in payload:
+            errors.append("Missing 'metas' field in payload")
+            return errors
+        
+        metas = payload['metas']
+        if not isinstance(metas, list):
+            errors.append("'metas' must be a list")
+            return errors
+        
+        # Validate metadata structure
+        for i, meta in enumerate(metas):
+            if not isinstance(meta, dict):
+                errors.append(f"Meta entry {i} must be a dictionary")
+                continue
+            
+            # Check required metadata fields
+            if 'propertyUri' not in meta:
+                errors.append(f"Meta entry {i} missing 'propertyUri'")
+            
+            if 'value' not in meta:
+                errors.append(f"Meta entry {i} missing 'value'")
+                continue
+            
+            # Check creator/contributor arrays
+            if meta.get('propertyUri') in [
+                'http://nakala.fr/terms#creator',
+                'http://purl.org/dc/terms/contributor'
+            ]:
+                if not isinstance(meta['value'], list):
+                    errors.append(f"Creator/contributor metadata must have array value, got {type(meta['value'])}")
+            
+            # Check for forbidden language attributes on system fields
+            if meta.get('propertyUri') in [
+                'http://purl.org/dc/terms/created',
+                'http://purl.org/dc/terms/license'
+            ]:
+                if 'lang' in meta:
+                    errors.append(f"System field {meta['propertyUri']} cannot have 'lang' attribute")
+        
+        return errors
     
     def process_csv_dataset(self, csv_path: str) -> None:
         """Process CSV-based dataset."""
@@ -247,12 +363,14 @@ class NakalaUploadClient:
             
             filenames = data[0].split(';')
             for filename in filenames:
-                if not self.file_processor.validate_file(filename):
+                # Try to find the file in base directory or subdirectories
+                resolved_file_path = self._resolve_file_path(filename)
+                if not resolved_file_path:
+                    logger.error(f"File not found: {filename}")
                     continue
                 
                 logger.info(f"Uploading file: {filename}")
-                file_path = os.path.join(self.config.base_path, filename)
-                file_info = self.upload_file(file_path, filename)
+                file_info = self.upload_file(resolved_file_path, filename)
                 nakala_files.append(file_info)
                 output_files.append(f"{filename},{file_info['sha1']}")
             
