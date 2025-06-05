@@ -12,11 +12,19 @@ from .common.utils import NakalaCommonUtils, NakalaPathResolver
 from .common.config import NakalaConfig
 from .common.exceptions import NakalaError, NakalaValidationError, NakalaAPIError
 
+# Import main client classes
+from .user_info import NakalaUserInfoClient
+from .curator import NakalaCuratorClient, CuratorConfig, BatchModificationResult
+
 __all__ = [
     'NakalaCommonUtils',
     'NakalaPathResolver', 
     'NakalaConfig',
     'NakalaError',
     'NakalaValidationError',
-    'NakalaAPIError'
+    'NakalaAPIError',
+    'NakalaUserInfoClient',
+    'NakalaCuratorClient',
+    'CuratorConfig',
+    'BatchModificationResult'
 ]

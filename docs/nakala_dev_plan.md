@@ -1,3 +1,11 @@
+# 🗂️ HISTORICAL: Nakala API Management System - Development Plan
+
+**⚠️ NOTE: This document is historical. V2.0 development is complete.**
+**📋 Current status and plans: See [PROJECT_STATUS.md](PROJECT_STATUS.md)**
+**🚀 Future expansion plans: See [enhanced_nakala_dev_plan.md](enhanced_nakala_dev_plan.md)**
+
+---
+
 # Nakala API Management System - Development Plan
 
 ## Project Overview
