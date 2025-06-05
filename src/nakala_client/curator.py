@@ -10,9 +10,9 @@ import os
 import json
 import logging
 import argparse
+import requests
 from typing import Dict, Any, List, Optional, Tuple, Iterator
 from datetime import datetime
-import requests
 from pathlib import Path
 import asyncio
 import time
@@ -26,24 +26,28 @@ from .user_info import NakalaUserInfoClient
 
 logger = logging.getLogger(__name__)
 
-class CuratorConfig(NakalaConfig):
+class CuratorConfig:
     """Extended configuration for curator operations."""
     
-    # Batch processing settings
-    batch_size: int = 50
-    concurrent_operations: int = 3
-    validation_batch_size: int = 100
+    def __init__(self, **kwargs):
+        # Extract curator-specific settings
+        self.batch_size = kwargs.pop('batch_size', 50)
+        self.concurrent_operations = kwargs.pop('concurrent_operations', 3)
+        self.validation_batch_size = kwargs.pop('validation_batch_size', 100)
+        self.skip_existing = kwargs.pop('skip_existing', True)
+        self.validate_before_modification = kwargs.pop('validate_before_modification', True)
+        self.backup_before_changes = kwargs.pop('backup_before_changes', True)
+        self.duplicate_threshold = kwargs.pop('duplicate_threshold', 0.85)
+        self.max_modifications_per_batch = kwargs.pop('max_modifications_per_batch', 100)
+        self.require_confirmation = kwargs.pop('require_confirmation', True)
+        self.dry_run_default = kwargs.pop('dry_run_default', True)
+        
+        # Initialize base config with remaining kwargs
+        self.base_config = NakalaConfig(**kwargs)
     
-    # Curation settings
-    skip_existing: bool = True
-    validate_before_modification: bool = True
-    backup_before_changes: bool = True
-    duplicate_threshold: float = 0.85  # Similarity threshold for duplicates
-    
-    # Safety settings
-    max_modifications_per_batch: int = 100
-    require_confirmation: bool = True
-    dry_run_default: bool = True
+    def __getattr__(self, name):
+        """Delegate attribute access to base config."""
+        return getattr(self.base_config, name)
 
 
 class BatchModificationResult:
@@ -305,10 +309,127 @@ class NakalaCuratorClient:
     
     def _apply_modification(self, item_id: str, changes: Dict[str, Any]) -> bool:
         """Apply actual modification via API."""
-        # This would contain the actual API calls
-        # For now, return True to simulate success
-        logger.info(f"Applying changes to {item_id}: {changes}")
-        return True
+        try:
+            # Get current dataset information
+            url = f"{self.config.api_url}/datas/{item_id}"
+            headers = {'X-API-KEY': self.config.api_key}
+            
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            response.raise_for_status()
+            
+            current_data = response.json()
+            current_metas = current_data.get('metas', [])
+            
+            # Build new metadata array
+            new_metas = []
+            
+            # Keep existing metas that we're not changing
+            for meta in current_metas:
+                property_uri = meta.get('propertyUri', '')
+                should_keep = True
+                
+                # Check if this metadata field is being modified
+                for field_name in changes.keys():
+                    if field_name.lower() in property_uri.lower():
+                        should_keep = False
+                        break
+                
+                if should_keep:
+                    new_metas.append(meta)
+            
+            # Add new/modified metadata
+            for field_name, new_value in changes.items():
+                if field_name == 'title':
+                    # Handle multilingual titles
+                    if '|' in new_value:
+                        parts = new_value.split('|')
+                        for part in parts:
+                            if part.startswith('fr:'):
+                                new_metas.append({
+                                    'value': part[3:],
+                                    'lang': 'fr',
+                                    'propertyUri': 'http://nakala.fr/terms#title'
+                                })
+                            elif part.startswith('en:'):
+                                new_metas.append({
+                                    'value': part[3:],
+                                    'lang': 'en',
+                                    'propertyUri': 'http://nakala.fr/terms#title'
+                                })
+                    else:
+                        new_metas.append({
+                            'value': new_value,
+                            'lang': 'fr',
+                            'propertyUri': 'http://nakala.fr/terms#title'
+                        })
+                
+                elif field_name == 'description':
+                    # Handle multilingual descriptions
+                    if '|' in new_value:
+                        parts = new_value.split('|')
+                        for part in parts:
+                            if part.startswith('fr:'):
+                                new_metas.append({
+                                    'value': part[3:],
+                                    'lang': 'fr',
+                                    'propertyUri': 'http://purl.org/dc/terms/description'
+                                })
+                            elif part.startswith('en:'):
+                                new_metas.append({
+                                    'value': part[3:],
+                                    'lang': 'en',
+                                    'propertyUri': 'http://purl.org/dc/terms/description'
+                                })
+                    else:
+                        new_metas.append({
+                            'value': new_value,
+                            'lang': 'fr',
+                            'propertyUri': 'http://purl.org/dc/terms/description'
+                        })
+                
+                elif field_name == 'keywords':
+                    # Handle multilingual keywords
+                    if '|' in new_value:
+                        parts = new_value.split('|')
+                        for part in parts:
+                            if part.startswith('fr:'):
+                                keywords = part[3:].split(';')
+                                for keyword in keywords:
+                                    if keyword.strip():
+                                        new_metas.append({
+                                            'value': keyword.strip(),
+                                            'lang': 'fr',
+                                            'propertyUri': 'http://purl.org/dc/terms/subject'
+                                        })
+                            elif part.startswith('en:'):
+                                keywords = part[3:].split(';')
+                                for keyword in keywords:
+                                    if keyword.strip():
+                                        new_metas.append({
+                                            'value': keyword.strip(),
+                                            'lang': 'en',
+                                            'propertyUri': 'http://purl.org/dc/terms/subject'
+                                        })
+            
+            # Prepare update payload
+            update_payload = {
+                'metas': new_metas
+            }
+            
+            # Apply the modification
+            headers['Content-Type'] = 'application/json'
+            response = requests.put(url, headers=headers, json=update_payload, timeout=self.config.timeout)
+            response.raise_for_status()
+            
+            logger.info(f"Successfully applied changes to {item_id}")
+            return True
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to apply modification to {item_id}: {e}")
+            return False
+        except Exception as e:
+            logger.error(f"Error processing modification for {item_id}: {e}")
+            return False
     
     def detect_duplicates_in_collections(self, collection_ids: List[str]) -> Dict[str, Any]:
         """Detect duplicates across multiple collections."""
@@ -346,8 +467,57 @@ class NakalaCuratorClient:
     
     def _get_collection_items(self, collection_id: str) -> List[Dict[str, Any]]:
         """Get items from a collection via API."""
-        # Placeholder for actual API call
-        return []
+        try:
+            url = f"{self.config.api_url}/collections/{collection_id}/datas"
+            headers = {'X-API-KEY': self.config.api_key}
+            
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            response.raise_for_status()
+            
+            result = response.json()
+            items = []
+            
+            if 'data' in result:
+                for item in result['data']:
+                    # Extract metadata for duplicate detection
+                    title = self._extract_meta_value(item.get('metas', []), 'title')
+                    description = self._extract_meta_value(item.get('metas', []), 'description')
+                    
+                    items.append({
+                        'id': item.get('identifier'),
+                        'title': title,
+                        'description': description,
+                        'status': item.get('status', ''),
+                        'files': item.get('files', []),
+                        'metas': item.get('metas', [])
+                    })
+            
+            logger.info(f"Retrieved {len(items)} items from collection {collection_id}")
+            return items
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to get items from collection {collection_id}: {e}")
+            return []
+    
+    def _extract_meta_value(self, metas: List[Dict], property_name: str, language: str = 'fr') -> str:
+        """Extract metadata value by property name."""
+        if not metas:
+            return ''
+            
+        for meta in metas:
+            property_uri = meta.get('propertyUri', '')
+            meta_lang = meta.get('lang', '')
+            
+            if property_name in property_uri.lower() and meta_lang == language:
+                return meta.get('value', '')
+        
+        # Fall back to any language
+        for meta in metas:
+            property_uri = meta.get('propertyUri', '')
+            if property_name in property_uri.lower():
+                return meta.get('value', '')
+                
+        return ''
     
     def generate_quality_report(self, scope: str = 'all') -> Dict[str, Any]:
         """Generate comprehensive quality report for user's data."""
@@ -549,7 +719,8 @@ Examples:
     args = parser.parse_args()
     
     # Setup logging
-    setup_common_logging(verbose=args.verbose)
+    log_level = logging.DEBUG if args.verbose else logging.INFO
+    setup_common_logging(level=log_level)
     
     try:
         # Create configuration

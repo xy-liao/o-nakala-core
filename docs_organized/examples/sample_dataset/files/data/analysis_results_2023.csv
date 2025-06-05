@@ -1,0 +1,9 @@
+variable,value,group
+A,12.5,control
+B,15.2,control
+A,18.7,treatment
+B,22.1,treatment
+A,14.3,control
+B,16.8,control
+A,20.5,treatment
+B,19.3,treatment

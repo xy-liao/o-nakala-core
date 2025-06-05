@@ -1,0 +1,4 @@
+file,status,type,title,author,date,licence,description,keywords,rights
+kingfisher.jpg,pending,http://purl.org/coar/resource_type/c_c513,Martin-pêcheur,"Dupont,Jean",2000-10-21,CC-BY-4.0,Une photo de martin-pêcheur,oiseau;martin-pêcheur,"de0f2a9b-a198-48a4-8074-db5120187a16,ROLE_READER"
+owl-1.jpg;owl-2.jpg,pending,http://purl.org/coar/resource_type/c_c513,Chouette,"Martin,Pierre;Dupont,Jean",2021,CC-BY-4.0,Deux photos de chouette,oiseau;chouette,"de0f2a9b-a198-48a4-8074-db5120187a16,ROLE_READER"
+peafowl.jpg,pending,http://purl.org/coar/resource_type/c_c513,Paon,"Martin,Pierre",1999-03,CC-BY-4.0,Une photo de paon,oiseau;paon,

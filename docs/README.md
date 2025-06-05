@@ -2,9 +2,11 @@
 
 🎉 **V2.0 Development Complete** - Production-ready client with enhanced features!
 
-## 📋 CURRENT STATUS: V2.0 COMPLETE
+## 📋 CURRENT STATUS: V2.0 COMPLETE WITH REAL CURATION VALIDATED
 
-**Read [PROJECT_STATUS.md](PROJECT_STATUS.md) first for current state and next steps.**
+**⚠️ DOCUMENTATION HAS BEEN REORGANIZED** - See [`../docs_organized/`](../docs_organized/) for the new organized structure.
+
+**Current Status**: All workflows validated with real API calls, curation successfully applied to live data.
 
 ## Overview
 

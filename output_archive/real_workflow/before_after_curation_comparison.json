@@ -1,0 +1,153 @@
+{
+  "comparison_timestamp": "2025-06-05T15:19:24.939108",
+  "datasets_processed": 2,
+  "successful_enhancements": 2,
+  "comparisons": [
+    {
+      "dataset_id": "10.34847/nkl.9626xmez",
+      "comparison_timestamp": "2025-06-05T15:19:22.202278",
+      "changes_detected": true,
+      "changes": {
+        "titles": {
+          "before": [
+            "fr: Collection d'images",
+            "en: Image Collection"
+          ],
+          "after": [
+            "fr: Collection d'images scientifiques enrichies",
+            "en: Enhanced Scientific Image Collection"
+          ],
+          "changed": true
+        },
+        "descriptions": {
+          "before": [
+            "fr: Images et données visuelles",
+            "en: Images and visual data"
+          ],
+          "after": [
+            "fr: Collection d'images et données visuelles pour la recherche scientifique avec analyse des tendances de température et documentation photographique des sites d'étude",
+            "en: Collection of images and visual data for scientific research including temperature trend analysis and photographic documentation of study sites"
+          ],
+          "changed": true
+        },
+        "subjects": {
+          "before": [
+            "fr: images",
+            "fr: visuel",
+            "fr: recherche",
+            "en: images",
+            "en: visual",
+            "en: research"
+          ],
+          "after": [
+            "fr: images",
+            "fr: visuel",
+            "fr: recherche",
+            "fr: scientifique",
+            "fr: température",
+            "fr: analyse",
+            "fr: photographie",
+            "fr: sites",
+            "en: images",
+            "en: visual",
+            "en: research",
+            "en: scientific",
+            "en: temperature",
+            "en: analysis",
+            "en: photography",
+            "en: sites"
+          ],
+          "changed": true
+        },
+        "metadata_count": {
+          "before": 14,
+          "after": 24,
+          "changed": true
+        }
+      },
+      "summary": {
+        "changes_applied": [
+          "titles updated",
+          "descriptions enhanced",
+          "keywords enriched",
+          "metadata fields increased by 10"
+        ],
+        "enhancement_quality": "significant"
+      }
+    },
+    {
+      "dataset_id": "10.34847/nkl.a1fd48xw",
+      "comparison_timestamp": "2025-06-05T15:19:24.939054",
+      "changes_detected": true,
+      "changes": {
+        "titles": {
+          "before": [
+            "fr: Fichiers de code",
+            "en: Code Files"
+          ],
+          "after": [
+            "fr: Scripts d'analyse de données avancés",
+            "en: Advanced Data Analysis Scripts"
+          ],
+          "changed": true
+        },
+        "descriptions": {
+          "before": [
+            "fr: Scripts pour l'analyse de données",
+            "en: Scripts for data analysis"
+          ],
+          "after": [
+            "fr: Scripts Python et R pour l'analyse avancée de données de recherche incluant le prétraitement, le nettoyage et les techniques d'analyse statistique pour les études environnementales",
+            "en: Python and R scripts for advanced research data analysis including preprocessing, cleaning and statistical analysis techniques for environmental studies"
+          ],
+          "changed": true
+        },
+        "subjects": {
+          "before": [
+            "fr: code",
+            "fr: programmation",
+            "fr: scripts",
+            "en: code",
+            "en: programming",
+            "en: scripts"
+          ],
+          "after": [
+            "en: scripts",
+            "en: python",
+            "en: r",
+            "en: analysis",
+            "en: data",
+            "en: statistical",
+            "en: environment",
+            "fr: code",
+            "fr: programmation",
+            "fr: scripts",
+            "fr: python",
+            "fr: r",
+            "fr: analyse",
+            "fr: données",
+            "fr: statistique",
+            "fr: environnement",
+            "en: code",
+            "en: programming"
+          ],
+          "changed": true
+        },
+        "metadata_count": {
+          "before": 14,
+          "after": 26,
+          "changed": true
+        }
+      },
+      "summary": {
+        "changes_applied": [
+          "titles updated",
+          "descriptions enhanced",
+          "keywords enriched",
+          "metadata fields increased by 12"
+        ],
+        "enhancement_quality": "significant"
+      }
+    }
+  ]
+}

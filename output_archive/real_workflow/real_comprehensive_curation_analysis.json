@@ -1,0 +1,135 @@
+{
+  "analysis_date": "2025-06-05T15:12:22.534497",
+  "summary": {
+    "average_dataset_quality": 76.0,
+    "datasets_analyzed": 5,
+    "collections_analyzed": 3,
+    "total_files": 14,
+    "multilingual_coverage": true
+  },
+  "dataset_analysis": [
+    {
+      "id": "10.34847/nkl.9626xmez",
+      "title": "Collection d'images",
+      "quality_score": 80,
+      "quality_details": [
+        "✅ Multilingual titles present",
+        "⚠️  Brief descriptions",
+        "✅ Rich multilingual keywords",
+        "✅ Diverse file collection"
+      ],
+      "file_count": 3,
+      "metadata_count": 14,
+      "multilingual_support": 3,
+      "status": "pending",
+      "created_date": "2025-06-05T14:34:19+02:00"
+    },
+    {
+      "id": "10.34847/nkl.a1fd48xw",
+      "title": "Fichiers de code",
+      "quality_score": 70,
+      "quality_details": [
+        "✅ Multilingual titles present",
+        "⚠️  Brief descriptions",
+        "✅ Rich multilingual keywords",
+        "⚠️  Multiple files"
+      ],
+      "file_count": 2,
+      "metadata_count": 14,
+      "multilingual_support": 3,
+      "status": "pending",
+      "created_date": "2025-06-05T14:34:20+02:00"
+    },
+    {
+      "id": "10.34847/nkl.2d5ct4ug",
+      "title": "Matériaux de présentation",
+      "quality_score": 70,
+      "quality_details": [
+        "✅ Multilingual titles present",
+        "⚠️  Brief descriptions",
+        "✅ Rich multilingual keywords",
+        "⚠️  Multiple files"
+      ],
+      "file_count": 3,
+      "metadata_count": 14,
+      "multilingual_support": 3,
+      "status": "pending",
+      "created_date": "2025-06-05T14:34:20+02:00"
+    },
+    {
+      "id": "10.34847/nkl.ffe86j1z",
+      "title": "Documents de recherche",
+      "quality_score": 80,
+      "quality_details": [
+        "✅ Multilingual titles present",
+        "⚠️  Adequate descriptions",
+        "✅ Rich multilingual keywords",
+        "⚠️  Multiple files"
+      ],
+      "file_count": 4,
+      "metadata_count": 14,
+      "multilingual_support": 3,
+      "status": "pending",
+      "created_date": "2025-06-05T14:34:21+02:00"
+    },
+    {
+      "id": "10.34847/nkl.b4815a9y",
+      "title": "Données de recherche",
+      "quality_score": 80,
+      "quality_details": [
+        "✅ Multilingual titles present",
+        "⚠️  Adequate descriptions",
+        "✅ Rich multilingual keywords",
+        "⚠️  Multiple files"
+      ],
+      "file_count": 2,
+      "metadata_count": 14,
+      "multilingual_support": 3,
+      "status": "pending",
+      "created_date": "2025-06-05T14:34:22+02:00"
+    }
+  ],
+  "collection_analysis": [
+    {
+      "id": "10.34847/nkl.948e1iey",
+      "title": "Collection de Code et Données",
+      "item_count": 2,
+      "metadata_completeness": 10,
+      "multilingual_titles": 2,
+      "multilingual_descriptions": 2,
+      "status": "private",
+      "created_date": "2025-06-05T14:34:42+02:00",
+      "items": [
+        "10.34847/nkl.b4815a9y",
+        "10.34847/nkl.a1fd48xw"
+      ]
+    },
+    {
+      "id": "10.34847/nkl.d1fe9i5v",
+      "title": "Collection de Documents",
+      "item_count": 1,
+      "metadata_completeness": 10,
+      "multilingual_titles": 2,
+      "multilingual_descriptions": 2,
+      "status": "private",
+      "created_date": "2025-06-05T14:34:42+02:00",
+      "items": [
+        "10.34847/nkl.ffe86j1z"
+      ]
+    },
+    {
+      "id": "10.34847/nkl.e3db4y09",
+      "title": "Collection Multimédia",
+      "item_count": 2,
+      "metadata_completeness": 10,
+      "multilingual_titles": 2,
+      "multilingual_descriptions": 2,
+      "status": "private",
+      "created_date": "2025-06-05T14:34:42+02:00",
+      "items": [
+        "10.34847/nkl.2d5ct4ug",
+        "10.34847/nkl.9626xmez"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "retrieved_at": "2025-06-05T14:54:28.126527",
+  "user_info": {
+    "id": "de0f2a9b-a198-48a4-8074-db5120187a16",
+    "username": "unakala3",
+    "email": "nakala@huma-num.fr",
+    "firstname": "Utilisateur",
+    "lastname": "Nakala #3",
+    "fullname": "Utilisateur Nakala #3",
+    "roles": [
+      "ROLE_USER",
+      "ROLE_MODERATOR"
+    ],
+    "first_login": "2021-01-21T14:47:12+01:00",
+    "last_login": "2025-06-05T14:40:03+02:00",
+    "api_key": "aae99aba-476e-4ff2-2886-0aaf1bfa6fd2"
+  },
+  "collections": [],
+  "datasets": [],
+  "groups": [],
+  "summary": {
+    "total_collections": 0,
+    "total_datasets": 0,
+    "total_groups": 0,
+    "collections_by_status": {},
+    "datasets_by_status": {}
+  }
+}

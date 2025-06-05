@@ -1,0 +1,27 @@
+{
+  "successful": [],
+  "failed": [
+    {
+      "id": "10.34847/nkl.9626xmez",
+      "error": "Validation failed: [\"Required field 'creator' is missing or empty\"]",
+      "attempted_changes": {
+        "title": "fr:Collection d'images enrichie|en:Enhanced Image Collection",
+        "description": "fr:Images et données visuelles pour la recherche scientifique|en:Images and visual data for scientific research"
+      },
+      "timestamp": "2025-06-05T14:35:58.911534"
+    },
+    {
+      "id": "10.34847/nkl.a1fd48xw",
+      "error": "Validation failed: [\"Required field 'creator' is missing or empty\"]",
+      "attempted_changes": {
+        "title": "fr:Scripts de code améliorés|en:Enhanced Code Scripts",
+        "description": "fr:Scripts et modules pour l'analyse avancée de données|en:Scripts and modules for advanced data analysis"
+      },
+      "timestamp": "2025-06-05T14:35:58.911540"
+    }
+  ],
+  "skipped": [],
+  "warnings": [],
+  "start_time": "2025-06-05 14:35:58.911501",
+  "end_time": "2025-06-05 14:35:59.416582"
+}

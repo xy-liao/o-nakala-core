@@ -1,0 +1,3 @@
+id,current_title,new_title,current_description,new_description,current_keywords,new_keywords,current_license,new_license,current_language,new_language,action
+data-001,Dataset Title 1,,Current description 1,,"keyword1, keyword2",,CC-BY-4.0,,en,,modify
+data-002,Dataset Title 2,,Current description 2,,"keyword3, keyword4",,CC-BY-SA-4.0,,fr,,modify

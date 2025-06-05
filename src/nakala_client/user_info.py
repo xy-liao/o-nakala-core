@@ -5,27 +5,17 @@ Retrieves information about the connected user including personal data,
 collections, datasets, and group permissions.
 """
 
-import sys
-import os
 import json
 import logging
 import argparse
+import requests
 from typing import Dict, Any, List, Optional
 from datetime import datetime
-
-# Add the client library path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'nakala-python-client'))
-
-from openapi_client import ApiClient, Configuration
-from openapi_client.api.users_api import UsersApi
-from openapi_client.api.collections_api import CollectionsApi
-from openapi_client.api.datas_api import DatasApi
-from openapi_client.exceptions import ApiException
 
 # Import common utilities
 from .common.config import NakalaConfig
 from .common.exceptions import NakalaError, NakalaAPIError
-from .common.utils import setup_common_logging
+from .common.utils import setup_common_logging, NakalaCommonUtils
 
 logger = logging.getLogger(__name__)
 
@@ -34,126 +24,154 @@ class NakalaUserInfoClient:
     
     def __init__(self, config: NakalaConfig):
         self.config = config
-        
-        # Setup API client
-        configuration = Configuration()
-        configuration.host = config.api_url
-        configuration.api_key['X-API-KEY'] = config.api_key
-        
-        self.api_client = ApiClient(configuration)
-        self.users_api = UsersApi(self.api_client)
-        self.collections_api = CollectionsApi(self.api_client)
-        self.datas_api = DatasApi(self.api_client)
+        self.utils = NakalaCommonUtils()
     
     def get_user_info(self) -> Dict[str, Any]:
         """Get current user information."""
         try:
-            user = self.users_api.users_me_get()
+            url = f"{self.config.api_url}/users/me"
+            headers = {'X-API-KEY': self.config.api_key}
+            
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            response.raise_for_status()
+            
+            user_data = response.json()
             return {
-                'id': user.id,
-                'email': user.email,
-                'name': getattr(user, 'name', None),
-                'firstname': getattr(user, 'firstname', None),
-                'lastname': getattr(user, 'lastname', None),
-                'institution': getattr(user, 'institution', None),
-                'created_date': getattr(user, 'created_date', None),
-                'status': getattr(user, 'status', None)
+                'id': user_data.get('userGroupId'),
+                'username': user_data.get('username'),
+                'email': user_data.get('mail'),
+                'firstname': user_data.get('givenname'),
+                'lastname': user_data.get('surname'),
+                'fullname': user_data.get('fullname'),
+                'roles': user_data.get('roles', []),
+                'first_login': user_data.get('firstLogin'),
+                'last_login': user_data.get('lastLogin'),
+                'api_key': user_data.get('apiKey')
             }
-        except ApiException as e:
+        except requests.exceptions.RequestException as e:
             raise NakalaAPIError(f"Failed to get user info: {e}")
     
     def get_user_collections(self, scope: str = 'all') -> List[Dict[str, Any]]:
         """Get user collections with metadata."""
         try:
-            query_params = {
-                'scope': scope,
-                'fq': '',
+            url = f"{self.config.api_url}/users/collections/{scope}"
+            headers = {'X-API-KEY': self.config.api_key}
+            params = {
                 'q': '*',
                 'page': 0,
-                'size': 1000  # Get up to 1000 collections
+                'size': 1000
             }
             
-            result = self.users_api.users_collections_scope_post(
-                user_collections_query=query_params
-            )
+            response = requests.get(url, headers=headers, params=params, timeout=self.config.timeout)
+            response.raise_for_status()
             
+            result = response.json()
             collections = []
-            if hasattr(result, 'datas') and result.datas:
-                for collection in result.datas:
+            
+            if 'datas' in result:
+                for collection in result['datas']:
                     collections.append({
-                        'id': collection.id,
-                        'title': getattr(collection, 'title', ''),
-                        'description': getattr(collection, 'description', ''),
-                        'status': getattr(collection, 'status', ''),
-                        'created_date': getattr(collection, 'created_date', ''),
-                        'updated_date': getattr(collection, 'updated_date', ''),
-                        'author': getattr(collection, 'author', ''),
-                        'data_count': getattr(collection, 'data_count', 0)
+                        'id': collection.get('identifier'),
+                        'title': self._extract_metadata_value(collection.get('metas', []), 'title'),
+                        'description': self._extract_metadata_value(collection.get('metas', []), 'description'),
+                        'status': collection.get('status', ''),
+                        'created_date': collection.get('creDate', ''),
+                        'updated_date': collection.get('modDate', ''),
+                        'author': self._extract_metadata_value(collection.get('metas', []), 'creator'),
+                        'data_count': collection.get('data_count', 0)
                     })
             
             return collections
             
-        except ApiException as e:
-            logger.error(f"Failed to get user collections: {e}")
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Failed to get user collections: {e}")
             return []
     
     def get_user_datasets(self, scope: str = 'all') -> List[Dict[str, Any]]:
         """Get user datasets with metadata."""
         try:
-            query_params = {
-                'scope': scope,
-                'fq': '',
+            url = f"{self.config.api_url}/users/datas/{scope}"
+            headers = {'X-API-KEY': self.config.api_key}
+            params = {
                 'q': '*',
                 'page': 0,
-                'size': 1000  # Get up to 1000 datasets
+                'size': 1000
             }
             
-            result = self.users_api.users_datas_scope_post(
-                user_datas_query=query_params
-            )
+            response = requests.get(url, headers=headers, params=params, timeout=self.config.timeout)
+            response.raise_for_status()
             
+            result = response.json()
             datasets = []
-            if hasattr(result, 'datas') and result.datas:
-                for data in result.datas:
+            
+            if 'datas' in result:
+                for data in result['datas']:
                     datasets.append({
-                        'id': data.id,
-                        'title': getattr(data, 'title', ''),
-                        'description': getattr(data, 'description', ''),
-                        'status': getattr(data, 'status', ''),
-                        'created_date': getattr(data, 'created_date', ''),
-                        'updated_date': getattr(data, 'updated_date', ''),
-                        'author': getattr(data, 'author', ''),
-                        'file_count': len(getattr(data, 'files', [])),
-                        'data_type': getattr(data, 'data_type', '')
+                        'id': data.get('identifier'),
+                        'title': self._extract_metadata_value(data.get('metas', []), 'title'),
+                        'description': self._extract_metadata_value(data.get('metas', []), 'description'),
+                        'status': data.get('status', ''),
+                        'created_date': data.get('creDate', ''),
+                        'updated_date': data.get('modDate', ''),
+                        'author': self._extract_metadata_value(data.get('metas', []), 'creator'),
+                        'file_count': len(data.get('files', [])),
+                        'data_type': self._extract_metadata_value(data.get('metas', []), 'type')
                     })
             
             return datasets
             
-        except ApiException as e:
-            logger.error(f"Failed to get user datasets: {e}")
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Failed to get user datasets: {e}")
             return []
+    
+    def _extract_metadata_value(self, metas: List[Dict], property_name: str, language: str = 'fr') -> str:
+        """Extract metadata value by property name and language."""
+        if not metas:
+            return ''
+            
+        # Look for the property with matching language first
+        for meta in metas:
+            property_uri = meta.get('propertyUri', '')
+            meta_lang = meta.get('lang', '')
+            
+            if property_name in property_uri.lower() and meta_lang == language:
+                return meta.get('value', '')
+        
+        # Fall back to any language for the property
+        for meta in metas:
+            property_uri = meta.get('propertyUri', '')
+            if property_name in property_uri.lower():
+                return meta.get('value', '')
+                
+        return ''
     
     def get_user_groups(self, scope: str = 'all') -> List[Dict[str, Any]]:
         """Get user groups and permissions."""
         try:
-            result = self.users_api.users_groups_scope_get(scope=scope)
+            url = f"{self.config.api_url}/users/groups/{scope}"
+            headers = {'X-API-KEY': self.config.api_key}
             
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            response.raise_for_status()
+            
+            result = response.json()
             groups = []
-            if result:
+            
+            if isinstance(result, list):
                 for group in result:
                     groups.append({
-                        'id': group.id,
-                        'name': getattr(group, 'name', ''),
-                        'description': getattr(group, 'description', ''),
-                        'type': getattr(group, 'type', ''),
-                        'role': getattr(group, 'role', ''),
-                        'member_count': getattr(group, 'member_count', 0)
+                        'id': group.get('id'),
+                        'name': group.get('name', ''),
+                        'description': group.get('description', ''),
+                        'type': group.get('type', ''),
+                        'role': group.get('role', ''),
+                        'member_count': group.get('member_count', 0)
                     })
             
             return groups
             
-        except ApiException as e:
-            logger.error(f"Failed to get user groups: {e}")
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Failed to get user groups: {e}")
             return []
     
     def get_complete_user_profile(self) -> Dict[str, Any]:
@@ -301,7 +319,8 @@ Examples:
     args = parser.parse_args()
     
     # Setup logging
-    setup_common_logging(verbose=args.verbose)
+    log_level = logging.DEBUG if args.verbose else logging.INFO
+    setup_common_logging(level=log_level)
     
     try:
         # Create configuration
