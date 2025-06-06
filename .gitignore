@@ -107,3 +107,12 @@ archive/
 *.csv
 *.log
 temp_*
+
+# Internal development documentation (not for public release)
+dev-docs/
+*REPORT*.md
+CLAUDE.md
+test_*.py
+test_*.csv
+*_results.json
+*_report.json

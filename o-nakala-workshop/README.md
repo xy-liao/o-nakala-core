@@ -15,6 +15,8 @@ This workshop teaches you to:
 
 ## 🚀 Quick Start
 
+**⚡ For immediate 5-minute start:** See the **[Quick Start Guide](../docs_organized/current/QUICK_START.md)**
+
 ### Prerequisites
 
 1. **NAKALA Test Account**

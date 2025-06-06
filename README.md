@@ -14,7 +14,7 @@ NAKALA Client provides professional-grade tools for managing research data in th
 
 - **📤 Data Upload**: Bulk upload with automatic metadata extraction
 - **📚 Collection Management**: Organize datasets into thematic collections  
-- **🔍 Data Curation**: Quality assessment and automated recommendations
+- **🔍 Data Curation**: Quality assessment and batch metadata modifications
 - **⚙️ Workflow Automation**: Scriptable operations for research pipelines
 - **🌐 Multi-environment**: Test and production API support
 - **🔧 CLI Tools**: Command-line interface for all operations
@@ -33,37 +33,58 @@ cd o-nakala-core
 pip install -e .
 ```
 
-### Basic Usage
-
-```python
-from nakala_client import NakalaUploader, NakalaCollectionManager
-
-# Initialize client
-uploader = NakalaUploader(
-    api_key="your-api-key",
-    api_url="https://apitest.nakala.fr"
-)
-
-# Upload dataset
-result = uploader.upload_folder(
-    dataset_csv="data_config.csv",
-    base_path="research_data/"
-)
-
-print(f"Created dataset: {result.identifier}")
-```
-
-### CLI Usage
+### Verify Installation
 
 ```bash
-# Upload data
-nakala-upload --api-key YOUR_KEY --dataset data.csv --folder-config config.csv
+# Quick verification
+python test_installation.py
+
+# Test CLI commands
+nakala-upload --help
+nakala-collection --help
+nakala-curator --help
+nakala-user-info --help
+```
+
+### CLI Usage (Recommended)
+
+```bash
+# Upload research data
+nakala-upload \
+  --api-url "https://apitest.nakala.fr" \
+  --api-key "YOUR_KEY" \
+  --mode folder \
+  --dataset "folder_data_items.csv" \
+  --base-path "your_data/"
 
 # Create collections  
-nakala-collection --api-key YOUR_KEY --from-upload-output results.csv
+nakala-collection \
+  --api-url "https://apitest.nakala.fr" \
+  --api-key "YOUR_KEY" \
+  --from-upload-output "upload_results.csv"
 
-# Perform curation
-nakala-curator --api-key YOUR_KEY --quality-report --output report.json
+# Analyze data quality
+nakala-curator \
+  --api-url "https://apitest.nakala.fr" \
+  --api-key "YOUR_KEY" \
+  --quality-report \
+  --output "quality_report.json"
+```
+
+### Python API Usage
+
+```python
+from nakala_client.upload import main as upload_main
+from nakala_client.collection import main as collection_main
+from nakala_client.common import NakalaConfig
+
+# Set up configuration
+import os
+os.environ['NAKALA_API_KEY'] = 'your-api-key'
+os.environ['NAKALA_BASE_URL'] = 'https://apitest.nakala.fr'
+
+# Use through CLI interface or direct module imports
+# (See developer documentation for advanced Python API usage)
 ```
 
 ## 📚 Learning Resources
@@ -84,9 +105,9 @@ jupyter lab NAKALA_Complete_Workflow.ipynb
 - 📋 Comprehensive reporting
 
 ### 📖 Documentation
-- **[User Guides](docs_organized/current/user-guides/)** - Step-by-step tutorials
-- **[Developer Docs](docs_organized/current/developer/)** - API reference and architecture
-- **[Examples](docs_organized/examples/)** - Sample datasets and configurations
+- **[User Guides](docs/user-guides/)** - Step-by-step tutorials
+- **[Examples](examples/)** - Sample datasets and configurations
+- **[API Reference](https://api.nakala.fr/swagger-ui/)** - Complete API documentation
 
 ## 🏗️ Architecture
 
@@ -193,13 +214,14 @@ python test_v2_implementation.py
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [development setup](PYPI_PUBLICATION_GUIDE.md) for details.
+We welcome contributions! Please follow these steps:
 
 ### Development Setup
 ```bash
 git clone https://github.com/efeo/o-nakala-core.git
 cd o-nakala-core
-pip install -e ".[dev]"
+pip install -e .
+pip install -r requirements.txt
 ```
 
 ### Code Style
@@ -239,7 +261,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 🙋 Support
 
 ### Getting Help
-- **Documentation**: [docs_organized/](docs_organized/)
+- **Documentation**: [docs/](docs/)
 - **Workshop**: Interactive learning materials in `o-nakala-workshop/`
 - **Issues**: GitHub Issues for bug reports
 - **API Reference**: https://api.nakala.fr/swagger-ui/
@@ -251,4 +273,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**🎉 Ready to manage research data professionally? Start with the [workshop](o-nakala-workshop/) or explore the [documentation](docs_organized/current/user-guides/)!**
+**🎉 Ready to manage research data professionally? Start with the [workshop](o-nakala-workshop/) or explore the [documentation](docs/)!**
