@@ -34,14 +34,29 @@ ENV/
 .DS_Store
 
 # Project specific
-# .env  # Commented out to allow committing .env for development
-.env.*  # But still ignore other .env files
-!/.env.example  # Keep example file tracked
+.env
+.env.*
+!/.env.example
 *.log
 .coverage
 htmlcov/
 .pytest_cache/
 .mypy_cache/
+
+# Security - API Keys and Credentials
+**/api_keys.txt
+**/credentials.json
+**/secrets.*
+**/*_secret*
+**/*_private*
+
+# Workshop and test outputs
+output_archive/
+test_workflow_output/
+o-nakala-workshop/outputs/
+full_cycle_*.csv
+full_cycle_*.json
+workshop_report_*.md
 
 # Jupyter Notebook
 .ipynb_checkpoints

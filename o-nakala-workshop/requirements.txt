@@ -1,0 +1,50 @@
+# NAKALA Workshop Requirements
+# Core Python packages needed for the workshop
+
+# Option 1: Install from PyPI (recommended for production)
+# nakala-client>=2.0.0
+
+# Option 2: Install from local development (for workshop)
+# Run from workshop directory: pip install -e ../
+
+# Essential packages for data handling and notebook environment
+pandas>=2.0.0                # Data analysis and CSV handling
+numpy>=1.24.0                # Numerical operations
+jupyter>=1.0.0               # Jupyter notebook environment
+jupyterlab>=4.0.0            # Modern Jupyter interface
+ipywidgets>=8.0.0            # Interactive widgets for notebooks
+
+# NAKALA client dependencies (automatically installed with nakala-client)
+requests>=2.32.3             # HTTP requests for API calls
+tenacity>=9.1.2              # Retry logic with exponential backoff
+typing-extensions>=4.14.0    # Type hints support
+
+# Configuration and environment management
+python-dotenv>=1.0.0         # Environment variable loading from .env files
+
+# Enhanced output and user experience
+rich>=13.0.0                 # Beautiful console output with colors
+click>=8.0.0                 # Command-line interface improvements
+
+# Workshop-specific utilities
+matplotlib>=3.7.0            # Plotting and visualization (optional)
+seaborn>=0.12.0              # Statistical data visualization (optional)
+
+# JSON and data format handling
+simplejson>=3.19.0           # Enhanced JSON handling
+
+# Security and validation
+urllib3>=2.0.0               # HTTP library with security features
+certifi>=2023.0.0            # Certificate validation
+
+# Installation Instructions:
+# 
+# Method 1 - PyPI Installation (when published):
+# pip install nakala-client[workshop]
+#
+# Method 2 - Local Development Installation:
+# pip install -r requirements.txt
+# pip install -e ../
+#
+# Method 3 - All-in-one Installation:
+# pip install -e "../[workshop]"

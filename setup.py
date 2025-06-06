@@ -56,11 +56,10 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "nakala-upload=nakala_client.upload:main",
-            "nakala-collection=nakala_client.collection:main",
-            "nakala-search=nakala_client.search:main",
-            "nakala-curator=nakala_client.curator:main",
-            "nakala-metadata=nakala_client.metadata:main",
+            "nakala-upload=nakala_client.cli.upload:main",
+            "nakala-collection=nakala_client.cli.collection:main", 
+            "nakala-curator=nakala_client.cli.curator:main",
+            "nakala-user-info=nakala_client.cli.user_info:main",
         ],
     },
     include_package_data=True,
