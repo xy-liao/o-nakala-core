@@ -103,3 +103,7 @@ ENV/
 *.swp
 *.swo
 *~
+archive/
+*.csv
+*.log
+temp_*
