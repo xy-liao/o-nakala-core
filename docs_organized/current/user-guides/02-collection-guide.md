@@ -31,7 +31,7 @@ A Python script for managing collections on the Nakala platform.
 
 ```bash
 # Create collection from upload output
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-api-key" \
     --title "My Bird Collection" \
     --description "A collection of bird photographs" \
@@ -40,7 +40,7 @@ python nakala-client-collection.py \
     --from-upload-output output.csv
 
 # Create collection from specific data IDs
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-api-key" \
     --title "Selected Images" \
     --description "Curated selection of images" \
@@ -49,7 +49,7 @@ python nakala-client-collection.py \
     --data-ids "10.34847/nkl.f1c8y3w0,10.34847/nkl.3bdeo0xj"
 
 # Create collections from folder structure
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-api-key" \
     --from-folder-collections "folder_collections.csv" \
     --from-upload-output "output.csv" \

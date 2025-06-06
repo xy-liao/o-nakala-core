@@ -43,7 +43,7 @@ Always test thoroughly on the test environment before using production.
 
 ```bash
 # Example for large datasets
-python nakala-client-upload-v2.py --batch-size 10 --retry-attempts 3
+nakala-upload --batch-size 10 --retry-attempts 3
 ```
 
 ### Q: What file formats are supported?
@@ -68,10 +68,10 @@ Check the specific requirements in your Nakala instance configuration.
 
 ```bash
 # Validate before uploading
-python nakala-client-upload-v2.py --validate-only dataset.csv
+nakala-upload --validate-only dataset.csv
 
 # Upload with detailed logging
-python nakala-client-upload-v2.py --debug dataset.csv
+nakala-upload --debug dataset.csv
 ```
 
 ## Collection Questions
@@ -86,13 +86,13 @@ python nakala-client-upload-v2.py --debug dataset.csv
 
 ```bash
 # Step 1: Create collections
-python nakala-client-collection-v2.py --from-folder-collections collections.csv
+nakala-collection --from-folder-collections collections.csv
 
 # Step 2: Upload data
-python nakala-client-upload-v2.py --dataset data.csv
+nakala-upload --dataset data.csv
 
 # Step 3: Link data to collections  
-python nakala-client-collection-v2.py --from-upload-output output.csv
+nakala-collection --from-upload-output output.csv
 ```
 
 ### Q: Can I add data to existing collections?
@@ -183,13 +183,13 @@ collections = create_collections(config, collection_file)
 
 ```bash
 # Minimal logging
-python nakala-client-upload-v2.py --quiet dataset.csv
+nakala-upload --log-level WARNING dataset.csv
 
 # Detailed logging  
-python nakala-client-upload-v2.py --debug dataset.csv
+nakala-upload --log-level DEBUG dataset.csv
 
-# Custom log file
-python nakala-client-upload-v2.py --log-file custom.log dataset.csv
+# Custom log file (output goes to logs/)
+nakala-upload --log-level INFO dataset.csv
 ```
 
 ### Q: How do I handle proxy or firewall issues?

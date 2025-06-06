@@ -55,21 +55,23 @@ class NakalaUserInfoClient:
         """Get user collections with metadata."""
         try:
             url = f"{self.config.api_url}/users/collections/{scope}"
-            headers = {'X-API-KEY': self.config.api_key}
-            params = {
-                'q': '*',
-                'page': 0,
-                'size': 1000
+            headers = {
+                'X-API-KEY': self.config.api_key,
+                'Content-Type': 'application/json'
+            }
+            query_body = {
+                'page': 1,
+                'limit': 1000
             }
             
-            response = requests.get(url, headers=headers, params=params, timeout=self.config.timeout)
+            response = requests.post(url, headers=headers, json=query_body, timeout=self.config.timeout)
             response.raise_for_status()
             
             result = response.json()
             collections = []
             
-            if 'datas' in result:
-                for collection in result['datas']:
+            if 'data' in result:
+                for collection in result['data']:
                     collections.append({
                         'id': collection.get('identifier'),
                         'title': self._extract_metadata_value(collection.get('metas', []), 'title'),
@@ -91,21 +93,23 @@ class NakalaUserInfoClient:
         """Get user datasets with metadata."""
         try:
             url = f"{self.config.api_url}/users/datas/{scope}"
-            headers = {'X-API-KEY': self.config.api_key}
-            params = {
-                'q': '*',
-                'page': 0,
-                'size': 1000
+            headers = {
+                'X-API-KEY': self.config.api_key,
+                'Content-Type': 'application/json'
+            }
+            query_body = {
+                'page': 1,
+                'limit': 1000
             }
             
-            response = requests.get(url, headers=headers, params=params, timeout=self.config.timeout)
+            response = requests.post(url, headers=headers, json=query_body, timeout=self.config.timeout)
             response.raise_for_status()
             
             result = response.json()
             datasets = []
             
-            if 'datas' in result:
-                for data in result['datas']:
+            if 'data' in result:
+                for data in result['data']:
                     datasets.append({
                         'id': data.get('identifier'),
                         'title': self._extract_metadata_value(data.get('metas', []), 'title'),

@@ -472,6 +472,12 @@ class NakalaCuratorClient:
             headers = {'X-API-KEY': self.config.api_key}
             
             response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            
+            # Handle access denied for private collections
+            if response.status_code == 403:
+                logger.warning(f"Access denied to collection {collection_id} - may be private or require special permissions")
+                return []
+            
             response.raise_for_status()
             
             result = response.json()

@@ -13,7 +13,7 @@
 ### Step 2: Upload Dataset
 ```bash
 # Important: Use the correct base path for your dataset
-python nakala-client-upload.py --mode folder \
+nakala-upload --mode folder \
     --dataset "sample_dataset" \
     --folder-config "sample_dataset/folder_data_items.csv" \
     --api-key "your-key"
@@ -23,18 +23,32 @@ Note: The `--dataset` parameter should point to the base directory containing yo
 
 ### Step 3: Create Collections
 ```bash
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-key" \
     --from-folder-collections "sample_dataset/folder_collections.csv" \
     --from-upload-output "output.csv" \
     --collection-report "collections_output.csv"
 ```
 
-### Step 4: Verify and Publish
+### Step 4: Data Curation and Quality Analysis
+```bash
+# Generate comprehensive quality report
+nakala-curator \
+    --api-key "your-key" \
+    --quality-report \
+    --output "quality_report.json"
+
+# Validate metadata for all collections
+nakala-curator \
+    --api-key "your-key" \
+    --validate-metadata \
+    --scope collections
+```
+
+### Step 5: Verify and Publish
 - Check upload results in `output.csv`
 - Verify collection creation in `collections_output.csv`
-- Review collection structure and relationships
-- Check collection mapping diagnostics in the logs
+- Review quality report and apply recommendations
 - Update status from private to public if needed
 
 ## Common Workflows
@@ -42,7 +56,7 @@ python nakala-client-collection.py \
 ### 1. Folder-Based Collection Creation
 ```bash
 # Create collections based on folder structure
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-key" \
     --from-folder-collections "folder_collections.csv" \
     --from-upload-output "output.csv" \
@@ -58,7 +72,7 @@ The script will provide detailed collection mapping diagnostics showing:
 ### 2. Single Collection Creation
 ```bash
 # Create a single collection
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-key" \
     --title "fr:Collection Title|en:Collection Title" \
     --description "fr:Description|en:Description" \
@@ -69,14 +83,14 @@ python nakala-client-collection.py \
 ### 3. Multilingual Dataset Upload and Collection
 ```bash
 # Upload dataset with multilingual metadata
-python nakala-client-upload.py \
+nakala-upload \
     --mode folder \
     --dataset "multilingual_dataset/" \
     --folder-config "folder_data_items.csv" \
     --api-key "your-key"
 
 # Create collections with multilingual metadata
-python nakala-client-collection.py \
+nakala-collection \
     --api-key "your-key" \
     --from-folder-collections "folder_collections.csv" \
     --from-upload-output "output.csv"

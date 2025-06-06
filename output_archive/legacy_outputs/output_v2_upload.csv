@@ -1,6 +1,0 @@
-identifier,files,title,status,response
-,"temperature_trends_2023.png,site_photograph_2.jpg,site_photograph_1.jpg",fr:Collection d'images|en:Image Collection,ERROR,RetryError[<Future at 0x104ba21d0 state=finished raised NakalaAPIError>]
-,"preprocess_data.py,analysis_data_cleaning.R",fr:Fichiers de code|en:Code Files,ERROR,RetryError[<Future at 0x104bbdc90 state=finished raised NakalaAPIError>]
-,"team_meeting_2023-04.md,conference_presentation_2023.md,stakeholder_update_2023-06.md",fr:Matériaux de présentation|en:Presentation Materials,ERROR,RetryError[<Future at 0x104b72790 state=finished raised NakalaAPIError>]
-,"paper_literature_review.md,study_protocol_v1.0.md,paper_analysis_methods.md,paper_results_discussion.md",fr:Documents de recherche|en:Research Documents,ERROR,RetryError[<Future at 0x104bbc790 state=finished raised NakalaAPIError>]
-,"analysis_results_2023.csv,raw_survey_data_2023.csv",fr:Données de recherche|en:Research Data,ERROR,RetryError[<Future at 0x104bc86d0 state=finished raised NakalaAPIError>]

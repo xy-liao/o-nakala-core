@@ -1,4 +1,0 @@
-identifier,files,title,status,response
-,,Martin-pêcheur,ERROR,RetryError[<Future at 0x1058176d0 state=finished raised NakalaAPIError>]
-,,Chouette,ERROR,RetryError[<Future at 0x1065da910 state=finished raised NakalaAPIError>]
-,,Paon,ERROR,RetryError[<Future at 0x1065db090 state=finished raised NakalaAPIError>]

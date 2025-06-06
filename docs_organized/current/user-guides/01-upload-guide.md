@@ -28,20 +28,20 @@ A Python script for uploading datasets and their associated files to the Nakala 
 
 ```bash
 # CSV Mode (Basic)
-python nakala-client-upload.py \
+nakala-upload \
     --api-key "your-api-key" \
     --dataset dataset.csv \
-    --image-dir img/
+    --base-path img/
 
 # CSV Mode (Full)
-python nakala-client-upload.py \
+nakala-upload \
     --api-key "your-api-key" \
     --api-url "https://apitest.nakala.fr" \
     --dataset dataset.csv \
-    --image-dir img/
+    --base-path img/
 
 # Folder Mode
-python nakala-client-upload.py \
+nakala-upload \
     --api-key "your-api-key" \
     --mode folder \
     --dataset "path/to/dataset" \

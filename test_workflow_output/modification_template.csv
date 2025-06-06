@@ -1,6 +1,0 @@
-id,current_title,new_title,current_description,new_description,current_keywords,new_keywords,current_license,new_license,current_language,new_language,action
-test_item_1,fr:Fichiers de code|en:Code Files,,fr:Scripts pour l'analyse de données|en:Scripts for data analysis,,fr:code;programmation;scripts|en:code;programming;scripts,,CC-BY-4.0,,fr,,modify
-test_item_2,fr:Données de recherche|en:Research Data,,fr:Fichiers de données pour analyse de recherche|en:Data files for research analysis,,fr:données;recherche;analyse|en:data;research;analysis,,CC-BY-4.0,,fr,,modify
-test_item_3,fr:Documents de recherche|en:Research Documents,,fr:Documentation et articles de recherche|en:Documentation and research papers,,fr:documents;recherche;articles|en:documents;research;papers,,CC-BY-4.0,,fr,,modify
-test_item_4,fr:Collection d'images|en:Image Collection,,fr:Images et données visuelles|en:Images and visual data,,fr:images;visuel;recherche|en:images;visual;research,,CC-BY-4.0,,fr,,modify
-test_item_5,fr:Matériaux de présentation|en:Presentation Materials,,fr:Diapositives de présentation|en:Presentation slides,,fr:présentations;diapositives;recherche|en:presentations;slides;research,,CC-BY-4.0,,fr,,modify
