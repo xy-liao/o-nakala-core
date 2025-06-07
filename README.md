@@ -179,8 +179,8 @@ python cleanup.py --keep-logs
 ## 🔗 Links
 
 - **[NAKALA Platform](https://nakala.fr)** - Main repository platform
-- **[Test Environment](https://apitest.nakala.fr)** - Safe testing environment  
-- **[API Documentation](https://api.nakala.fr/swagger-ui/)** - Complete API reference
+- **[Test Environment](https://test.nakala.fr/)** - Safe testing environment  
+- **[API Documentation](https://api.nakala.fr/doc)** - Complete API reference
 - **[xy-liao/o-nakala-core](https://github.com/xy-liao/o-nakala-core)** - Project repository
 
 ## 📄 License
