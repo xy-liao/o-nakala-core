@@ -6,25 +6,125 @@ metadata validation, duplicate detection, and data consistency checking.
 """
 
 import csv
-import os
 import json
 import logging
 import argparse
-import requests
-from typing import Dict, Any, List, Optional, Tuple, Iterator
-from datetime import datetime
-from pathlib import Path
-import asyncio
 import time
+import requests
+from typing import Dict, Any, List, Optional, Tuple
+from datetime import datetime
 
 # Import common utilities
 from .common.config import NakalaConfig
-from .common.exceptions import NakalaError, NakalaValidationError, NakalaAPIError
+from .common.exceptions import NakalaAPIError
 from .common.utils import NakalaCommonUtils, setup_common_logging
 
 from .user_info import NakalaUserInfoClient
 
 logger = logging.getLogger(__name__)
+
+
+# Comprehensive field mapping for CSV parsing
+CSV_FIELD_MAPPINGS = {
+    'new_title': {
+        'api_field': 'title',
+        'property_uri': 'http://nakala.fr/terms#title',
+        'multilingual': True,
+        'required': True
+    },
+    'new_description': {
+        'api_field': 'description',
+        'property_uri': 'http://purl.org/dc/terms/description',
+        'multilingual': True,
+        'required': True
+    },
+    'new_keywords': {
+        'api_field': 'keywords',
+        'property_uri': 'http://purl.org/dc/terms/subject',
+        'multilingual': True,
+        'required': False
+    },
+    'new_author': {
+        'api_field': 'creator',
+        'property_uri': 'http://nakala.fr/terms#creator',
+        'multilingual': False,
+        'required': True,
+        'format': 'array'
+    },
+    'new_contributor': {
+        'api_field': 'contributor',
+        'property_uri': 'http://purl.org/dc/terms/contributor',
+        'multilingual': False,
+        'required': False,
+        'format': 'array'
+    },
+    'new_license': {
+        'api_field': 'license',
+        'property_uri': 'http://nakala.fr/terms#license',
+        'multilingual': False,
+        'required': True
+    },
+    'new_type': {
+        'api_field': 'type',
+        'property_uri': 'http://nakala.fr/terms#type',
+        'multilingual': False,
+        'required': True
+    },
+    'new_date': {
+        'api_field': 'date',
+        'property_uri': 'http://nakala.fr/terms#created',
+        'multilingual': False,
+        'required': True
+    },
+    'new_language': {
+        'api_field': 'language',
+        'property_uri': 'http://purl.org/dc/terms/language',
+        'multilingual': False,
+        'required': False
+    },
+    'new_temporal': {
+        'api_field': 'temporal',
+        'property_uri': 'http://purl.org/dc/terms/coverage',
+        'multilingual': False,
+        'required': False
+    },
+    'new_spatial': {
+        'api_field': 'spatial',
+        'property_uri': 'http://purl.org/dc/terms/coverage',
+        'multilingual': False,
+        'required': False
+    },
+    'new_relation': {
+        'api_field': 'relation',
+        'property_uri': 'http://purl.org/dc/terms/relation',
+        'multilingual': False,
+        'required': False
+    },
+    'new_source': {
+        'api_field': 'source',
+        'property_uri': 'http://purl.org/dc/terms/source',
+        'multilingual': False,
+        'required': False
+    },
+    'new_identifier': {
+        'api_field': 'identifier',
+        'property_uri': 'http://purl.org/dc/terms/identifier',
+        'multilingual': False,
+        'required': False
+    },
+    'new_alternative': {
+        'api_field': 'alternative',
+        'property_uri': 'http://purl.org/dc/terms/alternative',
+        'multilingual': True,
+        'required': False
+    },
+    'new_publisher': {
+        'api_field': 'publisher',
+        'property_uri': 'http://purl.org/dc/terms/publisher',
+        'multilingual': False,
+        'required': False
+    }
+}
 
 
 class CuratorConfig:
@@ -248,7 +348,7 @@ class NakalaDuplicateDetector:
         duplicates = []
 
         for i, item1 in enumerate(items):
-            for j, item2 in enumerate(items[i + 1 :], i + 1):
+            for item2 in items[i + 1 :]:
                 similarity = self.calculate_similarity(item1, item2)
                 if similarity >= self.threshold:
                     duplicates.append((item1, item2, similarity))
@@ -259,12 +359,87 @@ class NakalaDuplicateDetector:
 class NakalaCuratorClient:
     """Main curator client for batch operations and quality management."""
 
-    def __init__(self, config: CuratorConfig):
-        self.config = config
+    def __init__(self, config):
+        # Handle both NakalaConfig and CuratorConfig for backward compatibility
+        if isinstance(config, NakalaConfig):
+            # Auto-wrap NakalaConfig in CuratorConfig
+            self.config = CuratorConfig(
+                api_url=config.api_url,
+                api_key=config.api_key,
+                timeout=getattr(config, 'timeout', 30)
+            )
+        elif isinstance(config, CuratorConfig):
+            self.config = config
+        else:
+            raise TypeError(f"Expected NakalaConfig or CuratorConfig, got {type(config)}")
+            
         self.utils = NakalaCommonUtils()
-        self.validator = NakalaMetadataValidator(config)
-        self.duplicate_detector = NakalaDuplicateDetector(config)
-        self.user_client = NakalaUserInfoClient(config)
+        self.validator = NakalaMetadataValidator(self.config)
+        self.duplicate_detector = NakalaDuplicateDetector(self.config)
+        self.user_client = NakalaUserInfoClient(self.config)
+
+    def parse_csv_modifications(self, csv_path: str) -> Tuple[List[Dict[str, Any]], List[str]]:
+        """
+        Parse CSV modifications with comprehensive field support.
+        
+        Returns:
+            Tuple of (modifications_list, unsupported_fields_list)
+        """
+        modifications = []
+        unsupported_fields = set()
+        
+        try:
+            with open(csv_path, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row_num, row in enumerate(reader, start=2):  # Start at 2 for line numbers (header is line 1)
+                    if row.get("action") == "modify":
+                        changes = {}
+                        
+                        # Process all potential modification fields
+                        for csv_field, value in row.items():
+                            if csv_field and csv_field.startswith('new_') and value and str(value).strip():
+                                if csv_field in CSV_FIELD_MAPPINGS:
+                                    field_config = CSV_FIELD_MAPPINGS[csv_field]
+                                    api_field = field_config['api_field']
+                                    
+                                    # Handle array format fields (like creator, contributor)
+                                    if field_config.get('format') == 'array':
+                                        # Convert semicolon-separated values to array
+                                        changes[api_field] = [v.strip() for v in str(value).split(';') if v.strip()]
+                                    else:
+                                        changes[api_field] = str(value).strip()
+                                        
+                                    logger.debug(f"Row {row_num}: Mapped {csv_field} -> {api_field} = {changes[api_field]}")
+                                else:
+                                    unsupported_fields.add(csv_field)
+                        
+                        if changes:
+                            modifications.append({
+                                "id": row["id"], 
+                                "changes": changes,
+                                "row_number": row_num
+                            })
+                        elif not any(row.get(f) for f in CSV_FIELD_MAPPINGS.keys()):
+                            logger.warning(f"Row {row_num}: No recognized modification fields found")
+        
+        except FileNotFoundError:
+            raise FileNotFoundError(f"CSV file not found: {csv_path}")
+        except Exception as e:
+            raise Exception(f"Error parsing CSV file {csv_path}: {e}")
+        
+        # Log warnings for unsupported fields
+        if unsupported_fields:
+            logger.warning(f"Unsupported CSV fields ignored: {sorted(unsupported_fields)}")
+            logger.info(f"Supported fields: {sorted(CSV_FIELD_MAPPINGS.keys())}")
+        
+        return modifications, list(unsupported_fields)
+
+    def _format_field_value(self, value: str, field_config: Dict[str, Any]) -> Any:
+        """Format field value according to its configuration."""
+        if field_config.get('format') == 'array':
+            # Convert semicolon-separated values to array
+            return [v.strip() for v in value.split(';') if v.strip()]
+        return value.strip()
 
     def batch_validate_metadata(self, items: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Validate metadata for multiple items."""
@@ -402,23 +577,27 @@ class NakalaCuratorClient:
         return "unknown"
 
     def _apply_modification(self, item_id: str, changes: Dict[str, Any]) -> bool:
-        """Apply actual modification via API."""
+        """Apply actual modification via API with comprehensive field support."""
         try:
-            # Determine item type and build appropriate URL
-            item_type = self._determine_item_type(item_id)
-
-            if item_type == "collection":
-                url = f"{self.config.api_url}/collections/{item_id}"
-            elif item_type == "dataset":
-                url = f"{self.config.api_url}/datas/{item_id}"
-            else:
-                logger.error(f"Could not determine type for item {item_id}")
-                return False
-
             headers = {"X-API-KEY": self.config.api_key}
 
-            response = requests.get(url, headers=headers, timeout=self.config.timeout)
-            response.raise_for_status()
+            # Try datasets first (most common), then collections if 404
+            dataset_url = f"{self.config.api_url}/datas/{item_id}"
+            collection_url = f"{self.config.api_url}/collections/{item_id}"
+            
+            # Single API call to get current data
+            response = requests.get(dataset_url, headers=headers, timeout=self.config.timeout)
+            
+            if response.status_code == 404:
+                # Try collections endpoint
+                response = requests.get(collection_url, headers=headers, timeout=self.config.timeout)
+                if response.status_code == 404:
+                    logger.error(f"Item {item_id} not found in datasets or collections")
+                    return False
+                url = collection_url
+            else:
+                response.raise_for_status()
+                url = dataset_url
 
             current_data = response.json()
             current_metas = current_data.get("metas", [])
@@ -426,118 +605,123 @@ class NakalaCuratorClient:
             # Build new metadata array
             new_metas = []
 
+            # Find field configurations for the changes being made
+            changing_uris = set()
+            for field_name in changes.keys():
+                field_config = self._find_field_config_by_api_name(field_name)
+                if field_config:
+                    changing_uris.add(field_config['property_uri'])
+
             # Keep existing metas that we're not changing
             for meta in current_metas:
                 property_uri = meta.get("propertyUri", "")
-                should_keep = True
-
-                # Check if this metadata field is being modified
-                for field_name in changes.keys():
-                    if field_name.lower() in property_uri.lower():
-                        should_keep = False
-                        break
-
-                if should_keep:
+                if property_uri not in changing_uris:
                     new_metas.append(meta)
 
-            # Add new/modified metadata
+            # Add new/modified metadata using comprehensive field mapping
             for field_name, new_value in changes.items():
-                if field_name == "title":
-                    # Handle multilingual titles
-                    if "|" in new_value:
-                        parts = new_value.split("|")
-                        for part in parts:
-                            if part.startswith("fr:"):
-                                new_metas.append(
-                                    {
-                                        "value": part[3:],
-                                        "lang": "fr",
-                                        "propertyUri": "http://nakala.fr/terms#title",
-                                    }
-                                )
-                            elif part.startswith("en:"):
-                                new_metas.append(
-                                    {
-                                        "value": part[3:],
-                                        "lang": "en",
-                                        "propertyUri": "http://nakala.fr/terms#title",
-                                    }
-                                )
-                    else:
-                        new_metas.append(
-                            {
-                                "value": new_value,
-                                "lang": "fr",
-                                "propertyUri": "http://nakala.fr/terms#title",
-                            }
-                        )
+                field_config = self._find_field_config_by_api_name(field_name)
+                if not field_config:
+                    logger.warning(f"No configuration found for field {field_name}, skipping")
+                    continue
 
-                elif field_name == "description":
-                    # Handle multilingual descriptions
-                    if "|" in new_value:
-                        parts = new_value.split("|")
-                        for part in parts:
-                            if part.startswith("fr:"):
-                                new_metas.append(
-                                    {
-                                        "value": part[3:],
-                                        "lang": "fr",
-                                        "propertyUri": "http://purl.org/dc/terms/description",
-                                    }
-                                )
-                            elif part.startswith("en:"):
-                                new_metas.append(
-                                    {
-                                        "value": part[3:],
-                                        "lang": "en",
-                                        "propertyUri": "http://purl.org/dc/terms/description",
-                                    }
-                                )
-                    else:
-                        new_metas.append(
-                            {
-                                "value": new_value,
-                                "lang": "fr",
-                                "propertyUri": "http://purl.org/dc/terms/description",
-                            }
-                        )
+                property_uri = field_config['property_uri']
+                is_multilingual = field_config.get('multilingual', False)
+                is_array = field_config.get('format') == 'array'
 
-                elif field_name == "keywords":
-                    # Handle multilingual keywords
-                    if "|" in new_value:
-                        parts = new_value.split("|")
+                if is_array:
+                    # Handle array fields like creator, contributor
+                    if isinstance(new_value, list):
+                        new_metas.append({
+                            "value": new_value,
+                            "propertyUri": property_uri,
+                            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                        })
+                    else:
+                        # Convert string to array if needed
+                        array_value = [v.strip() for v in str(new_value).split(';') if v.strip()]
+                        new_metas.append({
+                            "value": array_value,
+                            "propertyUri": property_uri,
+                            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                        })
+                elif is_multilingual:
+                    # Handle multilingual fields like title, description, keywords
+                    if "|" in str(new_value):
+                        parts = str(new_value).split("|")
                         for part in parts:
                             if part.startswith("fr:"):
-                                keywords = part[3:].split(";")
-                                for keyword in keywords:
-                                    if keyword.strip():
-                                        new_metas.append(
-                                            {
+                                content = part[3:]
+                                if field_name == "keywords":
+                                    # Handle semicolon-separated keywords
+                                    keywords = content.split(";")
+                                    for keyword in keywords:
+                                        if keyword.strip():
+                                            new_metas.append({
                                                 "value": keyword.strip(),
                                                 "lang": "fr",
-                                                "propertyUri": "http://purl.org/dc/terms/subject",
-                                            }
-                                        )
+                                                "propertyUri": property_uri,
+                                            })
+                                else:
+                                    new_metas.append({
+                                        "value": content,
+                                        "lang": "fr",
+                                        "propertyUri": property_uri,
+                                    })
                             elif part.startswith("en:"):
-                                keywords = part[3:].split(";")
-                                for keyword in keywords:
-                                    if keyword.strip():
-                                        new_metas.append(
-                                            {
+                                content = part[3:]
+                                if field_name == "keywords":
+                                    # Handle semicolon-separated keywords
+                                    keywords = content.split(";")
+                                    for keyword in keywords:
+                                        if keyword.strip():
+                                            new_metas.append({
                                                 "value": keyword.strip(),
                                                 "lang": "en",
-                                                "propertyUri": "http://purl.org/dc/terms/subject",
-                                            }
-                                        )
+                                                "propertyUri": property_uri,
+                                            })
+                                else:
+                                    new_metas.append({
+                                        "value": content,
+                                        "lang": "en",
+                                        "propertyUri": property_uri,
+                                    })
+                    else:
+                        # Default to French if no language specified
+                        new_metas.append({
+                            "value": str(new_value),
+                            "lang": "fr",
+                            "propertyUri": property_uri,
+                        })
+                else:
+                    # Handle simple non-multilingual fields
+                    meta_entry = {
+                        "value": str(new_value),
+                        "propertyUri": property_uri,
+                    }
+                    
+                    # Add typeUri for certain fields
+                    if field_name == "type":
+                        meta_entry["typeUri"] = "http://purl.org/dc/terms/URI"
+                    
+                    new_metas.append(meta_entry)
 
             # Prepare update payload
             update_payload = {"metas": new_metas}
+
+            # Debug: Log the payload being sent
+            logger.debug(f"Sending payload for {item_id}: {update_payload}")
 
             # Apply the modification
             headers["Content-Type"] = "application/json"
             response = requests.put(
                 url, headers=headers, json=update_payload, timeout=self.config.timeout
             )
+            
+            # Log error details for debugging
+            if response.status_code != 204:
+                logger.error(f"API Error {response.status_code}: {response.text}")
+            
             response.raise_for_status()
 
             logger.info(f"Successfully applied changes to {item_id}")
@@ -549,6 +733,13 @@ class NakalaCuratorClient:
         except Exception as e:
             logger.error(f"Error processing modification for {item_id}: {e}")
             return False
+
+    def _find_field_config_by_api_name(self, api_field_name: str) -> Optional[Dict[str, Any]]:
+        """Find field configuration by API field name."""
+        for config in CSV_FIELD_MAPPINGS.values():
+            if config['api_field'] == api_field_name:
+                return config
+        return None
 
     def detect_duplicates_in_collections(
         self, collection_ids: List[str]
@@ -1149,21 +1340,19 @@ Examples:
             logger.info(f"Modification template exported to: {args.export_template}")
 
         elif args.batch_modify:
-            # Load modifications from CSV
-            modifications = []
-            with open(args.batch_modify, "r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    if row.get("action") == "modify":
-                        changes = {}
-                        if row.get("new_title"):
-                            changes["title"] = row["new_title"]
-                        if row.get("new_description"):
-                            changes["description"] = row["new_description"]
-                        # Add more fields as needed
-
-                        if changes:
-                            modifications.append({"id": row["id"], "changes": changes})
+            # Load modifications from CSV using comprehensive parser
+            try:
+                modifications, unsupported_fields = curator.parse_csv_modifications(args.batch_modify)
+                
+                if unsupported_fields:
+                    logger.warning(f"Found {len(unsupported_fields)} unsupported fields: {unsupported_fields}")
+                    logger.info("Continuing with supported fields only...")
+                
+                logger.info(f"Parsed {len(modifications)} modifications from CSV")
+                
+            except Exception as e:
+                logger.error(f"Failed to parse CSV file: {e}")
+                return 1
 
             if modifications:
                 result = curator.batch_modify_metadata(
@@ -1190,7 +1379,14 @@ Examples:
                             default=str,
                         )
             else:
-                logger.info("No modifications found in CSV file")
+                logger.error("No valid modifications found in CSV file")
+                logger.info("Check that:")
+                logger.info("- CSV has 'action' column with 'modify' values")
+                logger.info("- CSV has 'id' column with valid item identifiers") 
+                logger.info(f"- CSV has one or more supported fields: {list(CSV_FIELD_MAPPINGS.keys())}")
+                if unsupported_fields:
+                    logger.info(f"- Remove unsupported fields: {unsupported_fields}")
+                return 1
 
         else:
             parser.print_help()
