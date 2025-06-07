@@ -46,10 +46,10 @@ CSV_FIELD_MAPPINGS = {
     },
     'new_author': {
         'api_field': 'creator',
-        'property_uri': 'http://nakala.fr/terms#creator',
+        'property_uri': 'http://purl.org/dc/terms/creator',
         'multilingual': False,
         'required': True,
-        'format': 'array'
+        'format': 'semicolon_split'
     },
     'new_contributor': {
         'api_field': 'contributor',
@@ -123,6 +123,13 @@ CSV_FIELD_MAPPINGS = {
         'property_uri': 'http://purl.org/dc/terms/publisher',
         'multilingual': False,
         'required': False
+    },
+    'new_creator': {
+        'api_field': 'creator',
+        'property_uri': 'http://purl.org/dc/terms/creator',
+        'multilingual': False,
+        'required': False,
+        'format': 'semicolon_split'
     }
 }
 
@@ -630,7 +637,7 @@ class NakalaCuratorClient:
                 is_array = field_config.get('format') == 'array'
 
                 if is_array:
-                    # Handle array fields like creator, contributor
+                    # Handle array fields like contributor (real arrays)
                     if isinstance(new_value, list):
                         new_metas.append({
                             "value": new_value,
@@ -642,6 +649,19 @@ class NakalaCuratorClient:
                         array_value = [v.strip() for v in str(new_value).split(';') if v.strip()]
                         new_metas.append({
                             "value": array_value,
+                            "propertyUri": property_uri,
+                            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                        })
+                elif field_config.get('format') == 'semicolon_split':
+                    # Handle semicolon-separated fields like creator - each as separate metadata entry
+                    if isinstance(new_value, list):
+                        creators = new_value
+                    else:
+                        creators = [v.strip() for v in str(new_value).split(';') if v.strip()]
+                    
+                    for creator in creators:
+                        new_metas.append({
+                            "value": creator,
                             "propertyUri": property_uri,
                             "typeUri": "http://www.w3.org/2001/XMLSchema#string"
                         })
