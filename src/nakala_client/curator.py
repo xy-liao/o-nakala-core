@@ -626,6 +626,89 @@ class NakalaCuratorClient:
         logger.info(f"Template exported to {output_path}")
 
 
+def print_field_reference():
+    """Print comprehensive field reference for curator operations."""
+    print("\n" + "="*80)
+    print("NAKALA CURATOR - FIELD REFERENCE")
+    print("="*80)
+    
+    print("\n📋 DATA ITEM FIELDS")
+    print("-" * 40)
+    
+    data_fields = [
+        ("title", "http://nakala.fr/terms#title", "Yes", "Required", '"fr:French|en:English"'),
+        ("description", "http://purl.org/dc/terms/description", "Yes", "Required", '"fr:Description|en:Description"'),
+        ("keywords", "http://purl.org/dc/terms/subject", "Yes", "Optional", '"fr:mot1;mot2|en:word1;word2"'),
+        ("author", "http://nakala.fr/terms#creator", "No", "Required", '"Surname,Givenname"'),
+        ("contributor", "http://purl.org/dc/terms/contributor", "No", "Optional", '"Smith,John;Martin,Alice"'),
+        ("type", "http://nakala.fr/terms#type", "No", "Required", 'COAR Resource Type URI'),
+        ("license", "http://nakala.fr/terms#license", "No", "Required", '"CC-BY-4.0"'),
+        ("date", "http://nakala.fr/terms#created", "No", "Required", '"2024-01-15" or "2024"'),
+        ("language", "http://purl.org/dc/terms/language", "No", "Optional", '"fr" or "en"'),
+        ("temporal", "http://purl.org/dc/terms/coverage", "No", "Optional", '"2020/2023"'),
+        ("spatial", "http://purl.org/dc/terms/coverage", "No", "Optional", '"France"'),
+        ("relation", "http://purl.org/dc/terms/relation", "No", "Optional", 'URI or text'),
+        ("source", "http://purl.org/dc/terms/source", "No", "Optional", 'Source reference'),
+        ("identifier", "http://purl.org/dc/terms/identifier", "No", "Optional", '"DOI:10.1234/example"'),
+    ]
+    
+    print(f"{'Field':<12} {'Multilingual':<12} {'Required':<10} {'Example':<25}")
+    print("-" * 70)
+    for field, _, multilingual, required, example in data_fields:
+        print(f"{field:<12} {multilingual:<12} {required:<10} {example:<25}")
+    
+    print("\n📚 COLLECTION FIELDS")
+    print("-" * 40)
+    
+    collection_fields = [
+        ("title", "Required", '"fr:Collection|en:Collection"'),
+        ("status", "Required", '"private" or "public"'),
+        ("description", "Optional", '"fr:Description|en:Description"'),
+        ("keywords", "Optional", '"fr:mot1;mot2|en:word1;word2"'),
+        ("creator", "Optional", '"Surname,Givenname"'),
+        ("data_items", "Optional", 'Folder patterns or IDs'),
+    ]
+    
+    print(f"{'Field':<12} {'Required':<10} {'Example':<30}")
+    print("-" * 55)
+    for field, required, example in collection_fields:
+        print(f"{field:<12} {required:<10} {example:<30}")
+    
+    print("\n🔧 BATCH MODIFICATION CSV FORMAT")
+    print("-" * 40)
+    print("id,action,current_title,new_title,current_description,new_description")
+    print("10.34847/nkl.abc123,update,\"Old Title\",\"fr:New|en:Title\",\"Old desc\",\"fr:New|en:Description\"")
+    
+    print("\n🌐 MULTILINGUAL FORMAT")
+    print("-" * 40)
+    print("Format: \"language_code:content|language_code:content\"")
+    print("Examples:")
+    print("  Single:   \"Simple English Title\"")
+    print("  Multiple: \"fr:Titre français|en:English Title\"")
+    print("  Keywords: \"fr:mot1;mot2|en:word1;word2\"")
+    
+    print("\n⚡ QUICK COMMANDS")
+    print("-" * 40)
+    print("# Show this reference")
+    print("nakala-curator --list-fields")
+    print("")
+    print("# Generate quality report")
+    print("nakala-curator --quality-report --api-key YOUR_KEY")
+    print("")
+    print("# Batch modify from CSV (dry run)")
+    print("nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY")
+    print("")
+    print("# Validate metadata")
+    print("nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY")
+    
+    print("\n📖 COMPLETE REFERENCE")
+    print("-" * 40)
+    print("For detailed documentation with all fields, formats, and examples:")
+    print("See: docs/curator-field-reference.md")
+    
+    print("\n" + "="*80)
+
+
 def main():
     """Main entry point for the curator script."""
     parser = argparse.ArgumentParser(
@@ -717,6 +800,12 @@ Examples:
     )
     
     parser.add_argument(
+        '--list-fields',
+        action='store_true',
+        help='Display complete field reference with examples'
+    )
+    
+    parser.add_argument(
         '--verbose', '-v',
         action='store_true',
         help='Enable verbose logging'
@@ -729,6 +818,11 @@ Examples:
     setup_common_logging(level=log_level)
     
     try:
+        # Handle --list-fields before configuration validation
+        if args.list_fields:
+            print_field_reference()
+            return 0
+        
         # Create configuration
         config = CuratorConfig(
             api_url=args.api_url,

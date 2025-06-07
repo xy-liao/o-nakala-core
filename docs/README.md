@@ -25,6 +25,14 @@ Frequently asked questions and troubleshooting.
 ### [🛠️ Troubleshooting](user-guides/troubleshooting.md)
 Common issues and solutions.
 
+## 🔧 Curator Documentation
+
+### [📋 Curator Field Reference](curator-field-reference.md)
+Complete field reference for data curation with all supported fields, formats, and examples.
+
+### [🔗 Property URI Mapping](property-uri-mapping.md)
+Detailed mapping between CSV fields and NAKALA/Dublin Core property URIs.
+
 ## 📁 Examples
 
 ### [Sample Dataset](../examples/sample_dataset/)
@@ -63,6 +71,9 @@ nakala-collection --help
 
 # Data curation
 nakala-curator --help
+
+# Show complete field reference
+nakala-curator --list-fields
 
 # Account information
 nakala-user-info --help
