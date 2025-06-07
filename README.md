@@ -1,96 +1,77 @@
-# NAKALA Client - Python Library for Research Data Management
+# O-Nakala Core
 
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PyPI](https://img.shields.io/badge/PyPI-Coming%20Soon-orange)](https://pypi.org)
-
-**A comprehensive Python client for the NAKALA research data repository API, developed by École française d'Extrême-Orient (EFEO).**
-
-## 🎯 Overview
-
-NAKALA Client provides professional-grade tools for managing research data in the NAKALA repository. It supports the complete research data lifecycle: upload, organization into collections, quality curation, and automated workflows.
-
-### Key Features
-
-- **📤 Data Upload**: Bulk upload with automatic metadata extraction
-- **📚 Collection Management**: Organize datasets into thematic collections  
-- **🔍 Data Curation**: Quality assessment and batch metadata modifications
-- **⚙️ Workflow Automation**: Scriptable operations for research pipelines
-- **🌐 Multi-environment**: Test and production API support
-- **🔧 CLI Tools**: Command-line interface for all operations
+A comprehensive Python library and CLI toolkit for interacting with the NAKALA research data repository, designed specifically for digital humanities workflows.
 
 ## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-# Install from PyPI (when published)
-pip install nakala-client
+# Install from PyPI (when released)
+pip install o-nakala-core
 
 # Or install from source
-git clone https://github.com/efeo/o-nakala-core.git
+git clone https://github.com/xy-liao/o-nakala-core.git
 cd o-nakala-core
 pip install -e .
 ```
 
-### Verify Installation
+### Basic Usage
 
 ```bash
-# Quick verification
-python test_installation.py
+# Set your API key
+export NAKALA_API_KEY="your-api-key"
 
-# Test CLI commands
+# Upload data
+nakala-upload --dataset examples/sample_dataset/folder_data_items.csv
+
+# Create collections  
+nakala-collection --from-upload-output output.csv
+
+# Curate metadata
+nakala-curator --quality-report
+```
+
+## 🛠️ Features
+
+### Core Modules
+- **📤 Upload**: Batch upload of research datasets with metadata
+- **📚 Collection**: Create and manage thematic collections
+- **🔧 Curator**: Advanced metadata curation and quality management
+- **👤 User Info**: Account management and permissions
+
+### Key Capabilities
+- **Multilingual metadata** support (French, English, Spanish, German)
+- **Batch operations** for large-scale data management
+- **Quality validation** and enhancement tools
+- **CSV-driven workflows** for academic reproducibility
+- **Comprehensive logging** and error handling
+
+## 📖 Documentation
+
+### User Guides
+- [📤 Upload Guide](docs/user-guides/01-upload-guide.md) - Complete upload workflows
+- [📚 Collection Guide](docs/user-guides/02-collection-guide.md) - Collection management  
+- [📋 Workflow Guide](docs/user-guides/03-workflow-guide.md) - End-to-end processes
+- [🔧 Curator Field Reference](docs/curator-field-reference.md) - Complete field documentation
+- [❓ FAQ](docs/user-guides/05-faq.md) - Common questions and solutions
+
+### Quick Reference
+```bash
+# Show complete field reference
+nakala-curator --list-fields
+
+# Get help for any command
 nakala-upload --help
-nakala-collection --help
+nakala-collection --help  
 nakala-curator --help
 nakala-user-info --help
 ```
 
-### CLI Usage (Recommended)
+## 🎓 Interactive Learning
 
-```bash
-# Upload research data
-nakala-upload \
-  --api-url "https://apitest.nakala.fr" \
-  --api-key "YOUR_KEY" \
-  --mode folder \
-  --dataset "folder_data_items.csv" \
-  --base-path "your_data/"
-
-# Create collections  
-nakala-collection \
-  --api-url "https://apitest.nakala.fr" \
-  --api-key "YOUR_KEY" \
-  --from-upload-output "upload_results.csv"
-
-# Analyze data quality
-nakala-curator \
-  --api-url "https://apitest.nakala.fr" \
-  --api-key "YOUR_KEY" \
-  --quality-report \
-  --output "quality_report.json"
-```
-
-### Python API Usage
-
-```python
-from nakala_client.upload import main as upload_main
-from nakala_client.collection import main as collection_main
-from nakala_client.common import NakalaConfig
-
-# Set up configuration
-import os
-os.environ['NAKALA_API_KEY'] = 'your-api-key'
-os.environ['NAKALA_BASE_URL'] = 'https://apitest.nakala.fr'
-
-# Use through CLI interface or direct module imports
-# (See developer documentation for advanced Python API usage)
-```
-
-## 📚 Learning Resources
-
-### 🎓 Interactive Workshop
-Complete the hands-on workshop to learn all features:
+### Workshop
+Complete hands-on tutorial with real examples:
 
 ```bash
 cd o-nakala-workshop
@@ -98,179 +79,118 @@ pip install -r requirements.txt
 jupyter lab NAKALA_Complete_Workflow.ipynb
 ```
 
-**Workshop Contents:**
-- 📤 Data upload (5 datasets, 14 files)
-- 📚 Collection creation (3 thematic collections)  
-- 🔍 Quality curation and analysis
-- 📋 Comprehensive reporting
-
-### 📖 Documentation
-- **[User Guides](docs/user-guides/)** - Step-by-step tutorials
-- **[Examples](examples/)** - Sample datasets and configurations
-- **[API Reference](https://api.nakala.fr/swagger-ui/)** - Complete API documentation
-
-## 🏗️ Architecture
-
-### V2.0 Modern Design
-```
-src/nakala_client/
-├── upload.py              # Data upload functionality
-├── collection.py          # Collection management  
-├── curator.py             # Quality curation tools
-├── user_info.py          # Account information
-├── cli/                   # Command-line interfaces
-│   ├── upload.py         # nakala-upload
-│   ├── collection.py     # nakala-collection
-│   └── curator.py        # nakala-curator
-└── common/                # Shared utilities
-    ├── config.py         # Configuration management
-    ├── utils.py          # HTTP utilities
-    └── exceptions.py     # Error handling
-```
-
-### Key Components
-
-**📤 Upload Engine**
-- Folder-based organization
-- Automatic MIME type detection  
-- Resumable uploads
-- Metadata validation
-
-**📚 Collection Manager**
-- Thematic grouping
-- Hierarchical organization
-- Bulk operations
-- Status management
-
-**🔍 Curation Suite**
-- Quality scoring
-- Duplicate detection
+The workshop covers:
+- Data upload (5 datasets, 14 files)
+- Collection creation (3 thematic collections)  
+- Quality curation and analysis
 - Metadata enhancement
-- Automated recommendations
 
-## 🌟 Supported Use Cases
+## 🔧 CLI Reference
 
-### Digital Humanities Research
-- **Manuscript Digitization**: Images, transcriptions, metadata
-- **Text Corpora**: Classical texts with linguistic annotations
-- **Archaeological Data**: Site records, artifact catalogs, analyses
+### Upload Data
+```bash
+# Upload from CSV configuration
+nakala-upload \
+  --api-key YOUR_KEY \
+  --dataset examples/sample_dataset/folder_data_items.csv \
+  --mode folder
 
-### Academic Workflows
-- **Research Data Management**: Structured dataset organization
-- **Collaborative Projects**: Shared collections and permissions
-- **Publication Preparation**: Data packaging for article supplements
+# Upload single files
+nakala-upload \
+  --api-key YOUR_KEY \
+  --files file1.jpg file2.pdf \
+  --title "My Dataset" \
+  --type "http://purl.org/coar/resource_type/c_ddb1"
+```
 
-### Institutional Repositories
-- **Bulk Migration**: Legacy system data transfer
-- **Quality Assurance**: Automated metadata validation
-- **Collection Development**: Thematic organization strategies
+### Manage Collections
+```bash
+# Create from upload results
+nakala-collection \
+  --api-key YOUR_KEY \
+  --from-upload-output output.csv
 
-## 📊 Real-World Performance
+# Create from configuration
+nakala-collection \
+  --api-key YOUR_KEY \
+  --from-folder-collections examples/sample_dataset/folder_collections.csv
+```
 
-**Production Metrics** (from EFEO usage):
-- ✅ **14 files** uploaded in ~4 seconds
-- ✅ **3 collections** created in ~1 second  
-- ✅ **5 datasets** with 100% success rate
-- ✅ **Multi-language** metadata (French/English)
+### Curate Metadata
+```bash
+# Generate quality report
+nakala-curator --quality-report --api-key YOUR_KEY
 
-## 🔧 Configuration
+# Batch modify metadata
+nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY
 
-### Environment Setup
+# Validate metadata
+nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
+```
+
+## 📁 Examples
+
+### Sample Dataset
+Complete academic example with:
+- Multi-language metadata (French/English)
+- 5 data categories (code, data, documents, images, presentations)
+- Collection definitions and relationships
+
+```bash
+cd examples/sample_dataset
+# Review folder_data_items.csv and folder_collections.csv
+```
+
+### Simple Dataset  
+Minimal example for quick testing:
+
+```bash
+cd examples/simple-dataset
+# Bird images with basic metadata
+```
+
+## 🌐 Environment Setup
+
 ```bash
 # Required
 export NAKALA_API_KEY="your-api-key"
 
-# Optional  
-export NAKALA_BASE_URL="https://apitest.nakala.fr"  # Test environment
-export NAKALA_DEFAULT_LICENSE="CC-BY-4.0"
-export NAKALA_DEFAULT_LANGUAGE="fr"
+# Optional (defaults to test environment)
+export NAKALA_BASE_URL="https://apitest.nakala.fr"  # Test
+# export NAKALA_BASE_URL="https://api.nakala.fr"     # Production
 ```
 
-### File Configuration
-```python
-# config.py
-from nakala_client.common import NakalaConfig
+## 🧹 Maintenance
 
-config = NakalaConfig(
-    api_key="your-key",
-    api_url="https://apitest.nakala.fr",
-    default_license="CC-BY-4.0",
-    timeout=30
-)
-```
-
-## 🧪 Testing
+### Cleanup
+Remove development artifacts and reset to clean state:
 
 ```bash
-# Run test suite
-pytest
+# Preview what would be cleaned
+python cleanup.py --dry-run
 
-# Test with coverage
-pytest --cov=nakala_client
+# Clean everything
+python cleanup.py
 
-# Integration tests
-python test_v2_implementation.py
+# Keep log files for debugging  
+python cleanup.py --keep-logs
 ```
 
-## 🤝 Contributing
+## 🔗 Links
 
-We welcome contributions! Please follow these steps:
-
-### Development Setup
-```bash
-git clone https://github.com/efeo/o-nakala-core.git
-cd o-nakala-core
-pip install -e .
-pip install -r requirements.txt
-```
-
-### Code Style
-- **Black** for formatting
-- **Flake8** for linting  
-- **MyPy** for type checking
-- **Pytest** for testing
-
-## 📈 Roadmap
-
-### Current (v2.0)
-- ✅ Complete API coverage
-- ✅ CLI tools
-- ✅ Workshop materials
-- ✅ Production validation
-
-### Future (v2.1+)
-- 🔄 Advanced duplicate detection
-- 📊 Enhanced analytics
-- 🌐 Web interface integration
-- 🔗 External system connectors
-
-## 🏛️ About EFEO
-
-**École française d'Extrême-Orient** is a French research institution dedicated to the study of Asian civilizations. This tool supports EFEO's mission of advancing digital humanities research and cultural heritage preservation.
-
-**Related Projects:**
-- Digital manuscript collections
-- Classical Chinese text analysis
-- Archaeological site documentation
-- Cultural heritage digitization
+- **[NAKALA Platform](https://nakala.fr)** - Main repository platform
+- **[Test Environment](https://apitest.nakala.fr)** - Safe testing environment  
+- **[API Documentation](https://api.nakala.fr/swagger-ui/)** - Complete API reference
+- **[xy-liao/o-nakala-core](https://github.com/xy-liao/o-nakala-core)** - Project repository
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+[License information will be added]
 
-## 🙋 Support
+## 🤝 Contributing
 
-### Getting Help
-- **Documentation**: [docs/](docs/)
-- **Workshop**: Interactive learning materials in `o-nakala-workshop/`
-- **Issues**: GitHub Issues for bug reports
-- **API Reference**: https://api.nakala.fr/swagger-ui/
-
-### Contact
-- **Institution**: École française d'Extrême-Orient
-- **Email**: digital@efeo.fr
-- **Website**: https://www.efeo.fr
+[Contributing guidelines will be added]
 
 ---
 
-**🎉 Ready to manage research data professionally? Start with the [workshop](o-nakala-workshop/) or explore the [documentation](docs/)!**
+**Built for digital humanities researchers.**

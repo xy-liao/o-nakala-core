@@ -6,7 +6,7 @@ Provides tools for uploading, managing collections, searching, and curating data
 """
 
 __version__ = "1.0.0"
-__author__ = "École française d'Extrême-Orient"
+__author__ = "xy-liao"
 
 from .common.utils import NakalaCommonUtils, NakalaPathResolver
 from .common.config import NakalaConfig
@@ -17,14 +17,14 @@ from .user_info import NakalaUserInfoClient
 from .curator import NakalaCuratorClient, CuratorConfig, BatchModificationResult
 
 __all__ = [
-    'NakalaCommonUtils',
-    'NakalaPathResolver', 
-    'NakalaConfig',
-    'NakalaError',
-    'NakalaValidationError',
-    'NakalaAPIError',
-    'NakalaUserInfoClient',
-    'NakalaCuratorClient',
-    'CuratorConfig',
-    'BatchModificationResult'
+    "NakalaCommonUtils",
+    "NakalaPathResolver",
+    "NakalaConfig",
+    "NakalaError",
+    "NakalaValidationError",
+    "NakalaAPIError",
+    "NakalaUserInfoClient",
+    "NakalaCuratorClient",
+    "CuratorConfig",
+    "BatchModificationResult",
 ]

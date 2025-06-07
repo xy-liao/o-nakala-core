@@ -12,12 +12,11 @@ long_description = (this_directory / "README.md").read_text(encoding='utf-8') if
 setup(
     name="nakala-client",
     version="1.0.0",
-    author="École française d'Extrême-Orient",
-    author_email="digital@efeo.fr",
+    author="xy-liao",
     description="A comprehensive Python client for the Nakala research data repository API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/efeo/o-nakala-core",
+    url="https://github.com/xy-liao/o-nakala-core",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     classifiers=[

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "nakala-client"
 version = "2.0.0"
 authors = [
-    {name = "École française d'Extrême-Orient", email = "digital@efeo.fr"},
+    {name = "xy-liao"},
 ]
 description = "A comprehensive Python client for the Nakala research data repository API"
 readme = "README.md"
@@ -63,10 +63,10 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/efeo/o-nakala-core"
-Repository = "https://github.com/efeo/o-nakala-core"
+Homepage = "https://github.com/xy-liao/o-nakala-core"
+Repository = "https://github.com/xy-liao/o-nakala-core"
 Documentation = "https://nakala.fr/documentation"
-"Bug Tracker" = "https://github.com/efeo/o-nakala-core/issues"
+"Bug Tracker" = "https://github.com/xy-liao/o-nakala-core/issues"
 
 [project.scripts]
 nakala-upload = "nakala_client.cli.upload:main"

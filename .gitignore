@@ -116,3 +116,16 @@ test_*.py
 test_*.csv
 *_results.json
 *_report.json
+
+# Development analysis files (not for release)
+API_VALIDATION_ANALYSIS.md
+NAKALA_API_SPECIFICATIONS.md
+feedback_*.md
+fix_*.py
+api_validation_test.py
+*curation*.csv
+*debug*.json
+*validation*.json
+
+# Generated cleanup script (user convenience)
+!cleanup.py

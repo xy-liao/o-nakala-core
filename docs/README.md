@@ -94,7 +94,7 @@ export NAKALA_BASE_URL="https://apitest.nakala.fr"
 - **[NAKALA Platform](https://nakala.fr)** - Main repository platform
 - **[Test Environment](https://apitest.nakala.fr)** - Safe testing environment
 - **[API Documentation](https://api.nakala.fr/swagger-ui/)** - Complete API reference
-- **[EFEO](https://www.efeo.fr)** - École française d'Extrême-Orient
+- **[xy-liao/o-nakala-core](https://github.com/xy-liao/o-nakala-core)** - Project repository
 
 ## 🚀 Quick Examples
 

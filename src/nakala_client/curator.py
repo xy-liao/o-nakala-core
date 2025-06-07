@@ -26,25 +26,30 @@ from .user_info import NakalaUserInfoClient
 
 logger = logging.getLogger(__name__)
 
+
 class CuratorConfig:
     """Extended configuration for curator operations."""
-    
+
     def __init__(self, **kwargs):
         # Extract curator-specific settings
-        self.batch_size = kwargs.pop('batch_size', 50)
-        self.concurrent_operations = kwargs.pop('concurrent_operations', 3)
-        self.validation_batch_size = kwargs.pop('validation_batch_size', 100)
-        self.skip_existing = kwargs.pop('skip_existing', True)
-        self.validate_before_modification = kwargs.pop('validate_before_modification', True)
-        self.backup_before_changes = kwargs.pop('backup_before_changes', True)
-        self.duplicate_threshold = kwargs.pop('duplicate_threshold', 0.85)
-        self.max_modifications_per_batch = kwargs.pop('max_modifications_per_batch', 100)
-        self.require_confirmation = kwargs.pop('require_confirmation', True)
-        self.dry_run_default = kwargs.pop('dry_run_default', True)
-        
+        self.batch_size = kwargs.pop("batch_size", 50)
+        self.concurrent_operations = kwargs.pop("concurrent_operations", 3)
+        self.validation_batch_size = kwargs.pop("validation_batch_size", 100)
+        self.skip_existing = kwargs.pop("skip_existing", True)
+        self.validate_before_modification = kwargs.pop(
+            "validate_before_modification", True
+        )
+        self.backup_before_changes = kwargs.pop("backup_before_changes", True)
+        self.duplicate_threshold = kwargs.pop("duplicate_threshold", 0.85)
+        self.max_modifications_per_batch = kwargs.pop(
+            "max_modifications_per_batch", 100
+        )
+        self.require_confirmation = kwargs.pop("require_confirmation", True)
+        self.dry_run_default = kwargs.pop("dry_run_default", True)
+
         # Initialize base config with remaining kwargs
         self.base_config = NakalaConfig(**kwargs)
-    
+
     def __getattr__(self, name):
         """Delegate attribute access to base config."""
         return getattr(self.base_config, name)
@@ -52,7 +57,7 @@ class CuratorConfig:
 
 class BatchModificationResult:
     """Container for batch modification results."""
-    
+
     def __init__(self):
         self.successful: List[Dict[str, Any]] = []
         self.failed: List[Dict[str, Any]] = []
@@ -60,241 +65,306 @@ class BatchModificationResult:
         self.warnings: List[str] = []
         self.start_time: datetime = datetime.now()
         self.end_time: Optional[datetime] = None
-    
+
     def add_success(self, item_id: str, changes: Dict[str, Any]):
         """Record successful modification."""
-        self.successful.append({
-            'id': item_id,
-            'changes': changes,
-            'timestamp': datetime.now().isoformat()
-        })
-    
+        self.successful.append(
+            {"id": item_id, "changes": changes, "timestamp": datetime.now().isoformat()}
+        )
+
     def add_failure(self, item_id: str, error: str, attempted_changes: Dict[str, Any]):
         """Record failed modification."""
-        self.failed.append({
-            'id': item_id,
-            'error': error,
-            'attempted_changes': attempted_changes,
-            'timestamp': datetime.now().isoformat()
-        })
-    
+        self.failed.append(
+            {
+                "id": item_id,
+                "error": error,
+                "attempted_changes": attempted_changes,
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
+
     def add_skip(self, item_id: str, reason: str):
         """Record skipped modification."""
-        self.skipped.append({
-            'id': item_id,
-            'reason': reason,
-            'timestamp': datetime.now().isoformat()
-        })
-    
+        self.skipped.append(
+            {"id": item_id, "reason": reason, "timestamp": datetime.now().isoformat()}
+        )
+
     def add_warning(self, message: str):
         """Add warning message."""
         self.warnings.append(f"{datetime.now().isoformat()}: {message}")
-    
+
     def finalize(self):
         """Mark operation as complete."""
         self.end_time = datetime.now()
-    
+
     def get_summary(self) -> Dict[str, Any]:
         """Get operation summary."""
         duration = None
         if self.end_time:
             duration = (self.end_time - self.start_time).total_seconds()
-        
+
         return {
-            'total_processed': len(self.successful) + len(self.failed) + len(self.skipped),
-            'successful': len(self.successful),
-            'failed': len(self.failed),
-            'skipped': len(self.skipped),
-            'warnings': len(self.warnings),
-            'duration_seconds': duration,
-            'success_rate': len(self.successful) / max(1, len(self.successful) + len(self.failed)) * 100
+            "total_processed": len(self.successful)
+            + len(self.failed)
+            + len(self.skipped),
+            "successful": len(self.successful),
+            "failed": len(self.failed),
+            "skipped": len(self.skipped),
+            "warnings": len(self.warnings),
+            "duration_seconds": duration,
+            "success_rate": len(self.successful)
+            / max(1, len(self.successful) + len(self.failed))
+            * 100,
         }
 
 
 class NakalaMetadataValidator:
     """Validates metadata against Nakala requirements and best practices."""
-    
+
     def __init__(self, config: CuratorConfig):
         self.config = config
         self.utils = NakalaCommonUtils()
-    
-    def validate_required_fields(self, metadata: Dict[str, Any]) -> List[str]:
-        """Validate required metadata fields."""
+
+    def validate_required_fields(
+        self, metadata: Dict[str, Any], validation_mode: str = "creation"
+    ) -> List[str]:
+        """Validate required metadata fields with different modes for creation vs modification.
+
+        Args:
+            metadata: The metadata to validate
+            validation_mode: 'creation' (strict) or 'modification' (permissive)
+        """
         errors = []
-        required_fields = ['title', 'creator', 'description']
-        
-        for field in required_fields:
-            if not metadata.get(field):
-                errors.append(f"Required field '{field}' is missing or empty")
-        
+
+        if validation_mode == "creation":
+            # Strict validation for new resources
+            required_fields = ["title", "creator", "description"]
+            for field in required_fields:
+                if not metadata.get(field):
+                    errors.append(f"Required field '{field}' is missing or empty")
+
+        elif validation_mode == "modification":
+            # Permissive validation for modifications - only validate fields that are present
+            # This allows partial updates without requiring all fields
+
+            # Only validate structure/format of fields that are provided
+            if "title" in metadata:
+                title = metadata.get("title", "").strip()
+                if not title:
+                    errors.append("Title cannot be empty when provided")
+
+            if "description" in metadata:
+                desc = metadata.get("description", "").strip()
+                if not desc:
+                    errors.append("Description cannot be empty when provided")
+
+            # Note: 'creator' is not required for modifications as it might be inherited
+            # from existing metadata or handled at the API level
+
         return errors
-    
+
     def validate_controlled_vocabularies(self, metadata: Dict[str, Any]) -> List[str]:
         """Validate controlled vocabulary values."""
         warnings = []
-        
+
         # Language validation
-        if 'language' in metadata:
-            lang = metadata['language']
-            if lang not in ['fr', 'en', 'de', 'es', 'it']:
+        if "language" in metadata:
+            lang = metadata["language"]
+            if lang not in ["fr", "en", "de", "es", "it"]:
                 warnings.append(f"Language '{lang}' might not be supported")
-        
-        # License validation  
-        if 'license' in metadata:
-            license_val = metadata['license']
-            valid_licenses = ['CC-BY-4.0', 'CC-BY-SA-4.0', 'CC-BY-NC-4.0', 'CC0-1.0']
+
+        # License validation
+        if "license" in metadata:
+            license_val = metadata["license"]
+            valid_licenses = ["CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC0-1.0"]
             if license_val not in valid_licenses:
                 warnings.append(f"License '{license_val}' is not in recommended list")
-        
+
         return warnings
-    
-    def validate_metadata_quality(self, metadata: Dict[str, Any]) -> Dict[str, List[str]]:
-        """Comprehensive metadata quality validation."""
+
+    def validate_metadata_quality(
+        self, metadata: Dict[str, Any], validation_mode: str = "creation"
+    ) -> Dict[str, List[str]]:
+        """Comprehensive metadata quality validation.
+
+        Args:
+            metadata: The metadata to validate
+            validation_mode: 'creation' (strict) or 'modification' (permissive)
+        """
         results = {
-            'errors': self.validate_required_fields(metadata),
-            'warnings': self.validate_controlled_vocabularies(metadata),
-            'suggestions': []
+            "errors": self.validate_required_fields(metadata, validation_mode),
+            "warnings": self.validate_controlled_vocabularies(metadata),
+            "suggestions": [],
         }
-        
+
         # Quality suggestions
-        if metadata.get('title') and len(metadata['title']) < 10:
-            results['suggestions'].append("Title is very short, consider expanding")
-        
-        if metadata.get('description') and len(metadata['description']) < 50:
-            results['suggestions'].append("Description is brief, consider adding more detail")
-        
-        if not metadata.get('keywords'):
-            results['suggestions'].append("Consider adding keywords for better discoverability")
-        
+        if metadata.get("title") and len(metadata["title"]) < 10:
+            results["suggestions"].append("Title is very short, consider expanding")
+
+        if metadata.get("description") and len(metadata["description"]) < 50:
+            results["suggestions"].append(
+                "Description is brief, consider adding more detail"
+            )
+
+        if not metadata.get("keywords"):
+            results["suggestions"].append(
+                "Consider adding keywords for better discoverability"
+            )
+
         return results
 
 
 class NakalaDuplicateDetector:
     """Detects potential duplicates in datasets and collections."""
-    
+
     def __init__(self, config: CuratorConfig):
         self.config = config
         self.threshold = config.duplicate_threshold
-    
-    def calculate_similarity(self, item1: Dict[str, Any], item2: Dict[str, Any]) -> float:
+
+    def calculate_similarity(
+        self, item1: Dict[str, Any], item2: Dict[str, Any]
+    ) -> float:
         """Calculate similarity between two items based on metadata."""
         # Simple text-based similarity for now
         text1 = f"{item1.get('title', '')} {item1.get('description', '')}"
         text2 = f"{item2.get('title', '')} {item2.get('description', '')}"
-        
+
         # Jaccard similarity on words
         words1 = set(text1.lower().split())
         words2 = set(text2.lower().split())
-        
+
         if not words1 and not words2:
             return 0.0
-        
+
         intersection = len(words1.intersection(words2))
         union = len(words1.union(words2))
-        
+
         return intersection / union if union > 0 else 0.0
-    
-    def find_duplicates(self, items: List[Dict[str, Any]]) -> List[Tuple[Dict[str, Any], Dict[str, Any], float]]:
+
+    def find_duplicates(
+        self, items: List[Dict[str, Any]]
+    ) -> List[Tuple[Dict[str, Any], Dict[str, Any], float]]:
         """Find potential duplicates in a list of items."""
         duplicates = []
-        
+
         for i, item1 in enumerate(items):
-            for j, item2 in enumerate(items[i+1:], i+1):
+            for j, item2 in enumerate(items[i + 1 :], i + 1):
                 similarity = self.calculate_similarity(item1, item2)
                 if similarity >= self.threshold:
                     duplicates.append((item1, item2, similarity))
-        
+
         return duplicates
 
 
 class NakalaCuratorClient:
     """Main curator client for batch operations and quality management."""
-    
+
     def __init__(self, config: CuratorConfig):
         self.config = config
         self.utils = NakalaCommonUtils()
         self.validator = NakalaMetadataValidator(config)
         self.duplicate_detector = NakalaDuplicateDetector(config)
         self.user_client = NakalaUserInfoClient(config)
-    
+
     def batch_validate_metadata(self, items: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Validate metadata for multiple items."""
         logger.info(f"Validating metadata for {len(items)} items...")
-        
+
         results = {
-            'total_items': len(items),
-            'valid_items': 0,
-            'items_with_errors': 0,
-            'items_with_warnings': 0,
-            'validation_details': []
+            "total_items": len(items),
+            "valid_items": 0,
+            "items_with_errors": 0,
+            "items_with_warnings": 0,
+            "validation_details": [],
         }
-        
+
         for item in items:
-            item_id = item.get('id', 'unknown')
+            item_id = item.get("id", "unknown")
             validation = self.validator.validate_metadata_quality(item)
-            
-            has_errors = len(validation['errors']) > 0
-            has_warnings = len(validation['warnings']) > 0
-            
+
+            has_errors = len(validation["errors"]) > 0
+            has_warnings = len(validation["warnings"]) > 0
+
             if not has_errors:
-                results['valid_items'] += 1
+                results["valid_items"] += 1
             else:
-                results['items_with_errors'] += 1
-            
+                results["items_with_errors"] += 1
+
             if has_warnings:
-                results['items_with_warnings'] += 1
-            
-            results['validation_details'].append({
-                'id': item_id,
-                'title': item.get('title', ''),
-                'errors': validation['errors'],
-                'warnings': validation['warnings'],
-                'suggestions': validation['suggestions']
-            })
-        
+                results["items_with_warnings"] += 1
+
+            results["validation_details"].append(
+                {
+                    "id": item_id,
+                    "title": item.get("title", ""),
+                    "errors": validation["errors"],
+                    "warnings": validation["warnings"],
+                    "suggestions": validation["suggestions"],
+                }
+            )
+
         return results
-    
-    def batch_modify_metadata(self, modifications: List[Dict[str, Any]], dry_run: bool = True) -> BatchModificationResult:
+
+    def batch_modify_metadata(
+        self, modifications: List[Dict[str, Any]], dry_run: bool = True
+    ) -> BatchModificationResult:
         """Apply metadata modifications in batches."""
-        logger.info(f"{'DRY RUN: ' if dry_run else ''}Processing {len(modifications)} metadata modifications...")
-        
+        logger.info(
+            f"{'DRY RUN: ' if dry_run else ''}Processing {len(modifications)} metadata modifications..."
+        )
+
         result = BatchModificationResult()
-        
+
         # Process in batches
         for batch_start in range(0, len(modifications), self.config.batch_size):
             batch_end = min(batch_start + self.config.batch_size, len(modifications))
             batch = modifications[batch_start:batch_end]
-            
-            logger.info(f"Processing batch {batch_start//self.config.batch_size + 1}: items {batch_start+1}-{batch_end}")
-            
+
+            logger.info(
+                f"Processing batch {batch_start//self.config.batch_size + 1}: items {batch_start+1}-{batch_end}"
+            )
+
             self._process_modification_batch(batch, result, dry_run)
-            
+
             # Small delay between batches to avoid overwhelming API
             time.sleep(0.5)
-        
+
         result.finalize()
         return result
-    
-    def _process_modification_batch(self, batch: List[Dict[str, Any]], result: BatchModificationResult, dry_run: bool):
+
+    def _process_modification_batch(
+        self,
+        batch: List[Dict[str, Any]],
+        result: BatchModificationResult,
+        dry_run: bool,
+    ):
         """Process a single batch of modifications."""
         for modification in batch:
-            item_id = modification.get('id', 'unknown')
-            changes = modification.get('changes', {})
-            
+            item_id = modification.get("id", "unknown")
+            changes = modification.get("changes", {})
+
             try:
                 # Validate before modification if enabled
                 if self.config.validate_before_modification:
-                    current_metadata = modification.get('current_metadata', {})
-                    updated_metadata = {**current_metadata, **changes}
-                    validation = self.validator.validate_metadata_quality(updated_metadata)
-                    
-                    if validation['errors']:
-                        result.add_failure(item_id, f"Validation failed: {validation['errors']}", changes)
+                    # Use modification-specific validation (more permissive than creation)
+                    # Only validate the changes being made, not the complete metadata
+                    validation = self.validator.validate_metadata_quality(
+                        changes, validation_mode="modification"
+                    )
+
+                    if validation["errors"]:
+                        result.add_failure(
+                            item_id,
+                            f"Validation failed: {validation['errors']}",
+                            changes,
+                        )
                         continue
-                
+
                 # Apply modification (or simulate in dry run)
                 if dry_run:
-                    logger.debug(f"DRY RUN: Would modify {item_id} with changes: {changes}")
+                    logger.debug(
+                        f"DRY RUN: Would modify {item_id} with changes: {changes}"
+                    )
                     result.add_success(item_id, changes)
                 else:
                     # Here you would make actual API calls to modify the item
@@ -303,141 +373,192 @@ class NakalaCuratorClient:
                         result.add_success(item_id, changes)
                     else:
                         result.add_failure(item_id, "API modification failed", changes)
-            
+
             except Exception as e:
                 result.add_failure(item_id, str(e), changes)
-    
+
+    def _determine_item_type(self, item_id: str) -> str:
+        """Determine if an item is a collection or dataset by trying both endpoints."""
+        headers = {"X-API-KEY": self.config.api_key}
+
+        # Try collections endpoint first
+        try:
+            url = f"{self.config.api_url}/collections/{item_id}"
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            if response.status_code == 200:
+                return "collection"
+        except:
+            pass
+
+        # Try datasets endpoint
+        try:
+            url = f"{self.config.api_url}/datas/{item_id}"
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
+            if response.status_code == 200:
+                return "dataset"
+        except:
+            pass
+
+        return "unknown"
+
     def _apply_modification(self, item_id: str, changes: Dict[str, Any]) -> bool:
         """Apply actual modification via API."""
         try:
-            # Get current dataset information
-            url = f"{self.config.api_url}/datas/{item_id}"
-            headers = {'X-API-KEY': self.config.api_key}
-            
+            # Determine item type and build appropriate URL
+            item_type = self._determine_item_type(item_id)
+
+            if item_type == "collection":
+                url = f"{self.config.api_url}/collections/{item_id}"
+            elif item_type == "dataset":
+                url = f"{self.config.api_url}/datas/{item_id}"
+            else:
+                logger.error(f"Could not determine type for item {item_id}")
+                return False
+
+            headers = {"X-API-KEY": self.config.api_key}
+
             response = requests.get(url, headers=headers, timeout=self.config.timeout)
             response.raise_for_status()
-            
+
             current_data = response.json()
-            current_metas = current_data.get('metas', [])
-            
+            current_metas = current_data.get("metas", [])
+
             # Build new metadata array
             new_metas = []
-            
+
             # Keep existing metas that we're not changing
             for meta in current_metas:
-                property_uri = meta.get('propertyUri', '')
+                property_uri = meta.get("propertyUri", "")
                 should_keep = True
-                
+
                 # Check if this metadata field is being modified
                 for field_name in changes.keys():
                     if field_name.lower() in property_uri.lower():
                         should_keep = False
                         break
-                
+
                 if should_keep:
                     new_metas.append(meta)
-            
+
             # Add new/modified metadata
             for field_name, new_value in changes.items():
-                if field_name == 'title':
+                if field_name == "title":
                     # Handle multilingual titles
-                    if '|' in new_value:
-                        parts = new_value.split('|')
+                    if "|" in new_value:
+                        parts = new_value.split("|")
                         for part in parts:
-                            if part.startswith('fr:'):
-                                new_metas.append({
-                                    'value': part[3:],
-                                    'lang': 'fr',
-                                    'propertyUri': 'http://nakala.fr/terms#title'
-                                })
-                            elif part.startswith('en:'):
-                                new_metas.append({
-                                    'value': part[3:],
-                                    'lang': 'en',
-                                    'propertyUri': 'http://nakala.fr/terms#title'
-                                })
+                            if part.startswith("fr:"):
+                                new_metas.append(
+                                    {
+                                        "value": part[3:],
+                                        "lang": "fr",
+                                        "propertyUri": "http://nakala.fr/terms#title",
+                                    }
+                                )
+                            elif part.startswith("en:"):
+                                new_metas.append(
+                                    {
+                                        "value": part[3:],
+                                        "lang": "en",
+                                        "propertyUri": "http://nakala.fr/terms#title",
+                                    }
+                                )
                     else:
-                        new_metas.append({
-                            'value': new_value,
-                            'lang': 'fr',
-                            'propertyUri': 'http://nakala.fr/terms#title'
-                        })
-                
-                elif field_name == 'description':
+                        new_metas.append(
+                            {
+                                "value": new_value,
+                                "lang": "fr",
+                                "propertyUri": "http://nakala.fr/terms#title",
+                            }
+                        )
+
+                elif field_name == "description":
                     # Handle multilingual descriptions
-                    if '|' in new_value:
-                        parts = new_value.split('|')
+                    if "|" in new_value:
+                        parts = new_value.split("|")
                         for part in parts:
-                            if part.startswith('fr:'):
-                                new_metas.append({
-                                    'value': part[3:],
-                                    'lang': 'fr',
-                                    'propertyUri': 'http://purl.org/dc/terms/description'
-                                })
-                            elif part.startswith('en:'):
-                                new_metas.append({
-                                    'value': part[3:],
-                                    'lang': 'en',
-                                    'propertyUri': 'http://purl.org/dc/terms/description'
-                                })
+                            if part.startswith("fr:"):
+                                new_metas.append(
+                                    {
+                                        "value": part[3:],
+                                        "lang": "fr",
+                                        "propertyUri": "http://purl.org/dc/terms/description",
+                                    }
+                                )
+                            elif part.startswith("en:"):
+                                new_metas.append(
+                                    {
+                                        "value": part[3:],
+                                        "lang": "en",
+                                        "propertyUri": "http://purl.org/dc/terms/description",
+                                    }
+                                )
                     else:
-                        new_metas.append({
-                            'value': new_value,
-                            'lang': 'fr',
-                            'propertyUri': 'http://purl.org/dc/terms/description'
-                        })
-                
-                elif field_name == 'keywords':
+                        new_metas.append(
+                            {
+                                "value": new_value,
+                                "lang": "fr",
+                                "propertyUri": "http://purl.org/dc/terms/description",
+                            }
+                        )
+
+                elif field_name == "keywords":
                     # Handle multilingual keywords
-                    if '|' in new_value:
-                        parts = new_value.split('|')
+                    if "|" in new_value:
+                        parts = new_value.split("|")
                         for part in parts:
-                            if part.startswith('fr:'):
-                                keywords = part[3:].split(';')
+                            if part.startswith("fr:"):
+                                keywords = part[3:].split(";")
                                 for keyword in keywords:
                                     if keyword.strip():
-                                        new_metas.append({
-                                            'value': keyword.strip(),
-                                            'lang': 'fr',
-                                            'propertyUri': 'http://purl.org/dc/terms/subject'
-                                        })
-                            elif part.startswith('en:'):
-                                keywords = part[3:].split(';')
+                                        new_metas.append(
+                                            {
+                                                "value": keyword.strip(),
+                                                "lang": "fr",
+                                                "propertyUri": "http://purl.org/dc/terms/subject",
+                                            }
+                                        )
+                            elif part.startswith("en:"):
+                                keywords = part[3:].split(";")
                                 for keyword in keywords:
                                     if keyword.strip():
-                                        new_metas.append({
-                                            'value': keyword.strip(),
-                                            'lang': 'en',
-                                            'propertyUri': 'http://purl.org/dc/terms/subject'
-                                        })
-            
+                                        new_metas.append(
+                                            {
+                                                "value": keyword.strip(),
+                                                "lang": "en",
+                                                "propertyUri": "http://purl.org/dc/terms/subject",
+                                            }
+                                        )
+
             # Prepare update payload
-            update_payload = {
-                'metas': new_metas
-            }
-            
+            update_payload = {"metas": new_metas}
+
             # Apply the modification
-            headers['Content-Type'] = 'application/json'
-            response = requests.put(url, headers=headers, json=update_payload, timeout=self.config.timeout)
+            headers["Content-Type"] = "application/json"
+            response = requests.put(
+                url, headers=headers, json=update_payload, timeout=self.config.timeout
+            )
             response.raise_for_status()
-            
+
             logger.info(f"Successfully applied changes to {item_id}")
             return True
-            
+
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to apply modification to {item_id}: {e}")
             return False
         except Exception as e:
             logger.error(f"Error processing modification for {item_id}: {e}")
             return False
-    
-    def detect_duplicates_in_collections(self, collection_ids: List[str]) -> Dict[str, Any]:
+
+    def detect_duplicates_in_collections(
+        self, collection_ids: List[str]
+    ) -> Dict[str, Any]:
         """Detect duplicates across multiple collections."""
         logger.info(f"Analyzing {len(collection_ids)} collections for duplicates...")
-        
+
         all_items = []
         collection_items = {}
-        
+
         # Gather all items from collections
         for collection_id in collection_ids:
             try:
@@ -446,247 +567,367 @@ class NakalaCuratorClient:
                 collection_items[collection_id] = items
                 all_items.extend(items)
             except Exception as e:
-                logger.error(f"Failed to get items from collection {collection_id}: {e}")
-        
+                logger.error(
+                    f"Failed to get items from collection {collection_id}: {e}"
+                )
+
         # Find duplicates
         duplicates = self.duplicate_detector.find_duplicates(all_items)
-        
+
         return {
-            'total_items_analyzed': len(all_items),
-            'duplicate_pairs_found': len(duplicates),
-            'collections_analyzed': collection_ids,
-            'duplicates': [
+            "total_items_analyzed": len(all_items),
+            "duplicate_pairs_found": len(duplicates),
+            "collections_analyzed": collection_ids,
+            "duplicates": [
                 {
-                    'item1': {'id': dup[0].get('id'), 'title': dup[0].get('title')},
-                    'item2': {'id': dup[1].get('id'), 'title': dup[1].get('title')},
-                    'similarity': dup[2]
+                    "item1": {"id": dup[0].get("id"), "title": dup[0].get("title")},
+                    "item2": {"id": dup[1].get("id"), "title": dup[1].get("title")},
+                    "similarity": dup[2],
                 }
                 for dup in duplicates
-            ]
+            ],
         }
-    
+
     def _get_collection_items(self, collection_id: str) -> List[Dict[str, Any]]:
         """Get items from a collection via API."""
         try:
             url = f"{self.config.api_url}/collections/{collection_id}/datas"
-            headers = {'X-API-KEY': self.config.api_key}
-            
+            headers = {"X-API-KEY": self.config.api_key}
+
             response = requests.get(url, headers=headers, timeout=self.config.timeout)
-            
+
             # Handle access denied for private collections
             if response.status_code == 403:
-                logger.warning(f"Access denied to collection {collection_id} - may be private or require special permissions")
+                logger.warning(
+                    f"Access denied to collection {collection_id} - may be private or require special permissions"
+                )
                 return []
-            
+
             response.raise_for_status()
-            
+
             result = response.json()
             items = []
-            
-            if 'data' in result:
-                for item in result['data']:
+
+            if "data" in result:
+                for item in result["data"]:
                     # Extract metadata for duplicate detection
-                    title = self._extract_meta_value(item.get('metas', []), 'title')
-                    description = self._extract_meta_value(item.get('metas', []), 'description')
-                    
-                    items.append({
-                        'id': item.get('identifier'),
-                        'title': title,
-                        'description': description,
-                        'status': item.get('status', ''),
-                        'files': item.get('files', []),
-                        'metas': item.get('metas', [])
-                    })
-            
+                    title = self._extract_meta_value(item.get("metas", []), "title")
+                    description = self._extract_meta_value(
+                        item.get("metas", []), "description"
+                    )
+
+                    items.append(
+                        {
+                            "id": item.get("identifier"),
+                            "title": title,
+                            "description": description,
+                            "status": item.get("status", ""),
+                            "files": item.get("files", []),
+                            "metas": item.get("metas", []),
+                        }
+                    )
+
             logger.info(f"Retrieved {len(items)} items from collection {collection_id}")
             return items
-            
+
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to get items from collection {collection_id}: {e}")
             return []
-    
-    def _extract_meta_value(self, metas: List[Dict], property_name: str, language: str = 'fr') -> str:
+
+    def _extract_meta_value(
+        self, metas: List[Dict], property_name: str, language: str = "fr"
+    ) -> str:
         """Extract metadata value by property name."""
         if not metas:
-            return ''
-            
+            return ""
+
         for meta in metas:
-            property_uri = meta.get('propertyUri', '')
-            meta_lang = meta.get('lang', '')
-            
+            property_uri = meta.get("propertyUri", "")
+            meta_lang = meta.get("lang", "")
+
             if property_name in property_uri.lower() and meta_lang == language:
-                return meta.get('value', '')
-        
+                return meta.get("value", "")
+
         # Fall back to any language
         for meta in metas:
-            property_uri = meta.get('propertyUri', '')
+            property_uri = meta.get("propertyUri", "")
             if property_name in property_uri.lower():
-                return meta.get('value', '')
-                
-        return ''
-    
-    def generate_quality_report(self, scope: str = 'all') -> Dict[str, Any]:
+                return meta.get("value", "")
+
+        return ""
+
+    def generate_quality_report(self, scope: str = "all") -> Dict[str, Any]:
         """Generate comprehensive quality report for user's data."""
         logger.info("Generating data quality report...")
-        
+
         # Get user's data
         user_profile = self.user_client.get_complete_user_profile()
-        
+
         report = {
-            'generated_at': datetime.now().isoformat(),
-            'scope': scope,
-            'summary': user_profile['summary'],
-            'collections_analysis': {},
-            'datasets_analysis': {},
-            'overall_quality_score': 0.0,
-            'recommendations': []
+            "generated_at": datetime.now().isoformat(),
+            "scope": scope,
+            "summary": user_profile["summary"],
+            "collections_analysis": {},
+            "datasets_analysis": {},
+            "overall_quality_score": 0.0,
+            "recommendations": [],
         }
-        
+
         # Analyze collections
-        if user_profile['collections']:
-            validation_result = self.batch_validate_metadata(user_profile['collections'])
-            report['collections_analysis'] = validation_result
-        
+        if user_profile["collections"]:
+            validation_result = self.batch_validate_metadata(
+                user_profile["collections"]
+            )
+            report["collections_analysis"] = validation_result
+
         # Analyze datasets
-        if user_profile['datasets']:
-            validation_result = self.batch_validate_metadata(user_profile['datasets'])
-            report['datasets_analysis'] = validation_result
-        
+        if user_profile["datasets"]:
+            validation_result = self.batch_validate_metadata(user_profile["datasets"])
+            report["datasets_analysis"] = validation_result
+
         # Calculate overall quality score
-        total_items = len(user_profile['collections']) + len(user_profile['datasets'])
+        total_items = len(user_profile["collections"]) + len(user_profile["datasets"])
         if total_items > 0:
-            valid_collections = report['collections_analysis'].get('valid_items', 0)
-            valid_datasets = report['datasets_analysis'].get('valid_items', 0)
-            report['overall_quality_score'] = (valid_collections + valid_datasets) / total_items * 100
-        
+            valid_collections = report["collections_analysis"].get("valid_items", 0)
+            valid_datasets = report["datasets_analysis"].get("valid_items", 0)
+            report["overall_quality_score"] = (
+                (valid_collections + valid_datasets) / total_items * 100
+            )
+
         # Generate recommendations
         self._generate_recommendations(report)
-        
+
         return report
-    
+
     def _generate_recommendations(self, report: Dict[str, Any]):
         """Generate quality improvement recommendations."""
         recommendations = []
-        
-        collections_analysis = report.get('collections_analysis', {})
-        datasets_analysis = report.get('datasets_analysis', {})
-        
+
+        collections_analysis = report.get("collections_analysis", {})
+        datasets_analysis = report.get("datasets_analysis", {})
+
         # Check for metadata quality issues
-        if collections_analysis.get('items_with_errors', 0) > 0:
+        if collections_analysis.get("items_with_errors", 0) > 0:
             recommendations.append(
                 f"Fix metadata errors in {collections_analysis['items_with_errors']} collections"
             )
-        
-        if datasets_analysis.get('items_with_errors', 0) > 0:
+
+        if datasets_analysis.get("items_with_errors", 0) > 0:
             recommendations.append(
                 f"Fix metadata errors in {datasets_analysis['items_with_errors']} datasets"
             )
-        
+
         # Check overall quality score
-        quality_score = report.get('overall_quality_score', 0)
+        quality_score = report.get("overall_quality_score", 0)
         if quality_score < 80:
-            recommendations.append("Consider improving metadata quality - current score is below 80%")
-        
+            recommendations.append(
+                "Consider improving metadata quality - current score is below 80%"
+            )
+
         if quality_score < 60:
-            recommendations.append("Urgent: Metadata quality is critically low - review and update metadata")
-        
-        report['recommendations'] = recommendations
-    
-    def export_modifications_template(self, items: List[Dict[str, Any]], output_path: str):
+            recommendations.append(
+                "Urgent: Metadata quality is critically low - review and update metadata"
+            )
+
+        report["recommendations"] = recommendations
+
+    def get_collection_data_items(self, collection_id: str) -> List[Dict[str, Any]]:
+        """Get data items from a collection via API.
+
+        Args:
+            collection_id: The identifier of the collection
+
+        Returns:
+            List of data items with their metadata
+        """
+        return self._get_collection_items(collection_id)
+
+    def export_modifications_template(
+        self, items: List[Dict[str, Any]], output_path: str
+    ):
         """Export a CSV template for batch modifications."""
-        logger.info(f"Exporting modification template for {len(items)} items to {output_path}")
-        
-        with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        logger.info(
+            f"Exporting modification template for {len(items)} items to {output_path}"
+        )
+
+        with open(output_path, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            
+
             # Header
-            writer.writerow([
-                'id', 'current_title', 'new_title', 'current_description', 'new_description',
-                'current_keywords', 'new_keywords', 'current_license', 'new_license',
-                'current_language', 'new_language', 'action'
-            ])
-            
+            writer.writerow(
+                [
+                    "id",
+                    "current_title",
+                    "new_title",
+                    "current_description",
+                    "new_description",
+                    "current_keywords",
+                    "new_keywords",
+                    "current_license",
+                    "new_license",
+                    "current_language",
+                    "new_language",
+                    "action",
+                ]
+            )
+
             # Data rows
             for item in items:
-                writer.writerow([
-                    item.get('id', ''),
-                    item.get('title', ''),
-                    '',  # new_title - to be filled
-                    item.get('description', ''),
-                    '',  # new_description - to be filled  
-                    item.get('keywords', ''),
-                    '',  # new_keywords - to be filled
-                    item.get('license', ''),
-                    '',  # new_license - to be filled
-                    item.get('language', ''),
-                    '',  # new_language - to be filled
-                    'modify'  # action
-                ])
-        
+                writer.writerow(
+                    [
+                        item.get("id", ""),
+                        item.get("title", ""),
+                        "",  # new_title - to be filled
+                        item.get("description", ""),
+                        "",  # new_description - to be filled
+                        item.get("keywords", ""),
+                        "",  # new_keywords - to be filled
+                        item.get("license", ""),
+                        "",  # new_license - to be filled
+                        item.get("language", ""),
+                        "",  # new_language - to be filled
+                        "modify",  # action
+                    ]
+                )
+
         logger.info(f"Template exported to {output_path}")
 
 
 def print_field_reference():
     """Print comprehensive field reference for curator operations."""
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("NAKALA CURATOR - FIELD REFERENCE")
-    print("="*80)
-    
+    print("=" * 80)
+
     print("\n📋 DATA ITEM FIELDS")
     print("-" * 40)
-    
+
     data_fields = [
-        ("title", "http://nakala.fr/terms#title", "Yes", "Required", '"fr:French|en:English"'),
-        ("description", "http://purl.org/dc/terms/description", "Yes", "Required", '"fr:Description|en:Description"'),
-        ("keywords", "http://purl.org/dc/terms/subject", "Yes", "Optional", '"fr:mot1;mot2|en:word1;word2"'),
-        ("author", "http://nakala.fr/terms#creator", "No", "Required", '"Surname,Givenname"'),
-        ("contributor", "http://purl.org/dc/terms/contributor", "No", "Optional", '"Smith,John;Martin,Alice"'),
-        ("type", "http://nakala.fr/terms#type", "No", "Required", 'COAR Resource Type URI'),
+        (
+            "title",
+            "http://nakala.fr/terms#title",
+            "Yes",
+            "Required",
+            '"fr:French|en:English"',
+        ),
+        (
+            "description",
+            "http://purl.org/dc/terms/description",
+            "Yes",
+            "Required",
+            '"fr:Description|en:Description"',
+        ),
+        (
+            "keywords",
+            "http://purl.org/dc/terms/subject",
+            "Yes",
+            "Optional",
+            '"fr:mot1;mot2|en:word1;word2"',
+        ),
+        (
+            "author",
+            "http://nakala.fr/terms#creator",
+            "No",
+            "Required",
+            '"Surname,Givenname"',
+        ),
+        (
+            "contributor",
+            "http://purl.org/dc/terms/contributor",
+            "No",
+            "Optional",
+            '"Smith,John;Martin,Alice"',
+        ),
+        (
+            "type",
+            "http://nakala.fr/terms#type",
+            "No",
+            "Required",
+            "COAR Resource Type URI",
+        ),
         ("license", "http://nakala.fr/terms#license", "No", "Required", '"CC-BY-4.0"'),
-        ("date", "http://nakala.fr/terms#created", "No", "Required", '"2024-01-15" or "2024"'),
-        ("language", "http://purl.org/dc/terms/language", "No", "Optional", '"fr" or "en"'),
-        ("temporal", "http://purl.org/dc/terms/coverage", "No", "Optional", '"2020/2023"'),
+        (
+            "date",
+            "http://nakala.fr/terms#created",
+            "No",
+            "Required",
+            '"2024-01-15" or "2024"',
+        ),
+        (
+            "language",
+            "http://purl.org/dc/terms/language",
+            "No",
+            "Optional",
+            '"fr" or "en"',
+        ),
+        (
+            "temporal",
+            "http://purl.org/dc/terms/coverage",
+            "No",
+            "Optional",
+            '"2020/2023"',
+        ),
         ("spatial", "http://purl.org/dc/terms/coverage", "No", "Optional", '"France"'),
-        ("relation", "http://purl.org/dc/terms/relation", "No", "Optional", 'URI or text'),
-        ("source", "http://purl.org/dc/terms/source", "No", "Optional", 'Source reference'),
-        ("identifier", "http://purl.org/dc/terms/identifier", "No", "Optional", '"DOI:10.1234/example"'),
+        (
+            "relation",
+            "http://purl.org/dc/terms/relation",
+            "No",
+            "Optional",
+            "URI or text",
+        ),
+        (
+            "source",
+            "http://purl.org/dc/terms/source",
+            "No",
+            "Optional",
+            "Source reference",
+        ),
+        (
+            "identifier",
+            "http://purl.org/dc/terms/identifier",
+            "No",
+            "Optional",
+            '"DOI:10.1234/example"',
+        ),
     ]
-    
+
     print(f"{'Field':<12} {'Multilingual':<12} {'Required':<10} {'Example':<25}")
     print("-" * 70)
     for field, _, multilingual, required, example in data_fields:
         print(f"{field:<12} {multilingual:<12} {required:<10} {example:<25}")
-    
+
     print("\n📚 COLLECTION FIELDS")
     print("-" * 40)
-    
+
     collection_fields = [
         ("title", "Required", '"fr:Collection|en:Collection"'),
         ("status", "Required", '"private" or "public"'),
         ("description", "Optional", '"fr:Description|en:Description"'),
         ("keywords", "Optional", '"fr:mot1;mot2|en:word1;word2"'),
         ("creator", "Optional", '"Surname,Givenname"'),
-        ("data_items", "Optional", 'Folder patterns or IDs'),
+        ("data_items", "Optional", "Folder patterns or IDs"),
     ]
-    
+
     print(f"{'Field':<12} {'Required':<10} {'Example':<30}")
     print("-" * 55)
     for field, required, example in collection_fields:
         print(f"{field:<12} {required:<10} {example:<30}")
-    
+
     print("\n🔧 BATCH MODIFICATION CSV FORMAT")
     print("-" * 40)
     print("id,action,current_title,new_title,current_description,new_description")
-    print("10.34847/nkl.abc123,update,\"Old Title\",\"fr:New|en:Title\",\"Old desc\",\"fr:New|en:Description\"")
-    
+    print(
+        '10.34847/nkl.abc123,update,"Old Title","fr:New|en:Title","Old desc","fr:New|en:Description"'
+    )
+
     print("\n🌐 MULTILINGUAL FORMAT")
     print("-" * 40)
-    print("Format: \"language_code:content|language_code:content\"")
+    print('Format: "language_code:content|language_code:content"')
     print("Examples:")
-    print("  Single:   \"Simple English Title\"")
-    print("  Multiple: \"fr:Titre français|en:English Title\"")
-    print("  Keywords: \"fr:mot1;mot2|en:word1;word2\"")
-    
+    print('  Single:   "Simple English Title"')
+    print('  Multiple: "fr:Titre français|en:English Title"')
+    print('  Keywords: "fr:mot1;mot2|en:word1;word2"')
+
     print("\n⚡ QUICK COMMANDS")
     print("-" * 40)
     print("# Show this reference")
@@ -700,13 +941,13 @@ def print_field_reference():
     print("")
     print("# Validate metadata")
     print("nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY")
-    
+
     print("\n📖 COMPLETE REFERENCE")
     print("-" * 40)
     print("For detailed documentation with all fields, formats, and examples:")
     print("See: docs/curator-field-reference.md")
-    
-    print("\n" + "="*80)
+
+    print("\n" + "=" * 80)
 
 
 def main():
@@ -727,207 +968,242 @@ Examples:
   
   # Apply batch modifications from CSV
   python nakala-curator.py --batch-modify modifications.csv --dry-run
-        """
+        """,
     )
-    
+
     parser.add_argument(
-        '--api-key',
-        help='Nakala API key (or set NAKALA_API_KEY environment variable)'
+        "--api-key", help="Nakala API key (or set NAKALA_API_KEY environment variable)"
     )
-    
+
     parser.add_argument(
-        '--api-url',
-        default='https://apitest.nakala.fr',
-        help='Nakala API URL (default: test API)'
+        "--api-url",
+        default="https://apitest.nakala.fr",
+        help="Nakala API URL (default: test API)",
     )
-    
+
     parser.add_argument(
-        '--quality-report',
-        action='store_true',
-        help='Generate comprehensive quality report'
+        "--quality-report",
+        action="store_true",
+        help="Generate comprehensive quality report",
     )
-    
+
     parser.add_argument(
-        '--validate-metadata',
-        action='store_true',
-        help='Validate metadata for specified scope'
+        "--validate-metadata",
+        action="store_true",
+        help="Validate metadata for specified scope",
     )
-    
+
     parser.add_argument(
-        '--detect-duplicates',
-        action='store_true',
-        help='Detect potential duplicates'
+        "--detect-duplicates", action="store_true", help="Detect potential duplicates"
     )
-    
+
     parser.add_argument(
-        '--batch-modify',
-        help='CSV file with batch modifications to apply'
+        "--batch-modify", help="CSV file with batch modifications to apply"
     )
-    
+
     parser.add_argument(
-        '--export-template',
-        help='Export modification template CSV for specified items'
+        "--export-template", help="Export modification template CSV for specified items"
     )
-    
+
     parser.add_argument(
-        '--scope',
-        default='all',
-        choices=['all', 'collections', 'datasets'],
-        help='Scope for operations'
+        "--scope",
+        default="all",
+        choices=["all", "collections", "datasets"],
+        help="Scope for operations",
     )
-    
+
+    parser.add_argument("--collections", help="Comma-separated list of collection IDs")
+
     parser.add_argument(
-        '--collections',
-        help='Comma-separated list of collection IDs'
+        "--output", "-o", help="Output file path for reports and exports"
     )
-    
+
     parser.add_argument(
-        '--output', '-o',
-        help='Output file path for reports and exports'
+        "--dry-run",
+        action="store_true",
+        help="Simulate operations without making changes",
     )
-    
+
     parser.add_argument(
-        '--dry-run',
-        action='store_true',
-        help='Simulate operations without making changes'
-    )
-    
-    parser.add_argument(
-        '--batch-size',
+        "--batch-size",
         type=int,
         default=50,
-        help='Batch size for processing (default: 50)'
+        help="Batch size for processing (default: 50)",
     )
-    
+
     parser.add_argument(
-        '--list-fields',
-        action='store_true',
-        help='Display complete field reference with examples'
+        "--list-fields",
+        action="store_true",
+        help="Display complete field reference with examples",
     )
-    
+
     parser.add_argument(
-        '--verbose', '-v',
-        action='store_true',
-        help='Enable verbose logging'
+        "--skip-validation",
+        action="store_true",
+        help="Skip client-side validation before modifications (use with caution)",
     )
-    
+
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Enable verbose logging"
+    )
+
     args = parser.parse_args()
-    
+
     # Setup logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
     setup_common_logging(level=log_level)
-    
+
     try:
         # Handle --list-fields before configuration validation
         if args.list_fields:
             print_field_reference()
             return 0
-        
+
         # Create configuration
         config = CuratorConfig(
             api_url=args.api_url,
             api_key=args.api_key,
             batch_size=args.batch_size,
-            dry_run_default=args.dry_run
+            dry_run_default=args.dry_run,
+            validate_before_modification=not args.skip_validation,
         )
-        
+
         if not config.validate():
             logger.error("Configuration validation failed")
             return 1
-        
+
         # Create curator client
         curator = NakalaCuratorClient(config)
-        
+
         # Execute requested operations
         if args.quality_report:
             report = curator.generate_quality_report(scope=args.scope)
-            
+
             if args.output:
-                with open(args.output, 'w', encoding='utf-8') as f:
+                with open(args.output, "w", encoding="utf-8") as f:
                     json.dump(report, f, indent=2, ensure_ascii=False, default=str)
                 logger.info(f"Quality report exported to: {args.output}")
             else:
                 print(json.dumps(report, indent=2, ensure_ascii=False, default=str))
-        
+
         elif args.validate_metadata:
             # Get user data for validation
             user_client = NakalaUserInfoClient(config)
             profile = user_client.get_complete_user_profile()
-            
+
             items = []
-            if args.scope == 'collections':
-                items = profile['collections']
-            elif args.scope == 'datasets':
-                items = profile['datasets']
+            if args.scope == "collections":
+                items = profile["collections"]
+            elif args.scope == "datasets":
+                items = profile["datasets"]
             else:
-                items = profile['collections'] + profile['datasets']
-            
+                items = profile["collections"] + profile["datasets"]
+
             validation_result = curator.batch_validate_metadata(items)
             print(json.dumps(validation_result, indent=2, ensure_ascii=False))
-        
+
         elif args.detect_duplicates:
             if not args.collections:
                 logger.error("--collections parameter required for duplicate detection")
                 return 1
-            
-            collection_ids = [cid.strip() for cid in args.collections.split(',')]
+
+            collection_ids = [cid.strip() for cid in args.collections.split(",")]
             duplicates = curator.detect_duplicates_in_collections(collection_ids)
-            
+
             if args.output:
-                with open(args.output, 'w', encoding='utf-8') as f:
+                with open(args.output, "w", encoding="utf-8") as f:
                     json.dump(duplicates, f, indent=2, ensure_ascii=False, default=str)
                 logger.info(f"Duplicate analysis exported to: {args.output}")
             else:
                 print(json.dumps(duplicates, indent=2, ensure_ascii=False, default=str))
-        
+
+        elif args.export_template:
+            # Export modification template
+            user_client = NakalaUserInfoClient(config)
+            profile = user_client.get_complete_user_profile()
+
+            items = []
+            if args.scope == "collections":
+                items = profile["collections"]
+            elif args.scope == "datasets":
+                items = profile["datasets"]
+            else:
+                items = profile["collections"] + profile["datasets"]
+
+            # Filter by specific collections if provided
+            if args.collections:
+                collection_ids = [cid.strip() for cid in args.collections.split(",")]
+                if args.scope == "collections":
+                    items = [item for item in items if item.get("id") in collection_ids]
+                elif args.scope == "datasets":
+                    # For datasets, get items from specified collections
+                    collection_items = []
+                    for collection_id in collection_ids:
+                        collection_data = curator.get_collection_data_items(
+                            collection_id
+                        )
+                        collection_items.extend(collection_data)
+                    items = collection_items
+
+            curator.export_modifications_template(items, args.export_template)
+            logger.info(f"Modification template exported to: {args.export_template}")
+
         elif args.batch_modify:
             # Load modifications from CSV
             modifications = []
-            with open(args.batch_modify, 'r', encoding='utf-8') as f:
+            with open(args.batch_modify, "r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    if row.get('action') == 'modify':
+                    if row.get("action") == "modify":
                         changes = {}
-                        if row.get('new_title'):
-                            changes['title'] = row['new_title']
-                        if row.get('new_description'):
-                            changes['description'] = row['new_description']
+                        if row.get("new_title"):
+                            changes["title"] = row["new_title"]
+                        if row.get("new_description"):
+                            changes["description"] = row["new_description"]
                         # Add more fields as needed
-                        
+
                         if changes:
-                            modifications.append({
-                                'id': row['id'],
-                                'changes': changes
-                            })
-            
+                            modifications.append({"id": row["id"], "changes": changes})
+
             if modifications:
-                result = curator.batch_modify_metadata(modifications, dry_run=args.dry_run)
+                result = curator.batch_modify_metadata(
+                    modifications, dry_run=args.dry_run
+                )
                 summary = result.get_summary()
-                
-                print(f"Batch modification {'simulation' if args.dry_run else 'completed'}:")
+
+                print(
+                    f"Batch modification {'simulation' if args.dry_run else 'completed'}:"
+                )
                 print(f"  Total processed: {summary['total_processed']}")
                 print(f"  Successful: {summary['successful']}")
                 print(f"  Failed: {summary['failed']}")
                 print(f"  Skipped: {summary['skipped']}")
                 print(f"  Success rate: {summary['success_rate']:.1f}%")
-                
+
                 if args.output:
-                    with open(args.output, 'w', encoding='utf-8') as f:
-                        json.dump(result.__dict__, f, indent=2, ensure_ascii=False, default=str)
+                    with open(args.output, "w", encoding="utf-8") as f:
+                        json.dump(
+                            result.__dict__,
+                            f,
+                            indent=2,
+                            ensure_ascii=False,
+                            default=str,
+                        )
             else:
                 logger.info("No modifications found in CSV file")
-        
+
         else:
             parser.print_help()
             return 1
-        
+
         return 0
-        
+
     except Exception as e:
         logger.error(f"Error: {e}")
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     sys.exit(main())
