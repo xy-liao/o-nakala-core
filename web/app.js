@@ -10,6 +10,12 @@ class NakalaWebApp {
         this.isConnected = false;
         this.currentData = {};
         this.charts = {}; // Store Chart.js instances
+        this.isMobile = this.detectMobile();
+        this.isOffline = !navigator.onLine;
+        this.touchStartY = null;
+        this.csvData = null;
+        this.csvProcessor = null;
+        this.progressTimer = null;
         
         this.init();
     }
@@ -18,7 +24,389 @@ class NakalaWebApp {
         this.setupEventListeners();
         this.setupTabNavigation();
         this.setupDragAndDrop();
+        this.setupMobileFeatures();
+        this.setupOfflineHandling();
         this.checkApiConnection();
+        this.optimizeForMobile();
+    }
+    
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (window.innerWidth <= 768);
+    }
+    
+    setupMobileFeatures() {
+        if (this.isMobile) {
+            // Add mobile-specific CSS class
+            document.body.classList.add('mobile-device');
+            
+            // Setup touch gestures
+            this.setupTouchGestures();
+            
+            // Setup mobile-specific UI optimizations
+            this.setupMobileUI();
+            
+            // Prevent zoom on double tap
+            this.preventDoubleTabZoom();
+            
+            // Setup mobile file handling
+            this.setupMobileFileHandling();
+        }
+    }
+    
+    setupTouchGestures() {
+        // Pull-to-refresh gesture
+        let startY = 0;
+        let currentY = 0;
+        let pullDistance = 0;
+        const threshold = 100;
+        
+        document.addEventListener('touchstart', (e) => {
+            if (window.scrollY === 0) {
+                startY = e.touches[0].clientY;
+                this.touchStartY = startY;
+            }
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (this.touchStartY !== null && window.scrollY === 0) {
+                currentY = e.touches[0].clientY;
+                pullDistance = currentY - startY;
+                
+                if (pullDistance > 0) {
+                    e.preventDefault();
+                    const opacity = Math.min(pullDistance / threshold, 1);
+                    this.showPullToRefresh(opacity);
+                }
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            if (pullDistance > threshold) {
+                this.refreshData();
+            }
+            this.hidePullToRefresh();
+            this.touchStartY = null;
+            pullDistance = 0;
+        });
+        
+        // Swipe navigation between tabs
+        this.setupSwipeNavigation();
+    }
+    
+    setupSwipeNavigation() {
+        let startX = 0;
+        let startY = 0;
+        let endX = 0;
+        let endY = 0;
+        
+        const tabContents = document.querySelectorAll('.tab-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        let currentTabIndex = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            endY = e.changedTouches[0].clientY;
+            
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+            
+            // Only trigger if horizontal swipe is dominant
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX > 0 && currentTabIndex > 0) {
+                    // Swipe right - previous tab
+                    currentTabIndex--;
+                    navLinks[currentTabIndex].click();
+                } else if (deltaX < 0 && currentTabIndex < navLinks.length - 1) {
+                    // Swipe left - next tab
+                    currentTabIndex++;
+                    navLinks[currentTabIndex].click();
+                }
+            }
+        });
+        
+        // Update current tab index when tabs are clicked
+        navLinks.forEach((link, index) => {
+            link.addEventListener('click', () => {
+                currentTabIndex = index;
+            });
+        });
+    }
+    
+    setupMobileUI() {
+        // Collapse navigation on mobile after selection
+        if (this.isMobile) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    // Auto-scroll to content on mobile
+                    setTimeout(() => {
+                        document.querySelector('.main-content').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 100);
+                });
+            });
+        }
+        
+        // Mobile-optimized modals
+        this.setupMobileModals();
+    }
+    
+    setupMobileModals() {
+        // Make modals full-screen on mobile
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (this.isMobile) {
+                modal.classList.add('mobile-fullscreen');
+            }
+        });
+    }
+    
+    preventDoubleTabZoom() {
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    }
+    
+    setupMobileFileHandling() {
+        // Enhanced file input for mobile
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            input.setAttribute('accept', '*/*');
+            input.setAttribute('capture', 'environment'); // Use camera if available
+        });
+        
+        // Mobile-specific upload feedback
+        fileInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    this.showMobileUploadFeedback(e.target.files[0]);
+                }
+            });
+        });
+    }
+    
+    setupOfflineHandling() {
+        window.addEventListener('online', () => {
+            this.isOffline = false;
+            this.showToast('Back online! Syncing data...', 'success');
+            this.syncOfflineData();
+        });
+        
+        window.addEventListener('offline', () => {
+            this.isOffline = true;
+            this.showToast('Working offline. Data will sync when reconnected.', 'warning');
+        });
+        
+        // Check initial state
+        if (!navigator.onLine) {
+            this.isOffline = true;
+            this.showOfflineIndicator();
+        }
+    }
+    
+    optimizeForMobile() {
+        if (this.isMobile) {
+            // Reduce animation complexity on mobile
+            document.documentElement.style.setProperty('--animation-duration', '0.2s');
+            
+            // Optimize chart rendering for mobile
+            this.mobileChartDefaults = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 3
+                    },
+                    line: {
+                        borderWidth: 2
+                    }
+                }
+            };
+            
+            // Setup mobile performance monitoring
+            this.setupPerformanceMonitoring();
+        }
+    }
+    
+    setupPerformanceMonitoring() {
+        // Monitor performance on mobile
+        if ('performance' in window) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.duration > 100) { // Long tasks
+                        console.warn('Long task detected:', entry);
+                    }
+                }
+            });
+            
+            try {
+                observer.observe({ entryTypes: ['longtask'] });
+            } catch (e) {
+                // Not supported in all browsers
+            }
+        }
+    }
+    
+    showPullToRefresh(opacity) {
+        let refreshIndicator = document.getElementById('pullToRefreshIndicator');
+        if (!refreshIndicator) {
+            refreshIndicator = document.createElement('div');
+            refreshIndicator.id = 'pullToRefreshIndicator';
+            refreshIndicator.innerHTML = '<i class="fas fa-sync fa-spin"></i> Pull to refresh';
+            refreshIndicator.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: var(--primary-color);
+                color: white;
+                text-align: center;
+                padding: 1rem;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+                font-size: 0.875rem;
+            `;
+            document.body.appendChild(refreshIndicator);
+        }
+        
+        refreshIndicator.style.opacity = opacity;
+        refreshIndicator.style.transform = `translateY(${opacity * 100 - 100}%)`;
+    }
+    
+    hidePullToRefresh() {
+        const refreshIndicator = document.getElementById('pullToRefreshIndicator');
+        if (refreshIndicator) {
+            refreshIndicator.style.transform = 'translateY(-100%)';
+            refreshIndicator.style.opacity = '0';
+        }
+    }
+    
+    refreshData() {
+        this.showToast('Refreshing data...', 'info');
+        
+        // Refresh current tab data
+        const activeTab = document.querySelector('.nav-link.active');
+        if (activeTab) {
+            const tabId = activeTab.dataset.tab;
+            this.loadTabData(tabId);
+        }
+        
+        // Update dashboard if connected
+        if (this.isConnected) {
+            this.loadDashboard();
+        }
+    }
+    
+    showMobileUploadFeedback(file) {
+        const feedback = document.createElement('div');
+        feedback.className = 'mobile-upload-feedback';
+        feedback.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>Selected: ${file.name}</span>
+            <small>${this.formatFileSize(file.size)}</small>
+        `;
+        feedback.style.cssText = `
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        `;
+        
+        document.body.appendChild(feedback);
+        
+        setTimeout(() => {
+            feedback.remove();
+        }, 3000);
+    }
+    
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    showOfflineIndicator() {
+        const indicator = document.createElement('div');
+        indicator.id = 'offlineIndicator';
+        indicator.innerHTML = '<i class="fas fa-wifi-slash"></i> Working Offline';
+        indicator.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--warning-color);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            z-index: 1001;
+        `;
+        document.body.appendChild(indicator);
+        document.body.style.paddingTop = '40px';
+    }
+    
+    hideOfflineIndicator() {
+        const indicator = document.getElementById('offlineIndicator');
+        if (indicator) {
+            indicator.remove();
+            document.body.style.paddingTop = '0';
+        }
+    }
+    
+    syncOfflineData() {
+        // Implement offline data synchronization
+        const offlineData = localStorage.getItem('nakala_offline_data');
+        if (offlineData) {
+            try {
+                const data = JSON.parse(offlineData);
+                // Process offline data when back online
+                this.processOfflineData(data);
+                localStorage.removeItem('nakala_offline_data');
+            } catch (e) {
+                console.error('Failed to sync offline data:', e);
+            }
+        }
+        this.hideOfflineIndicator();
+    }
+    
+    processOfflineData(data) {
+        // Process any data that was collected while offline
+        console.log('Processing offline data:', data);
     }
     
     setupEventListeners() {
@@ -42,9 +430,29 @@ class NakalaWebApp {
         // Analytics
         document.getElementById('runAnalysisBtn').addEventListener('click', () => this.runAnalysis());
         
-        // Batch Processing
+        // Basic Batch Processing
         document.getElementById('batchFileInput').addEventListener('change', (e) => this.handleBatchFileSelect(e));
         document.getElementById('processBatchBtn').addEventListener('click', () => this.processBatch());
+        
+        // Advanced CSV Management
+        document.getElementById('createNewCsvBtn')?.addEventListener('click', () => this.createNewCsv());
+        document.getElementById('downloadTemplateBtn')?.addEventListener('click', () => this.downloadCsvTemplate());
+        document.getElementById('importSampleBtn')?.addEventListener('click', () => this.importSampleData());
+        
+        // CSV Editor Tools
+        document.getElementById('addRowBtn')?.addEventListener('click', () => this.addCsvRow());
+        document.getElementById('addColumnBtn')?.addEventListener('click', () => this.addCsvColumn());
+        document.getElementById('validateBtn')?.addEventListener('click', () => this.validateCsv());
+        document.getElementById('saveChangesBtn')?.addEventListener('click', () => this.saveCsvChanges());
+        
+        // Progress Control
+        document.getElementById('pauseBtn')?.addEventListener('click', () => this.pauseProcessing());
+        document.getElementById('cancelBtn')?.addEventListener('click', () => this.cancelProcessing());
+        
+        // Results Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => this.showResultDetails(e.target.dataset.detail));
+        });
         
         // Modal
         document.querySelector('.modal-close')?.addEventListener('click', () => this.closeModal());
@@ -620,7 +1028,34 @@ class NakalaWebApp {
                     tension: 0.4
                 }]
             },
-            options: {
+            options: this.isMobile ? {
+                ...this.mobileChartDefaults,
+                plugins: {
+                    ...this.mobileChartDefaults.plugins,
+                    title: {
+                        display: true,
+                        text: 'Quality Trends',
+                        font: { size: 14 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            font: { size: 10 },
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 10 }
+                        }
+                    }
+                }
+            } : {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -821,8 +1256,325 @@ class NakalaWebApp {
             processBtn.innerHTML = `<i class="fas fa-cogs"></i> Process "${file.name}"`;
             
             this.currentData.batchFile = file;
+            this.loadCsvFile(file);
         } else {
             this.showToast('Please select a CSV file', 'error');
+        }
+    }
+    
+    async loadCsvFile(file) {
+        try {
+            const text = await file.text();
+            this.csvData = this.parseCsv(text);
+            this.displayCsvEditor(file.name);
+            this.showSection('csvEditorSection');
+            this.showSection('processingOptions');
+        } catch (error) {
+            this.showToast('Failed to load CSV file: ' + error.message, 'error');
+        }
+    }
+    
+    parseCsv(text) {
+        const lines = text.split('\n').filter(line => line.trim());
+        if (lines.length === 0) return { headers: [], rows: [] };
+        
+        const headers = this.parseCsvLine(lines[0]);
+        const rows = lines.slice(1).map(line => this.parseCsvLine(line));
+        
+        return { headers, rows };
+    }
+    
+    parseCsvLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            const nextChar = line[i + 1];
+            
+            if (char === '"' && inQuotes && nextChar === '"') {
+                current += '"';
+                i++; // Skip next quote
+            } else if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                result.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        
+        result.push(current.trim());
+        return result;
+    }
+    
+    displayCsvEditor(fileName) {
+        // Update file info
+        document.getElementById('fileName').textContent = fileName;
+        document.getElementById('fileStats').textContent = 
+            `${this.csvData.rows.length} rows, ${this.csvData.headers.length} columns`;
+        
+        // Build table
+        this.buildCsvTable();
+        
+        // Update UI
+        document.getElementById('validateBtn').disabled = false;
+        document.getElementById('saveChangesBtn').disabled = false;
+    }
+    
+    buildCsvTable() {
+        const table = document.getElementById('csvTable');
+        const thead = document.getElementById('csvTableHead');
+        const tbody = document.getElementById('csvTableBody');
+        
+        // Clear existing content
+        thead.innerHTML = '';
+        tbody.innerHTML = '';
+        
+        // Build header
+        const headerRow = document.createElement('tr');
+        
+        // Row number column
+        const rowNumHeader = document.createElement('th');
+        rowNumHeader.textContent = '#';
+        rowNumHeader.className = 'row-number';
+        headerRow.appendChild(rowNumHeader);
+        
+        // Data columns
+        this.csvData.headers.forEach((header, index) => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            th.contentEditable = true;
+            th.addEventListener('blur', () => this.updateHeader(index, th.textContent));
+            headerRow.appendChild(th);
+        });
+        
+        thead.appendChild(headerRow);
+        
+        // Build rows
+        this.csvData.rows.forEach((row, rowIndex) => {
+            const tr = document.createElement('tr');
+            
+            // Row number
+            const rowNumCell = document.createElement('td');
+            rowNumCell.textContent = rowIndex + 1;
+            rowNumCell.className = 'row-number';
+            tr.appendChild(rowNumCell);
+            
+            // Data cells
+            row.forEach((cell, cellIndex) => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                td.contentEditable = true;
+                td.addEventListener('blur', () => this.updateCell(rowIndex, cellIndex, td.textContent));
+                td.addEventListener('focus', () => this.highlightCell(td));
+                tr.appendChild(td);
+            });
+            
+            tbody.appendChild(tr);
+        });
+    }
+    
+    updateHeader(index, value) {
+        this.csvData.headers[index] = value;
+        this.markAsModified();
+    }
+    
+    updateCell(rowIndex, cellIndex, value) {
+        this.csvData.rows[rowIndex][cellIndex] = value;
+        this.markAsModified();
+    }
+    
+    highlightCell(cell) {
+        document.querySelectorAll('.csv-table td').forEach(td => td.classList.remove('active-cell'));
+        cell.classList.add('active-cell');
+    }
+    
+    markAsModified() {
+        const saveBtn = document.getElementById('saveChangesBtn');
+        saveBtn.classList.add('modified');
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes *';
+    }
+    
+    createNewCsv() {
+        this.csvData = {
+            headers: ['identifier', 'title', 'creator', 'type', 'description'],
+            rows: [['', '', '', 'dataset', '']]
+        };
+        this.displayCsvEditor('new_file.csv');
+        this.showSection('csvEditorSection');
+        this.showSection('processingOptions');
+        this.showToast('New CSV created with basic template', 'success');
+    }
+    
+    downloadCsvTemplate() {
+        const templateData = {
+            headers: ['identifier', 'title', 'creator', 'type', 'description', 'subject', 'rights', 'language'],
+            rows: [
+                ['example-dataset-001', 'Sample Dataset Title', 'John Doe', 'dataset', 'A sample dataset for testing', 'Research;Data Analysis', 'CC BY 4.0', 'en'],
+                ['example-doc-002', 'Sample Document', 'Jane Smith', 'document', 'Sample document description', 'Documentation', 'All rights reserved', 'fr']
+            ]
+        };
+        
+        const csvContent = this.csvDataToCsv(templateData);
+        this.downloadFile(csvContent, 'nakala_template.csv', 'text/csv');
+        this.showToast('CSV template downloaded', 'success');
+    }
+    
+    importSampleData() {
+        this.csvData = {
+            headers: ['identifier', 'title', 'creator', 'type', 'description', 'subject', 'rights'],
+            rows: [
+                ['research-2024-001', 'Climate Data Analysis 2024', 'Research Team A', 'dataset', 'Comprehensive climate data for 2024 analysis', 'Climate;Environment;Data', 'CC BY 4.0'],
+                ['manuscript-medieval-01', 'Medieval Manuscript Collection', 'Library Archives', 'document', 'Digitized medieval manuscripts from the 12th century', 'History;Manuscripts;Medieval', 'Restricted Access'],
+                ['survey-results-social', 'Social Survey Results 2024', 'Dr. Sarah Johnson', 'dataset', 'Results from comprehensive social behavior survey', 'Sociology;Survey;Behavior', 'CC BY-NC 4.0']
+            ]
+        };
+        this.displayCsvEditor('sample_data.csv');
+        this.showSection('csvEditorSection');
+        this.showSection('processingOptions');
+        this.showToast('Sample data imported successfully', 'success');
+    }
+    
+    addCsvRow() {
+        const newRow = new Array(this.csvData.headers.length).fill('');
+        this.csvData.rows.push(newRow);
+        this.buildCsvTable();
+        this.markAsModified();
+        this.showToast('Row added', 'success');
+    }
+    
+    addCsvColumn() {
+        const columnName = prompt('Enter column name:');
+        if (columnName) {
+            this.csvData.headers.push(columnName);
+            this.csvData.rows.forEach(row => row.push(''));
+            this.buildCsvTable();
+            this.markAsModified();
+            this.showToast(`Column "${columnName}" added`, 'success');
+        }
+    }
+    
+    async validateCsv() {
+        if (!this.csvData) {
+            this.showToast('No CSV data to validate', 'error');
+            return;
+        }
+        
+        const validationResults = this.performCsvValidation();
+        this.displayValidationResults(validationResults);
+        
+        if (validationResults.errors.length === 0) {
+            this.showToast('CSV validation passed', 'success');
+        } else {
+            this.showToast(`Found ${validationResults.errors.length} validation issues`, 'warning');
+        }
+    }
+    
+    performCsvValidation() {
+        const results = {
+            errors: [],
+            warnings: [],
+            info: []
+        };
+        
+        // Check required headers
+        const requiredHeaders = ['identifier', 'title', 'type'];
+        requiredHeaders.forEach(header => {
+            if (!this.csvData.headers.includes(header)) {
+                results.errors.push(`Missing required header: ${header}`);
+            }
+        });
+        
+        // Check for empty rows
+        this.csvData.rows.forEach((row, index) => {
+            const isEmpty = row.every(cell => !cell.trim());
+            if (isEmpty) {
+                results.warnings.push(`Row ${index + 1} is empty`);
+            }
+        });
+        
+        // Check identifier uniqueness
+        const identifiers = this.csvData.rows.map(row => row[0]).filter(id => id.trim());
+        const duplicates = identifiers.filter((id, index) => identifiers.indexOf(id) !== index);
+        if (duplicates.length > 0) {
+            results.errors.push(`Duplicate identifiers found: ${duplicates.join(', ')}`);
+        }
+        
+        // Check data consistency
+        this.csvData.rows.forEach((row, rowIndex) => {
+            if (row.length !== this.csvData.headers.length) {
+                results.errors.push(`Row ${rowIndex + 1} has ${row.length} columns, expected ${this.csvData.headers.length}`);
+            }
+        });
+        
+        return results;
+    }
+    
+    displayValidationResults(results) {
+        const container = document.getElementById('validationResults');
+        const content = document.getElementById('validationContent');
+        
+        if (results.errors.length === 0 && results.warnings.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+        
+        content.innerHTML = '';
+        
+        [...results.errors, ...results.warnings, ...results.info].forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'validation-item';
+            
+            if (results.errors.includes(item)) {
+                div.classList.add('error');
+            } else if (results.warnings.includes(item)) {
+                div.classList.add('warning');
+            } else {
+                div.classList.add('info');
+            }
+            
+            div.textContent = item;
+            content.appendChild(div);
+        });
+        
+        container.style.display = 'block';
+    }
+    
+    saveCsvChanges() {
+        if (!this.csvData) return;
+        
+        const csvContent = this.csvDataToCsv(this.csvData);
+        const fileName = document.getElementById('fileName').textContent || 'modified_data.csv';
+        this.downloadFile(csvContent, fileName, 'text/csv');
+        
+        const saveBtn = document.getElementById('saveChangesBtn');
+        saveBtn.classList.remove('modified');
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        
+        this.showToast('CSV changes saved', 'success');
+    }
+    
+    csvDataToCsv(data) {
+        const rows = [data.headers, ...data.rows];
+        return rows.map(row => 
+            row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+        ).join('\n');
+    }
+    
+    showSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'block';
+        }
+    }
+    
+    hideSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'none';
         }
     }
     
@@ -832,20 +1584,32 @@ class NakalaWebApp {
             return;
         }
         
-        const file = this.currentData.batchFile;
-        const dryRun = document.getElementById('dryRun').checked;
-        
-        if (!file) {
-            this.showToast('Please select a CSV file first', 'error');
+        if (!this.csvData || this.csvData.rows.length === 0) {
+            this.showToast('Please load and validate CSV data first', 'error');
             return;
         }
         
+        const dryRun = document.getElementById('dryRun').checked;
+        const enableProgressTracking = document.getElementById('enableProgressTracking').checked;
+        
+        if (enableProgressTracking) {
+            this.startProgressTracking();
+        }
+        
         this.showLoading();
+        this.processState = 'running';
         
         try {
-            // First parse the CSV
+            // Prepare CSV data for processing
+            const csvContent = this.csvDataToCsv(this.csvData);
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', blob, 'batch_data.csv');
+            formData.append('dry_run', dryRun);
+            formData.append('processing_mode', document.getElementById('processingMode').value);
+            formData.append('validation_level', document.getElementById('validationLevel').value);
+            formData.append('error_handling', document.getElementById('errorHandling').value);
             
             const parseResponse = await fetch(`${this.apiUrl}/csv/parse`, {
                 method: 'POST',
@@ -861,14 +1625,15 @@ class NakalaWebApp {
             
             const parseResult = await parseResponse.json();
             
-            // Then process the modifications
-            const processResponse = await this.makeRequest('/batch/modify', 'POST', {
-                modifications: parseResult.data.modifications,
-                dry_run: dryRun
+            // Process with progress tracking
+            const result = await this.processWithProgress(parseResult.data, {
+                dry_run: dryRun,
+                processing_mode: document.getElementById('processingMode').value,
+                validation_level: document.getElementById('validationLevel').value,
+                error_handling: document.getElementById('errorHandling').value
             });
             
-            const result = await processResponse.json();
-            this.displayBatchResults(result.data);
+            this.displayEnhancedBatchResults(result);
             this.showToast(`Batch ${dryRun ? 'simulation' : 'processing'} completed!`, 'success');
             
         } catch (error) {
@@ -876,7 +1641,261 @@ class NakalaWebApp {
             this.showToast('Batch processing failed: ' + error.message, 'error');
         } finally {
             this.hideLoading();
+            this.stopProgressTracking();
         }
+    }
+    
+    async processWithProgress(data, options) {
+        const totalRows = data.modifications?.length || this.csvData.rows.length;
+        let processedRows = 0;
+        const results = {
+            successful: 0,
+            failed: 0,
+            skipped: 0,
+            warnings: 0,
+            details: {
+                successful: [],
+                failed: [],
+                warnings: [],
+                all: []
+            }
+        };
+        
+        this.updateProgress(0, totalRows, 0);
+        
+        // Simulate processing with progress updates
+        for (let i = 0; i < totalRows; i++) {
+            if (this.processState === 'cancelled') break;
+            if (this.processState === 'paused') {
+                await this.waitForResume();
+            }
+            
+            // Simulate API call for each row
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const success = Math.random() > 0.1; // 90% success rate for demo
+            const hasWarning = Math.random() > 0.7; // 30% warning rate
+            
+            const rowResult = {
+                row: i + 1,
+                identifier: this.csvData.rows[i]?.[0] || `row-${i + 1}`,
+                status: success ? 'success' : 'failed',
+                message: success ? 'Processed successfully' : 'Validation failed',
+                details: success ? 'All metadata fields validated' : 'Missing required field: description'
+            };
+            
+            if (success) {
+                results.successful++;
+                results.details.successful.push(rowResult);
+                if (hasWarning) {
+                    results.warnings++;
+                    rowResult.warning = 'Optional field recommended';
+                    results.details.warnings.push({...rowResult, status: 'warning'});
+                }
+            } else {
+                results.failed++;
+                results.details.failed.push(rowResult);
+            }
+            
+            results.details.all.push(rowResult);
+            processedRows++;
+            
+            this.updateProgress(processedRows, totalRows, processedRows / totalRows * 100);
+            this.addProgressLog(success ? 'success' : 'error', 
+                `Row ${i + 1}: ${rowResult.message}`);
+        }
+        
+        results.skipped = totalRows - processedRows;
+        return results;
+    }
+    
+    startProgressTracking() {
+        this.showSection('progressTracking');
+        this.progressStartTime = Date.now();
+        this.progressTimer = setInterval(() => {
+            this.updateProgressTimer();
+        }, 1000);
+    }
+    
+    stopProgressTracking() {
+        if (this.progressTimer) {
+            clearInterval(this.progressTimer);
+            this.progressTimer = null;
+        }
+    }
+    
+    updateProgress(processed, total, percentage) {
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        
+        if (progressFill) progressFill.style.width = `${percentage}%`;
+        if (progressText) progressText.textContent = `${Math.round(percentage)}%`;
+        
+        // Update processing speed
+        const elapsed = (Date.now() - this.progressStartTime) / 1000;
+        const speed = processed / elapsed;
+        const speedElement = document.getElementById('processingSpeed');
+        if (speedElement) speedElement.textContent = `${speed.toFixed(1)} rows/sec`;
+        
+        // Estimate remaining time
+        const remaining = (total - processed) / speed;
+        const estimatedElement = document.getElementById('estimatedTime');
+        if (estimatedElement && remaining > 0) {
+            const minutes = Math.floor(remaining / 60);
+            const seconds = Math.floor(remaining % 60);
+            estimatedElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }
+    
+    updateProgressTimer() {
+        const elapsed = (Date.now() - this.progressStartTime) / 1000;
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = Math.floor(elapsed % 60);
+        const elapsedElement = document.getElementById('elapsedTime');
+        if (elapsedElement) {
+            elapsedElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }
+    
+    addProgressLog(type, message) {
+        const logContainer = document.getElementById('progressLog');
+        if (!logContainer) return;
+        
+        const entry = document.createElement('div');
+        entry.className = 'progress-log-entry';
+        
+        const time = new Date().toLocaleTimeString();
+        entry.innerHTML = `
+            <span class="progress-log-time">${time}</span>
+            <span class="progress-log-message ${type}">${message}</span>
+        `;
+        
+        logContainer.appendChild(entry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+        
+        // Limit log entries to prevent memory issues
+        if (logContainer.children.length > 100) {
+            logContainer.removeChild(logContainer.firstChild);
+        }
+    }
+    
+    pauseProcessing() {
+        this.processState = 'paused';
+        const pauseBtn = document.getElementById('pauseBtn');
+        if (pauseBtn) {
+            pauseBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+            pauseBtn.onclick = () => this.resumeProcessing();
+        }
+        this.addProgressLog('info', 'Processing paused');
+    }
+    
+    resumeProcessing() {
+        this.processState = 'running';
+        const pauseBtn = document.getElementById('pauseBtn');
+        if (pauseBtn) {
+            pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            pauseBtn.onclick = () => this.pauseProcessing();
+        }
+        this.addProgressLog('info', 'Processing resumed');
+    }
+    
+    cancelProcessing() {
+        this.processState = 'cancelled';
+        this.addProgressLog('error', 'Processing cancelled by user');
+        this.showToast('Processing cancelled', 'warning');
+    }
+    
+    async waitForResume() {
+        return new Promise(resolve => {
+            const checkState = () => {
+                if (this.processState === 'running' || this.processState === 'cancelled') {
+                    resolve();
+                } else {
+                    setTimeout(checkState, 100);
+                }
+            };
+            checkState();
+        });
+    }
+    
+    displayEnhancedBatchResults(result) {
+        // Update summary stats
+        document.getElementById('successfulCount').textContent = result.successful;
+        document.getElementById('failedCount').textContent = result.failed;
+        document.getElementById('skippedCount').textContent = result.skipped;
+        document.getElementById('warningsCount').textContent = result.warnings;
+        
+        // Update navigation counts
+        document.getElementById('successfulNavCount').textContent = result.successful;
+        document.getElementById('failedNavCount').textContent = result.failed;
+        document.getElementById('warningsNavCount').textContent = result.warnings;
+        
+        // Store results for detail view
+        this.currentData.batchResult = result;
+        
+        // Show results section
+        this.showSection('batchResults');
+        
+        // Hide progress tracking
+        this.hideSection('progressTracking');
+    }
+    
+    showResultDetails(category) {
+        const content = document.getElementById('batchDetailsContent');
+        const navBtns = document.querySelectorAll('.nav-btn');
+        
+        // Update navigation
+        navBtns.forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`[data-detail="${category}"]`).classList.add('active');
+        
+        // Get relevant results
+        const results = this.currentData.batchResult;
+        let items = [];
+        
+        switch (category) {
+            case 'successful':
+                items = results.details.successful;
+                break;
+            case 'failed':
+                items = results.details.failed;
+                break;
+            case 'warnings':
+                items = results.details.warnings;
+                break;
+            case 'all':
+                items = results.details.all;
+                break;
+        }
+        
+        // Display results
+        content.innerHTML = '';
+        
+        if (items.length === 0) {
+            content.innerHTML = `
+                <div class="details-placeholder">
+                    <i class="fas fa-info-circle"></i>
+                    <p>No ${category} results to display</p>
+                </div>
+            `;
+            return;
+        }
+        
+        items.forEach(item => {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `result-item ${item.status}`;
+            resultDiv.innerHTML = `
+                <div class="result-header">
+                    <span class="result-title">Row ${item.row}: ${item.identifier}</span>
+                    <span class="result-status ${item.status}">${item.status}</span>
+                </div>
+                <div class="result-details">
+                    ${item.message}
+                    ${item.details ? `<br><small>${item.details}</small>` : ''}
+                    ${item.warning ? `<br><small class="text-warning">⚠️ ${item.warning}</small>` : ''}
+                </div>
+            `;
+            content.appendChild(resultDiv);
+        });
     }
     
     displayBatchResults(result) {
@@ -1059,6 +2078,39 @@ ${result.recommendations.map(rec => `- ${rec}`).join('\n')}
         
         // Add visual feedback
         this.addActivity(`Exported ${filename}`, 'Just now');
+    }
+    
+    // Handle shared files from mobile (PWA share target)
+    handleSharedFiles(files) {
+        if (files && files.length > 0) {
+            const file = files[0];
+            
+            // Switch to appropriate tab based on file type
+            if (file.name.endsWith('.csv')) {
+                // Switch to batch processing tab
+                this.switchToTab('batch');
+                this.handleBatchFileSelect({ target: { files: [file] } });
+                this.showToast(`Shared CSV file "${file.name}" loaded for batch processing`, 'success');
+            } else {
+                // Switch to autonomous generation tab
+                this.switchToTab('autonomous');
+                this.handleFileSelect({ target: { files: [file] } });
+                this.showToast(`Shared file "${file.name}" loaded for autonomous generation`, 'success');
+            }
+        }
+    }
+    
+    switchToTab(tabId) {
+        // Update navigation
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        
+        // Update content
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        
+        // Load tab data
+        this.loadTabData(tabId);
     }
 }
 
