@@ -149,10 +149,15 @@
 - **Cause**: Incorrect file path or permissions
 - **Fix**: Verify file exists and is accessible
 
-#### "Invalid metadata format" / "nakala:creator must be an array"
-- **Cause**: Creator/contributor metadata not properly formatted as arrays
-- **Fix**: Ensure creator/contributor fields use proper array structure in metadata
-- **Example**: Creator should be sent as single metadata entry with array value, not multiple individual entries
+#### "Invalid metadata format" / "nakala:creator must be an array" (RESOLVED ✅)
+- **Status**: ✅ **FIXED** - Creator fields now fully supported
+- **Solution**: Use `new_creator` or `new_author` fields in batch modifications
+- **Example**: 
+  ```csv
+  id,action,new_creator
+  10.34847/nkl.collection1,modify,"Smith, John;Doe, Jane"
+  ```
+- **Note**: Both individual and multiple creators (semicolon-separated) are supported
 
 #### "metadata field must not have lang attribute"
 - **Cause**: System fields like date/license cannot have language attributes

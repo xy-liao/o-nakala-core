@@ -41,11 +41,20 @@ nakala-curator --quality-report
 - **👤 User Info**: Account management and permissions
 
 ### Key Capabilities
+- **Foundational metadata management** for core Dublin Core fields
 - **Multilingual metadata** support (French, English, Spanish, German)
 - **Batch operations** for large-scale data management
 - **Quality validation** and enhancement tools
 - **CSV-driven workflows** for academic reproducibility
 - **Comprehensive logging** and error handling
+
+### 🚧 **Roadmap: Complete Metadata Management System**
+Current implementation provides solid foundation (~40% of full NAKALA API capabilities). See [Complete Metadata System Design](docs/COMPLETE_METADATA_SYSTEM_DESIGN.md) for vision of comprehensive metadata management with:
+- **Dynamic field discovery** from NAKALA vocabularies
+- **Intelligent template generation** with validation
+- **Pre-population assistant** using existing data
+- **Interactive metadata builder** with real-time guidance
+- **Technical integration** for files, IIIF, and relationships
 
 ## 📖 Documentation
 
@@ -53,8 +62,13 @@ nakala-curator --quality-report
 - [📤 Upload Guide](docs/user-guides/01-upload-guide.md) - Complete upload workflows
 - [📚 Collection Guide](docs/user-guides/02-collection-guide.md) - Collection management  
 - [📋 Workflow Guide](docs/user-guides/03-workflow-guide.md) - End-to-end processes
-- [🔧 Curator Field Reference](docs/curator-field-reference.md) - Complete field documentation
+- [🔧 Curator Field Reference](docs/curator-field-reference.md) - Current field documentation
 - [❓ FAQ](docs/user-guides/05-faq.md) - Common questions and solutions
+
+### Complete Metadata Management
+- [📊 Metadata Capabilities Summary](docs/METADATA_CAPABILITIES_SUMMARY.md) - Current status and complete vision
+- [🏗️ Complete System Design](docs/COMPLETE_METADATA_SYSTEM_DESIGN.md) - Comprehensive architecture plan
+- [🛣️ Implementation Roadmap](docs/COMPLETE_METADATA_SYSTEM_DESIGN.md#implementation-strategy) - Development timeline
 
 ### Quick Reference
 ```bash

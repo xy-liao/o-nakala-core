@@ -142,9 +142,28 @@ python -c "import os; print(os.getenv('NAKALA_API_KEY'))"
 **A:** Nakala requires these core fields:
 - **type**: Resource type (from COAR vocabulary)
 - **title**: Resource title (multilingual support)
-- **creator**: Author information
+- **creator**: Author information (✅ FULLY SUPPORTED for collections and datasets)
 - **created**: Creation date
 - **license**: Usage license
+
+**Note**: Creator fields are now fully supported via batch modifications using `new_creator` or `new_author` fields.
+
+### Q: How do I add creator/author information to collections?
+
+**A:** Use batch modifications with the `new_creator` field:
+
+```csv
+id,action,new_creator
+10.34847/nkl.collection1,modify,"Smith, John;Doe, Jane"
+10.34847/nkl.collection2,modify,"Martin, Alice"
+```
+
+```bash
+# Apply creator fields to collections
+nakala-curator --batch-modify collection_creators.csv --scope collections
+```
+
+Multiple creators can be separated by semicolons. Both `new_creator` and `new_author` fields work for collections and datasets.
 
 ### Q: How do I handle multilingual metadata?
 

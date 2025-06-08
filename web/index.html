@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O-Nakala Core - AI-Driven Metadata Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-brain nav-icon"></i>
+                <span class="nav-title">O-Nakala Core</span>
+                <span class="nav-subtitle">AI Metadata Management</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-tab="dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#autonomous" class="nav-link" data-tab="autonomous">
+                    <i class="fas fa-robot"></i> Autonomous Generation
+                </a>
+                <a href="#templates" class="nav-link" data-tab="templates">
+                    <i class="fas fa-file-alt"></i> Templates
+                </a>
+                <a href="#analytics" class="nav-link" data-tab="analytics">
+                    <i class="fas fa-chart-bar"></i> Analytics
+                </a>
+                <a href="#batch" class="nav-link" data-tab="batch">
+                    <i class="fas fa-layer-group"></i> Batch Processing
+                </a>
+            </div>
+            <div class="nav-auth">
+                <div class="api-key-container">
+                    <input type="password" id="apiKey" placeholder="Enter NAKALA API Key" class="api-key-input">
+                    <button id="connectBtn" class="connect-btn">
+                        <i class="fas fa-plug"></i> Connect
+                    </button>
+                </div>
+                <div class="connection-status" id="connectionStatus">
+                    <span class="status-indicator disconnected"></span>
+                    <span class="status-text">Disconnected</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <section id="dashboard" class="tab-content active">
+            <div class="content-header">
+                <h1>AI-Driven Metadata Management Dashboard</h1>
+                <p>Comprehensive intelligence for NAKALA repository management</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Quick Stats -->
+                <div class="dashboard-card stats-card">
+                    <h3><i class="fas fa-tachometer-alt"></i> System Status</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="healthScore">--</div>
+                            <div class="stat-label">Health Score</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="qualityScore">--</div>
+                            <div class="stat-label">Quality Score</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="completenessScore">--</div>
+                            <div class="stat-label">Completeness</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="aiPredictions">--</div>
+                            <div class="stat-label">AI Predictions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Features Overview -->
+                <div class="dashboard-card features-card">
+                    <h3><i class="fas fa-brain"></i> AI Intelligence Features</h3>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i class="fas fa-robot feature-icon"></i>
+                            <div>
+                                <div class="feature-name">Autonomous Generation</div>
+                                <div class="feature-desc">Complete metadata from file analysis</div>
+                            </div>
+                            <div class="feature-status active">Active</div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line feature-icon"></i>
+                            <div>
+                                <div class="feature-name">Predictive Analytics</div>
+                                <div class="feature-desc">Quality and trend forecasting</div>
+                            </div>
+                            <div class="feature-status active">Active</div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-network-wired feature-icon"></i>
+                            <div>
+                                <div class="feature-name">Relationship Discovery</div>
+                                <div class="feature-desc">Connected resource analysis</div>
+                            </div>
+                            <div class="feature-status active">Active</div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-users feature-icon"></i>
+                            <div>
+                                <div class="feature-name">Collaborative Intelligence</div>
+                                <div class="feature-desc">Community pattern learning</div>
+                            </div>
+                            <div class="feature-status active">Active</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card activity-card">
+                    <h3><i class="fas fa-history"></i> Recent AI Activities</h3>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-robot"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-title">Autonomous metadata generated</div>
+                                <div class="activity-time">Ready to use</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Autonomous Generation Tab -->
+        <section id="autonomous" class="tab-content">
+            <div class="content-header">
+                <h1>Autonomous Metadata Generation</h1>
+                <p>AI-powered complete metadata creation from file analysis</p>
+            </div>
+
+            <div class="autonomous-container">
+                <div class="upload-section">
+                    <div class="upload-card">
+                        <h3><i class="fas fa-upload"></i> Upload File for Analysis</h3>
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p class="upload-text">Drag and drop your file here or click to browse</p>
+                            <p class="upload-hint">Supports: CSV, JSON, PDF, DOC, images, code files</p>
+                            <input type="file" id="fileInput" class="file-input" accept="*/*">
+                        </div>
+                        <div class="generation-options">
+                            <label for="resourceType">Resource Type:</label>
+                            <select id="resourceType" class="select-input">
+                                <option value="dataset">Dataset</option>
+                                <option value="document">Document</option>
+                                <option value="image">Image</option>
+                                <option value="code">Source Code</option>
+                                <option value="collection">Collection</option>
+                            </select>
+                            <button id="generateBtn" class="generate-btn" disabled>
+                                <i class="fas fa-magic"></i> Generate Metadata
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-header">
+                        <h3><i class="fas fa-chart-pie"></i> Generation Results</h3>
+                        <div class="results-stats">
+                            <span class="stat-badge" id="qualityBadge">Quality: --</span>
+                            <span class="stat-badge" id="completenessBadge">Completeness: --</span>
+                            <span class="stat-badge" id="confidenceBadge">Confidence: --</span>
+                        </div>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h4>Generated Metadata</h4>
+                            <div class="metadata-list" id="metadataList"></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h4>Content Analysis</h4>
+                            <div class="analysis-details" id="analysisDetails"></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h4>AI Recommendations</h4>
+                            <div class="recommendations-list" id="recommendationsList"></div>
+                        </div>
+                    </div>
+
+                    <div class="export-options">
+                        <button id="exportCsvBtn" class="export-btn">
+                            <i class="fas fa-download"></i> Export as CSV
+                        </button>
+                        <button id="exportReportBtn" class="export-btn">
+                            <i class="fas fa-file-alt"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Templates Tab -->
+        <section id="templates" class="tab-content">
+            <div class="content-header">
+                <h1>Intelligent Template Generator</h1>
+                <p>Context-aware metadata templates with AI pre-population</p>
+            </div>
+
+            <div class="templates-container">
+                <div class="template-generator">
+                    <div class="generator-card">
+                        <h3><i class="fas fa-file-alt"></i> Generate Template</h3>
+                        <div class="generator-form">
+                            <div class="form-group">
+                                <label for="templateResourceType">Resource Type:</label>
+                                <select id="templateResourceType" class="select-input">
+                                    <option value="dataset">Dataset</option>
+                                    <option value="collection">Collection</option>
+                                    <option value="document">Document</option>
+                                    <option value="image">Image</option>
+                                    <option value="code">Source Code</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="templateName">Template Name (optional):</label>
+                                <input type="text" id="templateName" class="text-input" placeholder="Custom template name">
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="includeOptional" checked>
+                                    Include optional fields
+                                </label>
+                            </div>
+                            <button id="generateTemplateBtn" class="generate-btn">
+                                <i class="fas fa-magic"></i> Generate Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-results" id="templateResults" style="display: none;">
+                    <div class="template-preview">
+                        <h3><i class="fas fa-eye"></i> Template Preview</h3>
+                        <div class="template-info" id="templateInfo"></div>
+                        <div class="fields-list" id="fieldsList"></div>
+                    </div>
+                    
+                    <div class="template-actions">
+                        <button id="exportTemplateBtn" class="export-btn">
+                            <i class="fas fa-download"></i> Export as CSV
+                        </button>
+                        <button id="viewDocumentationBtn" class="export-btn">
+                            <i class="fas fa-book"></i> View Documentation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Tab -->
+        <section id="analytics" class="tab-content">
+            <div class="content-header">
+                <h1>Predictive Analytics</h1>
+                <p>AI-driven insights and forecasting for repository management</p>
+            </div>
+
+            <div class="analytics-container">
+                <div class="analytics-controls">
+                    <div class="controls-card">
+                        <h3><i class="fas fa-sliders-h"></i> Analysis Configuration</h3>
+                        <div class="controls-form">
+                            <div class="form-group">
+                                <label>Prediction Timeframes:</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="1_month" checked> 1 Month
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="3_months" checked> 3 Months
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="1_year"> 1 Year
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Analysis Types:</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="includeQuality" checked> Quality Predictions
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="includeCompleteness" checked> Completeness Analysis
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="includeUsage" checked> Usage Forecasting
+                                    </label>
+                                </div>
+                            </div>
+                            <button id="runAnalysisBtn" class="generate-btn">
+                                <i class="fas fa-chart-line"></i> Run Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-results" id="analyticsResults" style="display: none;">
+                    <div class="analytics-overview">
+                        <div class="overview-stats">
+                            <div class="stat-card">
+                                <i class="fas fa-heartbeat"></i>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="analyticsHealthScore">--</div>
+                                    <div class="stat-label">Repository Health</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-lightbulb"></i>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="insightsCount">--</div>
+                                    <div class="stat-label">Key Insights</div>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-target"></i>
+                                <div class="stat-content">
+                                    <div class="stat-value" id="recommendationsCount">--</div>
+                                    <div class="stat-label">Recommendations</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-charts">
+                        <div class="chart-card">
+                            <h4>Quality Trends</h4>
+                            <div class="chart-container">
+                                <canvas id="qualityChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Completeness Predictions</h4>
+                            <div class="chart-container">
+                                <canvas id="completenessChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Usage Analytics</h4>
+                            <div class="chart-container">
+                                <canvas id="usageChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h4>Repository Health</h4>
+                            <div class="chart-container">
+                                <canvas id="healthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="insights-section">
+                        <div class="insights-card">
+                            <h4><i class="fas fa-lightbulb"></i> Key Insights</h4>
+                            <div class="insights-list" id="keyInsightsList"></div>
+                        </div>
+                        <div class="recommendations-card">
+                            <h4><i class="fas fa-target"></i> Strategic Recommendations</h4>
+                            <div class="recommendations-list" id="strategicRecommendationsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Batch Processing Tab -->
+        <section id="batch" class="tab-content">
+            <div class="content-header">
+                <h1>Batch Processing</h1>
+                <p>Intelligent batch metadata modifications with CSV management</p>
+            </div>
+
+            <div class="batch-container">
+                <div class="batch-upload">
+                    <div class="upload-card">
+                        <h3><i class="fas fa-file-csv"></i> Upload CSV for Batch Processing</h3>
+                        <div class="upload-area" id="batchUploadArea">
+                            <i class="fas fa-file-csv upload-icon"></i>
+                            <p class="upload-text">Drop your CSV file here or click to browse</p>
+                            <p class="upload-hint">Supports both creation and modification formats</p>
+                            <input type="file" id="batchFileInput" class="file-input" accept=".csv">
+                        </div>
+                        <div class="batch-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="dryRun" checked>
+                                Dry run (preview only)
+                            </label>
+                            <button id="processBatchBtn" class="generate-btn" disabled>
+                                <i class="fas fa-cogs"></i> Process Batch
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="batch-results" id="batchResults" style="display: none;">
+                    <div class="batch-summary">
+                        <h3><i class="fas fa-chart-pie"></i> Processing Summary</h3>
+                        <div class="summary-stats">
+                            <div class="summary-item success">
+                                <span class="summary-value" id="successfulCount">0</span>
+                                <span class="summary-label">Successful</span>
+                            </div>
+                            <div class="summary-item failed">
+                                <span class="summary-value" id="failedCount">0</span>
+                                <span class="summary-label">Failed</span>
+                            </div>
+                            <div class="summary-item skipped">
+                                <span class="summary-value" id="skippedCount">0</span>
+                                <span class="summary-label">Skipped</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="batch-details">
+                        <div class="details-tabs">
+                            <button class="tab-btn active" data-detail="successful">Successful</button>
+                            <button class="tab-btn" data-detail="failed">Failed</button>
+                            <button class="tab-btn" data-detail="warnings">Warnings</button>
+                        </div>
+                        <div class="details-content" id="batchDetailsContent"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-brain fa-spin"></i>
+            <p>AI processing...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="documentationModal">
+            <div class="modal-header">
+                <h3>Template Documentation</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

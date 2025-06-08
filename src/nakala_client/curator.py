@@ -13,6 +13,7 @@ import time
 import requests
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
+from pathlib import Path
 
 # Import common utilities
 from .common.config import NakalaConfig
@@ -20,6 +21,12 @@ from .common.exceptions import NakalaAPIError
 from .common.utils import NakalaCommonUtils, setup_common_logging
 
 from .user_info import NakalaUserInfoClient
+from .vocabulary import create_vocabulary_service, MetadataSchemaGenerator
+from .templates import create_template_generator, MetadataTemplate
+from .prepopulation import create_prepopulation_assistant, PrePopulationResult
+from .relationships import create_relationship_discovery_service, RelationshipAnalysis
+from .autonomous_generator import create_autonomous_generator, AutonomousGenerationResult
+from .predictive_analytics import create_predictive_analytics, PredictiveAnalysisResult
 
 logger = logging.getLogger(__name__)
 
@@ -130,6 +137,176 @@ CSV_FIELD_MAPPINGS = {
         'multilingual': False,
         'required': False,
         'format': 'semicolon_split'
+    },
+    # Access Control Fields
+    'rights': {
+        'api_field': 'rights',
+        'property_uri': 'http://purl.org/dc/terms/rights',
+        'multilingual': False,
+        'required': False,
+        'format': 'rights_list'
+    },
+    'new_rights': {
+        'api_field': 'rights',
+        'property_uri': 'http://purl.org/dc/terms/rights',
+        'multilingual': False,
+        'required': False,
+        'format': 'rights_list'
+    },
+    'accessRights': {
+        'api_field': 'accessRights',
+        'property_uri': 'http://purl.org/dc/terms/accessRights',
+        'multilingual': False,
+        'required': False
+    },
+    'new_accessRights': {
+        'api_field': 'accessRights',
+        'property_uri': 'http://purl.org/dc/terms/accessRights',
+        'multilingual': False,
+        'required': False
+    },
+    # Status and Technical Fields
+    'status': {
+        'api_field': 'status',
+        'property_uri': 'http://nakala.fr/terms#status',
+        'multilingual': False,
+        'required': False,
+        'controlled_vocabulary': ['draft', 'pending', 'published', 'embargoed']
+    },
+    'new_status': {
+        'api_field': 'status',
+        'property_uri': 'http://nakala.fr/terms#status',
+        'multilingual': False,
+        'required': False,
+        'controlled_vocabulary': ['draft', 'pending', 'published', 'embargoed']
+    },
+    # File and Collection Fields
+    'file': {
+        'api_field': 'file',
+        'property_uri': 'http://nakala.fr/terms#file',
+        'multilingual': False,
+        'required': False,
+        'format': 'file_reference'
+    },
+    'data_items': {
+        'api_field': 'dataItems',
+        'property_uri': 'http://nakala.fr/terms#dataItems',
+        'multilingual': False,
+        'required': False,
+        'format': 'folder_patterns'
+    },
+    # Direct field name mappings (for compatibility with sample datasets)
+    'title': {
+        'api_field': 'title',
+        'property_uri': 'http://nakala.fr/terms#title',
+        'multilingual': True,
+        'required': True
+    },
+    'description': {
+        'api_field': 'description',
+        'property_uri': 'http://purl.org/dc/terms/description',
+        'multilingual': True,
+        'required': True
+    },
+    'keywords': {
+        'api_field': 'keywords',
+        'property_uri': 'http://purl.org/dc/terms/subject',
+        'multilingual': True,
+        'required': False
+    },
+    'author': {
+        'api_field': 'creator',
+        'property_uri': 'http://purl.org/dc/terms/creator',
+        'multilingual': False,
+        'required': True,
+        'format': 'semicolon_split'
+    },
+    'creator': {
+        'api_field': 'creator',
+        'property_uri': 'http://purl.org/dc/terms/creator',
+        'multilingual': False,
+        'required': False,
+        'format': 'semicolon_split'
+    },
+    'contributor': {
+        'api_field': 'contributor',
+        'property_uri': 'http://purl.org/dc/terms/contributor',
+        'multilingual': False,
+        'required': False,
+        'format': 'semicolon_split'
+    },
+    'license': {
+        'api_field': 'license',
+        'property_uri': 'http://nakala.fr/terms#license',
+        'multilingual': False,
+        'required': True
+    },
+    'type': {
+        'api_field': 'type',
+        'property_uri': 'http://nakala.fr/terms#type',
+        'multilingual': False,
+        'required': True
+    },
+    'date': {
+        'api_field': 'date',
+        'property_uri': 'http://nakala.fr/terms#created',
+        'multilingual': False,
+        'required': True
+    },
+    'language': {
+        'api_field': 'language',
+        'property_uri': 'http://purl.org/dc/terms/language',
+        'multilingual': False,
+        'required': False
+    },
+    'temporal': {
+        'api_field': 'temporal',
+        'property_uri': 'http://purl.org/dc/terms/coverage',
+        'multilingual': False,
+        'required': False
+    },
+    'spatial': {
+        'api_field': 'spatial',
+        'property_uri': 'http://purl.org/dc/terms/coverage',
+        'multilingual': False,
+        'required': False
+    },
+    'relation': {
+        'api_field': 'relation',
+        'property_uri': 'http://purl.org/dc/terms/relation',
+        'multilingual': False,
+        'required': False
+    },
+    'source': {
+        'api_field': 'source',
+        'property_uri': 'http://purl.org/dc/terms/source',
+        'multilingual': False,
+        'required': False
+    },
+    'identifier': {
+        'api_field': 'identifier',
+        'property_uri': 'http://purl.org/dc/terms/identifier',
+        'multilingual': False,
+        'required': False
+    },
+    'alternative': {
+        'api_field': 'alternative',
+        'property_uri': 'http://purl.org/dc/terms/alternative',
+        'multilingual': True,
+        'required': False
+    },
+    'publisher': {
+        'api_field': 'publisher',
+        'property_uri': 'http://purl.org/dc/terms/publisher',
+        'multilingual': False,
+        'required': False
+    },
+    # Coverage field for collections
+    'coverage': {
+        'api_field': 'coverage',
+        'property_uri': 'http://purl.org/dc/terms/coverage',
+        'multilingual': True,
+        'required': False
     }
 }
 
@@ -231,6 +408,18 @@ class NakalaMetadataValidator:
     def __init__(self, config: CuratorConfig):
         self.config = config
         self.utils = NakalaCommonUtils()
+        
+        # Initialize vocabulary service for enhanced validation
+        try:
+            self.vocab_service = create_vocabulary_service(config.base_config)
+            self.schema_generator = MetadataSchemaGenerator(self.vocab_service)
+            self.vocabulary_enabled = True
+            logger.info("Vocabulary service initialized for enhanced validation")
+        except Exception as e:
+            logger.warning(f"Vocabulary service unavailable: {e}")
+            self.vocab_service = None
+            self.schema_generator = None
+            self.vocabulary_enabled = False
 
     def validate_required_fields(
         self, metadata: Dict[str, Any], validation_mode: str = "creation"
@@ -271,7 +460,33 @@ class NakalaMetadataValidator:
         return errors
 
     def validate_controlled_vocabularies(self, metadata: Dict[str, Any]) -> List[str]:
-        """Validate controlled vocabulary values."""
+        """Validate controlled vocabulary values using dynamic vocabulary service."""
+        warnings = []
+
+        if not self.vocabulary_enabled:
+            # Fallback to static validation
+            return self._validate_static_vocabularies(metadata)
+
+        # Dynamic vocabulary validation
+        vocabulary_fields = {
+            'language': 'languages',
+            'license': 'licenses',
+            'type': 'datatypes'
+        }
+        
+        for field_name, vocab_name in vocabulary_fields.items():
+            if field_name in metadata:
+                value = metadata[field_name]
+                if not self.vocab_service.validate_vocabulary_value(vocab_name, value):
+                    # Get suggestions for correction
+                    suggestions = self.vocab_service.get_vocabulary_suggestions(vocab_name, value, limit=3)
+                    suggestion_text = ", ".join([s.value for s in suggestions]) if suggestions else "None available"
+                    warnings.append(f"{field_name.title()} '{value}' not found in vocabulary. Suggestions: {suggestion_text}")
+
+        return warnings
+        
+    def _validate_static_vocabularies(self, metadata: Dict[str, Any]) -> List[str]:
+        """Fallback static vocabulary validation."""
         warnings = []
 
         # Language validation
@@ -384,10 +599,785 @@ class NakalaCuratorClient:
         self.validator = NakalaMetadataValidator(self.config)
         self.duplicate_detector = NakalaDuplicateDetector(self.config)
         self.user_client = NakalaUserInfoClient(self.config)
+        
+        # Initialize vocabulary discovery for this curator instance
+        self._initialize_vocabulary_discovery()
+        
+        # Initialize template generator and intelligence services
+        if self.validator.vocabulary_enabled:
+            self.template_generator = create_template_generator(self.validator.vocab_service)
+            self.prepopulation_assistant = create_prepopulation_assistant(self.user_client, self.validator.vocab_service)
+            self.relationship_service = create_relationship_discovery_service(self.user_client)
+            self.autonomous_generator = create_autonomous_generator(self.user_client)
+            self.predictive_analytics = create_predictive_analytics(self.user_client)
+            logger.info("All intelligence services initialized: template generator, pre-population, relationships, autonomous generation, and predictive analytics")
+        else:
+            self.template_generator = None
+            self.prepopulation_assistant = None
+            self.relationship_service = None
+            self.autonomous_generator = None
+            self.predictive_analytics = None
+            logger.warning("Intelligence services unavailable without vocabulary service")
 
-    def parse_csv_modifications(self, csv_path: str) -> Tuple[List[Dict[str, Any]], List[str]]:
+    def _initialize_vocabulary_discovery(self):
+        """Initialize vocabulary discovery in the background."""
+        if self.validator.vocabulary_enabled:
+            logger.info("Starting background vocabulary discovery...")
+            # In a real implementation, this would run asynchronously
+            # For now, we'll note that vocabularies will be loaded on first use
+            
+    async def get_field_suggestions(self, field_name: str, partial_value: str, limit: int = 5) -> List[str]:
+        """Get vocabulary suggestions for a field."""
+        if not self.validator.vocabulary_enabled:
+            return []
+            
+        # Map field names to vocabulary categories
+        field_vocab_mapping = {
+            'language': 'languages',
+            'license': 'licenses', 
+            'type': 'datatypes',
+            'spatial': 'countries'
+        }
+        
+        vocab_name = field_vocab_mapping.get(field_name)
+        if not vocab_name:
+            return []
+            
+        suggestions = self.validator.vocab_service.get_vocabulary_suggestions(
+            vocab_name, partial_value, limit
+        )
+        return [s.value for s in suggestions]
+        
+    async def get_field_schema(self, property_uri: str) -> Optional[Dict[str, Any]]:
+        """Get schema information for a metadata field."""
+        if not self.validator.schema_generator:
+            return None
+            
+        try:
+            # Find field config from our mappings
+            field_config = None
+            for mapping in CSV_FIELD_MAPPINGS.values():
+                if mapping['property_uri'] == property_uri:
+                    field_config = mapping
+                    break
+                    
+            schema = self.validator.schema_generator.generate_field_schema(property_uri, field_config)
+            
+            return {
+                'field_name': schema.field_name,
+                'data_type': schema.data_type,
+                'required': schema.required,
+                'multilingual': schema.multilingual,
+                'controlled_vocabulary': schema.controlled_vocabulary,
+                'examples': schema.examples,
+                'help_text': schema.help_text
+            }
+        except Exception as e:
+            logger.warning(f"Failed to generate schema for {property_uri}: {e}")
+            return None
+
+    async def generate_metadata_template(
+        self, 
+        resource_type: str,
+        template_name: str = None,
+        user_context: Dict[str, Any] = None,
+        include_optional: bool = True
+    ) -> Optional[MetadataTemplate]:
+        """Generate an intelligent metadata template."""
+        if not self.template_generator:
+            logger.warning("Template generation unavailable without vocabulary service")
+            return None
+            
+        try:
+            logger.info(f"Generating metadata template for {resource_type}")
+            
+            # Add user profile information to context if available
+            if not user_context:
+                user_context = {}
+                
+            # Try to get user information for better context
+            try:
+                user_profile = self.user_client.get_complete_user_profile()
+                if user_profile:
+                    user_context.update({
+                        'user_collections_count': len(user_profile.get('collections', [])),
+                        'user_datasets_count': len(user_profile.get('datasets', [])),
+                        'has_existing_data': len(user_profile.get('datasets', [])) > 0
+                    })
+            except Exception as e:
+                logger.debug(f"Could not get user profile for template context: {e}")
+            
+            template = await self.template_generator.generate_template(
+                resource_type=resource_type,
+                template_name=template_name,
+                user_context=user_context,
+                include_optional=include_optional
+            )
+            
+            logger.info(f"Generated template with {len(template.fields)} fields ({len(template.get_required_fields())} required)")
+            return template
+            
+        except Exception as e:
+            logger.error(f"Failed to generate template: {e}")
+            return None
+    
+    def export_template_to_csv(self, template: MetadataTemplate, output_path: str, mode: str = 'create') -> None:
+        """Export template as CSV for easy data entry."""
+        try:
+            with open(output_path, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                
+                if mode == 'create':
+                    # Creation mode CSV header (direct field names)
+                    headers = []
+                    for field in template.fields:
+                        headers.append(field.name)
+                    
+                    # Add file field for creation mode
+                    if 'file' not in headers:
+                        headers.insert(0, 'file')
+                        
+                    writer.writerow(headers)
+                    
+                    # Write example row with defaults and examples
+                    example_row = []
+                    for i, header in enumerate(headers):
+                        if header == 'file':
+                            example_row.append('path/to/file_or_folder/')
+                        else:
+                            field = template.get_field_by_name(header)
+                            if field:
+                                if field.default_value:
+                                    example_row.append(field.default_value)
+                                elif field.examples:
+                                    example_row.append(field.examples[0])
+                                else:
+                                    example_row.append(f'example_{field.name}')
+                            else:
+                                example_row.append('')
+                    
+                    writer.writerow(example_row)
+                    
+                elif mode == 'modify':
+                    # Modification mode CSV header (new_ prefixes)
+                    headers = ['id', 'action']
+                    for field in template.fields:
+                        headers.extend([f'current_{field.name}', f'new_{field.name}'])
+                    
+                    writer.writerow(headers)
+                    
+                    # Write example row
+                    example_row = ['10.34847/nkl.example123', 'modify']
+                    for field in template.fields:
+                        example_row.extend(['current_value', field.examples[0] if field.examples else 'new_value'])
+                    
+                    writer.writerow(example_row)
+            
+            logger.info(f"Template exported as {mode} CSV to: {output_path}")
+            
+        except Exception as e:
+            logger.error(f"Failed to export template to CSV: {e}")
+            raise
+    
+    def generate_template_documentation(self, template: MetadataTemplate) -> str:
+        """Generate human-readable documentation for a template."""
+        doc = []
+        doc.append(f"# {template.name}")
+        doc.append(f"\n{template.description}")
+        doc.append(f"\n**Resource Type:** {template.resource_type}")
+        doc.append(f"**Created:** {template.created_at.strftime('%Y-%m-%d %H:%M')}")
+        doc.append(f"**Version:** {template.version}")
+        
+        if template.tags:
+            doc.append(f"**Tags:** {', '.join(template.tags)}")
+        
+        doc.append(f"\n## Fields Summary")
+        doc.append(f"- **Total fields:** {len(template.fields)}")
+        doc.append(f"- **Required fields:** {len(template.get_required_fields())}")
+        
+        # Group by section
+        sections = {}
+        for field in template.fields:
+            if field.section not in sections:
+                sections[field.section] = []
+            sections[field.section].append(field)
+        
+        for section_name in sorted(sections.keys()):
+            section_fields = sections[section_name]
+            doc.append(f"\n### {section_name.title()} ({len(section_fields)} fields)")
+            
+            for field in sorted(section_fields, key=lambda f: (f.priority, f.name)):
+                required_marker = "**Required**" if field.required else "Optional"
+                multilingual_marker = " (Multilingual)" if field.multilingual else ""
+                
+                doc.append(f"\n#### {field.name} - {required_marker}{multilingual_marker}")
+                doc.append(f"- **Type:** {field.data_type}")
+                doc.append(f"- **URI:** {field.property_uri}")
+                
+                if field.controlled_vocabulary:
+                    doc.append(f"- **Vocabulary:** {field.controlled_vocabulary}")
+                
+                if field.examples:
+                    doc.append(f"- **Examples:** {', '.join(field.examples[:3])}")
+                
+                if field.help_text:
+                    doc.append(f"- **Help:** {field.help_text}")
+                
+                if field.default_value:
+                    doc.append(f"- **Default:** {field.default_value}")
+        
+        return '\n'.join(doc)
+
+    async def generate_autonomous_metadata(
+        self,
+        file_path: str,
+        resource_type: str = None,
+        target_template: MetadataTemplate = None,
+        user_context: Dict[str, Any] = None
+    ) -> Optional[AutonomousGenerationResult]:
+        """Generate complete metadata autonomously from file analysis."""
+        if not self.autonomous_generator:
+            logger.warning("Autonomous generation unavailable without vocabulary service")
+            return None
+            
+        try:
+            logger.info(f"Generating autonomous metadata for: {file_path}")
+            
+            # Add user profile information to context if available
+            if not user_context:
+                user_context = {}
+                
+            # Try to get user information for better context
+            try:
+                user_profile = self.user_client.get_complete_user_profile()
+                if user_profile:
+                    user_context.update({
+                        'user_collections_count': len(user_profile.get('collections', [])),
+                        'user_datasets_count': len(user_profile.get('datasets', [])),
+                        'has_existing_data': len(user_profile.get('datasets', [])) > 0,
+                        'primary_language': 'fr'  # Default for French institutions
+                    })
+            except Exception as e:
+                logger.debug(f"Could not get user profile for autonomous generation: {e}")
+            
+            result = await self.autonomous_generator.generate_autonomous_metadata(
+                file_path=file_path,
+                resource_type=resource_type,
+                target_template=target_template,
+                user_context=user_context
+            )
+            
+            logger.info(f"Autonomous generation completed: {len(result.generated_metadata)} fields, "
+                       f"{result.quality_score:.1%} quality, {result.completeness_score:.1%} completeness")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Failed to generate autonomous metadata: {e}")
+            return None
+    
+    def export_autonomous_result_csv(
+        self,
+        result: AutonomousGenerationResult,
+        output_path: str,
+        mode: str = 'create',
+        include_analysis: bool = True
+    ) -> None:
+        """Export autonomous generation result as CSV for upload or modification."""
+        try:
+            with open(output_path, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                
+                if mode == 'create':
+                    # Creation mode CSV header
+                    headers = ['file'] + [field.name for field in result.template.fields]
+                    writer.writerow(headers)
+                    
+                    # Generated metadata row
+                    metadata_row = [result.file_path]
+                    for field in result.template.fields:
+                        value = result.generated_metadata.get(field.name, '')
+                        metadata_row.append(value)
+                    
+                    writer.writerow(metadata_row)
+                    
+                    # Add analysis information as comments if requested
+                    if include_analysis:
+                        writer.writerow([f'# Autonomous generation analysis for {Path(result.file_path).name}'])
+                        writer.writerow([f'# Content type: {result.content_analysis.content_type}'])
+                        writer.writerow([f'# Detection confidence: {result.content_analysis.confidence_score:.1%}'])
+                        writer.writerow([f'# Quality score: {result.quality_score:.1%}'])
+                        writer.writerow([f'# Completeness: {result.completeness_score:.1%}'])
+                        
+                        if result.recommendations:
+                            writer.writerow(['# Recommendations:'])
+                            for rec in result.recommendations:
+                                writer.writerow([f'#   - {rec}'])
+                
+                elif mode == 'modify':
+                    # Modification mode CSV header
+                    headers = ['id', 'action']
+                    for field in result.template.fields:
+                        headers.extend([f'current_{field.name}', f'new_{field.name}'])
+                    
+                    writer.writerow(headers)
+                    
+                    # Example modification row
+                    modify_row = ['10.34847/nkl.your_id', 'modify']
+                    for field in result.template.fields:
+                        current_value = 'current_value'
+                        new_value = result.generated_metadata.get(field.name, 'new_value')
+                        modify_row.extend([current_value, new_value])
+                    
+                    writer.writerow(modify_row)
+            
+            logger.info(f"Autonomous result exported as {mode} CSV to: {output_path}")
+            
+        except Exception as e:
+            logger.error(f"Failed to export autonomous result to CSV: {e}")
+            raise
+    
+    def generate_autonomous_metadata_report(self, result: AutonomousGenerationResult) -> str:
+        """Generate a comprehensive report for autonomous metadata generation."""
+        doc = []
+        doc.append(f"# Autonomous Metadata Generation Report")
+        doc.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        doc.append(f"File: {result.file_path}")
+        doc.append(f"Processing time: {result.processing_time:.3f} seconds")
+        
+        doc.append(f"\n## Content Analysis")
+        doc.append(f"- **Content Type:** {result.content_analysis.content_type}")
+        doc.append(f"- **Detected Language:** {result.content_analysis.detected_language}")
+        doc.append(f"- **Detection Confidence:** {result.content_analysis.confidence_score:.1%}")
+        doc.append(f"- **Analysis Time:** {result.content_analysis.analysis_time:.3f} seconds")
+        
+        if result.content_analysis.extracted_features:
+            doc.append(f"\n### Extracted Features")
+            for feature, value in result.content_analysis.extracted_features.items():
+                doc.append(f"- **{feature.replace('_', ' ').title()}:** {value}")
+        
+        doc.append(f"\n## Generated Metadata")
+        doc.append(f"- **Fields Generated:** {len(result.generated_metadata)}")
+        doc.append(f"- **Quality Score:** {result.quality_score:.1%}")
+        doc.append(f"- **Completeness Score:** {result.completeness_score:.1%}")
+        
+        # Generated fields with confidence scores
+        for field_name, value in result.generated_metadata.items():
+            confidence = result.confidence_scores.get(field_name, 0.0)
+            doc.append(f"\n### {field_name}")
+            doc.append(f"- **Value:** {value}")
+            doc.append(f"- **Confidence:** {confidence:.1%}")
+        
+        # ML Predictions
+        if result.ml_predictions:
+            doc.append(f"\n## Machine Learning Enhancements")
+            for prediction in result.ml_predictions:
+                doc.append(f"\n### {prediction.field_name}")
+                doc.append(f"- **Predicted Value:** {prediction.predicted_value}")
+                doc.append(f"- **Confidence:** {prediction.confidence:.1%}")
+                doc.append(f"- **Reasoning:** {prediction.reasoning}")
+        
+        # Collaborative Insights
+        if result.collaborative_insights:
+            doc.append(f"\n## Collaborative Intelligence")
+            for insight in result.collaborative_insights[:3]:  # Show top 3 insights
+                doc.append(f"- **{insight.get('insight_type', 'insight').title()}:** {insight.get('recommendation', 'N/A')}")
+        
+        # Recommendations
+        if result.recommendations:
+            doc.append(f"\n## Recommendations")
+            for rec in result.recommendations:
+                doc.append(f"- {rec}")
+        
+        # Processing notes
+        if result.content_analysis.processing_notes:
+            doc.append(f"\n## Processing Notes")
+            for note in result.content_analysis.processing_notes:
+                doc.append(f"- {note}")
+        
+        return '\n'.join(doc)
+
+    async def generate_predictive_analysis_report(
+        self,
+        custom_timeframes: List[str] = None,
+        include_quality: bool = True,
+        include_completeness: bool = True,
+        include_usage: bool = True,
+        output_path: str = None
+    ) -> Optional[PredictiveAnalysisResult]:
+        """Generate comprehensive predictive analysis report."""
+        if not self.predictive_analytics:
+            logger.warning("Predictive analytics unavailable without vocabulary service")
+            return None
+            
+        try:
+            logger.info("Generating predictive analysis report...")
+            
+            result = await self.predictive_analytics.generate_predictive_analysis(
+                custom_timeframes=custom_timeframes,
+                include_quality=include_quality,
+                include_completeness=include_completeness,
+                include_usage=include_usage
+            )
+            
+            logger.info(f"Predictive analysis completed: health score {result.overall_health_score:.1%}, "
+                       f"{len(result.key_insights)} insights, {len(result.strategic_recommendations)} recommendations")
+            
+            # Export to file if requested
+            if output_path:
+                report_text = self.generate_predictive_analysis_report_text(result)
+                with open(output_path, 'w', encoding='utf-8') as f:
+                    f.write(report_text)
+                logger.info(f"Predictive analysis report exported to: {output_path}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Failed to generate predictive analysis: {e}")
+            return None
+    
+    def generate_predictive_analysis_report_text(self, result: PredictiveAnalysisResult) -> str:
+        """Generate text report for predictive analysis."""
+        doc = []
+        doc.append(f"# Predictive Analytics Report")
+        doc.append(f"Generated: {result.analysis_date.strftime('%Y-%m-%d %H:%M:%S')}")
+        doc.append(f"Processing time: {result.processing_time:.3f} seconds")
+        doc.append(f"Data quality score: {result.data_quality_score:.1%}")
+        
+        doc.append(f"\n## Executive Summary")
+        doc.append(f"- **Overall Health Score:** {result.overall_health_score:.1%}")
+        doc.append(f"- **Prediction Timeframes:** {', '.join(result.prediction_timeframes)}")
+        doc.append(f"- **Quality Predictions:** {len(result.quality_predictions)}")
+        doc.append(f"- **Completeness Predictions:** {len(result.completeness_predictions)}")
+        doc.append(f"- **Usage Predictions:** {len(result.usage_predictions)}")
+        
+        # Key Insights
+        if result.key_insights:
+            doc.append(f"\n## Key Insights")
+            for insight in result.key_insights:
+                doc.append(f"- {insight}")
+        
+        # Strategic Recommendations
+        if result.strategic_recommendations:
+            doc.append(f"\n## Strategic Recommendations")
+            for rec in result.strategic_recommendations:
+                doc.append(f"- {rec}")
+        
+        # Quality Predictions
+        if result.quality_predictions:
+            doc.append(f"\n## Quality Predictions")
+            for pred in result.quality_predictions:
+                doc.append(f"\n### {pred.metric_name} ({pred.prediction_timeframe})")
+                doc.append(f"- **Current:** {pred.current_value:.1%}")
+                doc.append(f"- **Predicted:** {pred.predicted_value:.1%}")
+                doc.append(f"- **Trend:** {pred.trend_direction}")
+                doc.append(f"- **Confidence:** {pred.confidence:.1%}")
+                
+                if pred.recommendations:
+                    doc.append(f"- **Recommendations:** {'; '.join(pred.recommendations[:2])}")
+        
+        # Completeness Predictions
+        if result.completeness_predictions:
+            doc.append(f"\n## Completeness Predictions")
+            high_priority = [p for p in result.completeness_predictions if p.priority_level == 'high']
+            
+            for pred in high_priority[:5]:  # Show top 5 high-priority fields
+                doc.append(f"\n### {pred.field_name} ({pred.prediction_timeframe})")
+                doc.append(f"- **Current Completion:** {pred.current_completion_rate:.1%}")
+                doc.append(f"- **Predicted Completion:** {pred.predicted_completion_rate:.1%}")
+                doc.append(f"- **Priority:** {pred.priority_level}")
+                doc.append(f"- **Confidence:** {pred.confidence:.1%}")
+                
+                if pred.suggested_actions:
+                    doc.append(f"- **Actions:** {'; '.join(pred.suggested_actions[:2])}")
+        
+        # Usage Predictions
+        if result.usage_predictions:
+            doc.append(f"\n## Usage Predictions")
+            for pred in result.usage_predictions:
+                doc.append(f"\n### {pred.usage_metric} ({pred.prediction_timeframe})")
+                doc.append(f"- **Current:** {pred.current_value:,}")
+                doc.append(f"- **Predicted:** {pred.predicted_value:,}")
+                growth_rate = (pred.predicted_value - pred.current_value) / max(pred.current_value, 1)
+                doc.append(f"- **Growth Rate:** {growth_rate:.1%}")
+                doc.append(f"- **Confidence:** {pred.confidence:.1%}")
+                
+                if pred.capacity_recommendations:
+                    doc.append(f"- **Capacity Recommendations:** {'; '.join(pred.capacity_recommendations[:2])}")
+        
+        return '\n'.join(doc)
+
+    async def discover_relationships_for_metadata(
+        self,
+        metadata: Dict[str, Any],
+        resource_id: str = None,
+        max_suggestions: int = 5
+    ) -> Optional[RelationshipAnalysis]:
+        """Discover relationships for given metadata."""
+        if not self.relationship_service:
+            logger.warning("Relationship discovery unavailable without vocabulary service")
+            return None
+            
+        try:
+            analysis = await self.relationship_service.discover_relationships(
+                source_metadata=metadata,
+                source_id=resource_id,
+                max_suggestions=max_suggestions,
+                min_confidence=0.3
+            )
+            
+            logger.info(f"Discovered {len(analysis.suggestions)} relationship suggestions")
+            return analysis
+            
+        except Exception as e:
+            logger.error(f"Failed to discover relationships: {e}")
+            return None
+
+    async def generate_intelligent_template(
+        self,
+        resource_type: str,
+        file_path: str = None,
+        template_name: str = None,
+        additional_context: Dict[str, Any] = None,
+        include_optional: bool = True,
+        include_relationships: bool = True
+    ) -> Optional[Tuple[MetadataTemplate, PrePopulationResult, Optional[RelationshipAnalysis]]]:
+        """Generate an intelligent template with pre-populated values and relationship suggestions."""
+        if not self.template_generator or not self.prepopulation_assistant:
+            logger.warning("Intelligent template generation unavailable without vocabulary service")
+            return None
+            
+        try:
+            logger.info(f"Generating comprehensive intelligent template for {resource_type}")
+            
+            # Generate base template
+            template = await self.generate_metadata_template(
+                resource_type=resource_type,
+                template_name=template_name,
+                include_optional=include_optional
+            )
+            
+            if not template:
+                logger.error("Failed to generate base template")
+                return None
+            
+            # Pre-populate the template
+            prepop_result = await self.prepopulation_assistant.pre_populate_template(
+                template=template,
+                api_key=self.config.api_key,
+                file_path=file_path,
+                additional_context=additional_context
+            )
+            
+            # Discover relationships if requested and we have populated metadata
+            relationship_analysis = None
+            if include_relationships and prepop_result.populated_fields:
+                try:
+                    relationship_analysis = await self.discover_relationships_for_metadata(
+                        metadata=prepop_result.populated_fields,
+                        max_suggestions=5
+                    )
+                    
+                    # Enhance pre-population with relationship suggestions
+                    if relationship_analysis and relationship_analysis.suggestions:
+                        template_field_names = [f.name for f in template.fields]
+                        rel_suggestions = self.relationship_service.suggest_relationship_fields(
+                            relationship_analysis, template_field_names
+                        )
+                        
+                        # Add relationship suggestions to prepop suggestions
+                        for field_name, suggestions in rel_suggestions.items():
+                            if field_name in prepop_result.suggestions:
+                                prepop_result.suggestions[field_name].extend(suggestions)
+                            else:
+                                prepop_result.suggestions[field_name] = suggestions
+                        
+                        prepop_result.analysis_notes.append(
+                            f"Added {len(rel_suggestions)} relationship field suggestions"
+                        )
+                        
+                except Exception as e:
+                    logger.warning(f"Relationship discovery failed: {e}")
+            
+            logger.info(f"Generated comprehensive intelligent template with {len(prepop_result.populated_fields)} pre-populated fields"
+                       f"{' and ' + str(len(relationship_analysis.suggestions)) + ' relationship suggestions' if relationship_analysis else ''}")
+            
+            return template, prepop_result, relationship_analysis
+            
+        except Exception as e:
+            logger.error(f"Failed to generate intelligent template: {e}")
+            return None
+    
+    def export_intelligent_template_csv(
+        self,
+        template: MetadataTemplate,
+        prepop_result: PrePopulationResult,
+        output_path: str,
+        mode: str = 'create',
+        include_suggestions: bool = True
+    ) -> None:
+        """Export intelligent template with pre-populated values as CSV."""
+        try:
+            with open(output_path, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                
+                if mode == 'create':
+                    # Creation mode CSV header
+                    headers = ['file'] + [field.name for field in template.fields]
+                    writer.writerow(headers)
+                    
+                    # Pre-populated example row
+                    example_row = ['path/to/your/file_or_folder/']
+                    for field in template.fields:
+                        # Use pre-populated value if available, otherwise use example
+                        if field.name in prepop_result.populated_fields:
+                            example_row.append(prepop_result.populated_fields[field.name])
+                        elif field.examples:
+                            example_row.append(field.examples[0])
+                        else:
+                            example_row.append(f'example_{field.name}')
+                    
+                    writer.writerow(example_row)
+                    
+                    # Add suggestions as comments if requested
+                    if include_suggestions:
+                        for field_name, suggestions in prepop_result.suggestions.items():
+                            if suggestions:
+                                comment_row = [f'# {field_name} suggestions:'] + [''] * (len(headers) - 1)
+                                writer.writerow(comment_row)
+                                for suggestion in suggestions[:3]:
+                                    suggestion_row = [f'#   {suggestion}'] + [''] * (len(headers) - 1)
+                                    writer.writerow(suggestion_row)
+                
+                elif mode == 'modify':
+                    # Modification mode CSV header
+                    headers = ['id', 'action']
+                    for field in template.fields:
+                        headers.extend([f'current_{field.name}', f'new_{field.name}'])
+                    
+                    writer.writerow(headers)
+                    
+                    # Pre-populated example row
+                    example_row = ['10.34847/nkl.example123', 'modify']
+                    for field in template.fields:
+                        current_value = 'current_value'
+                        # Use pre-populated value if available
+                        if field.name in prepop_result.populated_fields:
+                            new_value = prepop_result.populated_fields[field.name]
+                        elif field.examples:
+                            new_value = field.examples[0]
+                        else:
+                            new_value = 'new_value'
+                        
+                        example_row.extend([current_value, new_value])
+                    
+                    writer.writerow(example_row)
+            
+            logger.info(f"Intelligent template exported as {mode} CSV to: {output_path}")
+            
+        except Exception as e:
+            logger.error(f"Failed to export intelligent template to CSV: {e}")
+            raise
+    
+    def generate_intelligent_template_report(
+        self,
+        template: MetadataTemplate,
+        prepop_result: PrePopulationResult,
+        relationship_analysis: Optional[RelationshipAnalysis] = None
+    ) -> str:
+        """Generate a comprehensive report for the intelligent template."""
+        doc = []
+        doc.append(f"# Comprehensive Intelligent Template Report: {template.name}")
+        doc.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        doc.append(f"Processing time: {prepop_result.processing_time:.3f} seconds")
+        
+        doc.append(f"\n## Intelligence Summary")
+        doc.append(f"- **Fields populated:** {len(prepop_result.populated_fields)}/{len(template.fields)}")
+        doc.append(f"- **Fields with suggestions:** {len(prepop_result.suggestions)}")
+        doc.append(f"- **Analysis notes:** {len(prepop_result.analysis_notes)}")
+        
+        if relationship_analysis:
+            doc.append(f"- **Relationship suggestions:** {len(relationship_analysis.suggestions)}")
+            doc.append(f"- **Relationship processing time:** {relationship_analysis.processing_time:.3f} seconds")
+        
+        # Average confidence score
+        if prepop_result.confidence_scores:
+            avg_confidence = sum(prepop_result.confidence_scores.values()) / len(prepop_result.confidence_scores)
+            doc.append(f"- **Average confidence:** {avg_confidence:.1%}")
+        
+        doc.append(f"\n## Populated Fields")
+        for field_name, value in prepop_result.populated_fields.items():
+            confidence = prepop_result.confidence_scores.get(field_name, 0.0)
+            field = template.get_field_by_name(field_name)
+            
+            doc.append(f"\n### {field_name}")
+            doc.append(f"- **Value:** {value}")
+            doc.append(f"- **Confidence:** {confidence:.1%}")
+            if field:
+                doc.append(f"- **Required:** {'Yes' if field.required else 'No'}")
+                doc.append(f"- **Type:** {field.data_type}")
+        
+        # Relationship suggestions
+        if relationship_analysis and relationship_analysis.suggestions:
+            doc.append(f"\n## Relationship Suggestions")
+            for i, suggestion in enumerate(relationship_analysis.suggestions, 1):
+                doc.append(f"\n### {i}. {suggestion.target_title}")
+                doc.append(f"- **Target ID:** {suggestion.target_id}")
+                doc.append(f"- **Relationship Type:** {suggestion.relationship_type}")
+                doc.append(f"- **Confidence:** {suggestion.confidence:.1%}")
+                doc.append(f"- **Reason:** {suggestion.reason}")
+        
+        # All suggestions (including relationships)
+        if prepop_result.suggestions:
+            doc.append(f"\n## All Available Suggestions")
+            for field_name, suggestions in prepop_result.suggestions.items():
+                if suggestions:
+                    doc.append(f"\n### {field_name}")
+                    for suggestion in suggestions[:5]:
+                        doc.append(f"- {suggestion}")
+        
+        # Analysis notes
+        if prepop_result.analysis_notes:
+            doc.append(f"\n## Analysis Notes")
+            for note in prepop_result.analysis_notes:
+                doc.append(f"- {note}")
+        
+        if relationship_analysis and relationship_analysis.analysis_notes:
+            doc.append(f"\n## Relationship Analysis Notes")
+            for note in relationship_analysis.analysis_notes:
+                doc.append(f"- {note}")
+        
+        # Template information
+        doc.append(f"\n## Template Information")
+        doc.append(f"- **Resource type:** {template.resource_type}")
+        doc.append(f"- **Total fields:** {len(template.fields)}")
+        doc.append(f"- **Required fields:** {len(template.get_required_fields())}")
+        
+        required_fields = [f.name for f in template.get_required_fields()]
+        populated_required = [f for f in required_fields if f in prepop_result.populated_fields]
+        
+        doc.append(f"- **Required fields populated:** {len(populated_required)}/{len(required_fields)}")
+        
+        if len(populated_required) < len(required_fields):
+            missing_required = [f for f in required_fields if f not in prepop_result.populated_fields]
+            doc.append(f"- **Missing required fields:** {', '.join(missing_required)}")
+        
+        # Intelligence capabilities summary
+        doc.append(f"\n## Intelligence Capabilities Applied")
+        doc.append(f"- ✅ **Dynamic Field Discovery:** Vocabulary-based field generation")
+        doc.append(f"- ✅ **Template Generation:** Context-aware metadata templates")
+        doc.append(f"- ✅ **Pre-population:** User context and file analysis")
+        doc.append(f"- {'✅' if relationship_analysis else '⏸️'} **Relationship Discovery:** {'Connected resource analysis' if relationship_analysis else 'Not applied'}")
+        
+        return '\n'.join(doc)
+
+    def parse_csv_modifications(self, csv_path: str, mode='auto') -> Tuple[List[Dict[str, Any]], List[str]]:
         """
-        Parse CSV modifications with comprehensive field support.
+        Enhanced CSV parser supporting both creation and modification formats.
+        
+        Args:
+            csv_path: Path to CSV file
+            mode: 'auto', 'modify', or 'create'
         
         Returns:
             Tuple of (modifications_list, unsupported_fields_list)
@@ -398,36 +1388,36 @@ class NakalaCuratorClient:
         try:
             with open(csv_path, "r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
+                
+                # Auto-detect mode if not specified
+                if mode == 'auto':
+                    mode = self._detect_csv_mode(reader.fieldnames)
+                    logger.info(f"Auto-detected CSV mode: {mode}")
+                
                 for row_num, row in enumerate(reader, start=2):  # Start at 2 for line numbers (header is line 1)
-                    if row.get("action") == "modify":
-                        changes = {}
-                        
-                        # Process all potential modification fields
-                        for csv_field, value in row.items():
-                            if csv_field and csv_field.startswith('new_') and value and str(value).strip():
-                                if csv_field in CSV_FIELD_MAPPINGS:
-                                    field_config = CSV_FIELD_MAPPINGS[csv_field]
-                                    api_field = field_config['api_field']
-                                    
-                                    # Handle array format fields (like creator, contributor)
-                                    if field_config.get('format') == 'array':
-                                        # Convert semicolon-separated values to array
-                                        changes[api_field] = [v.strip() for v in str(value).split(';') if v.strip()]
-                                    else:
-                                        changes[api_field] = str(value).strip()
-                                        
-                                    logger.debug(f"Row {row_num}: Mapped {csv_field} -> {api_field} = {changes[api_field]}")
-                                else:
-                                    unsupported_fields.add(csv_field)
-                        
+                    
+                    if mode == 'modify':
+                        # Modification mode (requires action column)
+                        if row.get("action") == "modify":
+                            changes = self._parse_modification_row(row, row_num, unsupported_fields)
+                            if changes:
+                                modifications.append({
+                                    "id": row["id"], 
+                                    "changes": changes,
+                                    "row_number": row_num,
+                                    "mode": "modify"
+                                })
+                    
+                    elif mode == 'create':
+                        # Creation mode (direct field names from sample datasets)
+                        changes = self._parse_creation_row(row, row_num, unsupported_fields)
                         if changes:
                             modifications.append({
-                                "id": row["id"], 
-                                "changes": changes,
-                                "row_number": row_num
+                                "file_or_folder": row.get("file", row.get("folder", "")),
+                                "metadata": changes,
+                                "row_number": row_num,
+                                "mode": "create"
                             })
-                        elif not any(row.get(f) for f in CSV_FIELD_MAPPINGS.keys()):
-                            logger.warning(f"Row {row_num}: No recognized modification fields found")
         
         except FileNotFoundError:
             raise FileNotFoundError(f"CSV file not found: {csv_path}")
@@ -440,6 +1430,57 @@ class NakalaCuratorClient:
             logger.info(f"Supported fields: {sorted(CSV_FIELD_MAPPINGS.keys())}")
         
         return modifications, list(unsupported_fields)
+
+    def _detect_csv_mode(self, fieldnames):
+        """Auto-detect CSV format based on column names."""
+        if 'action' in fieldnames and any(f.startswith('new_') for f in fieldnames):
+            return 'modify'
+        elif 'file' in fieldnames or 'folder' in fieldnames or 'data_items' in fieldnames:
+            return 'create'
+        else:
+            return 'modify'  # Default to modification mode
+
+    def _parse_modification_row(self, row, row_num, unsupported_fields):
+        """Parse row with new_ prefixes (modification format)."""
+        changes = {}
+        
+        # Process all potential modification fields
+        for csv_field, value in row.items():
+            if csv_field and csv_field.startswith('new_') and value and str(value).strip():
+                if csv_field in CSV_FIELD_MAPPINGS:
+                    field_config = CSV_FIELD_MAPPINGS[csv_field]
+                    api_field = field_config['api_field']
+                    
+                    # Store the raw value - processing happens in _apply_modification
+                    changes[api_field] = str(value).strip()
+                    logger.debug(f"Row {row_num}: Mapped {csv_field} -> {api_field} = {changes[api_field]}")
+                else:
+                    unsupported_fields.add(csv_field)
+                    
+        return changes
+
+    def _parse_creation_row(self, row, row_num, unsupported_fields):
+        """Parse row with direct field names (creation format from sample datasets)."""
+        changes = {}
+        
+        for csv_field, value in row.items():
+            if csv_field and value and str(value).strip():
+                # Skip file/folder fields but allow data_items for collections
+                if csv_field in ['file', 'folder']:
+                    continue
+                    
+                # Map direct field names to API fields
+                if csv_field in CSV_FIELD_MAPPINGS:
+                    field_config = CSV_FIELD_MAPPINGS[csv_field]
+                    api_field = field_config['api_field']
+                    
+                    # Store the raw value - processing happens in _apply_modification
+                    changes[api_field] = str(value).strip()
+                    logger.debug(f"Row {row_num}: Mapped {csv_field} -> {api_field} = {changes[api_field]}")
+                else:
+                    unsupported_fields.add(csv_field)
+                    
+        return changes
 
     def _format_field_value(self, value: str, field_config: Dict[str, Any]) -> Any:
         """Format field value according to its configuration."""
@@ -665,52 +1706,42 @@ class NakalaCuratorClient:
                             "propertyUri": property_uri,
                             "typeUri": "http://www.w3.org/2001/XMLSchema#string"
                         })
-                elif is_multilingual:
-                    # Handle multilingual fields like title, description, keywords
-                    if "|" in str(new_value):
-                        parts = str(new_value).split("|")
-                        for part in parts:
-                            if part.startswith("fr:"):
-                                content = part[3:]
-                                if field_name == "keywords":
-                                    # Handle semicolon-separated keywords
-                                    keywords = content.split(";")
-                                    for keyword in keywords:
-                                        if keyword.strip():
-                                            new_metas.append({
-                                                "value": keyword.strip(),
-                                                "lang": "fr",
-                                                "propertyUri": property_uri,
-                                            })
-                                else:
-                                    new_metas.append({
-                                        "value": content,
-                                        "lang": "fr",
-                                        "propertyUri": property_uri,
-                                    })
-                            elif part.startswith("en:"):
-                                content = part[3:]
-                                if field_name == "keywords":
-                                    # Handle semicolon-separated keywords
-                                    keywords = content.split(";")
-                                    for keyword in keywords:
-                                        if keyword.strip():
-                                            new_metas.append({
-                                                "value": keyword.strip(),
-                                                "lang": "en",
-                                                "propertyUri": property_uri,
-                                            })
-                                else:
-                                    new_metas.append({
-                                        "value": content,
-                                        "lang": "en",
-                                        "propertyUri": property_uri,
-                                    })
-                    else:
-                        # Default to French if no language specified
+                elif field_config.get('format') == 'rights_list':
+                    # Enhanced rights and access control processing
+                    rights_entries = self._process_rights_value(str(new_value), field_name)
+                    for rights_entry in rights_entries:
                         new_metas.append({
-                            "value": str(new_value),
-                            "lang": "fr",
+                            "value": rights_entry["value"],
+                            "propertyUri": property_uri,
+                            "typeUri": rights_entry.get("typeUri", "http://www.w3.org/2001/XMLSchema#string")
+                        })
+                elif field_config.get('format') == 'file_reference':
+                    # Handle file references for folder-based uploads
+                    new_metas.append({
+                        "value": str(new_value),
+                        "propertyUri": property_uri,
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                    })
+                elif field_config.get('format') == 'folder_patterns':
+                    # Handle data_items field with folder patterns
+                    if isinstance(new_value, list):
+                        folder_patterns = new_value
+                    else:
+                        folder_patterns = [v.strip() for v in str(new_value).split(';') if v.strip()]
+                    
+                    for pattern in folder_patterns:
+                        new_metas.append({
+                            "value": pattern,
+                            "propertyUri": property_uri,
+                            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                        })
+                elif is_multilingual:
+                    # Enhanced multilingual fields processing with complex format support
+                    processed_values = self._process_multilingual_value(str(new_value), field_name)
+                    for lang_entry in processed_values:
+                        new_metas.append({
+                            "value": lang_entry["value"],
+                            "lang": lang_entry["lang"],
                             "propertyUri": property_uri,
                         })
                 else:
@@ -753,6 +1784,265 @@ class NakalaCuratorClient:
         except Exception as e:
             logger.error(f"Error processing modification for {item_id}: {e}")
             return False
+
+    def _process_multilingual_value(self, value: str, field_name: str) -> List[Dict[str, str]]:
+        """Enhanced multilingual value processing supporting complex formats.
+        
+        Supports formats:
+        - Simple: "Simple text" (defaults to French)
+        - Basic multilingual: "fr:Français|en:English"
+        - Complex with semicolons: "fr:mot1;mot2;mot3|en:word1;word2;word3"
+        - Language codes: "fr-FR:Français|en-US:English"
+        - Mixed separators: "fr:text1,text2|en:text3;text4"
+        - Unicode support: "fr:café;résumé|en:coffee;resume"
+        """
+        import re
+        
+        processed_values = []
+        
+        # Handle complex multilingual patterns
+        if "|" in value:
+            # Split by language separator
+            language_parts = value.split("|")
+            for part in language_parts:
+                part = part.strip()
+                if not part:
+                    continue
+                    
+                # Enhanced language code pattern matching
+                lang_match = re.match(r'^([a-z]{2}(?:-[A-Z]{2})?):(.+)$', part)
+                if lang_match:
+                    lang_code = lang_match.group(1)
+                    content = lang_match.group(2).strip()
+                    
+                    # Normalize language codes (fr-FR -> fr, en-US -> en)
+                    normalized_lang = lang_code.split('-')[0].lower()
+                    
+                    if field_name == "keywords":
+                        # Enhanced keyword parsing with multiple separators
+                        keywords = self._parse_keywords(content)
+                        for keyword in keywords:
+                            if keyword.strip():
+                                processed_values.append({
+                                    "value": keyword.strip(),
+                                    "lang": normalized_lang
+                                })
+                    else:
+                        # Handle regular multilingual text
+                        processed_values.append({
+                            "value": content,
+                            "lang": normalized_lang
+                        })
+                else:
+                    # Fallback for malformed language prefixes
+                    logger.warning(f"Malformed multilingual pattern: {part}")
+                    processed_values.append({
+                        "value": part,
+                        "lang": "fr"  # Default to French
+                    })
+        else:
+            # Single language or no language specified
+            if field_name == "keywords":
+                keywords = self._parse_keywords(value)
+                for keyword in keywords:
+                    if keyword.strip():
+                        processed_values.append({
+                            "value": keyword.strip(),
+                            "lang": "fr"  # Default to French
+                        })
+            else:
+                processed_values.append({
+                    "value": value,
+                    "lang": "fr"  # Default to French
+                })
+        
+        return processed_values
+    
+    def _parse_keywords(self, content: str) -> List[str]:
+        """Enhanced keyword parsing supporting multiple separators and formats."""
+        import re
+        
+        # Handle multiple keyword separators: semicolon, comma, pipe, newline
+        # Split by any of these separators
+        keywords = re.split(r'[;,\|\n]+', content)
+        
+        # Clean and normalize keywords
+        cleaned_keywords = []
+        for keyword in keywords:
+            # Remove extra whitespace and special characters
+            cleaned = keyword.strip().strip('"\'')
+            if cleaned and len(cleaned) > 1:  # Ignore single characters
+                cleaned_keywords.append(cleaned)
+        
+        return cleaned_keywords
+    
+    def _process_rights_value(self, value: str, field_name: str) -> List[Dict[str, str]]:
+        """Enhanced rights and access control processing supporting complex formats.
+        
+        Supports formats:
+        - Simple text: "Open access"
+        - Group permissions: "group_uuid,ROLE_READER"
+        - Multiple groups: "group1,ROLE_ADMIN;group2,ROLE_READER"
+        - User permissions: "user:john.doe@example.com,ROLE_EDITOR"
+        - Access dates: "embargo:2025-12-31"
+        - Complex rights: "license:CC-BY-4.0|access:open|embargo:2025-01-01"
+        """
+        import re
+        from datetime import datetime
+        
+        rights_entries = []
+        
+        # Handle complex rights expressions
+        if '|' in value:
+            # Split complex rights by pipe separator
+            parts = value.split('|')
+            for part in parts:
+                part = part.strip()
+                if ':' in part:
+                    rights_type, rights_value = part.split(':', 1)
+                    rights_entries.append({
+                        "value": f"{rights_type.strip()}:{rights_value.strip()}",
+                        "typeUri": "http://purl.org/dc/terms/RightsStatement"
+                    })
+                else:
+                    rights_entries.append({
+                        "value": part,
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                    })
+        elif ';' in value:
+            # Handle multiple group/user permissions separated by semicolons
+            permissions = value.split(';')
+            for permission in permissions:
+                permission = permission.strip()
+                if ',' in permission:
+                    # Group or user permission format
+                    entity, role = permission.split(',', 1)
+                    entity = entity.strip()
+                    role = role.strip()
+                    
+                    # Validate role format
+                    if role.startswith('ROLE_'):
+                        rights_entries.append({
+                            "value": f"{entity},{role}",
+                            "typeUri": "http://nakala.fr/terms#permission"
+                        })
+                    else:
+                        # Invalid role format, treat as simple text
+                        rights_entries.append({
+                            "value": permission,
+                            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                        })
+                else:
+                    rights_entries.append({
+                        "value": permission,
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                    })
+        elif ',' in value:
+            # Single group/user permission
+            parts = value.split(',', 1)
+            if len(parts) == 2:
+                entity, role = parts
+                entity = entity.strip()
+                role = role.strip()
+                
+                # Enhanced entity type detection
+                if entity.startswith('user:'):
+                    # User permission
+                    rights_entries.append({
+                        "value": f"{entity},{role}",
+                        "typeUri": "http://nakala.fr/terms#userPermission"
+                    })
+                elif '@' in entity:
+                    # Email-based user permission
+                    rights_entries.append({
+                        "value": f"user:{entity},{role}",
+                        "typeUri": "http://nakala.fr/terms#userPermission"
+                    })
+                elif len(entity) == 36 and '-' in entity:
+                    # UUID-based group permission
+                    rights_entries.append({
+                        "value": f"group:{entity},{role}",
+                        "typeUri": "http://nakala.fr/terms#groupPermission"
+                    })
+                else:
+                    # Generic group permission
+                    rights_entries.append({
+                        "value": f"{entity},{role}",
+                        "typeUri": "http://nakala.fr/terms#permission"
+                    })
+            else:
+                # Malformed permission, treat as simple text
+                rights_entries.append({
+                    "value": value,
+                    "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                })
+        elif ':' in value:
+            # Special rights format (embargo, license, etc.)
+            rights_type, rights_value = value.split(':', 1)
+            rights_type = rights_type.strip().lower()
+            rights_value = rights_value.strip()
+            
+            if rights_type == 'embargo':
+                # Validate embargo date format
+                try:
+                    datetime.strptime(rights_value, '%Y-%m-%d')
+                    rights_entries.append({
+                        "value": f"embargo:{rights_value}",
+                        "typeUri": "http://nakala.fr/terms#embargoDate"
+                    })
+                except ValueError:
+                    # Invalid date format
+                    logger.warning(f"Invalid embargo date format: {rights_value}")
+                    rights_entries.append({
+                        "value": value,
+                        "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                    })
+            elif rights_type == 'license':
+                # License specification
+                rights_entries.append({
+                    "value": rights_value,
+                    "typeUri": "http://nakala.fr/terms#license"
+                })
+            elif rights_type in ['access', 'availability']:
+                # Access control specification
+                rights_entries.append({
+                    "value": f"{rights_type}:{rights_value}",
+                    "typeUri": "http://purl.org/dc/terms/accessRights"
+                })
+            else:
+                # Generic typed rights
+                rights_entries.append({
+                    "value": value,
+                    "typeUri": "http://purl.org/dc/terms/RightsStatement"
+                })
+        else:
+            # Simple rights statement
+            # Check for common access control terms
+            value_lower = value.lower()
+            if value_lower in ['open', 'open access', 'public']:
+                rights_entries.append({
+                    "value": value,
+                    "typeUri": "http://purl.org/dc/terms/accessRights"
+                })
+            elif value_lower in ['restricted', 'private', 'confidential']:
+                rights_entries.append({
+                    "value": value,
+                    "typeUri": "http://purl.org/dc/terms/accessRights"
+                })
+            elif value_lower.startswith('cc-') or 'creative commons' in value_lower:
+                # Creative Commons license
+                rights_entries.append({
+                    "value": value,
+                    "typeUri": "http://nakala.fr/terms#license"
+                })
+            else:
+                # Generic rights statement
+                rights_entries.append({
+                    "value": value,
+                    "typeUri": "http://purl.org/dc/terms/RightsStatement"
+                })
+        
+        return rights_entries
 
     def _find_field_config_by_api_name(self, api_field_name: str) -> Optional[Dict[str, Any]]:
         """Find field configuration by API field name."""

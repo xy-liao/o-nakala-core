@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Designer - O-Nakala Core</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="template-designer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-palette nav-icon"></i>
+                <span class="nav-title">Template Designer</span>
+                <span class="nav-subtitle">Visual Metadata Template Creator</span>
+            </div>
+            <div class="nav-actions">
+                <button id="previewBtn" class="nav-btn">
+                    <i class="fas fa-eye"></i> Preview
+                </button>
+                <button id="exportBtn" class="nav-btn">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button id="saveBtn" class="nav-btn primary">
+                    <i class="fas fa-save"></i> Save Template
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Designer Interface -->
+    <div class="designer-container">
+        <!-- Sidebar: Field Library -->
+        <aside class="field-library">
+            <div class="library-header">
+                <h3><i class="fas fa-toolbox"></i> Field Library</h3>
+                <input type="search" id="fieldSearch" placeholder="Search fields..." class="field-search">
+            </div>
+            
+            <div class="field-categories">
+                <!-- Core Fields -->
+                <div class="field-category">
+                    <h4><i class="fas fa-star"></i> Core Fields</h4>
+                    <div class="field-items" id="coreFields">
+                        <div class="field-item" data-field-type="title" draggable="true">
+                            <i class="fas fa-heading"></i>
+                            <div class="field-info">
+                                <span class="field-name">Title</span>
+                                <span class="field-required">Required</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="creator" draggable="true">
+                            <i class="fas fa-user"></i>
+                            <div class="field-info">
+                                <span class="field-name">Creator</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="description" draggable="true">
+                            <i class="fas fa-align-left"></i>
+                            <div class="field-info">
+                                <span class="field-name">Description</span>
+                                <span class="field-required">Required</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="subject" draggable="true">
+                            <i class="fas fa-tags"></i>
+                            <div class="field-info">
+                                <span class="field-name">Subject</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rights & Access -->
+                <div class="field-category">
+                    <h4><i class="fas fa-shield-alt"></i> Rights & Access</h4>
+                    <div class="field-items" id="rightsFields">
+                        <div class="field-item" data-field-type="license" draggable="true">
+                            <i class="fas fa-certificate"></i>
+                            <div class="field-info">
+                                <span class="field-name">License</span>
+                                <span class="field-required">Required</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="rights" draggable="true">
+                            <i class="fas fa-key"></i>
+                            <div class="field-info">
+                                <span class="field-name">Rights</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="accessRights" draggable="true">
+                            <i class="fas fa-lock"></i>
+                            <div class="field-info">
+                                <span class="field-name">Access Rights</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Metadata -->
+                <div class="field-category">
+                    <h4><i class="fas fa-cog"></i> Technical</h4>
+                    <div class="field-items" id="technicalFields">
+                        <div class="field-item" data-field-type="format" draggable="true">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="field-info">
+                                <span class="field-name">Format</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="extent" draggable="true">
+                            <i class="fas fa-ruler"></i>
+                            <div class="field-info">
+                                <span class="field-name">Extent</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="language" draggable="true">
+                            <i class="fas fa-language"></i>
+                            <div class="field-info">
+                                <span class="field-name">Language</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temporal & Spatial -->
+                <div class="field-category">
+                    <h4><i class="fas fa-map-marker-alt"></i> Temporal & Spatial</h4>
+                    <div class="field-items" id="temporalFields">
+                        <div class="field-item" data-field-type="date" draggable="true">
+                            <i class="fas fa-calendar"></i>
+                            <div class="field-info">
+                                <span class="field-name">Date</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="spatial" draggable="true">
+                            <i class="fas fa-globe"></i>
+                            <div class="field-info">
+                                <span class="field-name">Spatial Coverage</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                        <div class="field-item" data-field-type="temporal" draggable="true">
+                            <i class="fas fa-clock"></i>
+                            <div class="field-info">
+                                <span class="field-name">Temporal Coverage</span>
+                                <span class="field-optional">Optional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Designer Area -->
+        <main class="designer-main">
+            <!-- Template Header -->
+            <div class="template-header">
+                <div class="template-info">
+                    <input type="text" id="templateName" placeholder="Enter template name..." class="template-name-input">
+                    <select id="templateType" class="template-type-select">
+                        <option value="dataset">Dataset</option>
+                        <option value="collection">Collection</option>
+                        <option value="document">Document</option>
+                        <option value="image">Image</option>
+                        <option value="code">Source Code</option>
+                    </select>
+                </div>
+                <div class="template-stats">
+                    <span class="stat-item">
+                        <i class="fas fa-list"></i>
+                        <span id="fieldCount">0</span> fields
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span id="requiredCount">0</span> required
+                    </span>
+                </div>
+            </div>
+
+            <!-- Design Canvas -->
+            <div class="design-canvas">
+                <div class="canvas-header">
+                    <h3><i class="fas fa-paint-brush"></i> Template Design</h3>
+                    <div class="canvas-tools">
+                        <button id="clearAllBtn" class="tool-btn">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                        <button id="addSectionBtn" class="tool-btn">
+                            <i class="fas fa-plus"></i> Add Section
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Drop Zone -->
+                <div class="drop-zone" id="designCanvas">
+                    <div class="drop-placeholder">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <h3>Start designing your template</h3>
+                        <p>Drag fields from the library to build your metadata template</p>
+                        <div class="placeholder-actions">
+                            <button class="placeholder-btn" onclick="addQuickTemplate('basic')">
+                                <i class="fas fa-bolt"></i> Basic Template
+                            </button>
+                            <button class="placeholder-btn" onclick="addQuickTemplate('research')">
+                                <i class="fas fa-microscope"></i> Research Template
+                            </button>
+                            <button class="placeholder-btn" onclick="addQuickTemplate('collection')">
+                                <i class="fas fa-archive"></i> Collection Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Properties Panel -->
+        <aside class="properties-panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-sliders-h"></i> Properties</h3>
+            </div>
+            
+            <div class="panel-content" id="propertiesContent">
+                <div class="no-selection">
+                    <i class="fas fa-hand-pointer"></i>
+                    <p>Select a field to edit its properties</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal-overlay" id="previewModal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3><i class="fas fa-eye"></i> Template Preview</h3>
+                <button class="modal-close" onclick="closePreview()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="preview-tabs">
+                    <button class="tab-btn active" data-tab="visual">Visual</button>
+                    <button class="tab-btn" data-tab="json">JSON</button>
+                    <button class="tab-btn" data-tab="csv">CSV</button>
+                </div>
+                <div class="preview-content" id="previewContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-palette fa-spin"></i>
+            <p>Designing template...</p>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="template-designer.js"></script>
+</body>
+</html>

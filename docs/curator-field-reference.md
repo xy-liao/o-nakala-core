@@ -4,7 +4,12 @@ Complete reference for all fields supported by the o-nakala-core curator module 
 
 ## Overview
 
-The curator module can modify **metadata fields only**. It cannot modify files, permissions, or structural elements. This reference provides the complete list of supported fields, their formats, and requirements.
+The curator module provides **foundational metadata management** for core Dublin Core fields (~40% of full NAKALA API capabilities). This reference covers currently supported fields, with a roadmap toward [Complete Metadata Management](COMPLETE_METADATA_SYSTEM_DESIGN.md).
+
+**Current Scope**: Basic metadata modification via CSV batch operations  
+**Future Vision**: Dynamic template generation, intelligent pre-population, and comprehensive field support
+
+See [Complete Metadata System Design](COMPLETE_METADATA_SYSTEM_DESIGN.md) for full roadmap.
 
 ## Data Item Fields
 
@@ -21,7 +26,8 @@ The curator module can modify **metadata fields only**. It cannot modify files, 
 
 | CSV Column | Property URI | Multilingual | Required | Format | Example |
 |------------|-------------|--------------|----------|---------|---------|
-| **author** | `http://nakala.fr/terms#creator` | ❌ No | ✅ Required | `"Surname,Givenname"` | `"Dupont,Jean"` |
+| **author** | `http://purl.org/dc/terms/creator` | ❌ No | ✅ Required | `"Surname,Givenname"` | `"Dupont,Jean"` |
+| **creator** | `http://purl.org/dc/terms/creator` | ❌ No | Optional | `"Surname,Givenname"` | `"Smith,John;Doe,Jane"` |
 | **contributor** | `http://purl.org/dc/terms/contributor` | ❌ No | Optional | `"Surname,Givenname"` | `"Smith,John;Martin,Alice"` |
 | **publisher** | `http://purl.org/dc/terms/publisher` | ❌ No | Optional | Organization name | `"CNRS"` |
 
@@ -67,9 +73,11 @@ Collections support a subset of data item fields plus collection-specific metada
 
 Collections also support these fields from the data item list:
 - description, keywords, language
-- author (creator), contributor, publisher
+- **creator** (✅ FULLY SUPPORTED), author, contributor, publisher
 - date, temporal, spatial
 - relation, source, rights, coverage
+
+**Note**: Both `new_creator` and `new_author` fields are now fully supported for collections via batch modifications using the format `"Creator1,Name;Creator2,Name"`.
 
 ## Multilingual Format Specification
 
@@ -105,8 +113,8 @@ description,"fr:Une description détaillée en français|en:A detailed descripti
 For batch modifications, use this CSV structure:
 
 ```csv
-id,action,current_title,new_title,current_description,new_description,current_keywords,new_keywords
-10.34847/nkl.abc123,update,"Old Title","fr:Nouveau titre|en:New Title","Old description","fr:Nouvelle description|en:New description","old,keywords","fr:nouveaux;mots-clés|en:new;keywords"
+id,action,current_title,new_title,current_description,new_description,new_creator
+10.34847/nkl.abc123,modify,"Old Title","fr:Nouveau titre|en:New Title","Old description","fr:Nouvelle description|en:New description","Smith,John;Doe,Jane"
 ```
 
 ### Batch Modification Fields:
@@ -122,7 +130,7 @@ id,action,current_title,new_title,current_description,new_description,current_ke
 
 ### Required Field Validation:
 - **Data Items**: title, author (creator), type, license, date
-- **Collections**: title, status
+- **Collections**: title, status (creator recommended but optional)
 
 ### Format Validation:
 - **Dates**: Must follow W3C-DTF (YYYY-MM-DD, YYYY-MM, or YYYY)
@@ -147,9 +155,15 @@ nakala-curator update-item 10.34847/nkl.abc123 \
 
 ### Batch Update from CSV:
 ```bash
-nakala-curator batch-update modifications.csv \
+# General batch modifications
+nakala-curator --batch-modify modifications.csv \
   --api-key YOUR_KEY \
   --dry-run
+
+# Add creators to collections
+nakala-curator --batch-modify collection_creators.csv \
+  --scope collections \
+  --api-key YOUR_KEY
 ```
 
 ### Validation Only:
