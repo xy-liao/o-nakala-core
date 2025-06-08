@@ -99,6 +99,34 @@ The workshop covers:
 - Quality curation and analysis
 - Metadata enhancement
 
+## ✅ Workflow Validation
+
+### Comprehensive System Test
+Validate that O-Nakala Core can handle all documented workflow scenarios with 100% compatibility:
+
+```bash
+# Run complete validation test
+./run_validation_test.sh
+
+# Or run directly with Python
+python test_workflow_validation.py
+
+# Use custom test directory  
+python test_workflow_validation.py --test-dir /tmp/nakala_test
+
+# Verbose output for debugging
+python test_workflow_validation.py --verbose
+```
+
+The validation test proves the system can handle:
+- **14 files** across 5 content categories
+- **5 datasets** with persistent identifiers
+- **3 thematic collections** 
+- **8 metadata enhancements**
+- **100% success rate** across all operations
+
+See [Workflow Validation Guide](WORKFLOW_VALIDATION_README.md) for complete details.
+
 ## 🔧 CLI Reference
 
 ### Upload Data
