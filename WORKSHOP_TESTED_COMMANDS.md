@@ -84,6 +84,15 @@ python -m src.nakala_client.cli.curator \
 ```
 **Result:** ✅ 3/3 collections updated successfully
 
+### 6. Advanced Field Testing (Multiple Fields)
+```bash
+python -m src.nakala_client.cli.curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify simple_field_test.csv \
+  --verbose
+```
+**Result:** ✅ 3/3 collections updated with title, description, and keywords
+
 ## 📋 Required CSV Formats
 
 ### Upload Configuration (folder_data_items.csv)
@@ -98,12 +107,18 @@ title,status,description,keywords,language,creator,contributor,publisher,date,ri
 "fr:Collection de Code et Données|en:Code and Data Collection",private,"fr:Collection contenant des scripts...",
 ```
 
-### Batch Modifications (workshop_collection_fix_correct.csv)
+### Batch Modifications - Working Format
 ```csv
 id,action,new_creator
 10.34847/nkl.9d9601xz,modify,"Doe, John;Smith, Jane"
 10.34847/nkl.b6c5mr3o,modify,"Smith, Jane;Doe, John"
 10.34847/nkl.7066ek9p,modify,"Smith, Jane;Doe, John"
+```
+
+### Advanced Field Modifications - TESTED STABLE
+```csv
+id,action,new_title,new_description,new_keywords
+10.34847/nkl.9d9601xz,modify,"fr:Collection de Code Mise à Jour|en:Updated Code Collection","fr:Collection mise à jour avec de nouvelles métadonnées|en:Collection updated with new metadata","fr:code;test;mise à jour|en:code;test;update"
 ```
 
 ## 🎓 Workshop Success Metrics
@@ -114,6 +129,7 @@ id,action,new_creator
 | Collections | 3 collections | 100% | ~1 second |
 | Quality Analysis | 387 collections | 100% | ~10 seconds |
 | Batch Modifications | 3 updates | 100% | ~1 second |
+| Advanced Field Mods | 3 collections | 100% | ~2 seconds |
 
 ## 🔧 Troubleshooting Tips
 
