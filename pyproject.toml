@@ -50,16 +50,8 @@ cli = [
     "rich>=13.0.0",
     "python-dotenv>=1.0.0",
 ]
-workshop = [
-    "pandas>=2.0.0",
-    "numpy>=1.24.0",
-    "jupyter>=1.0.0",
-    "jupyterlab>=4.0.0",
-    "ipywidgets>=8.0.0",
-    "matplotlib>=3.7.0",
-]
 all = [
-    "nakala-client[dev,cli,workshop]"
+    "nakala-client[dev,cli]"
 ]
 
 [project.urls]

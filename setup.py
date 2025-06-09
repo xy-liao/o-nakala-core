@@ -11,7 +11,7 @@ long_description = (this_directory / "README.md").read_text(encoding='utf-8') if
 
 setup(
     name="nakala-client",
-    version="1.0.0",
+    version="2.0.0",
     author="xy-liao",
     description="A comprehensive Python client for the Nakala research data repository API",
     long_description=long_description,
@@ -51,12 +51,6 @@ setup(
             "click>=8.0.0",
             "rich>=13.0.0",
             "python-dotenv>=1.0.0",
-        ],
-        "web": [
-            # Web interface dependencies (development only)
-            "fastapi>=0.100.0",
-            "uvicorn>=0.23.0",
-            "python-multipart>=0.0.6",
         ],
     },
     entry_points={
