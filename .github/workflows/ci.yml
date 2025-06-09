@@ -36,6 +36,9 @@ jobs:
         find tests/ -name "*.py" -type f
         echo "Testing pytest collection with debug:"
         python -m pytest --collect-only tests/ -v || echo "Collection failed"
+        echo "Testing direct import of test modules:"
+        python -c "import tests.unit.test_import; print('test_import.py imports OK')" || echo "Failed to import test_import.py"
+        python -c "import tests.conftest; print('conftest.py imports OK')" || echo "Failed to import conftest.py"
     
     - name: Lint with flake8
       run: |
@@ -64,9 +67,9 @@ jobs:
         echo "PYTHONPATH environment:"
         echo $PYTHONPATH
         echo "Running pytest with collection check first:"
-        python -m pytest --collect-only tests/ -q || echo "Collection failed with exit code $?"
+        python -m pytest --collect-only tests/ -v --tb=short || echo "Collection failed with exit code $?"
         echo "Now running actual tests:"
-        python -m pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
+        python -m pytest $GITHUB_WORKSPACE/tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
