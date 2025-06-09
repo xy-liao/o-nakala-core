@@ -8,8 +8,15 @@ and providing proactive recommendations. Part of Phase 3 - Advanced Intelligence
 import json
 import logging
 import asyncio
-import numpy as np
 from datetime import datetime, timedelta
+
+# Optional ML dependencies
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    np = None
+    HAS_NUMPY = False
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 from pathlib import Path

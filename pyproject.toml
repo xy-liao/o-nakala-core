@@ -48,8 +48,12 @@ cli = [
     "rich>=13.0.0",
     "python-dotenv>=1.0.0",
 ]
+ml = [
+    "numpy>=1.21.0",
+    "scikit-learn>=1.0.0",
+]
 all = [
-    "o-nakala-core[dev,cli]"
+    "o-nakala-core[dev,cli,ml]"
 ]
 
 [project.urls]

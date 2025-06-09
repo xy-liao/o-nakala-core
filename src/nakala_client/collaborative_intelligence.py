@@ -8,8 +8,15 @@ Part of the Complete Metadata Management System - Phase 3.
 import json
 import logging
 import asyncio
-import numpy as np
 from datetime import datetime, timedelta
+
+# Optional ML dependencies
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    np = None
+    HAS_NUMPY = False
 from typing import Dict, Any, List, Optional, Tuple, Set
 from dataclasses import dataclass, asdict
 from pathlib import Path
