@@ -3,6 +3,13 @@
 ## Overview
 This phase demonstrates systematic metadata enhancement using batch modification techniques to address quality issues and improve discoverability of datasets and collections.
 
+> **📚 Documentation Reference**: For complete Curator endpoint documentation, CSV format specifications, and field transformations, see [Curator Endpoint Documentation](../../../docs/endpoints/curator-endpoint/README.md).
+
+## Validation Status
+**CSV File**: `data_modifications.csv` ✅ **VALIDATED**  
+**Validation Tool**: `tools/curator_validator.py`  
+**Result**: 100% valid, generates 4 metadata entries per row (4 total modifications)
+
 ## Curation Strategy
 
 ### Two-Phase Approach

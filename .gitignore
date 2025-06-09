@@ -127,5 +127,14 @@ api_validation_test.py
 *debug*.json
 *validation*.json
 
+# Web interface (development only - not for public release)
+web/
+web_server.log
+start_web_interface.py
+start_web_server.py
+start_dev_environment.py
+src/nakala_client/web_api.py
+.dev-config.md
+
 # Generated cleanup script (user convenience)
 !cleanup.py

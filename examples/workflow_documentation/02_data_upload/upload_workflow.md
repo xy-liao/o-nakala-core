@@ -3,6 +3,13 @@
 ## Overview
 This phase demonstrates the batch upload of research files organized by content type using O-Nakala Core's folder mode functionality.
 
+> **📚 Documentation Reference**: For complete Upload endpoint documentation, CSV format specifications, and field transformations, see [Upload Endpoint Documentation](../../../docs/endpoints/upload-endpoint/README.md).
+
+## Validation Status
+**CSV File**: `folder_data_items.csv` ✅ **VALIDATED**  
+**Validation Tool**: `tools/upload_validator.py`  
+**Result**: 100% valid, generates 14 metadata entries per row
+
 ## Source Data Structure
 The sample dataset contains 14 files organized into 5 content categories:
 

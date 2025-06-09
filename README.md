@@ -7,13 +7,13 @@ A comprehensive Python library and CLI toolkit for interacting with the NAKALA r
 ### Installation
 
 ```bash
-# Install from PyPI (when released)
-pip install o-nakala-core
-
-# Or install from source
+# Install from source
 git clone https://github.com/xy-liao/o-nakala-core.git
 cd o-nakala-core
 pip install -e .
+
+# With CLI tools (recommended)
+pip install -e .[cli]
 ```
 
 ### Basic Usage
@@ -99,33 +99,23 @@ The workshop covers:
 - Quality curation and analysis
 - Metadata enhancement
 
-## ✅ Workflow Validation
+## 📁 Project Structure
 
-### Comprehensive System Test
-Validate that O-Nakala Core can handle all documented workflow scenarios with 100% compatibility:
-
-```bash
-# Run complete validation test
-./run_validation_test.sh
-
-# Or run directly with Python
-python test_workflow_validation.py
-
-# Use custom test directory  
-python test_workflow_validation.py --test-dir /tmp/nakala_test
-
-# Verbose output for debugging
-python test_workflow_validation.py --verbose
 ```
-
-The validation test proves the system can handle:
-- **14 files** across 5 content categories
-- **5 datasets** with persistent identifiers
-- **3 thematic collections** 
-- **8 metadata enhancements**
-- **100% success rate** across all operations
-
-See [Workflow Validation Guide](WORKFLOW_VALIDATION_README.md) for complete details.
+o-nakala-core/
+├── src/nakala_client/         # Core library modules
+│   ├── cli/                   # Command-line interfaces  
+│   ├── common/                # Shared utilities
+│   ├── upload.py              # Upload functionality
+│   ├── collection.py          # Collection management
+│   ├── curator.py             # Metadata curation
+│   └── user_info.py           # User management
+├── docs/                      # Documentation and guides
+├── examples/                  # Sample datasets and workflows
+│   ├── sample_dataset/        # Complete workflow example
+│   └── simple-dataset/        # Basic usage example
+└── api/                       # API reference materials
+```
 
 ## 🔧 CLI Reference
 

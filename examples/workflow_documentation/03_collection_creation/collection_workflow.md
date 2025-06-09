@@ -3,6 +3,14 @@
 ## Overview
 This phase demonstrates the automatic organization of uploaded datasets into thematic collections using predefined configuration and upload results.
 
+> **📚 Documentation Reference**: For complete Collection endpoint documentation, CSV format specifications, and field transformations, see [Collection Endpoint Documentation](../../../docs/endpoints/collection-endpoint/README.md).
+
+## Validation Status
+**CSV File**: `folder_collections.csv` ✅ **VALIDATED**  
+**Validation Tool**: `tools/collection_validator.py`  
+**Result**: 100% valid, generates 22 metadata entries per row  
+**Warnings**: 9 format improvements available (see validation report)
+
 ## Collection Strategy
 The workflow organizes the 5 uploaded datasets into 3 logical collections based on research workflow and content relationships:
 

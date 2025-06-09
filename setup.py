@@ -52,6 +52,12 @@ setup(
             "rich>=13.0.0",
             "python-dotenv>=1.0.0",
         ],
+        "web": [
+            # Web interface dependencies (development only)
+            "fastapi>=0.100.0",
+            "uvicorn>=0.23.0",
+            "python-multipart>=0.0.6",
+        ],
     },
     entry_points={
         "console_scripts": [
