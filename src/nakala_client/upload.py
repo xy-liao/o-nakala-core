@@ -9,18 +9,17 @@ import os
 import json
 import logging
 import argparse
-from typing import Dict, Any, List, Optional, Tuple
+import hashlib
+from typing import Dict, Any, List, Optional
 import requests
 from datetime import datetime
 import mimetypes
-from pathlib import Path
 
 # Import common utilities
 from .common import (
     NakalaCommonUtils,
     NakalaPathResolver,
     NakalaConfig,
-    NakalaError,
     NakalaValidationError,
     NakalaAPIError,
     NakalaFileError,
@@ -104,6 +103,37 @@ class NakalaFileProcessor:
 
         return True
 
+    def _calculate_file_hash(self, file_path: str) -> str:
+        """Calculate SHA1 hash of a file."""
+        sha1_hash = hashlib.sha1()
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                sha1_hash.update(chunk)
+        return sha1_hash.hexdigest()
+
+    def _get_file_metadata(self, file_path: str) -> Dict[str, Any]:
+        """Extract file metadata including size, mimetype, and sha1."""
+        if not os.path.exists(file_path):
+            raise NakalaFileError(f"File not found: {file_path}")
+        
+        # Get file size
+        file_size = os.path.getsize(file_path)
+        
+        # Get MIME type
+        mime_type, _ = mimetypes.guess_type(file_path)
+        if not mime_type:
+            mime_type = "application/octet-stream"
+        
+        # Calculate SHA1 hash
+        sha1 = self._calculate_file_hash(file_path)
+        
+        return {
+            "size": file_size,
+            "mimetype": mime_type,
+            "sha1": sha1,
+            "name": os.path.basename(file_path)
+        }
+
 
 class NakalaUploadClient:
     """Main upload client for Nakala API."""
@@ -112,6 +142,13 @@ class NakalaUploadClient:
         self.config = config
         self.file_processor = NakalaFileProcessor(config)
         self.utils = NakalaCommonUtils()
+        self.session = requests.Session()
+        
+        # Set up session headers
+        self.session.headers.update({
+            "X-API-KEY": config.api_key,
+            "User-Agent": "Nakala-Client/2.0"
+        })
 
         # Validate configuration
         if not config.validate_paths():
@@ -131,9 +168,8 @@ class NakalaUploadClient:
             with open(file_path, "rb") as f:
                 files = [("file", (filename, f, mime_type))]
 
-                response = requests.post(
+                response = self.session.post(
                     f"{self.config.api_url}/datas/uploads",
-                    headers=self.config.get_upload_headers(),
                     files=files,
                     timeout=getattr(self.config, "upload_timeout", self.config.timeout),
                 )
@@ -154,6 +190,94 @@ class NakalaUploadClient:
             raise NakalaAPIError(f"Network error uploading {filename}: {e}")
         except Exception as e:
             raise NakalaFileError(f"Error uploading {filename}: {e}")
+
+    def _upload_file(self, file_path: str) -> str:
+        """Upload a single file and return its SHA1 identifier."""
+        filename = os.path.basename(file_path)
+        file_info = self.upload_file(file_path, filename)
+        return file_info.get("sha1", file_info.get("identifier", ""))
+    
+    def _create_dataset(self, metadata: List[Dict[str, Any]], files: List[Dict[str, Any]]) -> str:
+        """Create a dataset with metadata and files, return identifier."""
+        payload = {
+            "metas": metadata,
+            "files": files,
+            "status": "pending"
+        }
+        
+        response = self.session.post(
+            f"{self.config.api_url}/datas",
+            json=payload,
+            timeout=self.config.timeout
+        )
+        
+        if response.status_code == 201:
+            result = response.json()
+            return result.get("identifier", "")
+        else:
+            raise NakalaAPIError(
+                f"Dataset creation failed",
+                status_code=response.status_code,
+                response_text=response.text,
+            )
+    
+    def _validate_dataset_config(self, config: Dict[str, Any]) -> None:
+        """Validate dataset configuration dictionary."""
+        required_fields = ["title", "type"]
+        
+        for field in required_fields:
+            if field not in config:
+                raise NakalaValidationError(f"Missing required field: {field}")
+        
+        if not config["title"].strip():
+            raise NakalaValidationError("Title cannot be empty")
+        
+        # Validate type URI format
+        type_uri = config["type"]
+        if not type_uri.startswith("http://"):
+            raise NakalaValidationError(f"Invalid type URI format: {type_uri}")
+    
+    def upload_single_dataset(self, config: Dict[str, Any]) -> str:
+        """Upload a single dataset from configuration dictionary."""
+        self._validate_dataset_config(config)
+        
+        # Prepare metadata
+        metadata = [
+            {
+                "propertyUri": "http://nakala.fr/terms#title",
+                "value": config["title"],
+                "lang": config.get("language", "en"),
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+            },
+            {
+                "propertyUri": "http://nakala.fr/terms#type", 
+                "value": config["type"],
+                "typeUri": "http://www.w3.org/2001/XMLSchema#anyURI"
+            }
+        ]
+        
+        # Add description if provided
+        if config.get("description"):
+            metadata.append({
+                "propertyUri": "http://nakala.fr/terms#description",
+                "value": config["description"],
+                "lang": config.get("language", "en"),
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+            })
+        
+        # Process files
+        files = []
+        for file_path in config.get("files", []):
+            if os.path.exists(file_path):
+                sha1 = self._upload_file(file_path)
+                files.append({
+                    "sha1": sha1,
+                    "name": os.path.basename(file_path),
+                    "embargoed": datetime.now().strftime("%Y-%m-%d")
+                })
+        
+        # Create dataset
+        return self._create_dataset(metadata, files)
 
     def prepare_metadata_from_dict(
         self, metadata: Dict[str, Any]

@@ -10,13 +10,13 @@ from .auth_middleware import AuthMiddleware
 from .session_manager import SessionManager
 
 __all__ = [
-    'SSOProvider',
-    'SAMLProvider', 
-    'OAuthProvider',
-    'InstitutionalAuthManager',
-    'UserManager',
-    'UserProfile',
-    'InstitutionalRole',
-    'AuthMiddleware',
-    'SessionManager'
+    "SSOProvider",
+    "SAMLProvider",
+    "OAuthProvider",
+    "InstitutionalAuthManager",
+    "UserManager",
+    "UserProfile",
+    "InstitutionalRole",
+    "AuthMiddleware",
+    "SessionManager",
 ]
