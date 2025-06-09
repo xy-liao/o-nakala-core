@@ -115,23 +115,23 @@ class NakalaFileProcessor:
         """Extract file metadata including size, mimetype, and sha1."""
         if not os.path.exists(file_path):
             raise NakalaFileError(f"File not found: {file_path}")
-        
+
         # Get file size
         file_size = os.path.getsize(file_path)
-        
+
         # Get MIME type
         mime_type, _ = mimetypes.guess_type(file_path)
         if not mime_type:
             mime_type = "application/octet-stream"
-        
+
         # Calculate SHA1 hash
         sha1 = self._calculate_file_hash(file_path)
-        
+
         return {
             "size": file_size,
             "mimetype": mime_type,
             "sha1": sha1,
-            "name": os.path.basename(file_path)
+            "name": os.path.basename(file_path),
         }
 
 
@@ -143,12 +143,11 @@ class NakalaUploadClient:
         self.file_processor = NakalaFileProcessor(config)
         self.utils = NakalaCommonUtils()
         self.session = requests.Session()
-        
+
         # Set up session headers
-        self.session.headers.update({
-            "X-API-KEY": config.api_key,
-            "User-Agent": "Nakala-Client/2.0"
-        })
+        self.session.headers.update(
+            {"X-API-KEY": config.api_key, "User-Agent": "Nakala-Client/2.0"}
+        )
 
         # Validate configuration
         if not config.validate_paths():
@@ -196,21 +195,17 @@ class NakalaUploadClient:
         filename = os.path.basename(file_path)
         file_info = self.upload_file(file_path, filename)
         return file_info.get("sha1", file_info.get("identifier", ""))
-    
-    def _create_dataset(self, metadata: List[Dict[str, Any]], files: List[Dict[str, Any]]) -> str:
+
+    def _create_dataset(
+        self, metadata: List[Dict[str, Any]], files: List[Dict[str, Any]]
+    ) -> str:
         """Create a dataset with metadata and files, return identifier."""
-        payload = {
-            "metas": metadata,
-            "files": files,
-            "status": "pending"
-        }
-        
+        payload = {"metas": metadata, "files": files, "status": "pending"}
+
         response = self.session.post(
-            f"{self.config.api_url}/datas",
-            json=payload,
-            timeout=self.config.timeout
+            f"{self.config.api_url}/datas", json=payload, timeout=self.config.timeout
         )
-        
+
         if response.status_code == 201:
             result = response.json()
             return result.get("identifier", "")
@@ -220,62 +215,66 @@ class NakalaUploadClient:
                 status_code=response.status_code,
                 response_text=response.text,
             )
-    
+
     def _validate_dataset_config(self, config: Dict[str, Any]) -> None:
         """Validate dataset configuration dictionary."""
         required_fields = ["title", "type"]
-        
+
         for field in required_fields:
             if field not in config:
                 raise NakalaValidationError(f"Missing required field: {field}")
-        
+
         if not config["title"].strip():
             raise NakalaValidationError("Title cannot be empty")
-        
+
         # Validate type URI format
         type_uri = config["type"]
         if not type_uri.startswith("http://"):
             raise NakalaValidationError(f"Invalid type URI format: {type_uri}")
-    
+
     def upload_single_dataset(self, config: Dict[str, Any]) -> str:
         """Upload a single dataset from configuration dictionary."""
         self._validate_dataset_config(config)
-        
+
         # Prepare metadata
         metadata = [
             {
                 "propertyUri": "http://nakala.fr/terms#title",
                 "value": config["title"],
                 "lang": config.get("language", "en"),
-                "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
             },
             {
-                "propertyUri": "http://nakala.fr/terms#type", 
+                "propertyUri": "http://nakala.fr/terms#type",
                 "value": config["type"],
-                "typeUri": "http://www.w3.org/2001/XMLSchema#anyURI"
-            }
+                "typeUri": "http://www.w3.org/2001/XMLSchema#anyURI",
+            },
         ]
-        
+
         # Add description if provided
         if config.get("description"):
-            metadata.append({
-                "propertyUri": "http://nakala.fr/terms#description",
-                "value": config["description"],
-                "lang": config.get("language", "en"),
-                "typeUri": "http://www.w3.org/2001/XMLSchema#string"
-            })
-        
+            metadata.append(
+                {
+                    "propertyUri": "http://nakala.fr/terms#description",
+                    "value": config["description"],
+                    "lang": config.get("language", "en"),
+                    "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                }
+            )
+
         # Process files
         files = []
         for file_path in config.get("files", []):
             if os.path.exists(file_path):
                 sha1 = self._upload_file(file_path)
-                files.append({
-                    "sha1": sha1,
-                    "name": os.path.basename(file_path),
-                    "embargoed": datetime.now().strftime("%Y-%m-%d")
-                })
-        
+                files.append(
+                    {
+                        "sha1": sha1,
+                        "name": os.path.basename(file_path),
+                        "embargoed": datetime.now().strftime("%Y-%m-%d"),
+                    }
+                )
+
         # Create dataset
         return self._create_dataset(metadata, files)
 

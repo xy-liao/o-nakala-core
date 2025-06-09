@@ -58,13 +58,15 @@ class NakalaCollectionClient:
         self.config = config
         self.utils = NakalaCommonUtils()
         self.session = requests.Session()
-        
+
         # Set up session headers
-        self.session.headers.update({
-            "X-API-KEY": config.api_key,
-            "Content-Type": "application/json",
-            "User-Agent": "Nakala-Client/2.0"
-        })
+        self.session.headers.update(
+            {
+                "X-API-KEY": config.api_key,
+                "Content-Type": "application/json",
+                "User-Agent": "Nakala-Client/2.0",
+            }
+        )
 
         # Validate configuration
         if not config.validate_paths():
@@ -144,20 +146,18 @@ class NakalaCollectionClient:
 
         return self.utils.prepare_nakala_metadata(metadata_dict)
 
-    def _create_collection(self, metadata: List[Dict[str, Any]], data_ids: List[str]) -> str:
+    def _create_collection(
+        self, metadata: List[Dict[str, Any]], data_ids: List[str]
+    ) -> str:
         """Create a collection with metadata and data IDs, return collection identifier."""
-        payload = {
-            "metas": metadata,
-            "datas": data_ids,
-            "status": "pending"
-        }
-        
+        payload = {"metas": metadata, "datas": data_ids, "status": "pending"}
+
         response = self.session.post(
             f"{self.config.api_url}/collections",
             json=payload,
-            timeout=self.config.timeout
+            timeout=self.config.timeout,
         )
-        
+
         if response.status_code == 201:
             result = response.json()
             return result.get("payload", {}).get("id", result.get("identifier", ""))
@@ -171,44 +171,48 @@ class NakalaCollectionClient:
     def _validate_collection_config(self, config: Dict[str, Any]) -> None:
         """Validate collection configuration dictionary."""
         required_fields = ["title"]
-        
+
         for field in required_fields:
             if field not in config:
                 raise NakalaValidationError(f"Missing required field: {field}")
-        
+
         if not config["title"].strip():
             raise NakalaValidationError("Title cannot be empty")
-        
+
         # Check if data_ids or data sources are provided
         if "data_ids" not in config and "upload_data" not in config:
-            raise NakalaValidationError("Either 'data_ids' or 'upload_data' must be provided")
+            raise NakalaValidationError(
+                "Either 'data_ids' or 'upload_data' must be provided"
+            )
 
     def create_single_collection(self, config: Dict[str, Any]) -> str:
         """Create a single collection from configuration dictionary."""
         self._validate_collection_config(config)
-        
+
         # Prepare metadata
         metadata = [
             {
                 "propertyUri": "http://nakala.fr/terms#title",
                 "value": config["title"],
                 "lang": config.get("language", "en"),
-                "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+                "typeUri": "http://www.w3.org/2001/XMLSchema#string",
             }
         ]
-        
+
         # Add description if provided
         if config.get("description"):
-            metadata.append({
-                "propertyUri": "http://nakala.fr/terms#description",
-                "value": config["description"],
-                "lang": config.get("language", "en"),
-                "typeUri": "http://www.w3.org/2001/XMLSchema#string"
-            })
-        
+            metadata.append(
+                {
+                    "propertyUri": "http://nakala.fr/terms#description",
+                    "value": config["description"],
+                    "lang": config.get("language", "en"),
+                    "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+                }
+            )
+
         # Get data IDs
         data_ids = config.get("data_ids", [])
-        
+
         # Create collection
         return self._create_collection(metadata, data_ids)
 
@@ -216,7 +220,7 @@ class NakalaCollectionClient:
         """Process upload output CSV and return list of data items."""
         if not os.path.exists(csv_path):
             raise NakalaFileError(f"Upload output CSV file not found: {csv_path}")
-        
+
         results = []
         try:
             with open(csv_path, newline="", encoding="utf-8") as f:
@@ -227,16 +231,18 @@ class NakalaCollectionClient:
         except Exception as e:
             raise NakalaFileError(f"Error processing upload output CSV: {e}")
 
-    def _group_data_by_collection(self, upload_data: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+    def _group_data_by_collection(
+        self, upload_data: List[Dict[str, Any]]
+    ) -> Dict[str, List[Dict[str, Any]]]:
         """Group upload data by collection name."""
         grouped = {}
-        
+
         for item in upload_data:
             collection_name = item.get("collection", "Default Collection")
             if collection_name not in grouped:
                 grouped[collection_name] = []
             grouped[collection_name].append(item)
-        
+
         return grouped
 
     def create_collection_from_uploaded_data(
