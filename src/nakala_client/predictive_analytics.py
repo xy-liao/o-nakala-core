@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 # Optional ML dependencies
 try:
     import numpy as np
+
     HAS_NUMPY = True
 except ImportError:
     np = None

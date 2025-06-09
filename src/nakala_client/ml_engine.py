@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 # Optional ML dependencies
 try:
     import numpy as np
+
     HAS_NUMPY = True
 except ImportError:
     np = None
@@ -69,7 +70,7 @@ class SemanticEmbedding:
         if not HAS_NUMPY:
             # Fallback to basic dot product calculation without numpy
             return self._basic_cosine_similarity(other)
-            
+
         if len(self.embedding_vector) != len(other.embedding_vector):
             return 0.0
 
@@ -86,22 +87,24 @@ class SemanticEmbedding:
             return 0.0
 
         return dot_product / (norm1 * norm2)
-    
+
     def _basic_cosine_similarity(self, other: "SemanticEmbedding") -> float:
         """Basic cosine similarity calculation without numpy."""
         if len(self.embedding_vector) != len(other.embedding_vector):
             return 0.0
-            
+
         # Calculate dot product
-        dot_product = sum(a * b for a, b in zip(self.embedding_vector, other.embedding_vector))
-        
+        dot_product = sum(
+            a * b for a, b in zip(self.embedding_vector, other.embedding_vector)
+        )
+
         # Calculate norms
         norm1 = sum(a * a for a in self.embedding_vector) ** 0.5
         norm2 = sum(b * b for b in other.embedding_vector) ** 0.5
-        
+
         if norm1 == 0 or norm2 == 0:
             return 0.0
-            
+
         return dot_product / (norm1 * norm2)
 
 
