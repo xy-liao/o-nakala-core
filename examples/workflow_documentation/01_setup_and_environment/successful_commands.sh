@@ -15,7 +15,7 @@ export NAKALA_BASE_URL="https://apitest.nakala.fr"
 echo "Environment variables set successfully"
 
 echo "Installing O-Nakala Core package..."
-pip install -e .
+pip install o-nakala-core[cli]
 echo "Package installation completed"
 
 echo "Validating API access..."

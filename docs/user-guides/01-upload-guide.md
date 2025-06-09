@@ -155,8 +155,8 @@ After successful upload, you can use the generated `output.csv` with the collect
 
 ```bash
 # Step 1: Upload data
-python nakala-client-upload.py --api-key "your-api-key" --mode folder --dataset "path/to/dataset" --folder-config "path/to/folder_config.csv"
+nakala-upload --api-key "your-api-key" --mode folder --dataset "path/to/dataset" --folder-config "path/to/folder_config.csv"
 
 # Step 2: Create collection from uploaded data
-python nakala-client-collection.py --api-key "your-api-key" --title "My Collection" --from-upload-output output.csv
+nakala-collection --api-key "your-api-key" --title "My Collection" --from-upload-output output.csv
 ```

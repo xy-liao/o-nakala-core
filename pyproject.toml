@@ -3,19 +3,18 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nakala-client"
+name = "o-nakala-core"
 version = "2.0.0"
 authors = [
     {name = "xy-liao"},
 ]
 description = "A comprehensive Python client for the Nakala research data repository API"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -51,7 +50,7 @@ cli = [
     "python-dotenv>=1.0.0",
 ]
 all = [
-    "nakala-client[dev,cli]"
+    "o-nakala-core[dev,cli]"
 ]
 
 [project.urls]
@@ -68,12 +67,10 @@ nakala-user-info = "nakala_client.cli.user_info:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.setuptools.package-data]
-nakala_client = ["config/*.json", "templates/*.csv"]
 
 [tool.black]
 line-length = 88

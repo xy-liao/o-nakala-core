@@ -26,7 +26,7 @@
 export NAKALA_API_KEY="f41f5957-d396-3bb9-ce35-a4692773f636"
 
 # Or use directly in commands
-python nakala-client-upload-v2.py \
+nakala-upload \
   --api-key f41f5957-d396-3bb9-ce35-a4692773f636 \
   --api-url https://apitest.nakala.fr \
   --dataset sample_dataset/folder_data_items.csv

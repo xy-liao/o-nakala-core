@@ -77,14 +77,14 @@ Test the new scripts with your existing data:
 
 ```bash
 # Test upload script
-python nakala-client-upload-v2.py \
+nakala-upload \
   --api-key YOUR_KEY \
   --dataset your_existing_dataset.csv \
   --folder-config your_existing_config.csv \
   --mode folder
 
 # Test collection script  
-python nakala-client-collection-v2.py \
+nakala-collection \
   --api-key YOUR_KEY \
   --from-folder-collections your_collections.csv \
   --from-upload-output output.csv
@@ -97,7 +97,7 @@ Compare the outputs between v1.0 and v2.0:
 ```bash
 # Run both versions
 python nakala-client-upload.py [args] > output_v1.csv
-python nakala-client-upload-v2.py [args] > output_v2.csv
+nakala-upload [args] > output_v2.csv
 
 # Compare results
 diff output_v1.csv output_v2.csv
@@ -112,7 +112,7 @@ Start updating your automation scripts:
 python nakala-client-upload.py --api-key $KEY --dataset data.csv
 
 # Use:
-python nakala-client-upload-v2.py --api-key $KEY --dataset data.csv
+nakala-upload --api-key $KEY --dataset data.csv
 ```
 
 ## 📊 Configuration Compatibility
@@ -151,7 +151,7 @@ config.validate()  # Comprehensive validation
 ### 2. Better Error Recovery
 ```bash
 # V2.0 provides detailed error diagnostics
-python nakala-client-upload-v2.py --debug --validate-only your_data.csv
+nakala-upload --debug --validate-only your_data.csv
 ```
 
 ### 3. Extensible Architecture
@@ -185,13 +185,13 @@ from nakala_client.common.exceptions import NakalaAPIError
 # Solution: Install the package properly
 pip install -e .
 # or use full path
-python /path/to/nakala-client-upload-v2.py
+python /path/to/nakala-upload
 ```
 
 ### Issue: Different Outputs
 ```bash
 # Check detailed logs
-python nakala-client-upload-v2.py --debug [args]
+nakala-upload --debug [args]
 # Compare with v1.0 behavior
 ```
 

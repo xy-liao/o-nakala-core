@@ -499,6 +499,30 @@ class NakalaCollectionClient:
             f"Validation complete: {valid_collections}/{len(folder_collections_data)} collections valid"
         )
 
+    def _load_upload_output(self, upload_output: str) -> List[Dict[str, str]]:
+        """Load upload output CSV data."""
+        upload_data = []
+        try:
+            with open(upload_output, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    upload_data.append(row)
+        except Exception as e:
+            raise NakalaFileError(f"Error reading upload output CSV {upload_output}: {e}")
+        return upload_data
+
+    def _load_folder_collections(self, folder_collections: str) -> List[Dict[str, str]]:
+        """Load folder collections CSV data."""
+        collections_data = []
+        try:
+            with open(folder_collections, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    collections_data.append(row)
+        except Exception as e:
+            raise NakalaFileError(f"Error reading folder collections CSV {folder_collections}: {e}")
+        return collections_data
+
     def _validate_upload_output(self, upload_output: str) -> None:
         """Validate upload output file."""
         if not os.path.exists(upload_output):

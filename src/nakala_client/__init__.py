@@ -5,7 +5,7 @@ A comprehensive Python client for interacting with the Nakala API.
 Provides tools for uploading, managing collections, searching, and curating data.
 """
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 __author__ = "xy-liao"
 
 from .common.utils import NakalaCommonUtils, NakalaPathResolver

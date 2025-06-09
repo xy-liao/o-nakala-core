@@ -36,21 +36,37 @@ class NakalaCleanup:
 
     def cleanup_development_files(self):
         """Remove development-only documentation and analysis files."""
+        # Development files that may exist in root
         dev_files = [
-            "API_VALIDATION_ANALYSIS.md",
-            "NAKALA_API_SPECIFICATIONS.md",
             "feedback_1.md",
-            "api_validation_test.py",
+            "api_validation_test.py", 
             "fix_data_curation.py",
+        ]
+
+        # Development documentation now in docs/development/
+        dev_docs = [
+            "docs/development/CSV_TRANSFORMATION_ANALYSIS.md",
+            "docs/development/DOCUMENTATION_VALIDATION_STRATEGY.md", 
+            "docs/development/ENDPOINT_FIELD_IMPROVEMENT_PLAN.md",
+            "docs/development/ENDPOINT_IMPLEMENTATION_STATUS.md",
         ]
 
         print("🗑️  Removing development files...")
         for file in dev_files:
             self._remove_file(file)
+            
+        print("📝 Removing development documentation...")
+        for file in dev_docs:
+            self._remove_file(file)
 
     def cleanup_directories(self):
         """Remove development directories."""
-        dev_dirs = ["archive", "dev-docs"]
+        dev_dirs = [
+            "archive", 
+            "dev-docs",
+            "docs/development",  # Remove entire development docs directory
+            "examples/sample_dataset/workshops",  # Remove workshop exercises
+        ]
 
         print("📁 Removing development directories...")
         for dir_name in dev_dirs:
@@ -60,8 +76,9 @@ class NakalaCleanup:
         """Remove Python build artifacts."""
         build_paths = [
             "src/nakala_client.egg-info",
+            "src/o_nakala_core.egg-info",  # Updated egg-info directory
             "nakala-python-client/build",
-            "nakala-python-client/dist",
+            "nakala-python-client/dist", 
             "nakala-python-client/openapi_client.egg-info",
             "build",
             "dist",
@@ -76,39 +93,22 @@ class NakalaCleanup:
         """Remove test output and log files."""
         print("📄 Removing output files...")
 
-        # CSV output files
-        csv_patterns = [
-            "*.csv",
+        # Output file patterns to check
+        csv_output_patterns = [
             "output.csv",
-            "collections_output.csv",
+            "collections_output.csv", 
             "upload_results.csv",
             "final_validation_upload.csv",
             "final_test_upload.csv",
             "single_item_test.csv",
-            "data_curation_*.csv",
             "collection_curation.csv",
             "modification_template.csv",
             "datasets_template.csv",
             "test_modifications.csv",
-            "test_validation_*.csv",
         ]
 
-        # JSON output files
-        json_patterns = [
-            "*test*.json",
-            "*debug*.json",
-            "*validation*.json",
-            "*curation*.json",
-            "*batch_results*.json",
-            "*duplicates*.json",
-            "*quality_report*.json",
-            "*user_profile*.json",
-            "test_data_update.json",
-            "debug_curation_results.json",
-            "fixed_curation_results.json",
-            "proof_of_curation_success.json",
-            "successful_curation_results.json",
-            "final_end_to_end_report.json",
+        json_output_indicators = [
+            "test_", "debug_", "validation_", "curation_", "results", "output", "report"
         ]
 
         # Process files in root directory
@@ -116,12 +116,16 @@ class NakalaCleanup:
             if file_path.is_file():
                 filename = file_path.name
 
-                # Check CSV files
-                if filename.endswith(".csv") and not self._is_essential_csv(filename):
+                # Check specific CSV output files
+                if filename in csv_output_patterns:
                     self._remove_file(filename)
+                # Check pattern-based CSV files
+                elif filename.endswith(".csv") and not self._is_essential_csv(filename):
+                    if any(pattern.replace("*", "") in filename for pattern in ["data_curation_", "test_validation_"]):
+                        self._remove_file(filename)
 
-                # Check JSON files
-                elif filename.endswith(".json") and self._is_output_json(filename):
+                # Check JSON output files
+                elif filename.endswith(".json") and self._is_output_json(filename, json_output_indicators):
                     self._remove_file(filename)
 
     def cleanup_log_files(self):
@@ -131,14 +135,7 @@ class NakalaCleanup:
             return
 
         print("📝 Removing log files...")
-        log_patterns = [
-            "*.log",
-            "nakala_client.log",
-            "nakala_collection.log",
-            "nakala_upload.log",
-            "curator_debug.log",
-        ]
-
+        # Remove all .log files recursively
         for file_path in self.project_root.rglob("*.log"):
             self._remove_file(str(file_path.relative_to(self.project_root)))
 
@@ -197,18 +194,8 @@ class NakalaCleanup:
 
         return False
 
-    def _is_output_json(self, filename: str) -> bool:
+    def _is_output_json(self, filename: str, indicators: list) -> bool:
         """Check if a JSON file is a development output file."""
-        output_indicators = [
-            "test_",
-            "debug_",
-            "validation_",
-            "curation_",
-            "results",
-            "output",
-            "report",
-        ]
-
         # Don't remove essential JSON files
         essential_files = ["nakala-apitest.json", "nakala_metadata_vocabulary.json"]
 
@@ -216,7 +203,7 @@ class NakalaCleanup:
             self.preserved_files.append(filename)
             return False
 
-        return any(indicator in filename.lower() for indicator in output_indicators)
+        return any(indicator in filename.lower() for indicator in indicators)
 
     def _remove_file(self, file_path: str):
         """Remove a single file."""

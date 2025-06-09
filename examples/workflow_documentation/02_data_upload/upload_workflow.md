@@ -13,6 +13,8 @@ This phase demonstrates the batch upload of research files organized by content 
 ## Source Data Structure
 The sample dataset contains 14 files organized into 5 content categories:
 
+> **⚠️ Important**: When using folder mode, ensure the `--base-path` parameter matches your dataset directory structure. The CSV file paths should be relative to this base path.
+
 ```
 sample_dataset/files/
 ├── code/                    # 2 files

@@ -7,12 +7,15 @@ A comprehensive Python library and CLI toolkit for interacting with the NAKALA r
 ### Installation
 
 ```bash
+# Install from PyPI (recommended)
+pip install o-nakala-core
+
+# With CLI tools
+pip install o-nakala-core[cli]
+
 # Install from source
 git clone https://github.com/xy-liao/o-nakala-core.git
 cd o-nakala-core
-pip install -e .
-
-# With CLI tools (recommended)
 pip install -e .[cli]
 ```
 

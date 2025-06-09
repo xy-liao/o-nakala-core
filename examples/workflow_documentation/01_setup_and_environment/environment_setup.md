@@ -24,12 +24,26 @@ echo "Base URL: $NAKALA_BASE_URL"
 ```
 
 ### 2. Package Installation
+
+#### Option A: From PyPI (Recommended)
+```bash
+# Install stable release with CLI tools
+pip install o-nakala-core[cli]
+
+# Verify installation
+nakala-upload --help
+nakala-collection --help
+nakala-curator --help
+nakala-user-info --help
+```
+
+#### Option B: From Source (Development)
 ```bash
 # Navigate to project root
 cd /Users/syl/Documents/GitHub/o-nakala-core
 
 # Install in development mode with all dependencies
-pip install -e .
+pip install -e .[cli]
 
 # Verify installation
 nakala-upload --help

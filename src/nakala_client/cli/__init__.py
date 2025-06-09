@@ -1,3 +1,3 @@
 """
-CLI interfaces for nakala-client package.
+CLI interfaces for o-nakala-core package.
 """
