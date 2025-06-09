@@ -8,7 +8,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 from urllib.parse import urlencode, parse_qs
 import base64
@@ -167,7 +167,7 @@ class SAMLProvider(SSOProvider):
     def _build_saml_request(self, redirect_uri: str) -> str:
         """Build SAML authentication request."""
         request_id = f"_nakala_{datetime.now().timestamp()}"
-        timestamp = datetime.utcnow().isoformat() + 'Z'
+        timestamp = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
         
         saml_request = f"""<?xml version="1.0" encoding="UTF-8"?>
 <samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
