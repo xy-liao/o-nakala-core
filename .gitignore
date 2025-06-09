@@ -115,8 +115,10 @@ temp_*
 dev-docs/
 *REPORT*.md
 CLAUDE.md
-test_*.py
-test_*.csv
+# Exclude test outputs but keep test files
+test_output_*.py
+test_results_*.csv
+temp_test_*.py
 *_results.json
 *_report.json
 

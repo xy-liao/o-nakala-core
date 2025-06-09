@@ -30,15 +30,6 @@ jobs:
       run: |
         python -c "import nakala_client; print('Package imported successfully')"
         python -c "import pytest; print('Pytest imported successfully')"
-        echo "Checking test directory contents:"
-        ls -la tests/
-        echo "Checking for test files:"
-        find tests/ -name "*.py" -type f
-        echo "Testing pytest collection with debug:"
-        python -m pytest --collect-only tests/ -v || echo "Collection failed"
-        echo "Testing direct import of test modules:"
-        python -c "import tests.unit.test_import; print('test_import.py imports OK')" || echo "Failed to import test_import.py"
-        python -c "import tests.conftest; print('conftest.py imports OK')" || echo "Failed to import conftest.py"
     
     - name: Lint with flake8
       run: |
@@ -57,24 +48,9 @@ jobs:
     - name: Test with pytest
       env:
         PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
+        NAKALA_API_KEY: "aae99aba-476e-4ff2-2886-0aaf1bfa6fd2"
       run: |
-        echo "Current working directory:"
-        pwd
-        echo "Workspace:"
-        echo $GITHUB_WORKSPACE
-        echo "Python path:"
-        python -c "import sys; print('\n'.join(sys.path))"
-        echo "PYTHONPATH environment:"
-        echo $PYTHONPATH
-        echo "Running pytest with collection check first:"
-        python -m pytest --collect-only tests/ -v --tb=short || echo "Collection failed with exit code $?"
-        echo "Trying different test discovery approaches:"
-        echo "1. Trying with explicit pattern and no config:"
-        python -m pytest tests/unit/test_import.py -v --override-ini="testpaths=" || echo "Single file test failed"
-        echo "2. Trying without pyproject.toml config:"
-        python -m pytest tests/ -v --override-ini="testpaths=" --override-ini="addopts=" || echo "No config test failed"
-        echo "3. Final attempt with coverage:"
-        python -m pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v --override-ini="testpaths="
+        python -m pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
