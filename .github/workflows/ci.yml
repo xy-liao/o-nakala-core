@@ -26,6 +26,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e .[dev,ml]
     
+    - name: Verify installation
+      run: |
+        python -c "import nakala_client; print('Package imported successfully')"
+        python -c "import pytest; print('Pytest imported successfully')"
+        python -m pytest --collect-only tests/ | head -10
+    
     - name: Lint with flake8
       run: |
         flake8 src/nakala_client --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -42,7 +48,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing
+        python -m pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
