@@ -26,13 +26,13 @@ pip install -e .[cli]
 export NAKALA_API_KEY="your-api-key"
 
 # Upload data
-nakala-upload --dataset examples/sample_dataset/folder_data_items.csv
+nakala-upload --api-key YOUR_KEY --dataset examples/sample_dataset/folder_data_items.csv --mode folder
 
 # Create collections  
-nakala-collection --from-upload-output output.csv
+nakala-collection --api-key YOUR_KEY --title "My Collection" --from-upload-output output.csv
 
 # Curate metadata
-nakala-curator --quality-report
+nakala-curator --api-key YOUR_KEY --quality-report
 ```
 
 ## 🛠️ Features
@@ -51,13 +51,13 @@ nakala-curator --quality-report
 - **CSV-driven workflows** for academic reproducibility
 - **Comprehensive logging** and error handling
 
-### 🚧 **Roadmap: Complete Metadata Management System**
-Current implementation provides solid foundation (~40% of full NAKALA API capabilities). See [Complete Metadata System Design](docs/COMPLETE_METADATA_SYSTEM_DESIGN.md) for vision of comprehensive metadata management with:
-- **Dynamic field discovery** from NAKALA vocabularies
-- **Intelligent template generation** with validation
-- **Pre-population assistant** using existing data
-- **Interactive metadata builder** with real-time guidance
-- **Technical integration** for files, IIIF, and relationships
+### 🚧 **Production-Ready Core Features**
+Current implementation provides comprehensive functionality for NAKALA data management including:
+- **Complete API integration** for uploads, collections, and curation
+- **Robust error handling** and validation
+- **CSV-driven workflows** for reproducible research
+- **Quality analysis** and metadata validation
+- **Batch operations** for large-scale data management
 
 ## 📖 Documentation
 
@@ -68,10 +68,10 @@ Current implementation provides solid foundation (~40% of full NAKALA API capabi
 - [🔧 Curator Field Reference](docs/curator-field-reference.md) - Current field documentation
 - [❓ FAQ](docs/user-guides/05-faq.md) - Common questions and solutions
 
-### Complete Metadata Management
-- [📊 Metadata Capabilities Summary](docs/METADATA_CAPABILITIES_SUMMARY.md) - Current status and complete vision
-- [🏗️ Complete System Design](docs/COMPLETE_METADATA_SYSTEM_DESIGN.md) - Comprehensive architecture plan
-- [🛣️ Implementation Roadmap](docs/COMPLETE_METADATA_SYSTEM_DESIGN.md#implementation-strategy) - Development timeline
+### Technical Reference
+- [📋 Field Reference](docs/curator-field-reference.md) - Complete metadata field documentation
+- [🔧 API Endpoints](docs/endpoints/) - Detailed endpoint specifications and examples
+- [🏛️ Property URI Mapping](docs/property-uri-mapping.md) - NAKALA metadata schema reference
 
 ### Quick Reference
 ```bash
@@ -85,18 +85,23 @@ nakala-curator --help
 nakala-user-info --help
 ```
 
-## 🎓 Interactive Learning
+## 🎓 Getting Started
 
-### Workshop
-Complete hands-on tutorial with real examples:
+### Example Workflows
+Complete hands-on examples with real datasets:
 
 ```bash
-cd o-nakala-workshop
-pip install -r requirements.txt
-jupyter lab NAKALA_Complete_Workflow.ipynb
+cd examples/sample_dataset
+# Review the CSV configurations
+cat folder_data_items.csv
+cat folder_collections.csv
+
+# Run the complete workflow
+nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --mode folder
+nakala-collection --api-key YOUR_KEY --from-folder-collections folder_collections.csv --from-upload-output output.csv
 ```
 
-The workshop covers:
+The examples cover:
 - Data upload (5 datasets, 14 files)
 - Collection creation (3 thematic collections)  
 - Quality curation and analysis
@@ -128,14 +133,14 @@ o-nakala-core/
 nakala-upload \
   --api-key YOUR_KEY \
   --dataset examples/sample_dataset/folder_data_items.csv \
-  --mode folder
+  --mode csv
 
-# Upload single files
+# Upload from folder mode
 nakala-upload \
   --api-key YOUR_KEY \
-  --files file1.jpg file2.pdf \
-  --title "My Dataset" \
-  --type "http://purl.org/coar/resource_type/c_ddb1"
+  --dataset examples/sample_dataset/folder_data_items.csv \
+  --base-path examples/sample_dataset \
+  --mode folder
 ```
 
 ### Manage Collections
@@ -143,12 +148,14 @@ nakala-upload \
 # Create from upload results
 nakala-collection \
   --api-key YOUR_KEY \
+  --title "My Collection" \
   --from-upload-output output.csv
 
-# Create from configuration
+# Create from folder configuration
 nakala-collection \
   --api-key YOUR_KEY \
-  --from-folder-collections examples/sample_dataset/folder_collections.csv
+  --from-folder-collections examples/sample_dataset/folder_collections.csv \
+  --from-upload-output output.csv
 ```
 
 ### Curate Metadata

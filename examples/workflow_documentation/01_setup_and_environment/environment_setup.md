@@ -4,7 +4,7 @@
 This phase establishes the necessary environment configuration and validates API access to the NAKALA test platform.
 
 ## Prerequisites
-- Python 3.8+ installed
+- Python 3.9+ installed
 - Git repository cloned
 - Access to NAKALA test API key
 
@@ -117,7 +117,7 @@ Datasets by Status:
 3. **Package Installation Issues**
    - Update pip: `pip install --upgrade pip`
    - Use virtual environment for isolation
-   - Check Python version compatibility (3.8+)
+   - Check Python version compatibility (3.9+)
 
 ## Next Steps
 Once environment is validated, proceed to [02_data_upload](../02_data_upload/upload_workflow.md) to begin the data upload process.
