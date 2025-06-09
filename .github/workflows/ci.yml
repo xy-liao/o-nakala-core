@@ -68,8 +68,13 @@ jobs:
         echo $PYTHONPATH
         echo "Running pytest with collection check first:"
         python -m pytest --collect-only tests/ -v --tb=short || echo "Collection failed with exit code $?"
-        echo "Now running actual tests:"
-        python -m pytest $GITHUB_WORKSPACE/tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
+        echo "Trying different test discovery approaches:"
+        echo "1. Trying with explicit pattern:"
+        python -m pytest tests/unit/test_import.py -v || echo "Single file test failed"
+        echo "2. Trying with glob pattern:"
+        python -m pytest "tests/**/test_*.py" -v || echo "Glob pattern test failed"
+        echo "3. Final attempt with all tests:"
+        python -m pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
