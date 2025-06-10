@@ -66,6 +66,7 @@ class NakalaCleanup:
             "dev-docs",
             "docs/development",  # Remove entire development docs directory
             "examples/sample_dataset/workshops",  # Remove workshop exercises
+            "venv",  # Remove virtual environment
         ]
 
         print("📁 Removing development directories...")
@@ -105,6 +106,8 @@ class NakalaCleanup:
             "modification_template.csv",
             "datasets_template.csv",
             "test_modifications.csv",
+            "test_curator_modifications.csv",
+            "test_upload_output.csv",
         ]
 
         json_output_indicators = [
@@ -156,6 +159,11 @@ class NakalaCleanup:
 
         for pyc_file in self.project_root.rglob("*.pyc"):
             self._remove_file(str(pyc_file.relative_to(self.project_root)))
+            
+        # Remove mypy cache
+        mypy_cache = self.project_root / ".mypy_cache"
+        if mypy_cache.exists():
+            self._remove_directory(".mypy_cache")
 
     def cleanup_temp_files(self):
         """Remove temporary files and IDE artifacts."""
