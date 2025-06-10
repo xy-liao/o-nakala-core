@@ -1,4 +1,4 @@
-# O-Nakala Core - Project Status Report
+# O-Nakala Core - Development Status Report
 
 *Generated: June 10, 2025*
 
@@ -218,7 +218,7 @@ result = client.upload_single_dataset({
 
 ## 🏆 Publication Status: COMPLETE
 
-**o-nakala-core v2.0** is ready for release and public use.
+**o-nakala-core v2.1.2** is ready for release and public use.
 
 - ✅ **99 tests passing** with comprehensive coverage (2 skipped)
 - ✅ **4 fully functional CLI commands** verified with real API

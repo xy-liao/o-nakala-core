@@ -227,11 +227,11 @@ python cleanup.py --keep-logs
 
 ## 📄 License
 
-[License information will be added]
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
-[Contributing guidelines will be added]
+Contributions are welcome! Please feel free to submit issues and pull requests on the [GitHub repository](https://github.com/xy-liao/o-nakala-core).
 
 ---
 

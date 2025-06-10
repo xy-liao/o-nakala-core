@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "o-nakala-core"
-version = "2.1.2"
+version = "2.1.4"
 authors = [
     {name = "xy-liao"},
 ]
@@ -57,7 +57,7 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/xy-liao/o-nakala-core"
+Homepage = "https://nakala.fr"
 Repository = "https://github.com/xy-liao/o-nakala-core"
 Documentation = "https://nakala.fr/documentation"
 "Bug Tracker" = "https://github.com/xy-liao/o-nakala-core/issues"
