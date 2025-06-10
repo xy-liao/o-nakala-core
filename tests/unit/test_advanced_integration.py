@@ -27,14 +27,23 @@ class TestAdvancedWorkflows:
     
     @pytest.fixture
     def advanced_config(self):
-        """Configuration for advanced integration tests."""
-        return NakalaConfig(
-            api_key="test-advanced-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            timeout=120,
-            max_retries=3
-        )
+        """Configuration for advanced integration tests.
+        
+        Security Note: Uses a secure temporary directory instead of /tmp
+        to avoid race conditions and symlink attacks.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key="test-advanced-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                timeout=120,
+                max_retries=3
+            )
+            # Store temp_dir reference for tests that need it
+            config._temp_dir = temp_dir
+            yield config
     
     def test_complex_multilingual_workflow(self, advanced_config):
         """Test complex multilingual metadata processing workflow."""
@@ -235,12 +244,17 @@ class TestEdgeCaseHandling:
     
     @pytest.fixture
     def edge_case_config(self):
-        """Configuration for edge case testing."""
-        return NakalaConfig(
-            api_key="test-edge-case-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for edge case testing.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-edge-case-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     def test_empty_and_whitespace_metadata(self, edge_case_config):
         """Test handling of empty and whitespace-only metadata."""
@@ -325,20 +339,23 @@ class TestEdgeCaseHandling:
         for config_params in edge_case_configs:
             try:
                 # Create config with edge case parameters
-                test_config = NakalaConfig(
-                    api_key="test-edge-key",
-                    api_url=config_params.get("api_url", "https://apitest.nakala.fr"),
-                    base_path=config_params.get("base_path", "/tmp"),
-                    timeout=config_params.get("timeout", 60),
-                    max_retries=config_params.get("max_retries", 3)
-                )
+                # Use secure temporary directory as default instead of /tmp
+                import tempfile
+                with tempfile.TemporaryDirectory() as safe_temp_dir:
+                    test_config = NakalaConfig(
+                        api_key="test-edge-key",
+                        api_url=config_params.get("api_url", "https://apitest.nakala.fr"),
+                        base_path=config_params.get("base_path", safe_temp_dir),
+                        timeout=config_params.get("timeout", 60),
+                        max_retries=config_params.get("max_retries", 3)
+                    )
                 
-                # Should create config object
-                assert test_config.api_key == "test-edge-key"
-                
-                # Test client creation with edge case config
-                client = NakalaUploadClient(test_config)
-                assert hasattr(client, 'config')
+                    # Should create config object
+                    assert test_config.api_key == "test-edge-key"
+                    
+                    # Test client creation with edge case config
+                    client = NakalaUploadClient(test_config)
+                    assert hasattr(client, 'config')
                 
             except (ValueError, OSError, Exception) as e:
                 # Some edge cases might legitimately fail

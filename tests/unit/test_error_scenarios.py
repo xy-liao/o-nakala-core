@@ -25,12 +25,17 @@ class TestFileSystemErrors:
     
     @pytest.fixture
     def base_config(self):
-        """Base configuration for tests."""
-        return NakalaConfig(
-            api_key="test-key-123",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Base configuration for tests.
+        
+        Security Note: Uses secure temporary directory instead of /tmp.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key-123",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     def test_upload_with_permission_denied_file(self, base_config):
         """Test behavior when file access is denied.
@@ -127,12 +132,17 @@ class TestNetworkAndAPIErrors:
     
     @pytest.fixture
     def mock_config(self):
-        """Configuration for mocked network tests."""
-        return NakalaConfig(
-            api_key="test-key-123",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for mocked network tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key-123",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     @patch('requests.Session')
     def test_api_timeout_error(self, mock_session, mock_config):
@@ -216,12 +226,17 @@ class TestDataValidationErrors:
     
     @pytest.fixture
     def validation_config(self):
-        """Configuration for validation tests."""
-        return NakalaConfig(
-            api_key="test-key-123",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for validation tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key-123",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     def test_malformed_csv_structure(self, validation_config):
         """Test handling of malformed CSV files."""
@@ -316,12 +331,17 @@ class TestConcurrencyAndResourceErrors:
     
     @pytest.fixture
     def resource_config(self):
-        """Configuration for resource tests."""
-        return NakalaConfig(
-            api_key="test-key-123",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for resource tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key-123",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     def test_large_file_memory_handling(self, resource_config):
         """Test handling of very large files without memory issues."""
@@ -382,12 +402,17 @@ class TestEdgeCaseInputs:
     
     @pytest.fixture
     def edge_config(self):
-        """Configuration for edge case tests."""
-        return NakalaConfig(
-            api_key="test-key-123",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for edge case tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key-123",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     @pytest.mark.parametrize("edge_case_title", [
         "",  # Empty string

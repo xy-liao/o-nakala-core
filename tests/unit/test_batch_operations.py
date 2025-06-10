@@ -25,13 +25,18 @@ class TestBatchUploadOperations:
     
     @pytest.fixture
     def batch_config(self):
-        """Configuration for batch operation tests."""
-        return NakalaConfig(
-            api_key="test-batch-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            max_retries=2
-        )
+        """Configuration for batch operation tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-batch-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                max_retries=2
+            )
     
     @pytest.fixture
     def sample_csv_dataset(self):
@@ -194,12 +199,17 @@ class TestCollectionBatchOperations:
     
     @pytest.fixture
     def collection_batch_config(self):
-        """Configuration for collection batch tests."""
-        return NakalaConfig(
-            api_key="test-collection-batch-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for collection batch tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-collection-batch-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     @pytest.fixture
     def mock_upload_output(self):
@@ -344,14 +354,19 @@ class TestLargeDatasetProcessing:
     
     @pytest.fixture
     def large_dataset_config(self):
-        """Configuration for large dataset tests."""
-        return NakalaConfig(
-            api_key="test-large-dataset-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            timeout=300,  # Longer timeout for large operations
-            max_retries=1  # Fewer retries for speed
-        )
+        """Configuration for large dataset tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-large-dataset-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                timeout=300,  # Longer timeout for large operations
+                max_retries=1  # Fewer retries for speed
+            )
     
     def test_large_csv_processing(self, large_dataset_config):
         """Test processing of large CSV datasets."""
@@ -441,12 +456,17 @@ class TestConcurrentOperations:
     
     @pytest.fixture
     def concurrent_config(self):
-        """Configuration for concurrent operation tests."""
-        return NakalaConfig(
-            api_key="test-concurrent-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for concurrent operation tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-concurrent-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     def test_multiple_client_instances(self, concurrent_config):
         """Test multiple client instances operating concurrently."""

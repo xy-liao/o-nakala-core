@@ -23,12 +23,18 @@ class TestParameterizedFileTypes:
     
     @pytest.fixture
     def base_config(self):
-        """Base configuration for tests."""
-        return NakalaConfig(
-            api_key="test-key-123",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Base configuration for tests.
+        
+        Security Note: Uses secure temporary directory instead of /tmp
+        to prevent race conditions and symlink attacks.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key-123",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     @pytest.mark.parametrize("file_extension,expected_mimetype", [
         ("jpg", "image/jpeg"),
@@ -149,23 +155,33 @@ class TestNegativeScenarios:
     """Negative test cases for invalid inputs and error scenarios."""
     
     def test_upload_with_invalid_api_key(self):
-        """Test upload behavior with invalid API key."""
-        config = NakalaConfig(
-            api_key="invalid-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Test upload behavior with invalid API key.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key="invalid-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
         
         upload_client = NakalaUploadClient(config)
         assert upload_client.config.api_key == "invalid-key"
     
     def test_upload_with_nonexistent_file(self):
-        """Test upload behavior with non-existent file."""
-        config = NakalaConfig(
-            api_key="test-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Test upload behavior with non-existent file.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key="test-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
         
         upload_client = NakalaUploadClient(config)
         nonexistent_file = "/path/that/does/not/exist.txt"
@@ -174,12 +190,17 @@ class TestNegativeScenarios:
         assert is_valid == False
     
     def test_upload_with_empty_file(self):
-        """Test upload behavior with empty file."""
-        config = NakalaConfig(
-            api_key="test-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Test upload behavior with empty file.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key="test-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
         
         upload_client = NakalaUploadClient(config)
         
@@ -209,12 +230,17 @@ class TestNegativeScenarios:
         {"title": "Title"},  # Missing required type field
     ])
     def test_invalid_metadata_handling(self, invalid_metadata):
-        """Test handling of various invalid metadata scenarios."""
-        config = NakalaConfig(
-            api_key="test-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Test handling of various invalid metadata scenarios.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key="test-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
         
         upload_client = NakalaUploadClient(config)
         
@@ -227,13 +253,18 @@ class TestNegativeScenarios:
             pass
     
     def test_config_with_invalid_api_url(self):
-        """Test configuration with invalid API URL."""
-        # Test that config accepts various URL formats
-        config = NakalaConfig(
-            api_key="test-key",
-            api_url="invalid-url-format",
-            base_path="/tmp"
-        )
+        """Test configuration with invalid API URL.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Test that config accepts various URL formats
+            config = NakalaConfig(
+                api_key="test-key",
+                api_url="invalid-url-format",
+                base_path=temp_dir
+            )
         # The URL validation might be lenient, so just check it's set
         assert config.api_url == "invalid-url-format"
     
@@ -260,12 +291,17 @@ class TestNegativeScenarios:
         "",  # Completely empty
     ])
     def test_malformed_multilingual_fields(self, malformed_multilingual):
-        """Test handling of malformed multilingual field values."""
-        config = NakalaConfig(
-            api_key="test-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Test handling of malformed multilingual field values.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key="test-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
         
         upload_client = NakalaUploadClient(config)
         
@@ -284,30 +320,36 @@ class TestConfigurationEdgeCases:
     def test_config_environment_variable_priority(self):
         """Test that explicit parameters take priority over environment variables."""
         with patch.dict(os.environ, {'NAKALA_API_KEY': 'env-key'}):
-            config = NakalaConfig(
-                api_key='explicit-key',
-                api_url='https://apitest.nakala.fr',
-                base_path='/tmp'
-            )
+            import tempfile
+            with tempfile.TemporaryDirectory() as temp_dir:
+                config = NakalaConfig(
+                    api_key='explicit-key',
+                    api_url='https://apitest.nakala.fr',
+                    base_path=temp_dir
+                )
             assert config.api_key == 'explicit-key'
     
     def test_config_with_missing_api_key_and_no_env(self):
         """Test configuration when API key is missing and no environment variable."""
         with patch.dict(os.environ, {}, clear=True):
-            with pytest.raises(ValueError, match="API key must be provided"):
-                NakalaConfig(
-                    api_key=None,
-                    api_url='https://apitest.nakala.fr',
-                    base_path='/tmp'
-                )
+            import tempfile
+            with tempfile.TemporaryDirectory() as temp_dir:
+                with pytest.raises(ValueError, match="API key must be provided"):
+                    NakalaConfig(
+                        api_key=None,
+                        api_url='https://apitest.nakala.fr',
+                        base_path=temp_dir
+                    )
     
     def test_config_with_env_api_key_only(self):
         """Test configuration using only environment variable for API key."""
         with patch.dict(os.environ, {'NAKALA_API_KEY': 'env-only-key'}):
-            config = NakalaConfig(
-                api_url='https://apitest.nakala.fr',
-                base_path='/tmp'
-            )
+            import tempfile
+            with tempfile.TemporaryDirectory() as temp_dir:
+                config = NakalaConfig(
+                    api_url='https://apitest.nakala.fr',
+                    base_path=temp_dir
+                )
             assert config.api_key == 'env-only-key'
     
     @pytest.mark.parametrize("timeout_value,expected_result", [
@@ -318,12 +360,14 @@ class TestConfigurationEdgeCases:
     ])
     def test_config_timeout_values(self, timeout_value, expected_result):
         """Test various timeout configuration values."""
-        config = NakalaConfig(
-            api_key='test-key',
-            api_url='https://apitest.nakala.fr',
-            base_path='/tmp',
-            timeout=timeout_value
-        )
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = NakalaConfig(
+                api_key='test-key',
+                api_url='https://apitest.nakala.fr',
+                base_path=temp_dir,
+                timeout=timeout_value
+            )
         assert config.timeout == expected_result
     
     def test_config_path_resolution(self):
@@ -345,12 +389,17 @@ class TestCollectionParameterized:
     
     @pytest.fixture
     def collection_config(self):
-        """Configuration for collection tests."""
-        return NakalaConfig(
-            api_key="test-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for collection tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     @pytest.mark.parametrize("collection_metadata", [
         {

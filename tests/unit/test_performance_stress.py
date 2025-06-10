@@ -30,14 +30,19 @@ class TestPerformanceMetrics:
     
     @pytest.fixture
     def performance_config(self):
-        """Configuration optimized for performance testing."""
-        return NakalaConfig(
-            api_key="test-performance-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            timeout=60,
-            max_retries=1  # Minimize retries for performance testing
-        )
+        """Configuration optimized for performance testing.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-performance-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                timeout=60,
+                max_retries=1  # Minimize retries for performance testing
+            )
     
     @pytest.mark.slow
     def test_file_validation_performance(self, performance_config):
@@ -158,15 +163,17 @@ class TestPerformanceMetrics:
         # Measure config creation time
         configs_created = []
         
-        start_time = time.time()
-        for i in range(100):
-            config = NakalaConfig(
-                api_key=f"test-key-{i}",
-                api_url="https://apitest.nakala.fr",
-                base_path="/tmp",
-                timeout=60
-            )
-            configs_created.append(config)
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            start_time = time.time()
+            for i in range(100):
+                config = NakalaConfig(
+                    api_key=f"test-key-{i}",
+                    api_url="https://apitest.nakala.fr",
+                    base_path=temp_dir,  # Use secure temp dir
+                    timeout=60
+                )
+                configs_created.append(config)
         
         config_creation_time = time.time() - start_time
         
@@ -185,14 +192,19 @@ class TestStressScenarios:
     
     @pytest.fixture
     def stress_config(self):
-        """Configuration for stress testing."""
-        return NakalaConfig(
-            api_key="test-stress-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            timeout=30,
-            max_retries=1
-        )
+        """Configuration for stress testing.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-stress-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                timeout=30,
+                max_retries=1
+            )
     
     @pytest.mark.slow
     def test_concurrent_client_creation(self, stress_config):
@@ -319,12 +331,17 @@ class TestMemoryManagement:
     
     @pytest.fixture
     def memory_config(self):
-        """Configuration for memory testing."""
-        return NakalaConfig(
-            api_key="test-memory-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for memory testing.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-memory-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     def test_memory_usage_file_processing(self, memory_config):
         """Test memory usage during file processing."""
@@ -417,13 +434,18 @@ class TestResourceLimits:
     
     @pytest.fixture
     def resource_config(self):
-        """Configuration for resource limit testing."""
-        return NakalaConfig(
-            api_key="test-resource-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            timeout=10  # Short timeout for resource testing
-        )
+        """Configuration for resource limit testing.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-resource-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                timeout=10  # Short timeout for resource testing
+            )
     
     def test_file_descriptor_management(self, resource_config):
         """Test that file descriptors are properly managed."""

@@ -24,14 +24,19 @@ class TestHTTPErrorResponses:
     
     @pytest.fixture
     def upload_config(self):
-        """Configuration for upload error tests."""
-        return NakalaConfig(
-            api_key="test-api-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            max_retries=2,
-            timeout=30
-        )
+        """Configuration for upload error tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-api-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                max_retries=2,
+                timeout=30
+            )
     
     @pytest.fixture
     def test_file(self):
@@ -151,15 +156,20 @@ class TestRetryMechanisms:
     
     @pytest.fixture
     def retry_config(self):
-        """Configuration with specific retry settings."""
-        return NakalaConfig(
-            api_key="test-retry-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            max_retries=3,
-            retry_delay=1,
-            timeout=10
-        )
+        """Configuration with specific retry settings.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-retry-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                max_retries=3,
+                retry_delay=1,
+                timeout=10
+            )
     
     @patch('time.sleep')  # Mock sleep to speed up tests
     @patch('requests.Session')
@@ -266,14 +276,19 @@ class TestNetworkFailureScenarios:
     
     @pytest.fixture
     def network_config(self):
-        """Configuration for network failure tests."""
-        return NakalaConfig(
-            api_key="test-network-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            max_retries=2,
-            timeout=5
-        )
+        """Configuration for network failure tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-network-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                max_retries=2,
+                timeout=5
+            )
     
     @patch('requests.Session')
     def test_connection_timeout_retry(self, mock_session, network_config):
@@ -335,12 +350,17 @@ class TestCollectionAPIErrors:
     
     @pytest.fixture
     def collection_config(self):
-        """Configuration for collection error tests."""
-        return NakalaConfig(
-            api_key="test-collection-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp"
-        )
+        """Configuration for collection error tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-collection-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir
+            )
     
     @patch('requests.Session')
     def test_collection_creation_errors(self, mock_session, collection_config):
@@ -416,14 +436,19 @@ class TestAPIRateLimiting:
     
     @pytest.fixture
     def rate_limit_config(self):
-        """Configuration for rate limiting tests."""
-        return NakalaConfig(
-            api_key="test-rate-limit-key",
-            api_url="https://apitest.nakala.fr",
-            base_path="/tmp",
-            max_retries=3,
-            retry_delay=1
-        )
+        """Configuration for rate limiting tests.
+        
+        Security Note: Uses secure temporary directory.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield NakalaConfig(
+                api_key="test-rate-limit-key",
+                api_url="https://apitest.nakala.fr",
+                base_path=temp_dir,
+                max_retries=3,
+                retry_delay=1
+            )
     
     @patch('time.sleep')
     @patch('requests.Session')
