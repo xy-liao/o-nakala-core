@@ -172,6 +172,21 @@ nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
 
 ## 📁 Examples
 
+### 🎓 Interactive Workshop
+**Hands-on Jupyter notebook** with complete workflow demonstration:
+
+```bash
+cd examples/notebooks
+jupyter lab workshop_demo.ipynb
+```
+
+The workshop covers:
+- ✅ Installation and setup
+- 📤 Data upload workflows (CLI + Python API)
+- 📚 Collection management
+- 🔧 Quality analysis and curation
+- 🎯 Best practices and troubleshooting
+
 ### Sample Dataset
 Complete academic example with:
 - Multi-language metadata (French/English)
