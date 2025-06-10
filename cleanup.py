@@ -145,11 +145,32 @@ class NakalaCleanup:
     def cleanup_workshop_outputs(self):
         """Remove generated workshop outputs."""
         print("🎓 Removing workshop generated files...")
+        
+        # Remove old workshop directory if it exists
         workshop_dir = self.project_root / "o-nakala-workshop" / "outputs"
-
         if workshop_dir.exists():
             for file_path in workshop_dir.glob("workshop_report_*.md"):
                 self._remove_file(str(file_path.relative_to(self.project_root)))
+                
+        # Clean up Jupyter notebook checkpoints and temporary files
+        notebooks_dir = self.project_root / "examples" / "notebooks"
+        if notebooks_dir.exists():
+            # Remove Jupyter checkpoints
+            for checkpoint_dir in notebooks_dir.rglob(".ipynb_checkpoints"):
+                self._remove_directory(str(checkpoint_dir.relative_to(self.project_root)))
+                
+            # Remove temporary files that might be created by the notebook
+            temp_files = [
+                "upload_results.csv",
+                "quality_report.json", 
+                "quality_report_after.json",
+                "modification_results.json",
+                "workshop_modifications.csv"
+            ]
+            for temp_file in temp_files:
+                temp_path = notebooks_dir / temp_file
+                if temp_path.exists():
+                    self._remove_file(str(temp_path.relative_to(self.project_root)))
 
     def cleanup_cache_files(self):
         """Remove Python cache files."""
