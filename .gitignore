@@ -1,6 +1,3 @@
-# Claude Code
-.claude/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -114,7 +111,6 @@ temp_*
 # Internal development documentation (not for public release)
 dev-docs/
 *REPORT*.md
-CLAUDE.md
 # Exclude test outputs but keep test files
 test_output_*.py
 test_results_*.csv
