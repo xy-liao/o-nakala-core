@@ -313,7 +313,8 @@ class NakalaCollectionClient:
 
             if collection_id:
                 logger.info(
-                    f"Collection '{collection_config.title}' created successfully with ID: {collection_id}"
+                    f"Collection '{collection_config.title}' created successfully "
+                    f"with ID: {collection_id}"
                 )
                 return collection_id
             else:
@@ -603,7 +604,8 @@ class NakalaCollectionClient:
                 logger.warning(f"Error validating collection: {e}")
 
         logger.info(
-            f"Validation complete: {valid_collections}/{len(folder_collections_data)} collections valid"
+            f"Validation complete: {valid_collections}/"
+            f"{len(folder_collections_data)} collections valid"
         )
 
     def _load_upload_output(self, upload_output: str) -> List[Dict[str, str]]:

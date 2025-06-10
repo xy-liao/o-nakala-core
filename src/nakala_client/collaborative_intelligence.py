@@ -649,7 +649,10 @@ class CommunityAnalyzer:
                         ),
                         created_at=datetime.now(),
                         context={"benchmark_score": avg_quality},
-                        recommendation=f"Community average metadata completeness is {avg_quality:.1%}. Consider enhancing your metadata to meet or exceed this standard.",
+                        recommendation=(
+                            f"Community average metadata completeness is {avg_quality:.1%}. "
+                            "Consider enhancing your metadata to meet or exceed this standard."
+                        ),
                     )
                 )
 
@@ -665,7 +668,10 @@ class CommunityAnalyzer:
                     evidence_count=len(popular_keywords),
                     created_at=datetime.now(),
                     context={"keywords": popular_keywords},
-                    recommendation=f"Consider using popular community keywords: {', '.join(popular_keywords[:5])}",
+                    recommendation=(
+                        f"Consider using popular community keywords: "
+                        f"{', '.join(popular_keywords[:5])}"
+                    ),
                 )
             )
 
@@ -681,7 +687,9 @@ class CommunityAnalyzer:
                     evidence_count=len(popular_licenses),
                     created_at=datetime.now(),
                     context={"licenses": popular_licenses},
-                    recommendation=f"Most used licenses in community: {', '.join(popular_licenses)}",
+                    recommendation=(
+                        f"Most used licenses in community: {', '.join(popular_licenses)}"
+                    ),
                 )
             )
 
@@ -703,7 +711,10 @@ class CommunityAnalyzer:
                         evidence_count=len(high_usage_fields),
                         created_at=datetime.now(),
                         context={"domain": user_type, "fields": high_usage_fields},
-                        recommendation=f"For {user_type} resources, consider including these commonly used fields: {', '.join(high_usage_fields)}",
+                        recommendation=(
+                            f"For {user_type} resources, consider including these commonly "
+                            f"used fields: {', '.join(high_usage_fields)}"
+                        ),
                     )
                 )
 
@@ -785,7 +796,8 @@ class CollaborativeIntelligenceEngine:
 
             logger.info(f"Collaborative analysis completed in {processing_time:.2f}s")
             logger.info(
-                f"Learned {patterns_learned} ML patterns, created {results['semantic_embeddings']} embeddings"
+                f"Learned {patterns_learned} ML patterns, "
+                f"created {results['semantic_embeddings']} embeddings"
             )
 
         except Exception as e:

@@ -2,7 +2,8 @@
 NAKALA Relationship Discovery Service
 
 Discovers and suggests relationships between resources based on content similarity,
-user patterns, and metadata analysis. Part of the Complete Metadata Management System - Intelligence Phase.
+user patterns, and metadata analysis. Part of the Complete Metadata Management
+System - Intelligence Phase.
 """
 
 import logging
@@ -573,7 +574,10 @@ class RelationshipDiscoveryService:
                 # Add top suggestions as relation field values
                 for suggestion in relationship_analysis.suggestions[:3]:
                     if suggestion.confidence > 0.5:
-                        relation_text = f"{suggestion.relationship_type}: {suggestion.target_title} ({suggestion.target_id})"
+                        relation_text = (
+                            f"{suggestion.relationship_type}: {suggestion.target_title} "
+                            f"({suggestion.target_id})"
+                        )
                         field_suggestions.append(relation_text)
 
                 if field_suggestions:

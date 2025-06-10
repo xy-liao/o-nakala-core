@@ -6,12 +6,14 @@ metadata validation, duplicate detection, and data consistency checking.
 """
 
 import csv
+import json
 import logging
 import argparse
 import time
 import requests
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
+from pathlib import Path
 
 # Import common utilities
 from .common.config import NakalaConfig
@@ -488,7 +490,8 @@ class NakalaMetadataValidator:
                         else "None available"
                     )
                     warnings.append(
-                        f"{field_name.title()} '{value}' not found in vocabulary. Suggestions: {suggestion_text}"
+                        f"{field_name.title()} '{value}' not found in vocabulary. "
+                        f"Suggestions: {suggestion_text}"
                     )
 
         return warnings
@@ -627,7 +630,8 @@ class NakalaCuratorClient:
             self.autonomous_generator = create_autonomous_generator(self.user_client)
             self.predictive_analytics = create_predictive_analytics(self.user_client)
             logger.info(
-                "All intelligence services initialized: template generator, pre-population, relationships, autonomous generation, and predictive analytics"
+                "All intelligence services initialized: template generator, "
+                "pre-population, relationships, autonomous generation, and predictive analytics"
             )
         else:
             self.template_generator = None

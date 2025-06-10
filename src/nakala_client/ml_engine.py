@@ -7,6 +7,7 @@ and autonomous intelligence. Part of the Complete Metadata Management System - P
 
 import logging
 from datetime import datetime, timedelta
+from pathlib import Path
 
 # Optional ML dependencies
 try:

@@ -372,14 +372,20 @@ class MetadataGenerator:
                     "{filename} - Research Paper",
                     "Academic Study: {filename}",
                 ],
-                "description_template": "Research paper containing {content_summary}. This academic document includes {detected_sections}.",
+                "description_template": (
+                    "Research paper containing {content_summary}. "
+                    "This academic document includes {detected_sections}."
+                ),
                 "keywords": ["research", "academic", "study", "paper", "analysis"],
                 "type": "http://purl.org/coar/resource_type/c_6501",
                 "default_license": "CC-BY-4.0",
             },
             "dataset": {
                 "title_patterns": ["{filename} Dataset", "Data Collection: {filename}"],
-                "description_template": "Dataset containing {content_summary}. The data includes {detected_features} and is suitable for {analysis_type} analysis.",
+                "description_template": (
+                    "Dataset containing {content_summary}. The data includes {detected_features} "
+                    "and is suitable for {analysis_type} analysis."
+                ),
                 "keywords": [
                     "dataset",
                     "data",
@@ -395,7 +401,10 @@ class MetadataGenerator:
                     "{filename} - Source Code",
                     "Implementation: {filename}",
                 ],
-                "description_template": "Source code implementation for {content_summary}. This {programming_language} code includes {detected_functions}.",
+                "description_template": (
+                    "Source code implementation for {content_summary}. "
+                    "This {programming_language} code includes {detected_functions}."
+                ),
                 "keywords": [
                     "code",
                     "software",
@@ -408,7 +417,10 @@ class MetadataGenerator:
             },
             "image": {
                 "title_patterns": ["{filename} - Image", "Visual Content: {filename}"],
-                "description_template": "Image file containing {content_summary}. This visual resource shows {detected_content}.",
+                "description_template": (
+                    "Image file containing {content_summary}. "
+                    "This visual resource shows {detected_content}."
+                ),
                 "keywords": ["image", "visual", "photo", "picture", "graphic"],
                 "type": "http://purl.org/coar/resource_type/c_ecc8",
                 "default_license": "CC-BY-4.0",
@@ -418,7 +430,10 @@ class MetadataGenerator:
                     "{filename} - Document",
                     "Text Document: {filename}",
                 ],
-                "description_template": "Document containing {content_summary}. This text resource includes {detected_sections}.",
+                "description_template": (
+                    "Document containing {content_summary}. "
+                    "This text resource includes {detected_sections}."
+                ),
                 "keywords": ["document", "text", "information", "content"],
                 "type": "http://purl.org/coar/resource_type/c_6501",
                 "default_license": "CC-BY-4.0",
@@ -515,7 +530,8 @@ class MetadataGenerator:
             result.analysis_time = processing_time
 
             logger.info(
-                f"Content analysis completed for {path.name}: {content_type} ({result.confidence_score:.1%} confidence)"
+                f"Content analysis completed for {path.name}: {content_type} "
+                f"({result.confidence_score:.1%} confidence)"
             )
 
         except Exception as e:

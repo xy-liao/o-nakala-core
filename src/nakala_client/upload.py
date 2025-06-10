@@ -404,9 +404,15 @@ class NakalaUploadClient:
 
                     # Provide specific guidance for common metadata errors
                     if "nakala:creator must be an array" in message:
-                        return f"{message} - Ensure creator metadata is properly formatted as an array"
+                        return (
+                            f"{message} - Ensure creator metadata is properly "
+                            "formatted as an array"
+                        )
                     elif "must not have" in message and "lang" in message:
-                        return f"{message} - Remove language attributes from system fields like date/license"
+                        return (
+                            f"{message} - Remove language attributes from system fields "
+                            "like date/license"
+                        )
                     elif "metadata" in message.lower():
                         return f"Metadata validation error: {message}"
 
@@ -457,7 +463,8 @@ class NakalaUploadClient:
             ]:
                 if not isinstance(meta["value"], list):
                     errors.append(
-                        f"Creator/contributor metadata must have array value, got {type(meta['value'])}"
+                        f"Creator/contributor metadata must have array value, "
+                        f"got {type(meta['value'])}"
                     )
 
             # Check for forbidden language attributes on system fields

@@ -428,15 +428,27 @@ class MetadataSchemaGenerator:
         field_name = property_uri.split("#")[-1].split("/")[-1]
 
         help_texts = {
-            "title": 'The main title of the resource. For multilingual titles, use format: "fr:French title|en:English title"',
+            "title": (
+                'The main title of the resource. For multilingual titles, '
+                'use format: "fr:French title|en:English title"'
+            ),
             "description": "A detailed description of the resource content and purpose.",
-            "creator": 'Primary authors/creators in format "Surname,Givenname". Separate multiple creators with semicolons.',
+            "creator": (
+                'Primary authors/creators in format "Surname,Givenname". '
+                'Separate multiple creators with semicolons.'
+            ),
             "contributor": "Additional contributors who helped create the resource.",
             "license": "License under which the resource is made available (e.g., CC-BY-4.0).",
-            "type": "Resource type from COAR vocabulary (e.g., http://purl.org/coar/resource_type/c_ddb1).",
+            "type": (
+                "Resource type from COAR vocabulary "
+                "(e.g., http://purl.org/coar/resource_type/c_ddb1)."
+            ),
             "date": "Date of creation or publication in YYYY-MM-DD format.",
             "language": 'Primary language of the resource (ISO 639-1 code, e.g., "fr", "en").',
-            "keywords": 'Keywords describing the resource. For multilingual: "fr:mot1;mot2|en:word1;word2"',
+            "keywords": (
+                'Keywords describing the resource. For multilingual: '
+                '"fr:mot1;mot2|en:word1;word2"'
+            ),
             "rights": "Rights information or access permissions.",
             "identifier": "Persistent identifier like DOI, ISBN, etc.",
         }

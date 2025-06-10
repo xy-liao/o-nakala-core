@@ -393,15 +393,27 @@ class TemplateGenerator:
     ) -> str:
         """Generate helpful guidance text for a field."""
         base_help = {
-            "title": "The main title of the resource. Use multilingual format for international content.",
-            "description": "A comprehensive description of the resource content, purpose, and methodology.",
-            "creator": 'Primary authors or creators. Use format "Surname,Givenname" and separate multiple creators with semicolons.',
+            "title": (
+                "The main title of the resource. Use multilingual format "
+                "for international content."
+            ),
+            "description": (
+                "A comprehensive description of the resource content, purpose, "
+                "and methodology."
+            ),
+            "creator": (
+                'Primary authors or creators. Use format "Surname,Givenname" '
+                'and separate multiple creators with semicolons.'
+            ),
             "contributor": "Additional people who contributed to creating the resource.",
             "date": "Date of creation, publication, or coverage in YYYY-MM-DD format.",
             "license": "License under which the resource is made available (e.g., CC-BY-4.0).",
             "type": "Resource type from COAR vocabulary indicating what kind of resource this is.",
             "language": "Primary language of the resource content using ISO 639-1 codes.",
-            "keywords": "Descriptive keywords or subject terms. Use multilingual format if applicable.",
+            "keywords": (
+                "Descriptive keywords or subject terms. Use multilingual format "
+                "if applicable."
+            ),
             "identifier": "Persistent identifier such as DOI, ISBN, or other standard identifier.",
             "rights": "Rights statement or access permissions for the resource.",
             "status": "Publication status of the resource (draft, pending, published, etc.)",

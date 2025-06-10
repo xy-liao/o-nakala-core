@@ -107,6 +107,10 @@ addopts = "-ra -q --strict-markers"
 testpaths = [
     "tests",
 ]
+markers = [
+    "integration: marks tests as integration tests that may require API access",
+    "slow: marks tests as slow running tests",
+]
 
 [tool.coverage.run]
 source = ["src"]
