@@ -17,7 +17,7 @@ O-Nakala Core bridges the gap between researchers and the NAKALA platform, provi
 - **Quality analysis and curation** of research datasets
 - **Automated workflows** for reproducible research data management
 
-Built by researchers, for researchers in digital humanities, cultural heritage, and academic data management.
+Built for researchers in digital humanities, cultural heritage, and academic data management.
 
 ---
 
@@ -224,10 +224,10 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ### **Acknowledgments**
 - **NAKALA Platform** by Huma-Num for API and infrastructure
 - **Digital Humanities Community** for requirements and feedback
-- **French Academic Institutions** (EFEO, BnF, University of Strasbourg) for use cases
+- **Open Source Contributors** for testing and improvements
 
 ### **Development**
-Built with ❤️ for the digital humanities research community.
+Built with ❤️ for the research community by an independent developer.
 
 ---
 
@@ -251,4 +251,4 @@ nakala-upload --help
 
 ---
 
-*O-Nakala Core v2.1.4 - Empowering digital humanities research through better data management.*
+*O-Nakala Core v2.1.4 - Empowering research through better data management.*

@@ -109,4 +109,4 @@ Each notebook includes:
 
 ---
 
-**Built for digital humanities researchers and data management education.**
+**Built for researchers and data management education.**

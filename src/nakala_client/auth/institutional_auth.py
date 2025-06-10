@@ -110,12 +110,12 @@ class InstitutionalPolicy:
 
     @classmethod
     def get_default_policies(cls) -> Dict[str, "InstitutionalPolicy"]:
-        """Get default policies for supported institutions."""
+        """Get default policies for example institutions."""
         return {
-            "efeo": cls(
-                institution="efeo",
+            "example_research": cls(
+                institution="example_research",
                 require_2fa=True,
-                allowed_domains=["efeo.fr"],
+                allowed_domains=["example-research.org"],
                 session_timeout=7200,  # 2 hours
                 require_institutional_email=True,
                 default_roles=[InstitutionalRole.RESEARCHER],
@@ -145,10 +145,10 @@ class InstitutionalPolicy:
                     "csv",
                 ],
             ),
-            "bnf": cls(
-                institution="bnf",
+            "example_library": cls(
+                institution="example_library",
                 require_2fa=True,
-                allowed_domains=["bnf.fr"],
+                allowed_domains=["example-library.org"],
                 session_timeout=1800,  # 30 minutes for security
                 require_institutional_email=True,
                 default_roles=[InstitutionalRole.LIBRARIAN],
@@ -165,10 +165,10 @@ class InstitutionalPolicy:
                 max_upload_size=100 * 1024 * 1024 * 1024,  # 100GB for national library
                 allowed_file_types=["*"],  # All file types allowed
             ),
-            "unistra": cls(
-                institution="unistra",
+            "example_university": cls(
+                institution="example_university",
                 require_2fa=False,
-                allowed_domains=["unistra.fr", "etu.unistra.fr"],
+                allowed_domains=["example-university.edu", "student.example-university.edu"],
                 session_timeout=3600,
                 require_institutional_email=True,
                 default_roles=[InstitutionalRole.STUDENT],
@@ -196,8 +196,8 @@ class InstitutionalPolicy:
                     "pptx",
                 ],
             ),
-            "huma_num": cls(
-                institution="huma_num",
+            "consortium_member": cls(
+                institution="consortium_member",
                 require_2fa=False,
                 allowed_domains=["*"],  # Multiple institutions
                 session_timeout=7200,

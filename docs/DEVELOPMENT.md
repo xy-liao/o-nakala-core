@@ -230,4 +230,4 @@ result = client.upload_single_dataset({
 
 *This project provides a complete, reliable, and extensible toolkit for working with NAKALA research data repository.*
 
-**Built for digital humanities researchers and academic data management.**
+**Built for researchers and academic data management.**

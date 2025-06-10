@@ -451,11 +451,11 @@ class InstitutionalSSOFactory:
 
     # Pre-configured institutional providers
     INSTITUTION_CONFIGS = {
-        "efeo": {
-            "name": "EFEO",
+        "example_research": {
+            "name": "Example Research Institution",
             "type": "saml",
-            "entity_id": "https://nakala.efeo.fr",
-            "sso_url": "https://idp.efeo.fr/simplesaml/saml2/idp/SSOService.php",
+            "entity_id": "https://nakala.example-research.org",
+            "sso_url": "https://idp.example-research.org/simplesaml/saml2/idp/SSOService.php",
             "attribute_map": {
                 "user_id": "eduPersonPrincipalName",
                 "email": "mail",
@@ -464,16 +464,16 @@ class InstitutionalSSOFactory:
                 "roles": "eduPersonAffiliation",
             },
         },
-        "bnf": {
-            "name": "Bibliothèque nationale de France",
+        "example_library": {
+            "name": "Example National Library",
             "type": "oauth",
-            "auth_url": "https://auth.bnf.fr/oauth2/authorize",
-            "token_url": "https://auth.bnf.fr/oauth2/token",
-            "userinfo_url": "https://auth.bnf.fr/oauth2/userinfo",
+            "auth_url": "https://auth.example-library.org/oauth2/authorize",
+            "token_url": "https://auth.example-library.org/oauth2/token",
+            "userinfo_url": "https://auth.example-library.org/oauth2/userinfo",
             "scope": "openid profile email institution",
         },
         "unistra": {
-            "name": "Université de Strasbourg",
+            "name": "Example University",
             "type": "saml",
             "entity_id": "https://nakala.unistra.fr",
             "sso_url": "https://idp.unistra.fr/idp/profile/SAML2/Redirect/SSO",

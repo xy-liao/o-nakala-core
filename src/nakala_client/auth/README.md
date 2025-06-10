@@ -9,7 +9,7 @@ Complete authentication system supporting SAML 2.0, OAuth 2.0, and institutional
 ### 🏛️ Institutional SSO Support
 - **SAML 2.0**: Full SAML authentication with institutional Identity Providers
 - **OAuth 2.0**: Modern OAuth flow with OIDC support
-- **Pre-configured institutions**: EFEO, BnF, Université de Strasbourg, Huma-Num
+- **Pre-configured institutions**: Examples available for common setups
 - **Custom configurations**: Support for additional institutions
 
 ### 👥 User Management
@@ -42,7 +42,7 @@ auth_manager = InstitutionalAuthManager()
 auth_middleware = AuthMiddleware()
 
 # Authenticate user via SSO
-auth_result = auth_manager.authenticate_user('efeo', callback_data)
+auth_result = auth_manager.authenticate_user('example_research', callback_data)
 if auth_result.success:
     user_profile = auth_result.user_profile
     print(f"Welcome {user_profile.name} from {user_profile.institution}")
@@ -74,19 +74,19 @@ def create_collection(request, user_profile=None):
 
 ## 🏛️ Supported Institutions
 
-### École française d'Extrême-Orient (EFEO)
+### Example Research Institution
 ```python
 # Pre-configured SAML authentication
-auth_url = auth_manager.get_auth_url('efeo', redirect_uri)
+auth_url = auth_manager.get_auth_url('example_research', redirect_uri)
 ```
 
-### Bibliothèque nationale de France (BnF)
+### Example National Library
 ```python
 # Pre-configured OAuth 2.0 authentication
-auth_url = auth_manager.get_auth_url('bnf', redirect_uri)
+auth_url = auth_manager.get_auth_url('example_library', redirect_uri)
 ```
 
-### Université de Strasbourg
+### Example University
 ```python
 # University SAML authentication
 auth_url = auth_manager.get_auth_url('unistra', redirect_uri)
@@ -289,16 +289,16 @@ class CustomSSOProvider(SSOProvider):
 ### Role-based Decorators
 
 ```python
-from nakala_client.auth import require_admin_role, require_efeo_auth
+from nakala_client.auth import require_admin_role, require_research_auth
 
 @require_admin_role
 def delete_user(user_id: str, user_profile=None):
     """Admin-only function."""
     pass
 
-@require_efeo_auth
-def efeo_specific_function(data: dict, user_profile=None):
-    """EFEO institution-specific function."""
+@require_research_auth
+def research_specific_function(data: dict, user_profile=None):
+    """Example institution-specific function."""
     pass
 ```
 

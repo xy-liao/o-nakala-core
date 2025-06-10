@@ -410,13 +410,13 @@ def require_upload_permissions(func: Callable):
     return auth.require_auth(required_permissions=["upload_data"])(func)
 
 
-def require_efeo_auth(func: Callable):
-    """Require EFEO institutional authentication."""
+def require_research_auth(func: Callable):
+    """Require research institution authentication."""
     auth = AuthMiddleware()
-    return auth.require_institutional_auth(institutions=["efeo"])(func)
+    return auth.require_institutional_auth(institutions=["example_research"])(func)
 
 
-def require_bnf_auth(func: Callable):
-    """Require BnF institutional authentication."""
+def require_library_auth(func: Callable):
+    """Require library institutional authentication."""
     auth = AuthMiddleware()
-    return auth.require_institutional_auth(institutions=["bnf"])(func)
+    return auth.require_institutional_auth(institutions=["example_library"])(func)

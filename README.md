@@ -235,4 +235,4 @@ Contributions are welcome! Please feel free to submit issues and pull requests o
 
 ---
 
-**Built for digital humanities researchers.**
+**Built for researchers and data management professionals.**
