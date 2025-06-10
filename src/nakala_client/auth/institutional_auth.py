@@ -168,7 +168,10 @@ class InstitutionalPolicy:
             "example_university": cls(
                 institution="example_university",
                 require_2fa=False,
-                allowed_domains=["example-university.edu", "student.example-university.edu"],
+                allowed_domains=[
+                    "example-university.edu",
+                    "student.example-university.edu",
+                ],
                 session_timeout=3600,
                 require_institutional_email=True,
                 default_roles=[InstitutionalRole.STUDENT],
