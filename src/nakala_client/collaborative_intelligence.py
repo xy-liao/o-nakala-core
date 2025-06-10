@@ -5,10 +5,10 @@ Repository-wide pattern learning and collaborative metadata intelligence.
 Part of the Complete Metadata Management System - Phase 3.
 """
 
-import json
 import logging
-import asyncio
+import json
 from datetime import datetime, timedelta
+from pathlib import Path
 
 # Optional ML dependencies
 try:
@@ -20,7 +20,6 @@ except ImportError:
     HAS_NUMPY = False
 from typing import Dict, Any, List, Optional, Tuple, Set
 from dataclasses import dataclass, asdict
-from pathlib import Path
 from collections import defaultdict, Counter
 import statistics
 

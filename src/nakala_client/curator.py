@@ -6,14 +6,12 @@ metadata validation, duplicate detection, and data consistency checking.
 """
 
 import csv
-import json
 import logging
 import argparse
 import time
 import requests
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
-from pathlib import Path
 
 # Import common utilities
 from .common.config import NakalaConfig

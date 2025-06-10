@@ -5,12 +5,12 @@ Handles user profiles, roles, and institutional relationships.
 
 import os
 import json
-import logging
-from typing import Dict, Any, List, Optional, Set
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from enum import Enum
 import hashlib
+import logging
+from typing import Dict, Any, List, Optional
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
 
 from .institutional_auth import UserProfile, InstitutionalRole, InstitutionalPolicy
 

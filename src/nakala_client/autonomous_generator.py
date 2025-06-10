@@ -5,11 +5,8 @@ Advanced AI-driven system for automatically generating complete metadata from fi
 Part of the Complete Metadata Management System - Phase 3 (Advanced Intelligence).
 """
 
-import json
 import logging
-import asyncio
 import mimetypes
-import hashlib
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict

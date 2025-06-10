@@ -5,12 +5,11 @@ Provides intelligent metadata template generation with vocabulary integration.
 Part of the Complete Metadata Management System - Foundation Phase.
 """
 
-import json
 import logging
+import json
 from datetime import datetime
-from typing import Dict, Any, List, Optional, Set
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, asdict
-from pathlib import Path
 
 from .vocabulary import NakalaVocabularyService, FieldSchema, VocabularyEntry
 from .common.config import NakalaConfig

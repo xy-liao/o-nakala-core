@@ -5,13 +5,12 @@ Provides unified authentication handling across all O-Nakala Core components.
 
 import os
 import json
+import hashlib
 import logging
 from typing import Dict, Any, Optional, Callable
 from functools import wraps
 from datetime import datetime, timedelta
-import hashlib
 import jwt
-from pathlib import Path
 
 from .institutional_auth import InstitutionalAuthManager, UserProfile, InstitutionalRole
 from .session_manager import SessionManager

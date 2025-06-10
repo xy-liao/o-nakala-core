@@ -5,15 +5,13 @@ Intelligently pre-populates metadata templates based on user context, existing d
 and file analysis. Part of the Complete Metadata Management System - Intelligence Phase.
 """
 
-import json
 import logging
+import hashlib
 import re
-import asyncio
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional, Set, Tuple
 from dataclasses import dataclass, asdict
 from pathlib import Path
-import hashlib
 
 from .templates import MetadataTemplate, TemplateField
 from .vocabulary import NakalaVocabularyService

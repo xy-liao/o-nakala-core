@@ -5,15 +5,12 @@ Discovers and suggests relationships between resources based on content similari
 user patterns, and metadata analysis. Part of the Complete Metadata Management System - Intelligence Phase.
 """
 
-import json
 import logging
 import re
-import asyncio
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional, Set, Tuple
 from dataclasses import dataclass, asdict
 from collections import Counter
-import hashlib
 
 from .user_info import NakalaUserInfoClient
 from .common.config import NakalaConfig

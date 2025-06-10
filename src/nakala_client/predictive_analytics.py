@@ -5,10 +5,9 @@ Advanced analytics system for predicting metadata quality, completeness trends,
 and providing proactive recommendations. Part of Phase 3 - Advanced Intelligence.
 """
 
-import json
 import logging
-import asyncio
 from datetime import datetime, timedelta
+from pathlib import Path
 
 # Optional ML dependencies
 try:
@@ -20,7 +19,6 @@ except ImportError:
     HAS_NUMPY = False
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass, asdict
-from pathlib import Path
 from collections import defaultdict, Counter
 import statistics
 import math

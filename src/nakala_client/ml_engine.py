@@ -5,9 +5,7 @@ Advanced AI-driven metadata management with pattern recognition, semantic analys
 and autonomous intelligence. Part of the Complete Metadata Management System - Phase 3.
 """
 
-import json
 import logging
-import asyncio
 from datetime import datetime, timedelta
 
 # Optional ML dependencies
@@ -20,8 +18,6 @@ except ImportError:
     HAS_NUMPY = False
 from typing import Dict, Any, List, Optional, Tuple, Set
 from dataclasses import dataclass, asdict
-from pathlib import Path
-import hashlib
 import pickle
 from collections import defaultdict, Counter
 import math

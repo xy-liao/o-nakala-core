@@ -3,7 +3,6 @@ SSO Provider implementations for SAML and OAuth2 institutional authentication.
 """
 
 import os
-import json
 import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List

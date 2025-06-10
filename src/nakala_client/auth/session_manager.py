@@ -4,11 +4,11 @@ Session management for O-Nakala Core authentication.
 
 import os
 import json
+import hashlib
 import logging
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-import hashlib
 import secrets
 
 logger = logging.getLogger(__name__)

@@ -5,8 +5,8 @@ Retrieves information about the connected user including personal data,
 collections, datasets, and group permissions.
 """
 
-import json
 import logging
+import json
 import argparse
 import requests
 from typing import Dict, Any, List, Optional
