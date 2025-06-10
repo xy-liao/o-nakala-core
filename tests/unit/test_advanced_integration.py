@@ -439,16 +439,21 @@ class TestUtilityFunctions:
                 assert "parse" in str(e).lower() or "format" in str(e).lower()
     
     def test_path_normalization_edge_cases(self):
-        """Test path normalization with edge cases."""
-        path_test_cases = [
-            ("/absolute/path", "/tmp", "/absolute/path"),
-            ("relative/path", "/tmp", "/tmp/relative/path"),
-            ("../parent/path", "/tmp", "/tmp/../parent/path"),
-            ("./current/path", "/tmp", "/tmp/./current/path"),
-            ("", "/tmp", "/tmp"),
-            ("path/with/unicode/éàç", "/tmp", "/tmp/path/with/unicode/éàç"),
-            ("path with spaces", "/tmp", "/tmp/path with spaces"),
-        ]
+        """Test path normalization with edge cases.
+        
+        Security Note: Uses secure temporary directory for test data instead of /tmp.
+        """
+        import tempfile
+        with tempfile.TemporaryDirectory() as secure_base:
+            path_test_cases = [
+                ("/absolute/path", secure_base, "/absolute/path"),
+                ("relative/path", secure_base, f"{secure_base}/relative/path"),
+                ("../parent/path", secure_base, f"{secure_base}/../parent/path"),
+                ("./current/path", secure_base, f"{secure_base}/./current/path"),
+                ("", secure_base, secure_base),
+                ("path/with/unicode/éàç", secure_base, f"{secure_base}/path/with/unicode/éàç"),
+                ("path with spaces", secure_base, f"{secure_base}/path with spaces"),
+            ]
         
         for input_path, base_path, expected_pattern in path_test_cases:
             try:
