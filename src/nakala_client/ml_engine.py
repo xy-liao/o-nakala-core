@@ -6,6 +6,7 @@ and autonomous intelligence. Part of the Complete Metadata Management System - P
 """
 
 import logging
+import hashlib
 from datetime import datetime, timedelta
 from pathlib import Path
 
