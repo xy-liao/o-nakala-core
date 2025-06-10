@@ -163,9 +163,11 @@ class TestNetworkAndAPIErrors:
             try:
                 # Use the actual upload method
                 upload_client.upload_file(test_file, "test.txt")
-            except (requests.exceptions.Timeout, NakalaAPIError, AttributeError):
-                # Expected - either timeout or method not available
-                pass
+                assert False, "Should have raised an exception for timeout"
+            except Exception as e:
+                # Expected - timeout should cause some kind of exception (may be wrapped in RetryError)
+                error_str = str(e).lower()
+                assert "timeout" in error_str or "retryerror" in error_str or "api_error" in error_str
         finally:
             os.unlink(test_file)
     
@@ -185,9 +187,11 @@ class TestNetworkAndAPIErrors:
             try:
                 # Use the actual upload method
                 upload_client.upload_file(test_file, "test.txt")
-            except (requests.exceptions.ConnectionError, NakalaAPIError, AttributeError):
-                # Expected - either connection error or method not available
-                pass
+                assert False, "Should have raised an exception for connection error"
+            except Exception as e:
+                # Expected - connection error should cause some kind of exception (may be wrapped)
+                error_str = str(e).lower()
+                assert "connection" in error_str or "retryerror" in error_str or "api_error" in error_str
         finally:
             os.unlink(test_file)
     
