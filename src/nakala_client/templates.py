@@ -403,7 +403,7 @@ class TemplateGenerator:
             ),
             "creator": (
                 'Primary authors or creators. Use format "Surname,Givenname" '
-                'and separate multiple creators with semicolons.'
+                "and separate multiple creators with semicolons."
             ),
             "contributor": "Additional people who contributed to creating the resource.",
             "date": "Date of creation, publication, or coverage in YYYY-MM-DD format.",
