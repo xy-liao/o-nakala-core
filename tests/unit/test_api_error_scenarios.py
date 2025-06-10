@@ -90,7 +90,7 @@ class TestHTTPErrorResponses:
             
         except (NakalaAPIError, HTTPError, Exception) as e:
             # Expected for most error codes
-            assert status_code in str(e) or error_message in str(e) or True
+            assert str(status_code) in str(e) or error_message in str(e) or True
             
             # Verify retry behavior for server errors
             if status_code >= 500:

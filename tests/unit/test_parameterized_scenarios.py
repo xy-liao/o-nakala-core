@@ -166,9 +166,9 @@ class TestNegativeScenarios:
                 api_url="https://apitest.nakala.fr",
                 base_path=temp_dir
             )
-        
-        upload_client = NakalaUploadClient(config)
-        assert upload_client.config.api_key == "invalid-key"
+            
+            upload_client = NakalaUploadClient(config)
+            assert upload_client.config.api_key == "invalid-key"
     
     def test_upload_with_nonexistent_file(self):
         """Test upload behavior with non-existent file.
@@ -182,12 +182,12 @@ class TestNegativeScenarios:
                 api_url="https://apitest.nakala.fr",
                 base_path=temp_dir
             )
-        
-        upload_client = NakalaUploadClient(config)
-        nonexistent_file = "/path/that/does/not/exist.txt"
-        
-        is_valid = upload_client.file_processor.validate_file(nonexistent_file)
-        assert is_valid == False
+            
+            upload_client = NakalaUploadClient(config)
+            nonexistent_file = "/path/that/does/not/exist.txt"
+            
+            is_valid = upload_client.file_processor.validate_file(nonexistent_file)
+            assert is_valid == False
     
     def test_upload_with_empty_file(self):
         """Test upload behavior with empty file.
@@ -201,26 +201,26 @@ class TestNegativeScenarios:
                 api_url="https://apitest.nakala.fr",
                 base_path=temp_dir
             )
-        
-        upload_client = NakalaUploadClient(config)
-        
-        # Create empty file
-        with tempfile.NamedTemporaryFile(delete=False) as f:
-            empty_file = f.name
-        
-        try:
-            is_valid = upload_client.file_processor.validate_file(empty_file)
-            assert is_valid == True  # Empty files are technically valid
             
-            # Test file hash calculation (internal method)
+            upload_client = NakalaUploadClient(config)
+            
+            # Create empty file
+            with tempfile.NamedTemporaryFile(delete=False) as f:
+                empty_file = f.name
+            
             try:
-                sha1_hash = upload_client.file_processor._calculate_file_hash(empty_file)
-                assert len(sha1_hash) == 40  # SHA1 is 40 characters
-            except AttributeError:
-                # If method not available, skip this specific test
-                pass
-        finally:
-            os.unlink(empty_file)
+                is_valid = upload_client.file_processor.validate_file(empty_file)
+                assert is_valid == True  # Empty files are technically valid
+                
+                # Test file hash calculation (internal method)
+                try:
+                    sha1_hash = upload_client.file_processor._calculate_file_hash(empty_file)
+                    assert len(sha1_hash) == 40  # SHA1 is 40 characters
+                except AttributeError:
+                    # If method not available, skip this specific test
+                    pass
+            finally:
+                os.unlink(empty_file)
     
     @pytest.mark.parametrize("invalid_metadata", [
         {},  # Empty metadata
@@ -241,16 +241,16 @@ class TestNegativeScenarios:
                 api_url="https://apitest.nakala.fr",
                 base_path=temp_dir
             )
-        
-        upload_client = NakalaUploadClient(config)
-        
-        try:
-            prepared_metadata = upload_client.prepare_metadata_from_dict(invalid_metadata)
-            # Some invalid metadata might be handled gracefully
-            assert isinstance(prepared_metadata, list)
-        except (NakalaValidationError, ValueError, KeyError):
-            # Expected for truly invalid metadata
-            pass
+            
+            upload_client = NakalaUploadClient(config)
+            
+            try:
+                prepared_metadata = upload_client.prepare_metadata_from_dict(invalid_metadata)
+                # Some invalid metadata might be handled gracefully
+                assert isinstance(prepared_metadata, list)
+            except (NakalaValidationError, ValueError, KeyError):
+                # Expected for truly invalid metadata
+                pass
     
     def test_config_with_invalid_api_url(self):
         """Test configuration with invalid API URL.
@@ -265,8 +265,8 @@ class TestNegativeScenarios:
                 api_url="invalid-url-format",
                 base_path=temp_dir
             )
-        # The URL validation might be lenient, so just check it's set
-        assert config.api_url == "invalid-url-format"
+            # The URL validation might be lenient, so just check it's set
+            assert config.api_url == "invalid-url-format"
     
     def test_config_with_missing_base_path(self):
         """Test configuration with missing base path."""
@@ -302,16 +302,16 @@ class TestNegativeScenarios:
                 api_url="https://apitest.nakala.fr",
                 base_path=temp_dir
             )
-        
-        upload_client = NakalaUploadClient(config)
-        
-        try:
-            parsed = upload_client.utils.parse_multilingual_field(malformed_multilingual)
-            # Some malformed inputs might be handled gracefully
-            assert isinstance(parsed, list)
-        except (ValueError, AttributeError):
-            # Expected for truly malformed input
-            pass
+            
+            upload_client = NakalaUploadClient(config)
+            
+            try:
+                parsed = upload_client.utils.parse_multilingual_field(malformed_multilingual)
+                # Some malformed inputs might be handled gracefully
+                assert isinstance(parsed, list)
+            except (ValueError, AttributeError):
+                # Expected for truly malformed input
+                pass
 
 
 class TestConfigurationEdgeCases:
@@ -368,7 +368,7 @@ class TestConfigurationEdgeCases:
                 base_path=temp_dir,
                 timeout=timeout_value
             )
-        assert config.timeout == expected_result
+            assert config.timeout == expected_result
     
     def test_config_path_resolution(self):
         """Test that base paths are properly resolved to absolute paths."""
