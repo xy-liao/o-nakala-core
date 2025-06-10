@@ -19,7 +19,7 @@ class NakalaError(Exception):
         self.error_code = error_code
         self.details = details or {}
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.error_code:
             return f"[{self.error_code}] {self.message}"
         return self.message

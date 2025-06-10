@@ -44,7 +44,7 @@ class NakalaConfig:
     timeout: int = 600  # Increased to 10 minutes for dataset creation
     upload_timeout: int = 300  # Separate timeout for file uploads
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Post-initialization validation and setup."""
         # Load from environment if not provided
         if not self.api_key:

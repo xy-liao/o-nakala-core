@@ -98,7 +98,7 @@ class NakalaCommonUtils:
         if not value or not value.strip():
             return []
 
-        result = []
+        result: List[Tuple[Optional[str], str]] = []
         for part in value.split("|"):
             part = part.strip()
             if (
@@ -428,8 +428,8 @@ class NakalaPathResolver:
     def get_relative_path(self, file_path: str) -> str:
         """Get relative path from base directory."""
         try:
-            file_path = Path(file_path).resolve()
-            return str(file_path.relative_to(self.base_path))
+            resolved_path = Path(file_path).resolve()
+            return str(resolved_path.relative_to(self.base_path))
         except ValueError:
             # Path is not relative to base_path
             logger.warning(f"Path {file_path} is not relative to base {self.base_path}")
@@ -478,7 +478,7 @@ def setup_common_logging(
     Returns:
         Configured logger instance
     """
-    handlers = [logging.FileHandler(log_file)]
+    handlers: List[logging.Handler] = [logging.FileHandler(log_file)]
     if include_console:
         handlers.append(logging.StreamHandler())
 
