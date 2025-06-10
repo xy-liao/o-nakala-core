@@ -33,17 +33,24 @@ class TestFileSystemErrors:
         )
     
     def test_upload_with_permission_denied_file(self, base_config):
-        """Test behavior when file access is denied."""
+        """Test behavior when file access is denied.
+        
+        Security Note: This test carefully manages file permissions to avoid
+        creating security vulnerabilities or leaving inaccessible files.
+        """
         upload_client = NakalaUploadClient(base_config)
         
-        # Create a file then remove read permissions
+        # Create a file and store original permissions
         with tempfile.NamedTemporaryFile(delete=False) as f:
             f.write(b"test content")
             restricted_file = f.name
         
+        # Get original permissions for safe restoration
+        original_mode = os.stat(restricted_file).st_mode
+        
         try:
-            # Remove read permissions
-            os.chmod(restricted_file, 0o000)
+            # Remove read permissions (but keep owner write for cleanup)
+            os.chmod(restricted_file, 0o200)  # Owner write only, safer than 0o000
             
             # Validation should handle permission errors gracefully
             is_valid = upload_client.file_processor.validate_file(restricted_file)
@@ -54,12 +61,19 @@ class TestFileSystemErrors:
             # This is also acceptable behavior
             pass
         finally:
-            # Restore permissions for cleanup
+            # Restore original permissions for safe cleanup
             try:
-                os.chmod(restricted_file, 0o644)
+                os.chmod(restricted_file, original_mode)
                 os.unlink(restricted_file)
             except (PermissionError, FileNotFoundError):
-                pass
+                # If all else fails, try to force cleanup with minimal permissions
+                try:
+                    os.chmod(restricted_file, 0o600)  # Owner read/write only
+                    os.unlink(restricted_file)
+                except (PermissionError, FileNotFoundError, OSError):
+                    # Last resort: skip cleanup if file is truly inaccessible
+                    # This is safer than leaving with overly permissive permissions
+                    pass
     
     def test_upload_with_directory_instead_of_file(self, base_config):
         """Test behavior when a directory path is provided instead of file."""
