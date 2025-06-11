@@ -668,7 +668,11 @@ class NakalaUploadClient:
             self._validate_csv_dataset(dataset_path)
         elif mode == "folder":
             if not folder_config:
-                raise NakalaValidationError("Folder config is required for folder mode")
+                raise NakalaValidationError(
+                    "Folder config is required for folder mode. "
+                    "Please specify --folder-config with the path to your CSV configuration file. "
+                    "Example: --folder-config folder_data_items.csv"
+                )
             self._validate_folder_dataset(folder_config)
         else:
             raise NakalaValidationError(f"Unsupported mode: {mode}")
@@ -774,7 +778,11 @@ class NakalaUploadClient:
             self.process_csv_dataset(dataset_path)
         elif mode == "folder":
             if not folder_config:
-                raise NakalaValidationError("Folder config is required for folder mode")
+                raise NakalaValidationError(
+                    "Folder config is required for folder mode. "
+                    "Please specify --folder-config with the path to your CSV configuration file. "
+                    "Example: --folder-config folder_data_items.csv"
+                )
             self.process_folder_dataset(folder_config)
         else:
             raise NakalaValidationError(f"Unsupported mode: {mode}")
@@ -806,8 +814,28 @@ def create_upload_client(
 
 
 def main():
-    """Main CLI entry point."""
-    parser = argparse.ArgumentParser(description="Upload datasets to Nakala")
+    """
+    Main CLI entry point for o-nakala-upload.
+    
+    Examples:
+        # Folder mode (requires --folder-config):
+        o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --base-path . --mode folder --folder-config folder_data_items.csv
+        
+        # CSV mode:
+        o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
+    """
+    parser = argparse.ArgumentParser(
+        description="Upload datasets to Nakala",
+        epilog="""
+Examples:
+  # Folder mode - organize files by directory structure:
+  o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --base-path . --mode folder --folder-config folder_data_items.csv
+  
+  # CSV mode - upload individual datasets:
+  o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument(
         "--api-url", default="https://apitest.nakala.fr", help="Nakala API URL"
     )
@@ -824,10 +852,11 @@ def main():
         "--mode",
         choices=["csv", "folder"],
         default="folder",
-        help="Upload mode: csv or folder",
+        help="Upload mode: csv or folder (folder mode requires --folder-config)",
     )
     parser.add_argument(
-        "--folder-config", help="Path to folder configuration CSV (for folder mode)"
+        "--folder-config", 
+        help="Path to folder configuration CSV file (REQUIRED for folder mode)"
     )
     parser.add_argument("--output", default="output.csv", help="Output CSV file path")
     parser.add_argument(

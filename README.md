@@ -25,14 +25,29 @@ pip install -e .[cli]
 # Set your API key
 export NAKALA_API_KEY="your-api-key"
 
-# Upload data
-o-nakala-upload --api-key YOUR_KEY --dataset examples/sample_dataset/folder_data_items.csv --mode folder
+# Upload data (folder mode requires --folder-config)
+o-nakala-upload \
+  --api-key "$NAKALA_API_KEY" \
+  --dataset folder_data_items.csv \
+  --mode folder \
+  --folder-config folder_data_items.csv \
+  --base-path examples/sample_dataset \
+  --output upload_results.csv
 
-# Create collections  
-o-nakala-collection --api-key YOUR_KEY --title "My Collection" --from-upload-output output.csv
+# Create collections from uploaded data
+o-nakala-collection \
+  --api-key "$NAKALA_API_KEY" \
+  --from-upload-output upload_results.csv \
+  --from-folder-collections folder_collections.csv
 
-# Curate metadata
-o-nakala-curator --api-key YOUR_KEY --quality-report
+# Generate quality report
+o-nakala-curator --api-key "$NAKALA_API_KEY" --quality-report
+
+# Apply metadata enhancements
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify modifications.csv \
+  --scope datasets
 ```
 
 ## 🛠️ Features
@@ -135,12 +150,14 @@ o-nakala-upload \
   --dataset examples/sample_dataset/folder_data_items.csv \
   --mode csv
 
-# Upload from folder mode
+# Upload from folder mode (requires --folder-config)
 o-nakala-upload \
   --api-key YOUR_KEY \
   --dataset examples/sample_dataset/folder_data_items.csv \
   --base-path examples/sample_dataset \
-  --mode folder
+  --mode folder \
+  --folder-config examples/sample_dataset/folder_data_items.csv \
+  --output upload_results.csv
 ```
 
 ### Manage Collections
@@ -149,13 +166,13 @@ o-nakala-upload \
 o-nakala-collection \
   --api-key YOUR_KEY \
   --title "My Collection" \
-  --from-upload-output output.csv
+  --from-upload-output upload_results.csv
 
 # Create from folder configuration
 o-nakala-collection \
   --api-key YOUR_KEY \
   --from-folder-collections examples/sample_dataset/folder_collections.csv \
-  --from-upload-output output.csv
+  --from-upload-output upload_results.csv
 ```
 
 ### Curate Metadata
@@ -232,6 +249,33 @@ python cleanup.py
 # Keep log files for debugging  
 python cleanup.py --keep-logs
 ```
+
+## 🚨 Common Issues
+
+### "Folder config is required for folder mode"
+**Solution**: Add the `--folder-config` parameter:
+```bash
+o-nakala-upload --api-key YOUR_KEY --dataset file.csv --mode folder --folder-config file.csv --base-path .
+```
+
+### "Item [ID] not found in datasets or collections"  
+**Solution**: Update collection IDs in modification CSV files using the latest IDs from `collections_output.csv`
+
+### Commands not found (o-nakala-upload, etc.)
+**Solution**: Install with CLI support and activate virtual environment:
+```bash
+pip install -e ".[cli]"
+source .venv/bin/activate
+```
+
+### File path issues
+**Solution**: Ensure you're in the correct directory and verify file paths:
+```bash
+cd examples/sample_dataset
+ls -la *.csv files/
+```
+
+For detailed troubleshooting, see: [docs/user-guides/troubleshooting.md](docs/user-guides/troubleshooting.md)
 
 ## 🔗 Links
 

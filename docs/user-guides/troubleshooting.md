@@ -1,8 +1,48 @@
-# Troubleshooting Guide
+# O-Nakala Core Troubleshooting Guide
 
-## Common Issues and Solutions
+## 🚨 Common Issues and Solutions
 
 ### Upload Issues
+
+#### "Folder config is required for folder mode"
+
+**Problem**: You're trying to use folder mode without specifying the folder configuration file.
+
+**Solution**: 
+```bash
+# ❌ Incorrect - missing --folder-config
+o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --mode folder
+
+# ✅ Correct - includes --folder-config
+o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --mode folder --folder-config folder_data_items.csv --base-path .
+```
+
+**Key points**:
+- Folder mode requires both `--dataset` and `--folder-config` parameters
+- Usually these point to the same CSV file when using folder structure
+- Always specify `--base-path` to set the root directory for file resolution
+
+#### "No such file or directory" when changing directories
+
+**Problem**: The script tries to navigate to a directory that doesn't exist relative to your current location.
+
+**Solution**:
+```bash
+# Check your current directory
+pwd
+
+# Make sure you're in the project root
+cd /path/to/o-nakala-core
+
+# Then run the commands
+cd examples/sample_dataset
+o-nakala-upload --api-key YOUR_KEY ...
+```
+
+**Alternative**: Use absolute paths instead of relative paths:
+```bash
+o-nakala-upload --api-key YOUR_KEY --dataset /full/path/to/folder_data_items.csv --base-path /full/path/to/examples/sample_dataset
+```
 
 #### Folder Path Issues
 - **Problem**: "No folders found to process" warning
@@ -46,6 +86,24 @@
   4. Review error logs for details
 
 ### Collection Issues
+
+#### "Item [ID] not found in datasets or collections"
+
+**Problem**: The collection IDs in your modification CSV file are outdated or incorrect.
+
+**Solution**:
+1. Check the `collections_output.csv` file created during collection creation
+2. Update your `collection_modifications.csv` with the correct collection IDs
+3. Example:
+   ```csv
+   # OLD (from example)
+   10.34847/nkl.adfc67q4,modify,"Description..."
+   
+   # NEW (from your collections_output.csv)
+   10.34847/nkl.6fbdsyv0,modify,"Description..."
+   ```
+
+**Prevention**: Always use the most recent collection IDs from your workflow outputs.
 
 #### Collection Mapping Issues
 - **Problem**: Collections not matching expected folder structure
@@ -123,6 +181,176 @@
   3. Batch operations when possible
   4. Monitor API limits
 
+### Environment Issues
+
+#### Package Import Errors
+
+**Problem**: Cannot import `o_nakala_core` or getting import errors.
+
+**Solution**:
+```bash
+# Clean installation
+pip uninstall o-nakala-core
+pip install -e ".[dev,cli,ml]"
+
+# Verify installation
+python -c "import o_nakala_core; print(f'Version: {o_nakala_core.__version__}')"
+o-nakala-upload --help
+```
+
+#### CLI Commands Not Found
+
+**Problem**: Commands like `o-nakala-upload` are not recognized.
+
+**Solution**:
+```bash
+# Ensure you're in the right virtual environment
+source .venv/bin/activate  # or your venv path
+
+# Reinstall with CLI support
+pip install -e ".[cli]"
+
+# Verify CLI commands are available
+which o-nakala-upload
+o-nakala-upload --help
+```
+
+### API Issues
+
+#### Authentication Errors (401/403)
+
+**Problem**: API key is invalid or expired.
+
+**Solution**:
+```bash
+# Test API connection
+export NAKALA_API_KEY="your-test-key"
+o-nakala-user-info --api-key "$NAKALA_API_KEY"
+
+# Use the validated test key for testing
+export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
+```
+
+#### Rate Limiting or Connection Errors
+
+**Problem**: Too many requests or network issues.
+
+**Solution**:
+- Wait a few minutes and retry
+- Check your internet connection
+- Use the test environment: `--api-url https://apitest.nakala.fr`
+
+### Workflow Issues
+
+#### File Path Resolution Problems
+
+**Problem**: Files are not found even though they exist.
+
+**Solution**:
+```bash
+# Always use absolute paths or ensure you're in the correct directory
+cd examples/sample_dataset
+
+# Verify files exist
+ls -la folder_data_items.csv
+ls -la files/
+
+# Use correct relative paths
+o-nakala-upload --base-path . --dataset folder_data_items.csv
+```
+
+#### CSV Format Issues
+
+**Problem**: CSV files have formatting problems.
+
+**Solution**:
+- Ensure proper UTF-8 encoding
+- Check for unescaped quotes in multilingual fields
+- Use proper delimiter (comma)
+- Example of correct multilingual format:
+  ```csv
+  title,description
+  "Test Title","fr:Description française|en:English description"
+  ```
+
+## 🔧 Diagnostic Commands
+
+### Environment Check
+```bash
+# Check Python and pip
+python --version
+pip --version
+
+# Check virtual environment
+which python
+which pip
+
+# Check package installation
+pip list | grep nakala
+python -c "import o_nakala_core; print(o_nakala_core.__file__)"
+```
+
+### CLI Check
+```bash
+# Test all CLI commands
+o-nakala-upload --help
+o-nakala-collection --help
+o-nakala-curator --help
+o-nakala-user-info --help
+```
+
+### API Check
+```bash
+# Test API connection
+export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
+o-nakala-user-info --api-key "$NAKALA_API_KEY" --collections-only
+```
+
+### File Structure Check
+```bash
+# Verify directory structure
+find examples/sample_dataset -name "*.csv" -type f
+find examples/sample_dataset/files -type f | head -10
+```
+
+## 📋 Pre-flight Checklist
+
+Before running workflows, verify:
+
+- [ ] Virtual environment is activated
+- [ ] Package is installed: `pip list | grep o-nakala-core`
+- [ ] CLI commands work: `o-nakala-upload --help`
+- [ ] API key is set: `echo $NAKALA_API_KEY`
+- [ ] You're in the correct directory: `pwd`
+- [ ] Required files exist: `ls -la *.csv`
+- [ ] Base path is correct: `ls -la files/`
+
+## 🆘 Getting Help
+
+### Log Analysis
+```bash
+# Check detailed logs
+tail -f nakala_upload.log
+tail -f o_nakala_core.log
+```
+
+### Enable Debug Logging
+```bash
+o-nakala-upload --log-level DEBUG --api-key YOUR_KEY ...
+```
+
+### Validation Mode
+```bash
+# Test without uploading
+o-nakala-upload --validate-only --api-key YOUR_KEY --dataset your_file.csv --mode csv
+```
+
+### Community Support
+
+1. **Check existing issues**: Review solved problems in the repository
+2. **Create detailed bug reports**: Include error messages, log files, and steps to reproduce
+3. **Use validation tools**: Always validate CSV files before uploading
+
 ## Debugging Tips
 
 ### Enhanced Error Handling (V2 Features)
@@ -186,4 +414,9 @@
 2. Implement proper error handling
 3. Keep backup of configurations
 4. Document successful workflows
-5. Maintain collection relationship documentation 
+5. Maintain collection relationship documentation
+
+---
+
+**Last Updated**: 2025-06-11  
+**O-Nakala Core Version**: v2.2.0 

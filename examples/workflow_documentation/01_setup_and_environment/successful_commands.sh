@@ -29,17 +29,19 @@ echo "API access validated successfully"
 # =============================================================================
 
 echo "Uploading sample dataset using folder mode..."
-cd /Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset
+# Navigate to sample dataset directory (adjust path as needed)
+cd examples/sample_dataset || { echo "Error: Could not find examples/sample_dataset directory"; exit 1; }
 
 o-nakala-upload \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --dataset folder_data_items.csv \
   --mode folder \
   --folder-config folder_data_items.csv \
-  --base-path .
+  --base-path . \
+  --output upload_results.csv
 
 echo "Data upload completed successfully"
-echo "Generated output.csv with dataset identifiers"
+echo "Generated upload_results.csv with dataset identifiers"
 
 # =============================================================================
 # PHASE 3: COLLECTION CREATION
@@ -48,7 +50,7 @@ echo "Generated output.csv with dataset identifiers"
 echo "Creating collections from uploaded data..."
 o-nakala-collection \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
-  --from-upload-output output.csv \
+  --from-upload-output upload_results.csv \
   --from-folder-collections folder_collections.csv
 
 echo "Collection creation completed successfully"
@@ -88,17 +90,18 @@ echo "Data item modifications completed successfully"
 # PHASE 6: METADATA CURATION - COLLECTIONS
 # =============================================================================
 
+echo "IMPORTANT: Update collection IDs in collection_modifications.csv with IDs from collections_output.csv before running curation"
 echo "Performing dry run of collection modifications..."
 o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
-  --batch-modify collection_batch_modifications.csv \
+  --batch-modify collection_modifications.csv \
   --scope collections \
   --dry-run
 
 echo "Applying batch modifications to collections..."
 o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
-  --batch-modify collection_batch_modifications.csv \
+  --batch-modify collection_modifications.csv \
   --scope collections
 
 echo "Collection modifications completed successfully"

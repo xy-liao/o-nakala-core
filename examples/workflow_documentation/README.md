@@ -95,9 +95,16 @@ workflow_documentation/
 ## 🛠️ **Quick Start with Validation**
 
 ### **Prerequisites**
-1. O-Nakala Core v2.0+ installed: `pip install -e .`
-2. NAKALA test API access configured
-3. Validation tools available: `tools/*_validator.py`
+1. O-Nakala Core v2.2.0+ installed: `pip install -e ".[cli]"`
+2. NAKALA test API access configured  
+3. Virtual environment activated: `source .venv/bin/activate`
+4. Correct working directory: Ensure you're in project root or examples/sample_dataset
+
+### **⚠️ Important Notes**
+- **Folder mode requires `--folder-config`**: Always specify both `--dataset` and `--folder-config` parameters
+- **Update collection IDs**: After creating collections, update modification CSV files with actual IDs from `collections_output.csv`
+- **Directory structure matters**: Ensure you're in the correct directory when running commands
+- **Use absolute paths**: When in doubt, use full file paths to avoid path resolution issues
 
 ### **Step 1: Validate CSV Files**
 ```bash
@@ -117,9 +124,43 @@ python tools/curator_validator.py examples/workflow_documentation/05_metadata_cu
 export NAKALA_API_KEY="your-test-api-key"
 export NAKALA_BASE_URL="https://apitest.nakala.fr"
 
-# Execute validated workflow
-cd examples/workflow_documentation/01_setup_and_environment
-./successful_commands.sh
+# IMPORTANT: Ensure you're in the project root directory
+cd /path/to/o-nakala-core
+
+# Navigate to sample dataset directory for upload
+cd examples/sample_dataset
+
+# Run upload with correct parameters (folder mode requires --folder-config)
+o-nakala-upload \
+  --api-key "$NAKALA_API_KEY" \
+  --dataset folder_data_items.csv \
+  --mode folder \
+  --folder-config folder_data_items.csv \
+  --base-path . \
+  --output upload_results.csv
+
+# Create collections
+o-nakala-collection \
+  --api-key "$NAKALA_API_KEY" \
+  --from-upload-output upload_results.csv \
+  --from-folder-collections folder_collections.csv
+
+# IMPORTANT: Before curation, update collection IDs in modification files
+# Check collections_output.csv for actual collection IDs and update:
+# - collection_modifications.csv 
+# - Any other modification CSV files
+
+# Apply data modifications
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify data_modifications.csv \
+  --scope datasets
+
+# Apply collection modifications (after updating IDs)
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify collection_modifications.csv \
+  --scope collections
 ```
 
 ### **Step 3: Verify Results**
