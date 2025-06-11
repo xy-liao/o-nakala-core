@@ -21,7 +21,7 @@ echo "Package installation completed"
 echo "Validating API access..."
 NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293" \
 NAKALA_BASE_URL="https://apitest.nakala.fr" \
-nakala-user-info
+o-nakala-user-info
 echo "API access validated successfully"
 
 # =============================================================================
@@ -31,7 +31,7 @@ echo "API access validated successfully"
 echo "Uploading sample dataset using folder mode..."
 cd /Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset
 
-nakala-upload \
+o-nakala-upload \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --dataset folder_data_items.csv \
   --mode folder \
@@ -46,7 +46,7 @@ echo "Generated output.csv with dataset identifiers"
 # =============================================================================
 
 echo "Creating collections from uploaded data..."
-nakala-collection \
+o-nakala-collection \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --from-upload-output output.csv \
   --from-folder-collections folder_collections.csv
@@ -59,7 +59,7 @@ echo "Generated collections_output.csv with collection identifiers"
 # =============================================================================
 
 echo "Generating comprehensive quality report..."
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --quality-report
 
@@ -70,14 +70,14 @@ echo "Quality analysis completed successfully"
 # =============================================================================
 
 echo "Performing dry run of data item modifications..."
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify data_modifications.csv \
   --scope datasets \
   --dry-run
 
 echo "Applying batch modifications to data items..."
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify data_modifications.csv \
   --scope datasets
@@ -89,14 +89,14 @@ echo "Data item modifications completed successfully"
 # =============================================================================
 
 echo "Performing dry run of collection modifications..."
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify collection_batch_modifications.csv \
   --scope collections \
   --dry-run
 
 echo "Applying batch modifications to collections..."
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify collection_batch_modifications.csv \
   --scope collections
@@ -108,7 +108,7 @@ echo "Collection modifications completed successfully"
 # =============================================================================
 
 echo "Validating specific collections..."
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --validate-metadata \
   --scope collections \
