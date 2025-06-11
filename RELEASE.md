@@ -44,10 +44,10 @@ Built for researchers in digital humanities, cultural heritage, and academic dat
 
 ### 🖥️ **CLI Tools**
 Four powerful command-line interfaces:
-- `nakala-upload` - Data upload and validation
-- `nakala-collection` - Collection creation and management
-- `nakala-curator` - Quality analysis and batch modifications
-- `nakala-user-info` - Account management and statistics
+- `o-nakala-upload` - Data upload and validation
+- `o-nakala-collection` - Collection creation and management
+- `o-nakala-curator` - Quality analysis and batch modifications
+- `o-nakala-user-info` - Account management and statistics
 
 ### 🐍 **Python API**
 Complete programmatic access for:
@@ -68,7 +68,7 @@ pip install o-nakala-core[cli]
 
 # Basic usage
 export NAKALA_API_KEY="your-api-key"
-nakala-upload --dataset data.csv --mode csv
+o-nakala-upload --dataset data.csv --mode csv
 ```
 
 ### First Steps
@@ -242,7 +242,7 @@ cd examples/notebooks
 jupyter notebook workshop_demo.ipynb
 
 # Start managing your research data professionally
-nakala-upload --help
+o-nakala-upload --help
 ```
 
 **Ready to transform your research data management?**

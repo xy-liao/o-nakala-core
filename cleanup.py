@@ -76,7 +76,7 @@ class NakalaCleanup:
     def cleanup_build_artifacts(self):
         """Remove Python build artifacts."""
         build_paths = [
-            "src/nakala_client.egg-info",
+            "src/o_nakala_core.egg-info",
             "src/o_nakala_core.egg-info",  # Updated egg-info directory
             "nakala-python-client/build",
             "nakala-python-client/dist", 
@@ -304,10 +304,10 @@ class NakalaCleanup:
     def verify_essential_files(self):
         """Verify that essential files are still present."""
         essential_files = [
-            "src/nakala_client/__init__.py",
-            "src/nakala_client/upload.py",
-            "src/nakala_client/collection.py",
-            "src/nakala_client/curator.py",
+            "src/o_nakala_core/__init__.py",
+            "src/o_nakala_core/upload.py",
+            "src/o_nakala_core/collection.py",
+            "src/o_nakala_core/curator.py",
             "docs/README.md",
             "examples/sample_dataset/folder_data_items.csv",
             "pyproject.toml",

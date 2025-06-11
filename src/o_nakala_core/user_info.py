@@ -283,16 +283,16 @@ def main():
         epilog="""
 Examples:
   # Get user info with summary
-  python nakala-user-info.py
+  python o-nakala-user-info.py
   
   # Export complete profile to JSON
-  python nakala-user-info.py --output user_profile.json
+  python o-nakala-user-info.py --output user_profile.json
   
   # Get only collections info
-  python nakala-user-info.py --collections-only
+  python o-nakala-user-info.py --collections-only
   
   # Specify different API URL
-  python nakala-user-info.py --api-url https://api.nakala.fr
+  python o-nakala-user-info.py --api-url https://api.nakala.fr
         """,
     )
 

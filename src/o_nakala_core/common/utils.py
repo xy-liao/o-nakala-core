@@ -463,7 +463,7 @@ class NakalaPathResolver:
 
 
 def setup_common_logging(
-    log_file: str = "nakala_client.log",
+    log_file: str = "o_nakala_core.log",
     level: int = logging.INFO,
     include_console: bool = True,
 ) -> logging.Logger:
@@ -489,4 +489,4 @@ def setup_common_logging(
         force=True,  # Override any existing configuration
     )
 
-    return logging.getLogger("nakala_client")
+    return logging.getLogger("o_nakala_core")

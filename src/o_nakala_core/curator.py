@@ -2677,16 +2677,16 @@ def print_field_reference():
     print("\n⚡ QUICK COMMANDS")
     print("-" * 40)
     print("# Show this reference")
-    print("nakala-curator --list-fields")
+    print("o-nakala-curator --list-fields")
     print("")
     print("# Generate quality report")
-    print("nakala-curator --quality-report --api-key YOUR_KEY")
+    print("o-nakala-curator --quality-report --api-key YOUR_KEY")
     print("")
     print("# Batch modify from CSV (dry run)")
-    print("nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY")
+    print("o-nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY")
     print("")
     print("# Validate metadata")
-    print("nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY")
+    print("o-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY")
 
     print("\n📖 COMPLETE REFERENCE")
     print("-" * 40)
@@ -2704,16 +2704,16 @@ def main():
         epilog="""
 Examples:
   # Generate quality report
-  python nakala-curator.py --quality-report
+  python o-nakala-curator.py --quality-report
   
   # Validate metadata for all collections
-  python nakala-curator.py --validate-metadata --scope collections
+  python o-nakala-curator.py --validate-metadata --scope collections
   
   # Detect duplicates
-  python nakala-curator.py --detect-duplicates --collections col1,col2
+  python o-nakala-curator.py --detect-duplicates --collections col1,col2
   
   # Apply batch modifications from CSV
-  python nakala-curator.py --batch-modify modifications.csv --dry-run
+  python o-nakala-curator.py --batch-modify modifications.csv --dry-run
         """,
     )
 

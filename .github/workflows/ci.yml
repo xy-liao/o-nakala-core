@@ -28,21 +28,21 @@ jobs:
     
     - name: Verify installation
       run: |
-        python -c "import nakala_client; print('Package imported successfully')"
+        python -c "import o_nakala_core; print('Package imported successfully')"
         python -c "import pytest; print('Pytest imported successfully')"
     
     - name: Lint with flake8
       run: |
-        flake8 src/nakala_client --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 src/nakala_client --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        flake8 src/o_nakala_core --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src/o_nakala_core --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
     
     - name: Format check with black
       run: |
-        black --check src/nakala_client
+        black --check src/o_nakala_core
     
     - name: Type check with mypy
       run: |
-        mypy src/nakala_client
+        mypy src/o_nakala_core
       continue-on-error: true
     
     - name: Test with pytest
@@ -50,7 +50,7 @@ jobs:
         PYTHONPATH: ${{ github.workspace }}/src:${{ github.workspace }}
         NAKALA_API_KEY: "aae99aba-476e-4ff2-2886-0aaf1bfa6fd2"
       run: |
-        python -m pytest tests/ --cov=src/nakala_client --cov-report=xml --cov-report=term-missing -v
+        python -m pytest tests/ --cov=src/o_nakala_core --cov-report=xml --cov-report=term-missing -v
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
