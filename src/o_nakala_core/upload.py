@@ -816,11 +816,11 @@ def create_upload_client(
 def main():
     """
     Main CLI entry point for o-nakala-upload.
-    
+
     Examples:
         # Folder mode (requires --folder-config):
         o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --base-path . --mode folder --folder-config folder_data_items.csv
-        
+
         # CSV mode:
         o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
     """
@@ -834,7 +834,7 @@ Examples:
   # CSV mode - upload individual datasets:
   o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
         """,
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "--api-url", default="https://apitest.nakala.fr", help="Nakala API URL"
@@ -855,8 +855,8 @@ Examples:
         help="Upload mode: csv or folder (folder mode requires --folder-config)",
     )
     parser.add_argument(
-        "--folder-config", 
-        help="Path to folder configuration CSV file (REQUIRED for folder mode)"
+        "--folder-config",
+        help="Path to folder configuration CSV file (REQUIRED for folder mode)",
     )
     parser.add_argument("--output", default="output.csv", help="Output CSV file path")
     parser.add_argument(
