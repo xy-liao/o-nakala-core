@@ -28,8 +28,8 @@ export NAKALA_API_URL="https://apitest.nakala.fr"
 ```bash
 # Quick validation test
 python -c "
-from src.nakala_client.upload import NakalaUploadClient
-from src.nakala_client.common.config import NakalaConfig
+from src.o_nakala_core.upload import NakalaUploadClient
+from src.o_nakala_core.common.config import NakalaConfig
 
 config = NakalaConfig(
     api_key='33170cfe-f53c-550b-5fb6-4814ce981293',
@@ -46,7 +46,7 @@ print('✅ O-Nakala Core is ready!')
 
 ```bash
 # Test upload validation
-python -m src.nakala_client.upload \
+python -m src.o_nakala_core.upload \
   --api-key "$NAKALA_API_KEY" \
   --api-url "$NAKALA_API_URL" \
   --dataset "examples/sample_dataset/folder_data_items.csv" \
@@ -55,7 +55,7 @@ python -m src.nakala_client.upload \
   --validate-only
 
 # Test collection validation  
-python -m src.nakala_client.collection \
+python -m src.o_nakala_core.collection \
   --api-key "$NAKALA_API_KEY" \
   --api-url "$NAKALA_API_URL" \
   --from-folder-collections "examples/sample_dataset/folder_collections.csv" \
@@ -72,7 +72,7 @@ python -m src.nakala_client.collection \
 
 ```bash
 # Upload your research files
-python -m src.nakala_client.upload \
+python -m src.o_nakala_core.upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset "your_data/folder_data_items.csv" \
   --base-path "your_data" \
@@ -84,7 +84,7 @@ python -m src.nakala_client.upload \
 
 ```bash
 # Organize uploads into collections
-python -m src.nakala_client.collection \
+python -m src.o_nakala_core.collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections "your_data/collections.csv" \
   --from-upload-output "upload_results.csv" \
@@ -95,7 +95,7 @@ python -m src.nakala_client.collection \
 
 ```bash
 # Apply metadata improvements
-python -m src.nakala_client.curator \
+python -m src.o_nakala_core.curator \
   --api-key "$NAKALA_API_KEY" \
   --batch-modify "your_data/modifications.csv" \
   --output "curation_results.csv"

@@ -26,13 +26,13 @@ pip install -e .[cli]
 export NAKALA_API_KEY="your-api-key"
 
 # Upload data
-nakala-upload --api-key YOUR_KEY --dataset examples/sample_dataset/folder_data_items.csv --mode folder
+o-nakala-upload --api-key YOUR_KEY --dataset examples/sample_dataset/folder_data_items.csv --mode folder
 
 # Create collections  
-nakala-collection --api-key YOUR_KEY --title "My Collection" --from-upload-output output.csv
+o-nakala-collection --api-key YOUR_KEY --title "My Collection" --from-upload-output output.csv
 
 # Curate metadata
-nakala-curator --api-key YOUR_KEY --quality-report
+o-nakala-curator --api-key YOUR_KEY --quality-report
 ```
 
 ## 🛠️ Features
@@ -76,13 +76,13 @@ Current implementation provides comprehensive functionality for NAKALA data mana
 ### Quick Reference
 ```bash
 # Show complete field reference
-nakala-curator --list-fields
+o-nakala-curator --list-fields
 
 # Get help for any command
-nakala-upload --help
-nakala-collection --help  
-nakala-curator --help
-nakala-user-info --help
+o-nakala-upload --help
+o-nakala-collection --help  
+o-nakala-curator --help
+o-nakala-user-info --help
 ```
 
 ## 🎓 Getting Started
@@ -97,8 +97,8 @@ cat folder_data_items.csv
 cat folder_collections.csv
 
 # Run the complete workflow
-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --mode folder
-nakala-collection --api-key YOUR_KEY --from-folder-collections folder_collections.csv --from-upload-output output.csv
+o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --mode folder
+o-nakala-collection --api-key YOUR_KEY --from-folder-collections folder_collections.csv --from-upload-output output.csv
 ```
 
 The examples cover:
@@ -111,7 +111,7 @@ The examples cover:
 
 ```
 o-nakala-core/
-├── src/nakala_client/         # Core library modules
+├── src/o_nakala_core/         # Core library modules
 │   ├── cli/                   # Command-line interfaces  
 │   ├── common/                # Shared utilities
 │   ├── upload.py              # Upload functionality
@@ -130,13 +130,13 @@ o-nakala-core/
 ### Upload Data
 ```bash
 # Upload from CSV configuration
-nakala-upload \
+o-nakala-upload \
   --api-key YOUR_KEY \
   --dataset examples/sample_dataset/folder_data_items.csv \
   --mode csv
 
 # Upload from folder mode
-nakala-upload \
+o-nakala-upload \
   --api-key YOUR_KEY \
   --dataset examples/sample_dataset/folder_data_items.csv \
   --base-path examples/sample_dataset \
@@ -146,13 +146,13 @@ nakala-upload \
 ### Manage Collections
 ```bash
 # Create from upload results
-nakala-collection \
+o-nakala-collection \
   --api-key YOUR_KEY \
   --title "My Collection" \
   --from-upload-output output.csv
 
 # Create from folder configuration
-nakala-collection \
+o-nakala-collection \
   --api-key YOUR_KEY \
   --from-folder-collections examples/sample_dataset/folder_collections.csv \
   --from-upload-output output.csv
@@ -161,13 +161,13 @@ nakala-collection \
 ### Curate Metadata
 ```bash
 # Generate quality report
-nakala-curator --quality-report --api-key YOUR_KEY
+o-nakala-curator --quality-report --api-key YOUR_KEY
 
 # Batch modify metadata
-nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY
+o-nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY
 
 # Validate metadata
-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
+o-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
 ```
 
 ## 📁 Examples

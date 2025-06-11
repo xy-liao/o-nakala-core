@@ -43,7 +43,7 @@ Always test thoroughly on the test environment before using production.
 
 ```bash
 # Example for large datasets
-nakala-upload --batch-size 10 --retry-attempts 3
+o-nakala-upload --batch-size 10 --retry-attempts 3
 ```
 
 ### Q: What file formats are supported?
@@ -68,10 +68,10 @@ Check the specific requirements in your Nakala instance configuration.
 
 ```bash
 # Validate before uploading
-nakala-upload --validate-only dataset.csv
+o-nakala-upload --validate-only dataset.csv
 
 # Upload with detailed logging
-nakala-upload --debug dataset.csv
+o-nakala-upload --debug dataset.csv
 ```
 
 ## Collection Questions
@@ -86,13 +86,13 @@ nakala-upload --debug dataset.csv
 
 ```bash
 # Step 1: Create collections
-nakala-collection --from-folder-collections collections.csv
+o-nakala-collection --from-folder-collections collections.csv
 
 # Step 2: Upload data
-nakala-upload --dataset data.csv
+o-nakala-upload --dataset data.csv
 
 # Step 3: Link data to collections  
-nakala-collection --from-upload-output output.csv
+o-nakala-collection --from-upload-output output.csv
 ```
 
 ### Q: Can I add data to existing collections?
@@ -160,7 +160,7 @@ id,action,new_creator
 
 ```bash
 # Apply creator fields to collections
-nakala-curator --batch-modify collection_creators.csv --scope collections
+o-nakala-curator --batch-modify collection_creators.csv --scope collections
 ```
 
 Multiple creators can be separated by semicolons. Both `new_creator` and `new_author` fields work for collections and datasets.
@@ -188,8 +188,8 @@ title_en,title_fr,description_en,description_fr
 **A:** Import the modules directly:
 
 ```python
-from nakala_client.upload import upload_dataset
-from nakala_client.collection import create_collections
+from o_nakala_core.upload import upload_dataset
+from o_nakala_core.collection import create_collections
 
 # Use the modules in your code
 result = upload_dataset(config, dataset_file)
@@ -202,13 +202,13 @@ collections = create_collections(config, collection_file)
 
 ```bash
 # Minimal logging
-nakala-upload --log-level WARNING dataset.csv
+o-nakala-upload --log-level WARNING dataset.csv
 
 # Detailed logging  
-nakala-upload --log-level DEBUG dataset.csv
+o-nakala-upload --log-level DEBUG dataset.csv
 
 # Custom log file (output goes to logs/)
-nakala-upload --log-level INFO dataset.csv
+o-nakala-upload --log-level INFO dataset.csv
 ```
 
 ### Q: How do I handle proxy or firewall issues?

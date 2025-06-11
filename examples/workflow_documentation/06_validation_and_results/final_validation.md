@@ -29,7 +29,7 @@ After completing all curation phases, we performed targeted validation to confir
 ### Validation Commands Executed
 ```bash
 # Specific collection validation
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --validate-metadata \
   --scope collections \

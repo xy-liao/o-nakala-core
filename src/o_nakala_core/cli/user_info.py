@@ -8,7 +8,7 @@ This module provides the command-line interface for the user info functionality.
 def main():
     """Main entry point for nakala-user-info CLI command."""
     # Import and execute the user_info module main function
-    from nakala_client.user_info import main as user_info_main
+    from o_nakala_core.user_info import main as user_info_main
 
     user_info_main()
 

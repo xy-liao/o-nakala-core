@@ -28,20 +28,20 @@ A Python script for uploading datasets and their associated files to the Nakala 
 
 ```bash
 # CSV Mode (Basic)
-nakala-upload \
+o-nakala-upload \
     --api-key "your-api-key" \
     --dataset dataset.csv \
     --base-path img/
 
 # CSV Mode (Full)
-nakala-upload \
+o-nakala-upload \
     --api-key "your-api-key" \
     --api-url "https://apitest.nakala.fr" \
     --dataset dataset.csv \
     --base-path img/
 
 # Folder Mode
-nakala-upload \
+o-nakala-upload \
     --api-key "your-api-key" \
     --mode folder \
     --dataset "path/to/dataset" \
@@ -155,8 +155,8 @@ After successful upload, you can use the generated `output.csv` with the collect
 
 ```bash
 # Step 1: Upload data
-nakala-upload --api-key "your-api-key" --mode folder --dataset "path/to/dataset" --folder-config "path/to/folder_config.csv"
+o-nakala-upload --api-key "your-api-key" --mode folder --dataset "path/to/dataset" --folder-config "path/to/folder_config.csv"
 
 # Step 2: Create collection from uploaded data
-nakala-collection --api-key "your-api-key" --title "My Collection" --from-upload-output output.csv
+o-nakala-collection --api-key "your-api-key" --title "My Collection" --from-upload-output output.csv
 ```

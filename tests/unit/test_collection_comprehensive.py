@@ -9,9 +9,9 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 from pathlib import Path
 
-from nakala_client.collection import NakalaCollectionClient, CollectionResult
-from nakala_client.common.config import NakalaConfig
-from nakala_client.common.exceptions import NakalaAPIError, NakalaValidationError, NakalaFileError
+from o_nakala_core.collection import NakalaCollectionClient, CollectionResult
+from o_nakala_core.common.config import NakalaConfig
+from o_nakala_core.common.exceptions import NakalaAPIError, NakalaValidationError, NakalaFileError
 
 
 class TestNakalaCollectionClient:

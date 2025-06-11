@@ -31,7 +31,7 @@ metas = NakalaCommonUtils.prepare_nakala_metadata(metadata_dict)
 }
 ```
 
-### **Code Location**: `src/nakala_client/collection.py:129-139`
+### **Code Location**: `src/o_nakala_core/collection.py:129-139`
 ```python
 def prepare_collection_metadata(self, collection_config: CollectionConfig) -> List[Dict[str, Any]]:
     metadata_dict = {
@@ -123,7 +123,7 @@ keywords
 - **Processing**: Split by semicolon, then by language
 - **Each keyword**: Separate metadata entry
 
-#### **Code Reference**: `src/nakala_client/common/utils.py:172-184`
+#### **Code Reference**: `src/o_nakala_core/common/utils.py:172-184`
 ```python
 if field_name == "keywords":
     for keyword in value.split(";"):
@@ -175,7 +175,7 @@ creator
 - **Processing**: Parse person format, create array
 - **Format**: "Surname, Givenname" preferred
 
-#### **Code Reference**: `src/nakala_client/common/utils.py:185-201`
+#### **Code Reference**: `src/o_nakala_core/common/utils.py:185-201`
 ```python
 elif field_name in ["creator", "contributor"]:
     for person in value.split(";"):
@@ -289,7 +289,7 @@ data_items
 - **Processing**: Pattern matching against uploaded dataset titles
 - **Resolution**: Converts to actual dataset IDs
 
-#### **Code Reference**: `src/nakala_client/collection.py:220-271`
+#### **Code Reference**: `src/o_nakala_core/collection.py:220-271`
 ```python
 def create_collections_from_folder_config(self, folder_config_path, upload_output_path):
     # Match patterns against uploaded data titles
@@ -497,7 +497,7 @@ title,status,description,keywords,creator,contributor,data_items
 
 - **[CSV Format Specification](./csv-format-specification.md)** - Complete field format rules
 - **[Examples](./examples/)** - Working transformation examples
-- **[Common Utils Code](../../src/nakala_client/common/utils.py)** - Actual transformation functions
+- **[Common Utils Code](../../src/o_nakala_core/common/utils.py)** - Actual transformation functions
 
 ---
 

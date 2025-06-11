@@ -375,7 +375,7 @@ id,action,new_title
 - **[Field Transformations](./field-transformations.md)** - How CSV fields map to JSON
 - **[Examples](./examples/)** - Working curator CSV examples
 - **[Validation Tools](./validation/)** - CSV validation utilities
-- **[Curator Code Reference](../../src/nakala_client/curator.py)** - Implementation details
+- **[Curator Code Reference](../../src/o_nakala_core/curator.py)** - Implementation details
 
 ---
 

@@ -9,9 +9,9 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 from pathlib import Path
 
-from nakala_client.upload import NakalaUploadClient, NakalaFileProcessor
-from nakala_client.common.config import NakalaConfig
-from nakala_client.common.exceptions import NakalaAPIError, NakalaValidationError, NakalaFileError
+from o_nakala_core.upload import NakalaUploadClient, NakalaFileProcessor
+from o_nakala_core.common.config import NakalaConfig
+from o_nakala_core.common.exceptions import NakalaAPIError, NakalaValidationError, NakalaFileError
 
 
 class TestNakalaFileProcessor:
@@ -224,8 +224,8 @@ class TestNakalaUploadClient:
             with pytest.raises(NakalaAPIError):
                 upload_client._create_dataset(metadata, files)
     
-    @patch('nakala_client.upload.NakalaUploadClient._upload_file')
-    @patch('nakala_client.upload.NakalaUploadClient._create_dataset')
+    @patch('o_nakala_core.upload.NakalaUploadClient._upload_file')
+    @patch('o_nakala_core.upload.NakalaUploadClient._create_dataset')
     def test_upload_single_dataset_success(self, mock_create, mock_upload, upload_client):
         """Test complete single dataset upload workflow."""
         mock_upload.return_value = "test-sha1"
@@ -284,8 +284,8 @@ class TestUploadIntegration:
             }
             
             # Mock file validation and processing
-            with patch('nakala_client.upload.NakalaUploadClient._validate_dataset_config'):
-                with patch('nakala_client.upload.NakalaUploadClient._upload_file', return_value="file-hash-123"):
+            with patch('o_nakala_core.upload.NakalaUploadClient._validate_dataset_config'):
+                with patch('o_nakala_core.upload.NakalaUploadClient._upload_file', return_value="file-hash-123"):
                     result = client.upload_single_dataset(dataset_config)
                     assert result is not None
                     assert mock_post.call_count >= 1

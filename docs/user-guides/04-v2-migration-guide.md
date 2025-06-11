@@ -77,14 +77,14 @@ Test the new scripts with your existing data:
 
 ```bash
 # Test upload script
-nakala-upload \
+o-nakala-upload \
   --api-key YOUR_KEY \
   --dataset your_existing_dataset.csv \
   --folder-config your_existing_config.csv \
   --mode folder
 
 # Test collection script  
-nakala-collection \
+o-nakala-collection \
   --api-key YOUR_KEY \
   --from-folder-collections your_collections.csv \
   --from-upload-output output.csv
@@ -96,8 +96,8 @@ Compare the outputs between v1.0 and v2.0:
 
 ```bash
 # Run both versions
-python nakala-client-upload.py [args] > output_v1.csv
-nakala-upload [args] > output_v2.csv
+python o-nakala-client-upload.py [args] > output_v1.csv
+o-nakala-upload [args] > output_v2.csv
 
 # Compare results
 diff output_v1.csv output_v2.csv
@@ -109,10 +109,10 @@ Start updating your automation scripts:
 
 ```bash
 # Instead of:
-python nakala-client-upload.py --api-key $KEY --dataset data.csv
+python o-nakala-client-upload.py --api-key $KEY --dataset data.csv
 
 # Use:
-nakala-upload --api-key $KEY --dataset data.csv
+o-nakala-upload --api-key $KEY --dataset data.csv
 ```
 
 ## 📊 Configuration Compatibility
@@ -142,7 +142,7 @@ bird_photos,pending,http://purl.org/coar/resource_type/c_c513,...
 ### 1. Enhanced Configuration
 ```python
 # V2.0 supports structured configuration
-from nakala_client.common.config import NakalaConfig
+from o_nakala_core.common.config import NakalaConfig
 
 config = NakalaConfig()
 config.validate()  # Comprehensive validation
@@ -151,14 +151,14 @@ config.validate()  # Comprehensive validation
 ### 2. Better Error Recovery
 ```bash
 # V2.0 provides detailed error diagnostics
-nakala-upload --debug --validate-only your_data.csv
+o-nakala-upload --debug --validate-only your_data.csv
 ```
 
 ### 3. Extensible Architecture
 ```python
 # V2.0 provides reusable components for custom scripts
-from nakala_client.common.utils import prepare_metadata, upload_files
-from nakala_client.common.exceptions import NakalaAPIError
+from o_nakala_core.common.utils import prepare_metadata, upload_files
+from o_nakala_core.common.exceptions import NakalaAPIError
 ```
 
 ## 🎯 When to Migrate
@@ -185,13 +185,13 @@ from nakala_client.common.exceptions import NakalaAPIError
 # Solution: Install the package properly
 pip install -e .
 # or use full path
-python /path/to/nakala-upload
+python /path/to/o-nakala-upload
 ```
 
 ### Issue: Different Outputs
 ```bash
 # Check detailed logs
-nakala-upload --debug [args]
+o-nakala-upload --debug [args]
 # Compare with v1.0 behavior
 ```
 

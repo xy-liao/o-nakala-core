@@ -12,10 +12,10 @@ import os
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from src.nakala_client.upload import NakalaUploadClient
-from src.nakala_client.collection import NakalaCollectionClient
-from src.nakala_client.common.config import NakalaConfig
-from src.nakala_client.common.exceptions import NakalaAPIError, NakalaValidationError
+from src.o_nakala_core.upload import NakalaUploadClient
+from src.o_nakala_core.collection import NakalaCollectionClient
+from src.o_nakala_core.common.config import NakalaConfig
+from src.o_nakala_core.common.exceptions import NakalaAPIError, NakalaValidationError
 
 
 class TestParameterizedFileTypes:
@@ -426,7 +426,7 @@ class TestCollectionParameterized:
         # Use the actual collection metadata preparation method
         prepared_metadata = []
         try:
-            from src.nakala_client.collection import CollectionConfig
+            from src.o_nakala_core.collection import CollectionConfig
             collection_config = CollectionConfig(**collection_metadata)
             prepared_metadata = collection_client.prepare_collection_metadata(collection_config)
         except (ImportError, TypeError, AttributeError):

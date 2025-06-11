@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "o-nakala-core"
-version = "2.1.4"
+version = "2.2.0"
 authors = [
     {name = "xy-liao"},
 ]
@@ -63,10 +63,10 @@ Documentation = "https://nakala.fr/documentation"
 "Bug Tracker" = "https://github.com/xy-liao/o-nakala-core/issues"
 
 [project.scripts]
-nakala-upload = "nakala_client.cli.upload:main"
-nakala-collection = "nakala_client.cli.collection:main"
-nakala-curator = "nakala_client.cli.curator:main"
-nakala-user-info = "nakala_client.cli.user_info:main"
+o-nakala-upload = "o_nakala_core.cli.upload:main"
+o-nakala-collection = "o_nakala_core.cli.collection:main"
+o-nakala-curator = "o_nakala_core.cli.curator:main"
+o-nakala-user-info = "o_nakala_core.cli.user_info:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

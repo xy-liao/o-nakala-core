@@ -31,10 +31,10 @@ echo "Base URL: $NAKALA_BASE_URL"
 pip install o-nakala-core[cli]
 
 # Verify installation
-nakala-upload --help
-nakala-collection --help
-nakala-curator --help
-nakala-user-info --help
+o-nakala-upload --help
+o-nakala-collection --help
+o-nakala-curator --help
+o-nakala-user-info --help
 ```
 
 #### Option B: From Source (Development)
@@ -46,10 +46,10 @@ cd /Users/syl/Documents/GitHub/o-nakala-core
 pip install -e .[cli]
 
 # Verify installation
-nakala-upload --help
-nakala-collection --help
-nakala-curator --help
-nakala-user-info --help
+o-nakala-upload --help
+o-nakala-collection --help
+o-nakala-curator --help
+o-nakala-user-info --help
 ```
 
 ## Validation
@@ -59,7 +59,7 @@ nakala-user-info --help
 # Test API connectivity and authentication
 NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293" \
 NAKALA_BASE_URL="https://apitest.nakala.fr" \
-nakala-user-info
+o-nakala-user-info
 ```
 
 **Expected Output:**

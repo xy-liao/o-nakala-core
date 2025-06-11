@@ -14,9 +14,9 @@ import shutil
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from src.nakala_client.upload import NakalaUploadClient
-from src.nakala_client.collection import NakalaCollectionClient
-from src.nakala_client.common.config import NakalaConfig
+from src.o_nakala_core.upload import NakalaUploadClient
+from src.o_nakala_core.collection import NakalaCollectionClient
+from src.o_nakala_core.common.config import NakalaConfig
 
 
 class TestEndToEndWorkflow:

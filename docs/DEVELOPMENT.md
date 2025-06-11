@@ -41,16 +41,16 @@
 ### ✅ CLI Tools (Production Ready)
 ```bash
 # Upload datasets
-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
+o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
 
 # Create collections
-nakala-collection --api-key YOUR_KEY --title "My Collection" --data-ids "id1,id2"
+o-nakala-collection --api-key YOUR_KEY --title "My Collection" --data-ids "id1,id2"
 
 # Quality analysis and curation
-nakala-curator --api-key YOUR_KEY --quality-report --scope collections
+o-nakala-curator --api-key YOUR_KEY --quality-report --scope collections
 
 # User account management
-nakala-user-info --api-key YOUR_KEY --collections-only
+o-nakala-user-info --api-key YOUR_KEY --collections-only
 ```
 
 ### ✅ Quality & Validation
@@ -113,7 +113,7 @@ nakala-user-info --api-key YOUR_KEY --collections-only
 
 ```
 o-nakala-core/
-├── src/nakala_client/           # Core library
+├── src/o_nakala_core/           # Core library
 │   ├── upload.py               # Upload functionality (40% coverage)
 │   ├── collection.py           # Collection management (28% coverage)  
 │   ├── curator.py              # Quality analysis (7% coverage)
@@ -133,7 +133,7 @@ o-nakala-core/
 ### 1. Research Data Upload
 ```bash
 # Upload research dataset with metadata
-nakala-upload --api-key YOUR_KEY \
+o-nakala-upload --api-key YOUR_KEY \
   --dataset research_data.csv \
   --base-path /path/to/files \
   --mode csv
@@ -142,7 +142,7 @@ nakala-upload --api-key YOUR_KEY \
 ### 2. Collection Organization
 ```bash  
 # Create thematic collection
-nakala-collection --api-key YOUR_KEY \
+o-nakala-collection --api-key YOUR_KEY \
   --title "Digital Humanities Project 2025" \
   --description "Complete project materials" \
   --from-upload-output upload_results.csv
@@ -151,7 +151,7 @@ nakala-collection --api-key YOUR_KEY \
 ### 3. Quality Management
 ```bash
 # Generate quality report
-nakala-curator --api-key YOUR_KEY \
+o-nakala-curator --api-key YOUR_KEY \
   --quality-report \
   --scope collections \
   --output quality_report.json
@@ -159,8 +159,8 @@ nakala-curator --api-key YOUR_KEY \
 
 ### 4. Programmatic Access
 ```python
-from nakala_client.upload import NakalaUploadClient
-from nakala_client.common.config import NakalaConfig
+from o_nakala_core.upload import NakalaUploadClient
+from o_nakala_core.common.config import NakalaConfig
 
 config = NakalaConfig()
 config.api_key = "your-api-key"

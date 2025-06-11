@@ -74,8 +74,8 @@ nakala-upload --dataset data.csv --mode csv
 ### First Steps
 
 ```python
-from nakala_client.upload import NakalaUploadClient
-from nakala_client.common.config import NakalaConfig
+from o_nakala_core.upload import NakalaUploadClient
+from o_nakala_core.common.config import NakalaConfig
 
 # Configure client
 config = NakalaConfig()

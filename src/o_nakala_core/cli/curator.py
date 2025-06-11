@@ -8,7 +8,7 @@ This module provides the command-line interface for the curator functionality.
 def main():
     """Main entry point for nakala-curator CLI command."""
     # Import and execute the curator module main function
-    from nakala_client.curator import main as curator_main
+    from o_nakala_core.curator import main as curator_main
 
     curator_main()
 

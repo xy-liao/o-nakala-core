@@ -64,7 +64,7 @@ files/presentations/,pending,http://purl.org/coar/resource_type/c_18cf,fr:Matér
 ```bash
 cd /Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset
 
-nakala-upload \
+o-nakala-upload \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --dataset folder_data_items.csv \
   --mode folder \

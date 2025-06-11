@@ -49,7 +49,7 @@ echo "NAKALA_BASE_PATH=examples/sample_dataset" >> .env
 
 **Option 3: Configuration File**
 ```python
-from src.nakala_client.common.config import NakalaConfig
+from src.o_nakala_core.common.config import NakalaConfig
 
 config = NakalaConfig(
     api_key="33170cfe-f53c-550b-5fb6-4814ce981293",
@@ -81,8 +81,8 @@ cat > validate_setup.py << 'EOF'
 """Quick environment validation script."""
 
 import os
-from src.nakala_client.common.config import NakalaConfig
-from src.nakala_client.upload import NakalaUploadClient
+from src.o_nakala_core.common.config import NakalaConfig
+from src.o_nakala_core.upload import NakalaUploadClient
 
 def main():
     print("🔍 Validating O-Nakala Core Development Environment")
@@ -153,7 +153,7 @@ python validate_setup.py
 python -m pytest tests/unit/ -v
 
 # Run with coverage
-python -m pytest tests/unit/ --cov=src/nakala_client --cov-report=term-missing
+python -m pytest tests/unit/ --cov=src/o_nakala_core --cov-report=term-missing
 
 # Run specific test module
 python -m pytest tests/unit/test_upload_comprehensive.py -v
@@ -181,7 +181,7 @@ Validate the complete workflow:
 export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
 
 # Run upload validation
-python -m src.nakala_client.upload \
+python -m src.o_nakala_core.upload \
   --api-key "$NAKALA_API_KEY" \
   --api-url "https://apitest.nakala.fr" \
   --dataset "examples/sample_dataset/folder_data_items.csv" \
@@ -191,7 +191,7 @@ python -m src.nakala_client.upload \
   --validate-only
 
 # Run collection validation
-python -m src.nakala_client.collection \
+python -m src.o_nakala_core.collection \
   --api-key "$NAKALA_API_KEY" \
   --api-url "https://apitest.nakala.fr" \
   --from-folder-collections "examples/sample_dataset/folder_collections.csv" \
@@ -264,7 +264,7 @@ As of the last validation:
 4. **Check Code Quality**
    ```bash
    python -m flake8 src/
-   python -m pytest --cov=src/nakala_client
+   python -m pytest --cov=src/o_nakala_core
    ```
 
 ### Debugging API Issues
@@ -274,7 +274,7 @@ As of the last validation:
 export NAKALA_LOG_LEVEL="DEBUG"
 
 # Run with verbose output
-python -m src.nakala_client.upload \
+python -m src.o_nakala_core.upload \
   --api-key "$NAKALA_API_KEY" \
   --log-level "DEBUG" \
   --validate-only

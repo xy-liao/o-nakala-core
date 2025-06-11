@@ -8,14 +8,14 @@ import pytest
 from unittest.mock import Mock, patch, mock_open
 from pathlib import Path
 
-from nakala_client.common.utils import (
+from o_nakala_core.common.utils import (
     NakalaCommonUtils, 
     NakalaPathResolver, 
     prepare_metadata, 
     parse_multilingual_field
 )
-from nakala_client.common.config import NakalaConfig
-from nakala_client.common.exceptions import NakalaValidationError
+from o_nakala_core.common.config import NakalaConfig
+from o_nakala_core.common.exceptions import NakalaValidationError
 
 
 class TestNakalaCommonUtils:

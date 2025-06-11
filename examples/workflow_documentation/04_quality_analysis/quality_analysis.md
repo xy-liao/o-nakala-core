@@ -7,7 +7,7 @@ This phase demonstrates comprehensive metadata quality assessment using O-Nakala
 
 ### Comprehensive Quality Report Generation
 ```bash
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --quality-report
 ```
@@ -86,7 +86,7 @@ nakala-curator \
 
 ### Targeted Collection Validation
 ```bash
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --validate-metadata \
   --scope collections \
@@ -146,17 +146,17 @@ The quality report revealed broader patterns affecting the entire test repositor
 ### Available Quality Assessment Tools
 ```bash
 # Comprehensive quality report
-nakala-curator --quality-report --api-key YOUR_KEY
+o-nakala-curator --quality-report --api-key YOUR_KEY
 
 # Validate specific scope
-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
-nakala-curator --validate-metadata --scope collections --api-key YOUR_KEY
+o-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
+o-nakala-curator --validate-metadata --scope collections --api-key YOUR_KEY
 
 # Field reference for improvements
-nakala-curator --list-fields
+o-nakala-curator --list-fields
 
 # Detect duplicates
-nakala-curator --detect-duplicates --collections col1,col2 --api-key YOUR_KEY
+o-nakala-curator --detect-duplicates --collections col1,col2 --api-key YOUR_KEY
 ```
 
 ### Quality Monitoring Best Practices

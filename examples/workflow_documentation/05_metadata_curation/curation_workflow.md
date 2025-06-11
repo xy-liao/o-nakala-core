@@ -46,7 +46,7 @@ id,action,new_keywords,new_relation
 
 #### Dry Run Validation
 ```bash
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify data_modifications.csv \
   --scope datasets \
@@ -65,7 +65,7 @@ Batch modification simulation:
 
 #### Production Application
 ```bash
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify data_modifications.csv \
   --scope datasets
@@ -104,7 +104,7 @@ id,action,new_description,new_keywords
 
 #### Dry Run Validation
 ```bash
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify collection_modifications.csv \
   --scope collections \
@@ -123,7 +123,7 @@ Batch modification simulation:
 
 #### Production Application
 ```bash
-nakala-curator \
+o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --batch-modify collection_modifications.csv \
   --scope collections

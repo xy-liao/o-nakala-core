@@ -33,7 +33,7 @@ processed_metadata = process_field_value(value, field_config)
 updated_metas = generate_metadata_entries(processed_metadata)
 ```
 
-### **Code Location**: `src/nakala_client/curator.py:1627-1720`
+### **Code Location**: `src/o_nakala_core/curator.py:1627-1720`
 ```python
 def _apply_modification(self, item_id: str, modifications: Dict[str, Any]) -> Dict[str, Any]:
     # Process each modification field
@@ -617,8 +617,8 @@ id,action,new_title,new_description,new_keywords,new_creator,new_contributor,new
 
 - **[CSV Format Specification](./csv-format-specification.md)** - Complete field format rules
 - **[Examples](./examples/)** - Working curator transformation examples
-- **[Curator Code](../../src/nakala_client/curator.py)** - Complete transformation implementation
-- **[CSV Field Mappings](../../src/nakala_client/curator.py#L89-L369)** - 280+ field mappings
+- **[Curator Code](../../src/o_nakala_core/curator.py)** - Complete transformation implementation
+- **[CSV Field Mappings](../../src/o_nakala_core/curator.py#L89-L369)** - 280+ field mappings
 
 ---
 

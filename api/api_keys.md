@@ -27,7 +27,7 @@ export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
 export NAKALA_API_URL="https://apitest.nakala.fr"
 
 # Test complete workflow
-python -m src.nakala_client.upload \
+python -m src.o_nakala_core.upload \
   --api-key "$NAKALA_API_KEY" \
   --api-url "$NAKALA_API_URL" \
   --dataset "examples/sample_dataset/folder_data_items.csv" \

@@ -93,13 +93,13 @@ collection_payload = {
 ### **Basic Collection Creation**
 ```bash
 # 1. Create collections from uploaded data
-python -m src.nakala_client.cli.collection \
+python -m src.o_nakala_core.cli.collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections examples/collections.csv \
   --from-upload-output upload_report.csv
 
 # 2. Dry run to preview (recommended)
-python -m src.nakala_client.cli.collection \
+python -m src.o_nakala_core.cli.collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections examples/collections.csv \
   --from-upload-output upload_report.csv \

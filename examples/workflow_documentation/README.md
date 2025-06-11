@@ -125,7 +125,7 @@ cd examples/workflow_documentation/01_setup_and_environment
 ### **Step 3: Verify Results**
 ```bash
 # Generate quality report
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --quality-report \
   --collection-ids "your-collection-ids"

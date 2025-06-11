@@ -47,7 +47,7 @@ The system matches folder patterns to datasets using title-based lookups:
 
 ### Successful Collection Creation
 ```bash
-nakala-collection \
+o-nakala-collection \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --from-upload-output output.csv \
   --from-folder-collections folder_collections.csv

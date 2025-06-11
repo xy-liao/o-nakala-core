@@ -8,7 +8,7 @@ This module provides the command-line interface for the upload functionality.
 def main():
     """Main entry point for nakala-upload CLI command."""
     # Import and execute the upload module main function
-    from nakala_client.upload import main as upload_main
+    from o_nakala_core.upload import main as upload_main
 
     upload_main()
 

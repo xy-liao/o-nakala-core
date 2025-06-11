@@ -148,7 +148,7 @@ id,action,current_title,new_title,current_description,new_description,new_creato
 
 ### Single Item Update:
 ```bash
-nakala-curator update-item 10.34847/nkl.abc123 \
+o-nakala-curator update-item 10.34847/nkl.abc123 \
   --title "fr:Nouveau titre|en:New Title" \
   --description "fr:Nouvelle description|en:New description"
 ```
@@ -156,19 +156,19 @@ nakala-curator update-item 10.34847/nkl.abc123 \
 ### Batch Update from CSV:
 ```bash
 # General batch modifications
-nakala-curator --batch-modify modifications.csv \
+o-nakala-curator --batch-modify modifications.csv \
   --api-key YOUR_KEY \
   --dry-run
 
 # Add creators to collections
-nakala-curator --batch-modify collection_creators.csv \
+o-nakala-curator --batch-modify collection_creators.csv \
   --scope collections \
   --api-key YOUR_KEY
 ```
 
 ### Validation Only:
 ```bash
-nakala-curator validate-metadata data_items.csv \
+o-nakala-curator validate-metadata data_items.csv \
   --api-key YOUR_KEY \
   --output-report validation_report.json
 ```

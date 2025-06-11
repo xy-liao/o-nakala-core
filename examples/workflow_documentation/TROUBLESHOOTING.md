@@ -15,7 +15,7 @@ pip install o-nakala-core[cli]
 
 #### CLI Commands Not Available
 ```bash
-command not found: nakala-upload
+command not found: o-nakala-upload
 ```
 **Solution**: Install with CLI dependencies:
 ```bash
@@ -30,7 +30,7 @@ ERROR - Base path does not exist: /path/to/dataset
 ```
 **Solution**: Ensure `--base-path` matches your dataset directory:
 ```bash
-nakala-upload --base-path examples/sample_dataset --dataset examples/sample_dataset
+o-nakala-upload --base-path examples/sample_dataset --dataset examples/sample_dataset
 ```
 
 #### File Path Resolution
@@ -72,7 +72,7 @@ WARNING - Folder 'files/images/' matched no items
 2. Check you're using test environment key with test URL:
 ```bash
 export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
-nakala-upload --api-url https://apitest.nakala.fr
+o-nakala-upload --api-url https://apitest.nakala.fr
 ```
 
 #### Rate Limiting
@@ -86,25 +86,25 @@ nakala-upload --api-url https://apitest.nakala.fr
 ### Test Installation
 ```bash
 # Verify all CLI commands are available
-nakala-upload --help
-nakala-collection --help
-nakala-curator --help
-nakala-user-info --help
+o-nakala-upload --help
+o-nakala-collection --help
+o-nakala-curator --help
+o-nakala-user-info --help
 ```
 
 ### Test API Connection
 ```bash
 # Test with public test key
-nakala-user-info --api-key "33170cfe-f53c-550b-5fb6-4814ce981293"
+o-nakala-user-info --api-key "33170cfe-f53c-550b-5fb6-4814ce981293"
 ```
 
 ### Validate Workflow Files
 ```bash
 # Validate upload configuration
-nakala-upload --validate-only --folder-config your-config.csv
+o-nakala-upload --validate-only --folder-config your-config.csv
 
 # Validate collection configuration  
-nakala-collection --validate-only --from-folder-collections collections.csv
+o-nakala-collection --validate-only --from-folder-collections collections.csv
 ```
 
 ## Getting Help
@@ -117,5 +117,5 @@ nakala-collection --validate-only --from-folder-collections collections.csv
 ## Recent Fixes Applied
 
 - **2025-06-09**: Fixed missing `_load_upload_output` method in collection.py
-- **2025-06-09**: Updated package name from `nakala-client` to `o-nakala-core`
+- **2025-06-09**: Updated package name from `o-nakala-client` to `o-nakala-core`
 - **2025-06-09**: Verified all CLI commands work with new package structure

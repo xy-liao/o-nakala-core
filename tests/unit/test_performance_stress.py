@@ -19,10 +19,10 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import resource
 import gc
 
-from src.nakala_client.upload import NakalaUploadClient
-from src.nakala_client.collection import NakalaCollectionClient
-from src.nakala_client.common.config import NakalaConfig
-from src.nakala_client.common.exceptions import NakalaAPIError
+from src.o_nakala_core.upload import NakalaUploadClient
+from src.o_nakala_core.collection import NakalaCollectionClient
+from src.o_nakala_core.common.config import NakalaConfig
+from src.o_nakala_core.common.exceptions import NakalaAPIError
 
 
 class TestPerformanceMetrics:

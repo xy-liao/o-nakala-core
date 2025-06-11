@@ -64,19 +64,19 @@ jupyter lab NAKALA_Complete_Workflow.ipynb
 
 ```bash
 # Upload data
-nakala-upload --help
+o-nakala-upload --help
 
 # Manage collections  
-nakala-collection --help
+o-nakala-collection --help
 
 # Data curation
-nakala-curator --help
+o-nakala-curator --help
 
 # Show complete field reference
-nakala-curator --list-fields
+o-nakala-curator --list-fields
 
 # Account information
-nakala-user-info --help
+o-nakala-user-info --help
 ```
 
 ### Environment Setup
@@ -101,7 +101,7 @@ export NAKALA_BASE_URL="https://apitest.nakala.fr"
 ### Complete Workflow
 ```bash
 # 1. Upload datasets
-nakala-upload \
+o-nakala-upload \
   --api-url "https://apitest.nakala.fr" \
   --api-key "YOUR_KEY" \
   --mode folder \
@@ -109,13 +109,13 @@ nakala-upload \
   --base-path "../examples/sample_dataset"
 
 # 2. Create collections
-nakala-collection \
+o-nakala-collection \
   --api-url "https://apitest.nakala.fr" \
   --api-key "YOUR_KEY" \
   --from-upload-output "upload_results.csv"
 
 # 3. Analyze quality
-nakala-curator \
+o-nakala-curator \
   --api-url "https://apitest.nakala.fr" \
   --api-key "YOUR_KEY" \
   --quality-report \

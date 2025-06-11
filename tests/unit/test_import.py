@@ -1,10 +1,10 @@
 """
-Basic import tests for nakala_client modules
+Basic import tests for o_nakala_core modules
 """
 
 import os
 import pytest
-from nakala_client.common.config import NakalaConfig
+from o_nakala_core.common.config import NakalaConfig
 
 
 class TestBasicImports:
@@ -12,15 +12,15 @@ class TestBasicImports:
     
     def test_import_core_modules(self):
         """Test importing core modules."""
-        from nakala_client.upload import NakalaUploadClient
-        from nakala_client.collection import NakalaCollectionClient
-        from nakala_client.common.config import NakalaConfig
-        from nakala_client.common.exceptions import NakalaAPIError, NakalaValidationError
+        from o_nakala_core.upload import NakalaUploadClient
+        from o_nakala_core.collection import NakalaCollectionClient
+        from o_nakala_core.common.config import NakalaConfig
+        from o_nakala_core.common.exceptions import NakalaAPIError, NakalaValidationError
         
-        from nakala_client.cli.upload import main as upload_main
-        from nakala_client.cli.collection import main as collection_main
-        from nakala_client.cli.curator import main as curator_main
-        from nakala_client.cli.user_info import main as user_info_main
+        from o_nakala_core.cli.upload import main as upload_main
+        from o_nakala_core.cli.collection import main as collection_main
+        from o_nakala_core.cli.curator import main as curator_main
+        from o_nakala_core.cli.user_info import main as user_info_main
         
         assert callable(upload_main)
         assert callable(collection_main)
@@ -39,8 +39,8 @@ class TestBasicImports:
     
     def test_client_initialization(self):
         """Test client initialization with API key."""
-        from nakala_client.upload import NakalaUploadClient
-        from nakala_client.collection import NakalaCollectionClient
+        from o_nakala_core.upload import NakalaUploadClient
+        from o_nakala_core.collection import NakalaCollectionClient
         
         api_key = os.environ.get('NAKALA_API_KEY', 'test-key')
         

@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-This document provides **field-by-field transformation rules** for the Upload endpoint, showing exactly how CSV data is converted to NAKALA API JSON format. All transformations are based on the actual code in `src/nakala_client/upload.py` and `src/nakala_client/common/utils.py`.
+This document provides **field-by-field transformation rules** for the Upload endpoint, showing exactly how CSV data is converted to NAKALA API JSON format. All transformations are based on the actual code in `src/o_nakala_core/upload.py` and `src/o_nakala_core/common/utils.py`.
 
 ## 🔧 Transformation Pipeline
 

@@ -13,7 +13,7 @@
 ### Step 2: Upload Dataset
 ```bash
 # Important: Use the correct base path for your dataset
-nakala-upload --mode folder \
+o-nakala-upload --mode folder \
     --dataset "sample_dataset" \
     --folder-config "sample_dataset/folder_data_items.csv" \
     --api-key "your-key"
@@ -23,7 +23,7 @@ Note: The `--dataset` parameter should point to the base directory containing yo
 
 ### Step 3: Create Collections
 ```bash
-nakala-collection \
+o-nakala-collection \
     --api-key "your-key" \
     --from-folder-collections "sample_dataset/folder_collections.csv" \
     --from-upload-output "output.csv" \
@@ -33,13 +33,13 @@ nakala-collection \
 ### Step 4: Data Curation and Quality Analysis
 ```bash
 # Generate comprehensive quality report
-nakala-curator \
+o-nakala-curator \
     --api-key "your-key" \
     --quality-report \
     --output "quality_report.json"
 
 # Validate metadata for all collections
-nakala-curator \
+o-nakala-curator \
     --api-key "your-key" \
     --validate-metadata \
     --scope collections
@@ -56,7 +56,7 @@ nakala-curator \
 ### 1. Folder-Based Collection Creation
 ```bash
 # Create collections based on folder structure
-nakala-collection \
+o-nakala-collection \
     --api-key "your-key" \
     --from-folder-collections "folder_collections.csv" \
     --from-upload-output "output.csv" \
@@ -72,7 +72,7 @@ The script will provide detailed collection mapping diagnostics showing:
 ### 2. Single Collection Creation
 ```bash
 # Create a single collection
-nakala-collection \
+o-nakala-collection \
     --api-key "your-key" \
     --title "fr:Collection Title|en:Collection Title" \
     --description "fr:Description|en:Description" \
@@ -83,14 +83,14 @@ nakala-collection \
 ### 3. Multilingual Dataset Upload and Collection
 ```bash
 # Upload dataset with multilingual metadata
-nakala-upload \
+o-nakala-upload \
     --mode folder \
     --dataset "multilingual_dataset/" \
     --folder-config "folder_data_items.csv" \
     --api-key "your-key"
 
 # Create collections with multilingual metadata
-nakala-collection \
+o-nakala-collection \
     --api-key "your-key" \
     --from-folder-collections "folder_collections.csv" \
     --from-upload-output "output.csv"

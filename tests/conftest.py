@@ -5,7 +5,7 @@ Pytest configuration and fixtures for Nakala Client tests.
 import pytest
 import os
 from unittest.mock import Mock, patch
-from nakala_client.common.config import NakalaConfig
+from o_nakala_core.common.config import NakalaConfig
 
 
 @pytest.fixture

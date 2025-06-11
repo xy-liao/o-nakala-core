@@ -78,7 +78,7 @@ metadata_entry = {
 ### **Basic Batch Modification**
 ```bash
 # 1. Export template from existing resources
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --export-template \
   --ids "10.34847/nkl.abc123,10.34847/nkl.def456" \
@@ -88,13 +88,13 @@ python -m src.nakala_client.cli.curator \
 # Modify new_title, new_description, etc. columns
 
 # 3. Dry run to preview changes
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata curator_template.csv \
   --dry-run
 
 # 4. Apply modifications
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata curator_template.csv
 ```
@@ -102,19 +102,19 @@ python -m src.nakala_client.cli.curator \
 ### **Template Export Options**
 ```bash
 # Export specific resources
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --export-template \
   --ids "id1,id2,id3" \
   --output template.csv
 
 # Export from collection
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --export-template \
   --collection-id "10.34847/nkl.collection123" \
   --output collection_template.csv
 
 # Export with quality analysis
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --export-template \
   --ids "id1,id2" \
   --analyze-quality \
@@ -124,7 +124,7 @@ python -m src.nakala_client.cli.curator \
 ## 🔧 Processing Features
 
 ### **1. Intelligent CSV Detection**
-**Code Reference**: `src/nakala_client/curator.py:1434`
+**Code Reference**: `src/o_nakala_core/curator.py:1434`
 ```python
 def _detect_csv_mode(self, fieldnames):
     if 'action' in fieldnames and any(f.startswith('new_') for f in fieldnames):

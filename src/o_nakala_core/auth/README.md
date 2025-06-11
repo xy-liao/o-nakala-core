@@ -35,7 +35,7 @@ Complete authentication system supporting SAML 2.0, OAuth 2.0, and institutional
 ### Basic Usage
 
 ```python
-from nakala_client.auth import InstitutionalAuthManager, AuthMiddleware
+from o_nakala_core.auth import InstitutionalAuthManager, AuthMiddleware
 
 # Initialize authentication
 auth_manager = InstitutionalAuthManager()
@@ -51,7 +51,7 @@ if auth_result.success:
 ### CLI Authentication
 
 ```python
-from nakala_client.auth import require_researcher_role
+from o_nakala_core.auth import require_researcher_role
 
 @require_researcher_role
 def upload_data(api_key: str, dataset_path: str, user_profile=None):
@@ -62,7 +62,7 @@ def upload_data(api_key: str, dataset_path: str, user_profile=None):
 ### Web Authentication
 
 ```python
-from nakala_client.auth import AuthMiddleware
+from o_nakala_core.auth import AuthMiddleware
 
 auth = AuthMiddleware()
 
@@ -125,7 +125,7 @@ auth_url = auth_manager.get_auth_url('huma_num', redirect_uri)
 ### Institutional Policy Configuration
 
 ```python
-from nakala_client.auth import InstitutionalPolicy, InstitutionalRole
+from o_nakala_core.auth import InstitutionalPolicy, InstitutionalRole
 
 # Create custom institutional policy
 policy = InstitutionalPolicy(
@@ -190,7 +190,7 @@ oauth_config = {
 """CLI tool with institutional authentication."""
 
 import click
-from nakala_client.auth import AuthMiddleware, require_upload_permissions
+from o_nakala_core.auth import AuthMiddleware, require_upload_permissions
 
 @click.command()
 @click.option('--api-key', help='API key or use SSO')
@@ -206,7 +206,7 @@ def upload_command(api_key, institution, user_profile=None):
 
 ```python
 from flask import Flask, request, session
-from nakala_client.auth import AuthMiddleware
+from o_nakala_core.auth import AuthMiddleware
 
 app = Flask(__name__)
 auth = AuthMiddleware()
@@ -233,7 +233,7 @@ def create_collection_api(user_profile=None):
 ### User Activity Tracking
 
 ```python
-from nakala_client.auth import UserManager
+from o_nakala_core.auth import UserManager
 
 user_manager = UserManager()
 
@@ -253,7 +253,7 @@ print(f"Quality score: {stats.quality_score}")
 ### Session Analytics
 
 ```python
-from nakala_client.auth import SessionManager
+from o_nakala_core.auth import SessionManager
 
 session_manager = SessionManager()
 
@@ -268,7 +268,7 @@ print(f"Sessions by institution: {stats['sessions_by_institution']}")
 ### Custom Authentication Providers
 
 ```python
-from nakala_client.auth import SSOProvider, AuthenticationResult
+from o_nakala_core.auth import SSOProvider, AuthenticationResult
 
 class CustomSSOProvider(SSOProvider):
     """Custom institutional authentication provider."""
@@ -289,7 +289,7 @@ class CustomSSOProvider(SSOProvider):
 ### Role-based Decorators
 
 ```python
-from nakala_client.auth import require_admin_role, require_research_auth
+from o_nakala_core.auth import require_admin_role, require_research_auth
 
 @require_admin_role
 def delete_user(user_id: str, user_profile=None):
@@ -328,7 +328,7 @@ def research_specific_function(data: dict, user_profile=None):
 
 ```python
 import logging
-logging.getLogger('nakala_client.auth').setLevel(logging.DEBUG)
+logging.getLogger('o_nakala_core.auth').setLevel(logging.DEBUG)
 ```
 
 ## 📚 Dependencies

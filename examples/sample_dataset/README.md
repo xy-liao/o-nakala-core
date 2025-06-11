@@ -94,14 +94,14 @@ export NAKALA_API_KEY="your_test_api_key"
 export PYTHONPATH=/path/to/o-nakala-core
 
 # Upload dataset
-python -m src.nakala_client.cli.upload \
+python -m src.o_nakala_core.cli.upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset folder_data_items.csv \
   --mode folder \
   --output upload_results.csv
 
 # Create collections
-python -m src.nakala_client.cli.collection \
+python -m src.o_nakala_core.cli.collection \
   --api-key "$NAKALA_API_KEY" \
   --from-upload-output upload_results.csv \
   --from-folder-collections folder_collections.csv
@@ -110,7 +110,7 @@ python -m src.nakala_client.cli.collection \
 ### 2. Quality Analysis
 ```bash
 # Run quality report
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --quality-report \
   --verbose
@@ -119,14 +119,14 @@ python -m src.nakala_client.cli.curator \
 ### 3. Batch Modifications
 ```bash
 # Test modifications (dry run)
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --batch-modify workshop_basic_modifications.csv \
   --dry-run \
   --verbose
 
 # Apply modifications
-python -m src.nakala_client.cli.curator \
+python -m src.o_nakala_core.cli.curator \
   --api-key "$NAKALA_API_KEY" \
   --batch-modify workshop_basic_modifications.csv \
   --verbose

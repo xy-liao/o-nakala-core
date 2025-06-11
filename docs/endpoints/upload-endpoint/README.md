@@ -16,7 +16,7 @@ The Upload endpoint (`/datas` POST) is the **primary entry point** for ingesting
 ### Basic Folder Upload
 ```bash
 # Upload sample dataset using folder configuration
-python -m src.nakala_client.cli.upload \
+python -m src.o_nakala_core.cli.upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset examples/sample_dataset/folder_data_items.csv \
   --mode folder \
@@ -26,7 +26,7 @@ python -m src.nakala_client.cli.upload \
 ### Basic CSV Upload
 ```bash
 # Upload individual files with metadata
-python -m src.nakala_client.cli.upload \
+python -m src.o_nakala_core.cli.upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset my_datasets.csv \
   --mode csv \
