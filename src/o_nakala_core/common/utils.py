@@ -146,7 +146,7 @@ class NakalaCommonUtils:
         metas = []
 
         # Collect creator/contributor arrays separately to handle them as single metadata entries
-        creator_arrays = {}
+        creator_arrays: Dict[str, List[str]] = {}
 
         for field_name, property_uri in field_mapping.items():
             if field_name not in config or not config[field_name]:
@@ -322,7 +322,7 @@ class NakalaCommonUtils:
         if valid_group_ids is None:
             valid_group_ids = ["de0f2a9b-a198-48a4-8074-db5120187a16"]
 
-        rights = []
+        rights: List[Dict[str, str]] = []
         if not rights_string:
             return rights
 

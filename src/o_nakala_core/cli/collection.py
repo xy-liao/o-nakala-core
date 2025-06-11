@@ -5,7 +5,7 @@ This module provides the command-line interface for the collection functionality
 """
 
 
-def main():
+def main() -> None:
     """Main entry point for o-nakala-collection CLI command."""
     # Import and execute the collection module main function
     from o_nakala_core.collection import main as collection_main
