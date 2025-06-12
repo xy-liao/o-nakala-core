@@ -105,6 +105,8 @@ o-nakala-user-info --help
 ### Example Workflows
 Complete hands-on examples with real datasets:
 
+> **📝 Note**: The API key `33170cfe-f53c-550b-5fb6-4814ce981293` shown below is a **public test key** provided by the NAKALA team at Huma-Num for testing and documentation purposes. It only works on the test environment (https://apitest.nakala.fr) and is safe to use. For production, create your own API key at https://nakala.fr.
+
 ```bash
 cd examples/sample_dataset
 # Review the CSV configurations
