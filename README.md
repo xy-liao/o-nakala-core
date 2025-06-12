@@ -111,9 +111,20 @@ cd examples/sample_dataset
 cat folder_data_items.csv
 cat folder_collections.csv
 
-# Run the complete workflow
-o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --mode folder
-o-nakala-collection --api-key YOUR_KEY --from-folder-collections folder_collections.csv --from-upload-output output.csv
+# Run the complete workflow (v2.2.0 validated)
+o-nakala-upload --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+  --dataset folder_data_items.csv --mode folder \
+  --folder-config folder_data_items.csv --base-path . \
+  --output upload_results.csv
+
+o-nakala-collection --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+  --from-upload-output upload_results.csv \
+  --from-folder-collections folder_collections.csv \
+  --collection-report collections_output.csv
+
+# Quality analysis
+o-nakala-curator --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+  --quality-report --scope collections
 ```
 
 The examples cover:

@@ -699,7 +699,18 @@ def create_collection_client(
 
 
 def main():
-    """Main CLI entry point."""
+    """
+    Main CLI entry point for o-nakala-collection (v2.2.0).
+
+    Examples:
+        # Create collections from upload results (validated v2.2.0):
+        o-nakala-collection --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
+            --from-upload-output upload_results.csv \\
+            --from-folder-collections folder_collections.csv \\
+            --collection-report collections_output.csv
+
+        # Results: Creates 3 collections with identifiers like 10.34847/nkl.b6f4ygm2
+    """
     parser = argparse.ArgumentParser(description="Manage Nakala collections")
     parser.add_argument(
         "--api-url", default="https://apitest.nakala.fr", help="Nakala API URL"

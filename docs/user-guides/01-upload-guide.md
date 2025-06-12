@@ -119,11 +119,19 @@ The script generates two output files:
    - Error messages
    - API responses
 
-## Example Success Output:
+## Example Success Output (v2.2.0 Validated):
 ```
-Processing entry 1/3: Image Collection
-Uploading file: image1.jpg
-Successfully created data: 10.34847/nkl.f1c8y3w0
+Processing entry 1/5: Images
+Uploading file: site_photograph_1.jpg
+Successfully uploaded: site_photograph_1.jpg
+Successfully created dataset: 10.34847/nkl.653c7n3i
+
+Processing entry 2/5: Code Files
+Uploading file: preprocess_data.py
+Successfully uploaded: preprocess_data.py
+Successfully created dataset: 10.34847/nkl.d189r56n
+
+# Final results: 5 datasets created, 14 files uploaded
 ```
 
 ## Error Handling:

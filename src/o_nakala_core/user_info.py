@@ -276,7 +276,16 @@ class NakalaUserInfoClient:
 
 
 def main():
-    """Main entry point for the user info script."""
+    """
+    Main entry point for o-nakala-user-info (v2.2.0).
+
+    Examples:
+        # Get user collections info (validated v2.2.0):
+        o-nakala-user-info --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
+            --collections-only
+
+        # Results: Shows 207 collections in test environment
+    """
     parser = argparse.ArgumentParser(
         description="Retrieve Nakala user information and export profile",
         formatter_class=argparse.RawDescriptionHelpFormatter,

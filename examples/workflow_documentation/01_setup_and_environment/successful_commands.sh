@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Complete O-Nakala Core Workflow - Successful Commands
-# Date: 2025-06-08
+# Complete O-Nakala Core Workflow - Successful Commands v2.2.0
+# Date: 2025-06-12
+# Package: O-Nakala Core v2.2.0 (Fresh Build)
 # API: NAKALA Test Environment
-# Status: All commands validated and successful
+# Status: All commands validated and successful with fresh v2.2.0 build
 
 # =============================================================================
 # PHASE 1: ENVIRONMENT SETUP AND VALIDATION
@@ -15,7 +16,9 @@ export NAKALA_BASE_URL="https://apitest.nakala.fr"
 echo "Environment variables set successfully"
 
 echo "Installing O-Nakala Core package..."
-pip install o-nakala-core[cli]
+pip install o-nakala-core==2.2.0
+# OR for development with all extras:
+# pip install -e ".[dev,cli,ml]"
 echo "Package installation completed"
 
 echo "Validating API access..."
@@ -51,7 +54,8 @@ echo "Creating collections from uploaded data..."
 o-nakala-collection \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --from-upload-output upload_results.csv \
-  --from-folder-collections folder_collections.csv
+  --from-folder-collections folder_collections.csv \
+  --collection-report collections_output.csv
 
 echo "Collection creation completed successfully"
 echo "Generated collections_output.csv with collection identifiers"
@@ -137,16 +141,16 @@ echo "============================================================"
 # GENERATED IDENTIFIERS FOR REFERENCE
 # =============================================================================
 
-echo "Generated Dataset Identifiers:"
-echo "  Images: 10.34847/nkl.bf0fxt5e"
-echo "  Code: 10.34847/nkl.181eqe75"
-echo "  Presentations: 10.34847/nkl.9edeiw5z"
-echo "  Documents: 10.34847/nkl.2b617444"
-echo "  Data: 10.34847/nkl.5f40fo9t"
+echo "Generated Dataset Identifiers (v2.2.0 Fresh Test):"
+echo "  Images: 10.34847/nkl.653c7n3i"
+echo "  Code: 10.34847/nkl.d189r56n"
+echo "  Presentations: 10.34847/nkl.a181l7lg"
+echo "  Documents: 10.34847/nkl.14cbu3te"
+echo "  Data: 10.34847/nkl.0cdc209a"
 echo ""
-echo "Generated Collection Identifiers:"
-echo "  Code and Data: 10.34847/nkl.adfc67q4"
-echo "  Documents: 10.34847/nkl.d8328982"
-echo "  Multimedia: 10.34847/nkl.1c39i9oq"
+echo "Generated Collection Identifiers (v2.2.0 Fresh Test):"
+echo "  Code and Data: 10.34847/nkl.b6f4ygm2"
+echo "  Documents: 10.34847/nkl.d4d16w51"
+echo "  Multimedia: 10.34847/nkl.c70e6vv6"
 echo ""
 echo "All identifiers saved to respective output CSV files"

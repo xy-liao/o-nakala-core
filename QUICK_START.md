@@ -42,24 +42,24 @@ print('✅ O-Nakala Core is ready!')
 "
 ```
 
-### **Step 4: Test Complete Workflow** (2 minutes)
+### **Step 4: Test Complete Workflow v2.2.0** (2 minutes)
 
 ```bash
 # Navigate to sample dataset directory
 cd examples/sample_dataset
 
-# Test upload validation with folder mode (requires --folder-config)
+# Test upload validation with folder mode (v2.2.0 validated)
 o-nakala-upload \
-  --api-key "$NAKALA_API_KEY" \
+  --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --dataset folder_data_items.csv \
   --mode folder \
   --folder-config folder_data_items.csv \
   --base-path . \
   --validate-only
 
-# Test collection validation  
+# Test collection validation (v2.2.0 validated)
 o-nakala-collection \
-  --api-key "$NAKALA_API_KEY" \
+  --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --from-folder-collections folder_collections.csv \
   --validate-only
 ```

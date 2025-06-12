@@ -15,7 +15,10 @@ This workflow demonstrates practical application of:
 
 ## ✅ **Real-World Validation Status**
 
-### **CSV Format Validation** (Updated 2025-06-09)
+### **v2.2.0 Fresh Build Validation** (Updated 2025-06-12)
+**Complete rebuild and testing completed successfully!**
+
+### **CSV Format Validation** (Updated 2025-06-12)
 | File | Endpoint | Validation Status | Issues |
 |------|----------|------------------|--------|
 | `folder_data_items.csv` | Upload | ✅ **VALID** | None |
@@ -59,8 +62,25 @@ This workflow demonstrates practical application of:
 
 **Collections:**
 - Code and Data: `10.34847/nkl.adfc67q4` ✅ Active
-- Documents: `10.34847/nkl.d8328982` ✅ Active
-- Multimedia: `10.34847/nkl.1c39i9oq` ✅ Active
+
+### **v2.2.0 Fresh Build Test Results** (2025-06-12)
+
+**New Dataset Identifiers:**
+- Images: `10.34847/nkl.653c7n3i` ✅ Active
+- Code: `10.34847/nkl.d189r56n` ✅ Active
+- Presentations: `10.34847/nkl.a181l7lg` ✅ Active
+- Documents: `10.34847/nkl.14cbu3te` ✅ Active
+- Data: `10.34847/nkl.0cdc209a` ✅ Active
+
+**New Collection Identifiers:**
+- Code and Data: `10.34847/nkl.b6f4ygm2` ✅ Active
+- Documents: `10.34847/nkl.d4d16w51` ✅ Active
+- Multimedia: `10.34847/nkl.c70e6vv6` ✅ Active
+
+**Quality Analysis Results:**
+- Total collections analyzed: 207
+- Total datasets found: 631
+- Quality report generated successfully
 
 ## 🏗️ **File Structure**
 

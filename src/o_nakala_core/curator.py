@@ -2719,7 +2719,16 @@ def print_field_reference():
 
 
 def main():
-    """Main entry point for the curator script."""
+    """
+    Main entry point for o-nakala-curator (v2.2.0).
+
+    Examples:
+        # Generate quality report (validated v2.2.0):
+        o-nakala-curator --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
+            --quality-report --scope collections
+
+        # Results: Analyzes 207 collections with detailed validation reports
+    """
     parser = argparse.ArgumentParser(
         description="Nakala Curator - Data curation and quality management tools",
         formatter_class=argparse.RawDescriptionHelpFormatter,
