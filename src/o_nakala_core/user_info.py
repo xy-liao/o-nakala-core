@@ -9,7 +9,7 @@ import logging
 import json
 import argparse
 import requests
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from datetime import datetime
 
 # Import common utilities
@@ -248,7 +248,7 @@ class NakalaUserInfoClient:
         print("NAKALA USER PROFILE SUMMARY")
         print("=" * 60)
 
-        print(f"\nUser Information:")
+        print("\nUser Information:")
         print(
             f"  Name: {user_info.get('firstname', '')} {user_info.get('lastname', '')}"
         )
@@ -257,18 +257,18 @@ class NakalaUserInfoClient:
         print(f"  User ID: {user_info.get('id', '')}")
         print(f"  Status: {user_info.get('status', '')}")
 
-        print(f"\nResource Summary:")
+        print("\nResource Summary:")
         print(f"  Collections: {summary['total_collections']}")
         print(f"  Datasets: {summary['total_datasets']}")
         print(f"  Groups: {summary['total_groups']}")
 
         if summary["collections_by_status"]:
-            print(f"\nCollections by Status:")
+            print("\nCollections by Status:")
             for status, count in summary["collections_by_status"].items():
                 print(f"  {status}: {count}")
 
         if summary["datasets_by_status"]:
-            print(f"\nDatasets by Status:")
+            print("\nDatasets by Status:")
             for status, count in summary["datasets_by_status"].items():
                 print(f"  {status}: {count}")
 
@@ -284,13 +284,13 @@ def main():
 Examples:
   # Get user info with summary
   python o-nakala-user-info.py
-  
+
   # Export complete profile to JSON
   python o-nakala-user-info.py --output user_profile.json
-  
+
   # Get only collections info
   python o-nakala-user-info.py --collections-only
-  
+
   # Specify different API URL
   python o-nakala-user-info.py --api-url https://api.nakala.fr
         """,

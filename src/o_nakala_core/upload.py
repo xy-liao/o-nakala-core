@@ -211,7 +211,7 @@ class NakalaUploadClient:
             return result.get("identifier", "")
         else:
             raise NakalaAPIError(
-                f"Dataset creation failed",
+                "Dataset creation failed",
                 status_code=response.status_code,
                 response_text=response.text,
             )
@@ -819,7 +819,8 @@ def main():
 
     Examples:
         # Folder mode (requires --folder-config):
-        o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --base-path . --mode folder --folder-config folder_data_items.csv
+        o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv \\
+            --base-path . --mode folder --folder-config folder_data_items.csv
 
         # CSV mode:
         o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
@@ -829,8 +830,9 @@ def main():
         epilog="""
 Examples:
   # Folder mode - organize files by directory structure:
-  o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv --base-path . --mode folder --folder-config folder_data_items.csv
-  
+  o-nakala-upload --api-key YOUR_KEY --dataset folder_data_items.csv \\
+      --base-path . --mode folder --folder-config folder_data_items.csv
+
   # CSV mode - upload individual datasets:
   o-nakala-upload --api-key YOUR_KEY --dataset data.csv --mode csv
         """,

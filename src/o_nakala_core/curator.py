@@ -581,7 +581,7 @@ class NakalaDuplicateDetector:
         duplicates = []
 
         for i, item1 in enumerate(items):
-            for item2 in items[i + 1 :]:
+            for item2 in items[i + 1:]:
                 similarity = self.calculate_similarity(item1, item2)
                 if similarity >= self.threshold:
                     duplicates.append((item1, item2, similarity))
@@ -750,7 +750,8 @@ class NakalaCuratorClient:
             )
 
             logger.info(
-                f"Generated template with {len(template.fields)} fields ({len(template.get_required_fields())} required)"
+                f"Generated template with {len(template.fields)} fields "
+                f"({len(template.get_required_fields())} required)"
             )
             return template
 
@@ -966,7 +967,8 @@ class NakalaCuratorClient:
                     if include_analysis:
                         writer.writerow(
                             [
-                                f"# Autonomous generation analysis for {Path(result.file_path).name}"
+                                f"# Autonomous generation analysis for "
+                                f"{Path(result.file_path).name}"
                             ]
                         )
                         writer.writerow(
@@ -974,7 +976,8 @@ class NakalaCuratorClient:
                         )
                         writer.writerow(
                             [
-                                f"# Detection confidence: {result.content_analysis.confidence_score:.1%}"
+                                f"# Detection confidence: "
+                                f"{result.content_analysis.confidence_score:.1%}"
                             ]
                         )
                         writer.writerow(
@@ -1065,9 +1068,11 @@ class NakalaCuratorClient:
         # Collaborative Insights
         if result.collaborative_insights:
             doc.append("\n## Collaborative Intelligence")
-            for insight in result.collaborative_insights[:3]:  # Show top 3 insights
+            # Show top 3 insights
+            for insight in result.collaborative_insights[:3]:
                 doc.append(
-                    f"- **{insight.get('insight_type', 'insight').title()}:** {insight.get('recommendation', 'N/A')}"
+                    f"- **{insight.get('insight_type', 'insight').title()}:** "
+                    f"{insight.get('recommendation', 'N/A')}"
                 )
 
         # Recommendations
@@ -1110,8 +1115,9 @@ class NakalaCuratorClient:
             )
 
             logger.info(
-                f"Predictive analysis completed: health score {result.overall_health_score:.1%}, "
-                f"{len(result.key_insights)} insights, {len(result.strategic_recommendations)} recommendations"
+                f"Predictive analysis completed: health score "
+                f"{result.overall_health_score:.1%}, {len(result.key_insights)} insights, "
+                f"{len(result.strategic_recommendations)} recommendations"
             )
 
             # Export to file if requested
@@ -1213,7 +1219,8 @@ class NakalaCuratorClient:
 
                 if pred.capacity_recommendations:
                     doc.append(
-                        f"- **Capacity Recommendations:** {'; '.join(pred.capacity_recommendations[:2])}"
+                        f"- **Capacity Recommendations:** "
+                        f"{'; '.join(pred.capacity_recommendations[:2])}"
                     )
 
         return "\n".join(doc)
@@ -1259,7 +1266,8 @@ class NakalaCuratorClient:
     ) -> Optional[
         Tuple[MetadataTemplate, PrePopulationResult, Optional[RelationshipAnalysis]]
     ]:
-        """Generate an intelligent template with pre-populated values and relationship suggestions."""
+        """Generate an intelligent template with pre-populated values and
+        relationship suggestions."""
         if not self.template_generator or not self.prepopulation_assistant:
             logger.warning(
                 "Intelligent template generation unavailable without vocabulary service"
@@ -1325,9 +1333,16 @@ class NakalaCuratorClient:
                 except Exception as e:
                     logger.warning(f"Relationship discovery failed: {e}")
 
+            rel_suffix = ""
+            if relationship_analysis:
+                rel_suffix = (
+                    f" and {len(relationship_analysis.suggestions)} "
+                    f"relationship suggestions"
+                )
+
             logger.info(
-                f"Generated comprehensive intelligent template with {len(prepop_result.populated_fields)} pre-populated fields"
-                f"{' and ' + str(len(relationship_analysis.suggestions)) + ' relationship suggestions' if relationship_analysis else ''}"
+                f"Generated comprehensive intelligent template with "
+                f"{len(prepop_result.populated_fields)} pre-populated fields{rel_suffix}"
             )
 
             return template, prepop_result, relationship_analysis
@@ -1442,7 +1457,8 @@ class NakalaCuratorClient:
                 f"- **Relationship suggestions:** {len(relationship_analysis.suggestions)}"
             )
             doc.append(
-                f"- **Relationship processing time:** {relationship_analysis.processing_time:.3f} seconds"
+                f"- **Relationship processing time:** "
+                f"{relationship_analysis.processing_time:.3f} seconds"
             )
 
         # Average confidence score
@@ -1523,7 +1539,8 @@ class NakalaCuratorClient:
         doc.append("- ✅ **Template Generation:** Context-aware metadata templates")
         doc.append("- ✅ **Pre-population:** User context and file analysis")
         doc.append(
-            f"- {'✅' if relationship_analysis else '⏸️'} **Relationship Discovery:** {'Connected resource analysis' if relationship_analysis else 'Not applied'}"
+            f"- {'✅' if relationship_analysis else '⏸️'} **Relationship Discovery:** "
+            f"{'Connected resource analysis' if relationship_analysis else 'Not applied'}"
         )
 
         return "\n".join(doc)
@@ -1717,7 +1734,8 @@ class NakalaCuratorClient:
     ) -> BatchModificationResult:
         """Apply metadata modifications in batches."""
         logger.info(
-            f"{'DRY RUN: ' if dry_run else ''}Processing {len(modifications)} metadata modifications..."
+            f"{'DRY RUN: ' if dry_run else ''}Processing "
+            f"{len(modifications)} metadata modifications..."
         )
 
         result = BatchModificationResult()
@@ -1728,7 +1746,8 @@ class NakalaCuratorClient:
             batch = modifications[batch_start:batch_end]
 
             logger.info(
-                f"Processing batch {batch_start//self.config.batch_size + 1}: items {batch_start+1}-{batch_end}"
+                f"Processing batch {batch_start//self.config.batch_size + 1}: "
+                f"items {batch_start+1}-{batch_end}"
             )
 
             self._process_modification_batch(batch, result, dry_run)
@@ -1890,7 +1909,8 @@ class NakalaCuratorClient:
                             }
                         )
                 elif field_config.get("format") == "semicolon_split":
-                    # Handle semicolon-separated fields like creator - each as separate metadata entry
+                    # Handle semicolon-separated fields like creator - each as separate
+                    # metadata entry
                     if isinstance(new_value, list):
                         creators = new_value
                     else:
@@ -2345,7 +2365,8 @@ class NakalaCuratorClient:
             # Handle access denied for private collections
             if response.status_code == 403:
                 logger.warning(
-                    f"Access denied to collection {collection_id} - may be private or require special permissions"
+                    f"Access denied to collection {collection_id} - may be private or "
+                    f"require special permissions"
                 )
                 return []
 
@@ -2663,7 +2684,8 @@ def print_field_reference():
     print("-" * 40)
     print("id,action,current_title,new_title,current_description,new_description")
     print(
-        '10.34847/nkl.abc123,update,"Old Title","fr:New|en:Title","Old desc","fr:New|en:Description"'
+        '10.34847/nkl.abc123,update,"Old Title","fr:New|en:Title","Old desc",'
+        '"fr:New|en:Description"'
     )
 
     print("\n🌐 MULTILINGUAL FORMAT")
@@ -2705,13 +2727,13 @@ def main():
 Examples:
   # Generate quality report
   python o-nakala-curator.py --quality-report
-  
+
   # Validate metadata for all collections
   python o-nakala-curator.py --validate-metadata --scope collections
-  
+
   # Detect duplicates
   python o-nakala-curator.py --detect-duplicates --collections col1,col2
-  
+
   # Apply batch modifications from CSV
   python o-nakala-curator.py --batch-modify modifications.csv --dry-run
         """,
