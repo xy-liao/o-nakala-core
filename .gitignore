@@ -134,7 +134,7 @@ web_server.log
 start_web_interface.py
 start_web_server.py
 start_dev_environment.py
-src/nakala_client/web_api.py
+src/o_nakala_core/web_api.py
 .dev-config.md
 
 # Generated cleanup script (user convenience)
