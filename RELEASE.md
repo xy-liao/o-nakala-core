@@ -7,7 +7,7 @@
 
 ## 🚀 Welcome to O-Nakala Core v2.2.0!
 
-We're excited to announce the **validated production release** of O-Nakala Core v2.2.0, a comprehensive Python library and CLI toolkit designed specifically for digital humanities researchers working with the NAKALA research data repository.
+We're excited to announce the **validated production release** of O-Nakala Core v2.2.0, an **independent** comprehensive Python library and CLI toolkit designed specifically for digital humanities researchers working with the NAKALA research data repository (developed by Huma-Num).
 
 ### 🔬 **v2.2.0 Validation Results**
 This release has been **extensively tested and validated** with real-world data:
@@ -20,13 +20,13 @@ This release has been **extensively tested and validated** with real-world data:
 
 ### 🎯 What is O-Nakala Core?
 
-O-Nakala Core bridges the gap between researchers and the NAKALA platform, providing intuitive tools for:
+O-Nakala Core is an **independent, community-driven library** that bridges the gap between researchers and the NAKALA platform (by Huma-Num), providing intuitive tools for:
 - **Batch data uploads** with rich metadata support
 - **Collection management** for thematic organization
 - **Quality analysis and curation** of research datasets
 - **Automated workflows** for reproducible research data management
 
-Built for researchers in digital humanities, cultural heritage, and academic data management.
+Built **independently** for researchers in digital humanities, cultural heritage, and academic data management.
 
 ---
 
@@ -243,12 +243,14 @@ Real-world examples included:
 MIT License - see [LICENSE](LICENSE) file for details.
 
 ### **Acknowledgments**
-- **NAKALA Platform** by Huma-Num for API and infrastructure
+- **NAKALA Platform** by Huma-Num for providing the API and infrastructure
 - **Digital Humanities Community** for requirements and feedback
 - **Open Source Contributors** for testing and improvements
 
 ### **Development**
-Built with ❤️ for the research community by an independent developer.
+Built with ❤️ for the research community by an **independent developer**.
+
+**Note**: O-Nakala Core is an independent, community-driven project. While it interfaces with the NAKALA platform (developed by Huma-Num), this library is developed and maintained independently to serve the research community's needs.
 
 ---
 
