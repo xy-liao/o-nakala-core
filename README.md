@@ -1,5 +1,7 @@
 # O-Nakala Core
 
+> **Developer-oriented repository** - For a user-friendly version, visit: https://gitlab.huma-num.fr/sliao/o-nakala-core
+
 A comprehensive Python library and CLI toolkit for interacting with the NAKALA research data repository, designed specifically for digital humanities workflows.
 
 ## 🚀 Quick Start
