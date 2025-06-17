@@ -1,367 +1,242 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Nakala Metadata Vocabulary v1.0",
-  "description": "Comprehensive metadata vocabulary for Nakala repository with Dublin Core and Nakala-specific terms",
+  "title": "Nakala Metadata Vocabulary v2.0",
+  "description": "NAKALA metadata vocabulary aligned with actual API format (propertyUri/value/lang/typeUri structure)",
   "type": "object",
   "definitions": {
     "resourceType": {
-      "type": "object",
-      "oneOf": [
-        { "const": "http://purl.org/coar/resource_type/c_12cc", "title": "Collection" },
-        { "const": "http://purl.org/coar/resource_type/c_12ce", "title": "Dataset" },
-        { "const": "http://purl.org/coar/resource_type/c_6501", "title": "Journal Article" },
-        { "const": "http://purl.org/coar/resource_type/c_2f33", "title": "Book" },
-        { "const": "http://purl.org/coar/resource_type/c_3248", "title": "Book Chapter" },
-        { "const": "http://purl.org/coar/resource_type/c_3e8a", "title": "Conference Paper" },
-        { "const": "http://purl.org/coar/resource_type/c_18cf", "title": "Image" },
-        { "const": "http://purl.org/coar/resource_type/c_18cd", "title": "Moving Image" },
-        { "const": "http://purl.org/coar/resource_type/c_18cw", "title": "Sound" },
-        { "const": "http://purl.org/coar/resource_type/c_18cc", "title": "Text" },
-        { "const": "http://purl.org/coar/resource_type/c_18hj", "title": "Thesis" },
-        { "const": "http://purl.org/coar/resource_type/c_18wz", "title": "Software" },
-        { "const": "http://purl.org/coar/resource_type/c_18op", "title": "Preprint" }
+      "type": "string",
+      "enum": [
+        "http://purl.org/coar/resource_type/c_c513",
+        "http://purl.org/coar/resource_type/c_6501",
+        "http://purl.org/coar/resource_type/c_6670",
+        "http://purl.org/coar/resource_type/c_2f33",
+        "http://purl.org/coar/resource_type/c_ddb1",
+        "http://purl.org/coar/resource_type/c_5ce6",
+        "http://purl.org/coar/resource_type/c_1843",
+        "http://purl.org/library/ArchiveMaterial",
+        "http://purl.org/ontology/bibo/Collection",
+        "http://purl.org/ontology/bibo/Series",
+        "http://purl.org/coar/resource_type/c_0040",
+        "http://purl.org/coar/resource_type/c_0857",
+        "http://purl.org/coar/resource_type/c_2659",
+        "http://purl.org/coar/resource_type/c_816b",
+        "http://purl.org/coar/resource_type/c_e9a0",
+        "http://purl.org/coar/resource_type/c_12cc",
+        "http://purl.org/coar/resource_type/c_12ce",
+        "http://purl.org/coar/resource_type/c_3248",
+        "http://purl.org/coar/resource_type/c_3e8a",
+        "http://purl.org/coar/resource_type/c_18cf",
+        "http://purl.org/coar/resource_type/c_18cd",
+        "http://purl.org/coar/resource_type/c_18cw",
+        "http://purl.org/coar/resource_type/c_18cc",
+        "http://purl.org/coar/resource_type/c_18hj",
+        "http://purl.org/coar/resource_type/c_18wz",
+        "http://purl.org/coar/resource_type/c_18op"
       ]
     },
-    "license": {
+    "resourceTypeLabels": {
       "type": "object",
-      "oneOf": [
-        { "const": "CC0-1.0", "title": "CC0 1.0 Universal" },
-        { "const": "CC-BY-4.0", "title": "CC BY 4.0" },
-        { "const": "CC-BY-SA-4.0", "title": "CC BY-SA 4.0" },
-        { "const": "CC-BY-NC-4.0", "title": "CC BY-NC 4.0" },
-        { "const": "CC-BY-ND-4.0", "title": "CC BY-ND 4.0" },
-        { "const": "CC-BY-NC-SA-4.0", "title": "CC BY-NC-SA 4.0" },
-        { "const": "CC-BY-NC-ND-4.0", "title": "CC BY-NC-ND 4.0" },
-        { "const": "etalab-2.0", "title": "Etalab Open License 2.0" },
-        { "const": "GPL-3.0", "title": "GNU GPL 3.0" },
-        { "const": "AGPL-3.0", "title": "GNU AGPL 3.0" },
-        { "const": "MIT", "title": "MIT License" },
-        { "const": "Apache-2.0", "title": "Apache 2.0" }
+      "properties": {
+        "http://purl.org/coar/resource_type/c_c513": { "const": "image" },
+        "http://purl.org/coar/resource_type/c_6501": { "const": "article de journal" },
+        "http://purl.org/coar/resource_type/c_6670": { "const": "poster" },
+        "http://purl.org/coar/resource_type/c_2f33": { "const": "livre" },
+        "http://purl.org/coar/resource_type/c_ddb1": { "const": "set de données" },
+        "http://purl.org/coar/resource_type/c_5ce6": { "const": "logiciel" },
+        "http://purl.org/coar/resource_type/c_1843": { "const": "autre" },
+        "http://purl.org/library/ArchiveMaterial": { "const": "fonds d'archives" },
+        "http://purl.org/ontology/bibo/Collection": { "const": "exposition d'art" },
+        "http://purl.org/ontology/bibo/Series": { "const": "bulletin" },
+        "http://purl.org/coar/resource_type/c_0040": { "const": "manuscrit" },
+        "http://purl.org/coar/resource_type/c_0857": { "const": "correspondance" },
+        "http://purl.org/coar/resource_type/c_2659": { "const": "périodique" },
+        "http://purl.org/coar/resource_type/c_816b": { "const": "prépublication" },
+        "http://purl.org/coar/resource_type/c_e9a0": { "const": "article programmable" },
+        "http://purl.org/coar/resource_type/c_12cc": { "const": "collection" },
+        "http://purl.org/coar/resource_type/c_12ce": { "const": "dataset" },
+        "http://purl.org/coar/resource_type/c_3248": { "const": "book chapter" },
+        "http://purl.org/coar/resource_type/c_3e8a": { "const": "conference paper" },
+        "http://purl.org/coar/resource_type/c_18cf": { "const": "image" },
+        "http://purl.org/coar/resource_type/c_18cd": { "const": "moving image" },
+        "http://purl.org/coar/resource_type/c_18cw": { "const": "sound" },
+        "http://purl.org/coar/resource_type/c_18cc": { "const": "text" },
+        "http://purl.org/coar/resource_type/c_18hj": { "const": "thesis" },
+        "http://purl.org/coar/resource_type/c_18wz": { "const": "software" },
+        "http://purl.org/coar/resource_type/c_18op": { "const": "preprint" }
+      }
+    },
+    "license": {
+      "type": "string",
+      "enum": [
+        "CC0-1.0",
+        "CC-BY-4.0",
+        "CC-BY-SA-4.0",
+        "CC-BY-NC-4.0",
+        "CC-BY-ND-4.0",
+        "CC-BY-NC-SA-4.0",
+        "CC-BY-NC-ND-4.0",
+        "etalab-2.0",
+        "GPL-3.0",
+        "AGPL-3.0",
+        "MIT",
+        "Apache-2.0"
       ]
     },
     "language": {
       "type": "string",
-      "enum": ["fr", "en", "de", "es", "it", "pt", "ru", "zh", "ja", "ar"]
+      "enum": ["fr", "en", "de", "es", "it", "pt", "ru", "zh", "ja", "ar", "und"]
+    },
+    "propertyUri": {
+      "type": "string",
+      "enum": [
+        "http://nakala.fr/terms#type",
+        "http://nakala.fr/terms#title",
+        "http://nakala.fr/terms#creator",
+        "http://nakala.fr/terms#created",
+        "http://nakala.fr/terms#license",
+        "http://purl.org/dc/terms/description",
+        "http://purl.org/dc/terms/subject",
+        "http://purl.org/dc/terms/contributor",
+        "http://purl.org/dc/terms/publisher",
+        "http://purl.org/dc/terms/rights",
+        "http://purl.org/dc/terms/language",
+        "http://purl.org/dc/terms/spatial",
+        "http://purl.org/dc/terms/temporal",
+        "http://purl.org/dc/terms/alternative",
+        "http://purl.org/dc/terms/identifier",
+        "http://purl.org/dc/terms/source",
+        "http://purl.org/dc/terms/format",
+        "http://purl.org/dc/terms/relation",
+        "http://purl.org/dc/terms/coverage",
+        "http://purl.org/dc/terms/rightsHolder",
+        "http://purl.org/dc/terms/accessRights"
+      ]
+    },
+    "typeUri": {
+      "type": "string",
+      "enum": [
+        "http://www.w3.org/2001/XMLSchema#string",
+        "http://www.w3.org/2001/XMLSchema#anyURI",
+        "http://www.w3.org/2001/XMLSchema#date",
+        "http://www.w3.org/2001/XMLSchema#integer"
+      ]
+    },
+    "metadataEntry": {
+      "type": "object",
+      "required": ["propertyUri", "value"],
+      "properties": {
+        "propertyUri": { "$ref": "#/definitions/propertyUri" },
+        "value": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "$ref": "#/definitions/person" } }
+          ]
+        },
+        "lang": { "$ref": "#/definitions/language" },
+        "typeUri": { "$ref": "#/definitions/typeUri" }
+      }
     },
     "person": {
       "type": "object",
-      "required": ["name"],
       "properties": {
-        "name": { "type": "string" },
-        "givenName": { "type": "string" },
-        "familyName": { "type": "string" },
-        "affiliation": { "type": "string" },
-        "orcid": { "type": "string", "pattern": "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[0-9X]$" },
-        "role": { "type": "string", "enum": ["author", "contributor", "editor", "translator"] }
+        "surname": { "type": "string" },
+        "givenname": { "type": "string" },
+        "orcid": { "type": "string", "pattern": "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[0-9X]$" }
       }
-    },
-    "subject": {
-      "type": "object",
-      "properties": {
-        "value": { "type": "string" },
-        "scheme": { "type": "string", "enum": ["LCSH", "MeSH", "DDC", "UDC", "keywords"] },
-        "valueURI": { "type": "string", "format": "uri" },
-        "lang": { "$ref": "#/definitions/language" }
-      },
-      "required": ["value"]
-    },
-    "temporalCoverage": {
-      "type": "object",
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "startDate": { "type": "string", "format": "date" },
-            "endDate": { "type": "string", "format": "date" }
-          },
-          "required": ["startDate", "endDate"]
-        },
-        {
-          "type": "string",
-          "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?(/\\d{4}(-\\d{2}(-\\d{2})?)?)?$"
-        }
-      ]
-    },
-    "spatialCoverage": {
-      "type": "object",
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "name": { "type": "string" },
-            "geoLocationPoint": {
-              "type": "object",
-              "properties": {
-                "pointLongitude": { "type": "number", "minimum": -180, "maximum": 180 },
-                "pointLatitude": { "type": "number", "minimum": -90, "maximum": 90 }
-              },
-              "required": ["pointLatitude", "pointLongitude"]
-            },
-            "scheme": { "type": "string", "enum": ["geonames", "tgn", "iso3166-1", "iso3166-2"] },
-            "valueURI": { "type": "string", "format": "uri" }
-          }
-        },
-        { "type": "string" }
-      ]
-    },
-    "relatedResource": {
-      "type": "object",
-      "properties": {
-        "identifier": { "type": "string" },
-        "relationType": {
-          "type": "string",
-          "enum": ["IsCitedBy", "Cites", "IsPartOf", "HasPart", "IsVersionOf", "HasVersion"]
-        },
-        "resourceType": { "type": "string" },
-        "title": { "type": "string" }
-      },
-      "required": ["identifier", "relationType"]
     },
     "file": {
       "type": "object",
-      "required": ["name", "sha1"],
+      "required": ["sha1"],
       "properties": {
         "name": { "type": "string" },
         "sha1": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
-        "size": { "type": "integer", "minimum": 0 },
-        "mimeType": { "type": "string" },
-        "embargoEnd": { "type": "string", "format": "date" },
-        "description": { "type": "string" }
+        "description": { "type": "string" },
+        "embargoed": { "type": "string", "format": "date" }
       }
     }
   },
-  "required": ["nkl_metadata"],
   "properties": {
-    "@context": {
-      "type": "object",
-      "properties": {
-        "dc": { "const": "http://purl.org/dc/terms/" },
-        "dcterms": { "const": "http://purl.org/dc/terms/" },
-        "foaf": { "const": "http://xmlns.com/foaf/0.1/" },
-        "nkl": { "const": "http://nakala.fr/terms#" },
-        "schema": { "const": "http://schema.org/" },
-        "rdfs": { "const": "http://www.w3.org/2000/01/rdf-schema#" },
-        "xsd": { "const": "http://www.w3.org/2001/XMLSchema#" }
-      }
+    "status": {
+      "type": "string",
+      "enum": ["pending", "published"],
+      "default": "pending"
     },
-    "nkl_metadata": {
-      "type": "object",
-      "required": ["status", "type", "title", "creator", "created", "license"],
-      "properties": {
-        "status": {
-          "type": "string",
-          "enum": ["draft", "pending", "published", "embargoed"],
-          "default": "pending"
-        },
-        "type": { "$ref": "#/definitions/resourceType" },
-        "title": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "object",
-            "required": ["@value"],
-            "properties": {
-              "@value": { "type": "string", "minLength": 1 },
-              "@language": { "$ref": "#/definitions/language" }
-            }
-          }
-        },
-        "alternative": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["@value"],
-            "properties": {
-              "@value": { "type": "string" },
-              "@language": { "$ref": "#/definitions/language" }
-            }
-          }
-        },
-        "creator": {
-          "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/definitions/person" }
-        },
-        "contributor": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/person" }
-        },
-        "created": { "type": "string", "format": "date" },
-        "issued": { "type": "string", "format": "date" },
-        "modified": { "type": "string", "format": "date" },
-        "license": { "$ref": "#/definitions/license" },
-        "rights": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["@value"],
-            "properties": {
-              "@value": { "type": "string" },
-              "@language": { "$ref": "#/definitions/language" },
-              "@id": { "type": "string", "format": "uri" }
-            }
-          }
-        },
-        "rightsHolder": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/person" }
-        },
-        "accessRights": {
-          "type": "string",
-          "enum": ["open access", "embargoed access", "restricted access"]
-        },
-        "embargo": {
-          "type": "object",
-          "properties": {
-            "endDate": { "type": "string", "format": "date" },
-            "reason": { "type": "string" },
-            "access": { "type": "string", "enum": ["public", "restricted"] }
-          },
-          "required": ["endDate"]
-        },
-        "description": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["@value"],
-            "properties": {
-              "@value": { "type": "string" },
-              "@language": { "$ref": "#/definitions/language" },
-              "@type": {
-                "type": "string",
-                "enum": ["abstract", "methods", "technicalInfo"]
-              }
-            }
-          }
-        },
-        "subject": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/subject" }
-        },
-        "language": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/language" }
-        },
-        "spatial": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/spatialCoverage" }
-        },
-        "temporal": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/temporalCoverage" }
-        },
-        "publisher": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/person" }
-        },
-        "source": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "format": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "identifier": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["@value"],
-            "properties": {
-              "@value": { "type": "string" },
-              "@type": {
-                "type": "string",
-                "enum": ["DOI", "ARK", "ISBN", "ISSN", "URL", "Handle"]
-              }
-            }
-          }
-        },
-        "isPartOf": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/relatedResource" }
-        },
-        "hasPart": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/relatedResource" }
-        },
-        "isVersionOf": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/relatedResource" }
-        },
-        "hasVersion": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/relatedResource" }
-        },
-        "nkl_collectionId": { "type": "string" },
-        "nkl_communityId": { "type": "string" },
-        "nkl_embargoEnd": { "type": "string", "format": "date" }
-      }
+    "metas": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/metadataEntry" },
+      "minItems": 5
     },
-    "nkl_files": {
+    "files": {
       "type": "array",
       "items": { "$ref": "#/definitions/file" }
+    },
+    "collectionsIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "rights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "role": {
+            "type": "string",
+            "enum": ["ROLE_OWNER", "ROLE_ADMIN", "ROLE_EDITOR", "ROLE_READER"]
+          }
+        }
+      }
     }
   },
+  "required": ["status", "metas"],
   "examples": [
     {
-      "@context": {
-        "dc": "http://purl.org/dc/terms/",
-        "dcterms": "http://purl.org/dc/terms/"
-      },
-      "nkl_metadata": {
-        "status": "published",
-        "type": {
-          "const": "http://purl.org/coar/resource_type/c_12ce",
-          "title": "Dataset"
-        },
-        "title": [
-          {
-            "@value": "Climate Data Collection 2023",
-            "@language": "en"
-          },
-          {
-            "@value": "Collection de données climatiques 2023",
-            "@language": "fr"
-          }
-        ],
-        "creator": [
-          {
-            "name": "Doe, John",
-            "givenName": "John",
-            "familyName": "Doe",
-            "affiliation": "University of Example",
-            "orcid": "0000-0002-1825-0097",
-            "role": "author"
-          }
-        ],
-        "created": "2023-06-15",
-        "license": {
-          "const": "CC-BY-4.0",
-          "title": "CC BY 4.0"
-        },
-        "description": [
-          {
-            "@value": "A collection of climate measurements from 2023.",
-            "@language": "en"
-          }
-        ],
-        "subject": [
-          {
-            "value": "Climatology",
-            "scheme": "LCSH",
-            "valueURI": "http://id.loc.gov/authorities/subjects/sh85027044"
-          }
-        ],
-        "language": ["en", "fr"],
-        "publisher": [{"name": "University of Example"}],
-        "nkl_collectionId": "10.1234/example.collection"
-      },
-      "nkl_files": [
+      "status": "pending",
+      "metas": [
         {
-          "name": "climate_data_2023.csv",
+          "propertyUri": "http://nakala.fr/terms#title",
+          "value": "Sample Dataset for Testing",
+          "lang": "en",
+          "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "propertyUri": "http://nakala.fr/terms#type",
+          "value": "http://purl.org/coar/resource_type/c_ddb1",
+          "typeUri": "http://www.w3.org/2001/XMLSchema#anyURI"
+        },
+        {
+          "propertyUri": "http://nakala.fr/terms#creator",
+          "value": [
+            {
+              "givenname": "John",
+              "surname": "Doe",
+              "orcid": "0000-0002-1825-0097"
+            }
+          ]
+        },
+        {
+          "propertyUri": "http://nakala.fr/terms#created",
+          "value": "2024-01-15",
+          "typeUri": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "propertyUri": "http://nakala.fr/terms#license",
+          "value": "CC-BY-4.0",
+          "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "propertyUri": "http://purl.org/dc/terms/description",
+          "value": "A comprehensive dataset for testing NAKALA API functionality",
+          "lang": "en",
+          "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ],
+      "files": [
+        {
+          "name": "test_data.csv",
           "sha1": "a1b2c3d4e5f6g7h8i9j0a1b2c3d4e5f6g7h8i9j0",
-          "mimeType": "text/csv",
-          "description": "Primary dataset in CSV format"
+          "description": "Primary test dataset"
         }
       ]
     }
