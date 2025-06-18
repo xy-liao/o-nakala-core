@@ -17,7 +17,7 @@ This directory contains **working CSV examples** for the Collection endpoint. Al
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.collection \
+o-nakala-collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections basic-collection.csv \
   --from-upload-output upload_report.csv \
@@ -40,7 +40,7 @@ python -m src.o_nakala_core.cli.collection \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.collection \
+o-nakala-collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections multilingual-collection.csv \
   --from-upload-output upload_report.csv \
@@ -66,7 +66,7 @@ python -m src.o_nakala_core.cli.collection \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.collection \
+o-nakala-collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections complete-collection.csv \
   --from-upload-output upload_report.csv \
@@ -196,7 +196,7 @@ python tools/collection_validator.py your_collection.csv
 ### **2. Dry Run Testing**
 ```bash
 # Test without creating actual collections
-python -m src.o_nakala_core.cli.collection \
+o-nakala-collection \
   --from-folder-collections your_collection.csv \
   --from-upload-output upload_report.csv \
   --dry-run \

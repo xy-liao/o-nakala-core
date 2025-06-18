@@ -28,7 +28,7 @@ This directory contains example datasets, configurations, and workflows for lear
 ### 1. Basic Upload Test
 ```bash
 cd simple-dataset
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --api-key YOUR_API_KEY \
   --dataset . \
   --mode folder
@@ -38,14 +38,14 @@ python -m src.o_nakala_core.cli.upload \
 ```bash
 cd sample_dataset
 # Upload data
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --api-key YOUR_API_KEY \
   --dataset folder_data_items.csv \
   --mode folder \
   --output upload_results.csv
 
 # Create collections
-python -m src.o_nakala_core.cli.collection \
+o-nakala-collection \
   --api-key YOUR_API_KEY \
   --from-upload-output upload_results.csv \
   --from-folder-collections folder_collections.csv
@@ -55,7 +55,7 @@ python -m src.o_nakala_core.cli.collection \
 ```bash
 cd sample_dataset
 # Use provided workshop CSV files for batch modification exercises
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key YOUR_API_KEY \
   --batch-modify workshop_basic_modifications.csv \
   --dry-run

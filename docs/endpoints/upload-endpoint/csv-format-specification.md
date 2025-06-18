@@ -249,7 +249,7 @@ Solution: Use full URI: 'http://purl.org/coar/resource_type/c_5ce6'
 python tools/csv_validator.py --file my_upload.csv
 
 # Test transformation
-python -m src.o_nakala_core.cli.upload --dataset my_upload.csv --dry-run
+o-nakala-upload --dataset my_upload.csv --dry-run
 ```
 
 ### **Example Testing**

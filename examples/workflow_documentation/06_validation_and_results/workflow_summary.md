@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This document summarizes a successful end-to-end data lifecycle workflow using O-Nakala Core v2.0.0, demonstrating the complete capabilities of the platform from initial file upload through systematic metadata curation.
+This document summarizes a successful end-to-end data lifecycle workflow using O-Nakala Core v2.2.0, demonstrating the complete capabilities of the platform from initial file upload through systematic metadata curation.
 
 ## Workflow Phases Completed
 
@@ -181,7 +181,7 @@ Collections by Research Context:
 ## Reproducibility Guide
 
 ### Prerequisites for Replication
-1. O-Nakala Core v2.0.0 installed
+1. O-Nakala Core v2.2.0 installed
 2. NAKALA test API access (key: 33170cfe-f53c-550b-5fb6-4814ce981293)
 3. Well-organized source files in folder structure
 4. CSV configuration files following demonstrated patterns
@@ -206,6 +206,6 @@ See [successful_commands.sh](../01_setup_and_environment/successful_commands.sh)
 ---
 
 **Workflow Documentation Generated**: 2025-06-08  
-**O-Nakala Core Version**: 2.0.0  
+**O-Nakala Core Version**: 2.2.0  
 **API Environment**: NAKALA Test (https://apitest.nakala.fr)  
 **Total Success Rate**: 100% across all phases

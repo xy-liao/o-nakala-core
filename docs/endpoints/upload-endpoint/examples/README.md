@@ -17,7 +17,7 @@ This directory contains **working CSV examples** for the Upload endpoint. All ex
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset basic-folder-upload.csv \
   --mode folder \
@@ -35,7 +35,7 @@ python -m src.o_nakala_core.cli.upload \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset multilingual-folder-upload.csv \
   --mode folder \
@@ -53,7 +53,7 @@ python -m src.o_nakala_core.cli.upload \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset csv-mode-upload.csv \
   --mode csv \
@@ -73,7 +73,7 @@ python -m src.o_nakala_core.cli.upload \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset complete-metadata-upload.csv \
   --mode folder \
@@ -170,7 +170,7 @@ python tools/csv_validator.py --file your_modified.csv
 ### **2. Dry Run Testing**
 ```bash
 # Test without actually uploading
-python -m src.o_nakala_core.cli.upload \
+o-nakala-upload \
   --dataset your_modified.csv \
   --mode folder \
   --dry-run \

@@ -49,7 +49,7 @@ REPLACE_WITH_YOUR_COLLECTION_ID,modify,"fr:Titre|en:Title"
 ### Step 2: Test with Dry-Run
 Always test modifications before applying:
 ```bash
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --batch-modify workshop_basic_modifications.csv \
   --dry-run \
@@ -59,7 +59,7 @@ python -m src.o_nakala_core.cli.curator \
 ### Step 3: Apply Changes
 Once validated, apply the modifications:
 ```bash
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --batch-modify workshop_basic_modifications.csv \
   --verbose
@@ -106,7 +106,7 @@ Error: Missing required columns
 ### Issue 4: API Authentication Error
 ```bash
 # Solution: Verify API key
-python -m src.o_nakala_core.cli.user_info --verbose
+o-nakala-user-info --verbose
 ```
 
 ## 🎓 Exercise Progression
@@ -132,17 +132,17 @@ python -m src.o_nakala_core.cli.user_info --verbose
 
 ### Check API Connection
 ```bash
-python -m src.o_nakala_core.cli.user_info --verbose
+o-nakala-user-info --verbose
 ```
 
 ### List Available Collections
 ```bash
-python -m src.o_nakala_core.cli.curator --api-key "$NAKALA_API_KEY" --quality-report --verbose
+o-nakala-curator --api-key "$NAKALA_API_KEY" --quality-report --verbose
 ```
 
 ### Validate CSV Format
 ```bash
-python -m src.o_nakala_core.cli.curator --batch-modify your_file.csv --dry-run --verbose
+o-nakala-curator --batch-modify your_file.csv --dry-run --verbose
 ```
 
 ## 📊 Success Metrics

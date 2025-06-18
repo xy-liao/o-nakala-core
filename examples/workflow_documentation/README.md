@@ -186,7 +186,7 @@ o-nakala-curator \
 ### **Step 3: Verify Results**
 ```bash
 # Generate quality report
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --quality-report \
   --collection-ids "your-collection-ids"
@@ -266,6 +266,6 @@ python -m src.o_nakala_core.cli.curator \
 
 **Documentation Generated**: 2025-06-08  
 **Updated with Validation**: 2025-06-09  
-**O-Nakala Core Version**: v2.0.0  
+**O-Nakala Core Version**: v2.2.0  
 **Validation Success Rate**: 100% (with format recommendations)  
 **Integration Status**: ✅ **Fully Integrated with Endpoint Documentation**

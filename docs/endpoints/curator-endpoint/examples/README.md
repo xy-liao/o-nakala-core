@@ -18,13 +18,13 @@ This directory contains **working CSV examples** for the Curator endpoint batch 
 **Command to test**:
 ```bash
 # Dry run to preview changes
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata basic-modification.csv \
   --dry-run
 
 # Apply modifications  
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata basic-modification.csv
 ```
@@ -46,7 +46,7 @@ python -m src.o_nakala_core.cli.curator \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata multilingual-modification.csv \
   --dry-run \
@@ -73,7 +73,7 @@ python -m src.o_nakala_core.cli.curator \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata complete-modification.csv \
   --dry-run
@@ -96,7 +96,7 @@ python -m src.o_nakala_core.cli.curator \
 
 **Command to test**:
 ```bash
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata rights-management.csv \
   --dry-run
@@ -205,7 +205,7 @@ new_rights
 ### **1. Export Current Template**
 ```bash
 # Export template from existing resources
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --export-template \
   --ids "your_resource_ids" \
@@ -221,7 +221,7 @@ python tools/curator_validator.py your_modifications.csv
 ### **3. Dry Run Testing**
 ```bash
 # Always test with dry run first
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata your_modifications.csv \
   --dry-run \
@@ -231,7 +231,7 @@ python -m src.o_nakala_core.cli.curator \
 ### **4. Batch Processing**
 ```bash
 # Apply modifications with batch settings
-python -m src.o_nakala_core.cli.curator \
+o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --modify-metadata your_modifications.csv \
   --batch-size 10 \
