@@ -115,7 +115,7 @@ cd examples/sample_dataset
 cat folder_data_items.csv
 cat folder_collections.csv
 
-# Run the complete workflow (v2.2.0 validated)
+# Run the complete workflow (v2.3.0 validated)
 o-nakala-upload --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --dataset folder_data_items.csv --mode folder \
   --folder-config folder_data_items.csv --base-path . \
