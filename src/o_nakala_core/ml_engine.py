@@ -219,7 +219,7 @@ class MLPatternLearner:
             # Count field co-occurrences
             for i, field1 in enumerate(present_fields):
                 field_counts[field1] += 1
-                for field2 in present_fields[i + 1:]:
+                for field2 in present_fields[i + 1 :]:
                     pair = tuple(sorted([field1, field2]))
                     field_co_occurrences[pair] += 1
 
@@ -766,7 +766,7 @@ class SemanticAnalyzer:
             sample = random.sample(embedding_list, sample_size)
 
             for i, emb1 in enumerate(sample):
-                for emb2 in sample[i + 1:]:
+                for emb2 in sample[i + 1 :]:
                     similarities.append(emb1.cosine_similarity(emb2))
 
             if similarities:

@@ -136,7 +136,7 @@ class ContentSimilarityAnalyzer:
         text = f"  {text}  "  # Add padding
 
         for i in range(len(text) - 2):
-            trigrams.add(text[i:i + 3])
+            trigrams.add(text[i : i + 3])
 
         return trigrams
 
