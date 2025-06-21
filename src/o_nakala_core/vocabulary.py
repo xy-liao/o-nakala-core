@@ -9,13 +9,13 @@ import logging
 import json
 import asyncio
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional, Set
+from typing import Dict, Any, List, Optional
 from pathlib import Path
 import requests
 from dataclasses import dataclass, asdict
 
 from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError, NakalaValidationError
+from .common.exceptions import NakalaAPIError
 from .common.utils import NakalaCommonUtils
 
 logger = logging.getLogger(__name__)

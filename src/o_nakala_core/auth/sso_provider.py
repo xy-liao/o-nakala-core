@@ -2,14 +2,13 @@
 SSO Provider implementations for SAML and OAuth2 institutional authentication.
 """
 
-import os
 import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 import requests
-from urllib.parse import urlencode, parse_qs
+from urllib.parse import urlencode
 import base64
 import xml.etree.ElementTree as ET
 

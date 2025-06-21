@@ -17,21 +17,17 @@ try:
 except ImportError:
     np = None
     HAS_NUMPY = False
-from typing import Dict, Any, List, Optional, Tuple
-from dataclasses import dataclass, asdict
-from collections import defaultdict, Counter
+from typing import Dict, Any, List, Tuple
+from dataclasses import dataclass
+from collections import defaultdict
 import statistics
 import math
 
-from .ml_engine import MLPatternLearner, MetadataPattern
+from .ml_engine import MLPatternLearner
 from .collaborative_intelligence import (
     CollaborativeIntelligenceEngine,
-    CommunityMetrics,
 )
 from .user_info import NakalaUserInfoClient
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError
-from .common.utils import NakalaCommonUtils
 
 logger = logging.getLogger(__name__)
 
@@ -263,7 +259,8 @@ class TrendAnalyzer:
 
         predictions = {}
         slope = trend_analysis["slope"]
-        last_date = max(data_points, key=lambda x: x[0])[0]
+        # Extract the most recent date from data points
+        max(data_points, key=lambda x: x[0])[0]
         last_value = trend_analysis.get("predicted_next", data_points[-1][1])
 
         # Map timeframes to days
@@ -836,7 +833,8 @@ class PredictiveAnalyticsEngine:
 
         try:
             # Get user profile for some real data
-            user_profile = self.user_client.get_complete_user_profile()
+            # Get user profile for some real data
+            self.user_client.get_complete_user_profile()
 
             # Mock historical data generation
             # In a real implementation, this would query actual historical metrics

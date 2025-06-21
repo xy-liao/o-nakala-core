@@ -513,7 +513,8 @@ class InstitutionalAuthManager:
         self, user_profile: UserProfile, action: str, resource: str = None
     ) -> bool:
         """Validate user permissions for specific actions."""
-        policy = self.policies.get(user_profile.institution)
+        # Get institution policy (if needed for future validation)
+        self.policies.get(user_profile.institution)
 
         # Admin users have all permissions
         if user_profile.is_admin:

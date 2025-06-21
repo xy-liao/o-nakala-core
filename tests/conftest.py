@@ -17,7 +17,7 @@ def mock_api_key():
 @pytest.fixture
 def mock_config(mock_api_key):
     """Provide a mock configuration for testing."""
-    with patch.dict(os.environ, {'NAKALA_API_KEY': mock_api_key}):
+    with patch.dict(os.environ, {"NAKALA_API_KEY": mock_api_key}):
         config = NakalaConfig()
         config.api_key = mock_api_key
         config.base_url = "https://apitest.nakala.fr"
@@ -45,14 +45,14 @@ def sample_metadata():
             "propertyUri": "http://nakala.fr/terms#title",
             "value": "Test Dataset",
             "lang": "en",
-            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
+            "typeUri": "http://www.w3.org/2001/XMLSchema#string",
         },
         {
-            "propertyUri": "http://nakala.fr/terms#description", 
+            "propertyUri": "http://nakala.fr/terms#description",
             "value": "A test dataset for unit testing",
             "lang": "en",
-            "typeUri": "http://www.w3.org/2001/XMLSchema#string"
-        }
+            "typeUri": "http://www.w3.org/2001/XMLSchema#string",
+        },
     ]
 
 
@@ -62,5 +62,5 @@ def sample_file_data():
     return {
         "name": "test_file.txt",
         "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
-        "description": "Test file for unit testing"
+        "description": "Test file for unit testing",
     }

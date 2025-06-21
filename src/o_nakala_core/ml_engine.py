@@ -19,16 +19,9 @@ except ImportError:
     np = None
     HAS_NUMPY = False
 from typing import Dict, Any, List, Optional, Tuple, Set
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 import pickle
 from collections import defaultdict, Counter
-import math
-
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError
-from .common.utils import NakalaCommonUtils
-from .user_info import NakalaUserInfoClient
-from .vocabulary import NakalaVocabularyService
 
 logger = logging.getLogger(__name__)
 
@@ -226,7 +219,7 @@ class MLPatternLearner:
             # Count field co-occurrences
             for i, field1 in enumerate(present_fields):
                 field_counts[field1] += 1
-                for field2 in present_fields[i + 1 :]:
+                for field2 in present_fields[i + 1:]:
                     pair = tuple(sorted([field1, field2]))
                     field_co_occurrences[pair] += 1
 
@@ -461,7 +454,7 @@ class MLPatternLearner:
             if field_name in user_prefs:
                 pref = user_prefs[field_name]
                 predictions.append((pref["preferred_value"], pref["strength"]))
-                evidence.append(f"User preference pattern")
+                evidence.append("User preference pattern")
 
         # Select best prediction
         if predictions:
@@ -773,7 +766,7 @@ class SemanticAnalyzer:
             sample = random.sample(embedding_list, sample_size)
 
             for i, emb1 in enumerate(sample):
-                for emb2 in sample[i + 1 :]:
+                for emb2 in sample[i + 1:]:
                     similarities.append(emb1.cosine_similarity(emb2))
 
             if similarities:

@@ -11,9 +11,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, asdict
 
-from .vocabulary import NakalaVocabularyService, FieldSchema, VocabularyEntry
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaValidationError
+from .vocabulary import NakalaVocabularyService
 
 logger = logging.getLogger(__name__)
 

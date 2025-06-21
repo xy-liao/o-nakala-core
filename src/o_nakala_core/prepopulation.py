@@ -8,16 +8,14 @@ and file analysis. Part of the Complete Metadata Management System - Intelligenc
 import logging
 import hashlib
 import re
-from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional, Set, Tuple
+from datetime import datetime
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
 from .templates import MetadataTemplate, TemplateField
 from .vocabulary import NakalaVocabularyService
 from .user_info import NakalaUserInfoClient
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError
 from .common.utils import NakalaCommonUtils
 
 logger = logging.getLogger(__name__)
@@ -299,7 +297,6 @@ class UserContextService:
 
         if dates:
             years = [int(year) for year in dates]
-            min_year = min(years)
             max_year = max(years)
 
             # Categorize historical periods
@@ -611,9 +608,10 @@ class PrePopulationAssistant:
         """Populate a single field based on context."""
         result = {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-        user_context = context.get("user", {})
-        file_context = context.get("file", {})
-        additional_context = context.get("additional", {})
+        # Extract context components
+        context.get("user", {})
+        context.get("file", {})
+        context.get("additional", {})
 
         # Field-specific population logic
         if field.name == "title":

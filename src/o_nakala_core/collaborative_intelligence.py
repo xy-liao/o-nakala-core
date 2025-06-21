@@ -18,7 +18,7 @@ try:
 except ImportError:
     np = None
     HAS_NUMPY = False
-from typing import Dict, Any, List, Optional, Tuple, Set
+from typing import Dict, Any, List, Tuple, Set
 from dataclasses import dataclass, asdict
 from collections import defaultdict, Counter
 import statistics
@@ -26,13 +26,9 @@ import statistics
 from .ml_engine import (
     MLPatternLearner,
     SemanticAnalyzer,
-    MetadataPattern,
     PredictionResult,
 )
 from .user_info import NakalaUserInfoClient
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError
-from .common.utils import NakalaCommonUtils
 
 logger = logging.getLogger(__name__)
 
@@ -194,7 +190,7 @@ class CommunityAnalyzer:
             # If multiple creators, it's a collaboration
             if len(resource_creators) > 1:
                 for i, creator1 in enumerate(resource_creators):
-                    for creator2 in resource_creators[i + 1 :]:
+                    for creator2 in resource_creators[i + 1:]:
                         collaboration_pairs.append((creator1, creator2))
 
             # Analyze metadata completeness
@@ -767,7 +763,7 @@ class CollaborativeIntelligenceEngine:
                 for resource in all_resources[:50]:  # Limit for performance
                     content = self._extract_content_for_analysis(resource)
                     if content:
-                        embedding = self.semantic_analyzer.analyze_content(
+                        self.semantic_analyzer.analyze_content(
                             content=content,
                             content_id=resource.get("identifier", "unknown"),
                             content_type=self._extract_meta_value(
@@ -860,7 +856,7 @@ class CollaborativeIntelligenceEngine:
                     reasoning=f"Community trend analysis: {insight.recommendation}",
                     evidence=[f"Used by {insight.evidence_count} community members"],
                     alternatives=[
-                        (";".join(keywords[i : i + 3]), insight.confidence * 0.8)
+                        (";".join(keywords[i:i + 3]), insight.confidence * 0.8)
                         for i in range(1, min(3, len(keywords)))
                     ],
                 )

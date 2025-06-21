@@ -8,14 +8,12 @@ System - Intelligence Phase.
 
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, Any, List, Optional, Set, Tuple
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from collections import Counter
 
 from .user_info import NakalaUserInfoClient
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError
 from .common.utils import NakalaCommonUtils
 
 logger = logging.getLogger(__name__)
@@ -138,7 +136,7 @@ class ContentSimilarityAnalyzer:
         text = f"  {text}  "  # Add padding
 
         for i in range(len(text) - 2):
-            trigrams.add(text[i : i + 3])
+            trigrams.add(text[i:i + 3])
 
         return trigrams
 
@@ -588,12 +586,12 @@ class RelationshipDiscoveryService:
     def generate_relationship_report(self, analysis: RelationshipAnalysis) -> str:
         """Generate a human-readable report of relationship analysis."""
         doc = []
-        doc.append(f"# Relationship Discovery Report")
+        doc.append("# Relationship Discovery Report")
         doc.append(f"**Source:** {analysis.source_title} ({analysis.source_id})")
         doc.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         doc.append(f"**Processing time:** {analysis.processing_time:.3f} seconds")
 
-        doc.append(f"\n## Summary")
+        doc.append("\n## Summary")
         doc.append(f"- **Suggestions found:** {len(analysis.suggestions)}")
 
         if analysis.suggestions:
@@ -607,7 +605,7 @@ class RelationshipDiscoveryService:
 
         # List suggestions
         if analysis.suggestions:
-            doc.append(f"\n## Relationship Suggestions")
+            doc.append("\n## Relationship Suggestions")
 
             for i, suggestion in enumerate(analysis.suggestions, 1):
                 doc.append(f"\n### {i}. {suggestion.target_title}")
@@ -616,12 +614,12 @@ class RelationshipDiscoveryService:
                 doc.append(f"- **Confidence:** {suggestion.confidence:.1%}")
                 doc.append(f"- **Reason:** {suggestion.reason}")
         else:
-            doc.append(f"\n## No Relationships Found")
+            doc.append("\n## No Relationships Found")
             doc.append("No similar resources found in user's data.")
 
         # Analysis notes
         if analysis.analysis_notes:
-            doc.append(f"\n## Analysis Notes")
+            doc.append("\n## Analysis Notes")
             for note in analysis.analysis_notes:
                 doc.append(f"- {note}")
 

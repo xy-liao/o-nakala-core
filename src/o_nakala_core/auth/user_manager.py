@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 
-from .institutional_auth import UserProfile, InstitutionalRole, InstitutionalPolicy
+from .institutional_auth import UserProfile, InstitutionalRole
 
 logger = logging.getLogger(__name__)
 
@@ -566,9 +566,9 @@ class UserManager:
 
         elif activity.action == "metadata_updated":
             if "fields" in activity.metadata:
-                for field in activity.metadata["fields"]:
-                    if field not in user_stats.most_used_metadata_fields:
-                        user_stats.most_used_metadata_fields.append(field)
+                for metadata_field in activity.metadata["fields"]:
+                    if metadata_field not in user_stats.most_used_metadata_fields:
+                        user_stats.most_used_metadata_fields.append(metadata_field)
 
         # Save updated stats
         self.update_user_stats(user_stats)

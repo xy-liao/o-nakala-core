@@ -581,7 +581,7 @@ class NakalaDuplicateDetector:
         duplicates = []
 
         for i, item1 in enumerate(items):
-            for item2 in items[i + 1 :]:
+            for item2 in items[i + 1:]:
                 similarity = self.calculate_similarity(item1, item2)
                 if similarity >= self.threshold:
                     duplicates.append((item1, item2, similarity))

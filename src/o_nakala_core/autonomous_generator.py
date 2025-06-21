@@ -8,20 +8,15 @@ Part of the Complete Metadata Management System - Phase 3 (Advanced Intelligence
 import logging
 import mimetypes
 from datetime import datetime
-from typing import Dict, Any, List, Optional, Tuple
-from dataclasses import dataclass, asdict
+from typing import Dict, Any, List, Tuple
+from dataclasses import dataclass
 from pathlib import Path
-import os
 import re
 
 from .ml_engine import MLPatternLearner, SemanticAnalyzer, PredictionResult
 from .collaborative_intelligence import CollaborativeIntelligenceEngine
 from .templates import MetadataTemplate, TemplateField
-from .prepopulation import PrePopulationResult
 from .user_info import NakalaUserInfoClient
-from .common.config import NakalaConfig
-from .common.exceptions import NakalaAPIError
-from .common.utils import NakalaCommonUtils
 
 logger = logging.getLogger(__name__)
 
@@ -473,7 +468,7 @@ class MetadataGenerator:
                     # Try reading as text
                     with open(path, "r", encoding="utf-8", errors="ignore") as f:
                         content = f.read(5000)  # Read first 5KB for analysis
-                except:
+                except (UnicodeDecodeError, IOError):
                     # If text reading fails, it's likely binary
                     result.processing_notes.append(
                         "Binary file - content analysis limited to filename and extension"
