@@ -608,10 +608,7 @@ class PrePopulationAssistant:
         """Populate a single field based on context."""
         result = {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-        # Extract context components
-        context.get("user", {})
-        context.get("file", {})
-        context.get("additional", {})
+        # Context is used directly in field-specific population methods
 
         # Field-specific population logic
         if field.name == "title":
