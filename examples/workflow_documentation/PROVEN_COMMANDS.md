@@ -151,12 +151,14 @@ python cleanup_test_data.py your-api-key --keep-files
 
 ## 📊 Real Execution Results (2025-06-23)
 
-### **Successfully Created Dataset IDs:**
-- Images: `10.34847/nkl.202ahwak` ✅ Active
-- Code: `10.34847/nkl.b75dsd27` ✅ Active  
-- Presentations: `10.34847/nkl.17375v8m` ✅ Active
-- Documents: `10.34847/nkl.266a77kx` ✅ Active
-- Data: `10.34847/nkl.2c07roq3` ✅ Active
+### **Example Dataset IDs Created & Cleaned:**
+- Images: `10.34847/nkl.202ahwak` ✅ Created → ✅ Cleaned up
+- Code: `10.34847/nkl.b75dsd27` ✅ Created → ✅ Cleaned up
+- Presentations: `10.34847/nkl.17375v8m` ✅ Created → ✅ Cleaned up
+- Documents: `10.34847/nkl.266a77kx` ✅ Created → ✅ Cleaned up
+- Data: `10.34847/nkl.2c07roq3` ✅ Created → ✅ Cleaned up
+
+**Note**: These specific IDs were created during testing and successfully cleaned up to demonstrate the complete workflow including platform courtesy cleanup.
 
 ### **Performance Metrics:**
 - **Total Workflow Time**: ~2 minutes end-to-end
@@ -258,5 +260,5 @@ export NAKALA_API_URL="https://apitest.nakala.fr"  # or https://api.nakala.fr fo
 
 **Documentation Generated**: 2025-06-23  
 **Validation Status**: ✅ **Fully Tested and Working**  
-**O-Nakala Core Version**: v3.0.0  
+**O-Nakala Core Version**: v2.3.1  
 **API Environment**: NAKALA Test API
