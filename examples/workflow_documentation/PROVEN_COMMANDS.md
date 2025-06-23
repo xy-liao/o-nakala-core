@@ -19,22 +19,16 @@ This document contains the **exact command sequence** that successfully executed
 
 ## 🚀 Ultimate Simplicity: One-Script Execution
 
-### **Option A: Standard Execution**
+### **The ONLY Script You Need:**
 ```bash
 # Navigate to sample dataset
 cd /path/to/o-nakala-core/examples/sample_dataset
 
-# Execute complete workflow with ONE command
-./run_complete_workflow.sh your-api-key-here
+# Execute COMPLETE workflow (Steps 1-6) with ONE command
+./run_ultimate_workflow.sh your-api-key-here --cleanup
 ```
 
-### **Option B: With Automatic Cleanup (Recommended for Testing)**
-```bash
-# Execute workflow and automatically cleanup test data
-./run_workflow_with_cleanup.sh your-api-key-here --cleanup
-```
-
-**🎯 Perfect for:** Testing, demonstrations, learning - leaves test platform clean for others!
+**🎯 Perfect for:** Everything! Complete workflow + automatic cleanup + platform courtesy
 
 ## 🔥 Alternative: 4 Individual Commands
 
