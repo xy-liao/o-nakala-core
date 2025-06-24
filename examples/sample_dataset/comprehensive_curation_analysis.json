@@ -1,26 +1,59 @@
 {
-  "analysis_date": "2025-06-24T15:52:36.261234",
+  "analysis_date": "2025-06-24T20:40:07.651241",
   "analysis_type": "post_curation_assessment",
   "quality_report": {
-    "generated_at": "2025-06-24T15:52:36.773887",
+    "generated_at": "2025-06-24T20:40:08.972368",
     "scope": "all",
     "summary": {
-      "total_collections": 3,
-      "total_datasets": 10,
+      "total_collections": 6,
+      "total_datasets": 40,
       "total_groups": 0,
       "collections_by_status": {
-        "private": 3
+        "private": 6
       },
       "datasets_by_status": {
-        "pending": 10
+        "pending": 40
       }
     },
     "collections_analysis": {
-      "total_items": 3,
+      "total_items": 6,
       "valid_items": 0,
-      "items_with_errors": 3,
+      "items_with_errors": 6,
       "items_with_warnings": 0,
       "validation_details": [
+        {
+          "id": "10.34847/nkl.4417607m",
+          "title": "Collection Documents",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.32eejn4a",
+          "title": "Collection Multim\u00e9dia",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.3248i012",
+          "title": "Collection Code et Donn\u00e9es",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
         {
           "id": "10.34847/nkl.1cfbtkh9",
           "title": "Collection Documentation Acad\u00e9mique",
@@ -57,11 +90,383 @@
       ]
     },
     "datasets_analysis": {
-      "total_items": 10,
+      "total_items": 40,
       "valid_items": 0,
-      "items_with_errors": 10,
+      "items_with_errors": 40,
       "items_with_warnings": 0,
       "validation_details": [
+        {
+          "id": "10.34847/nkl.d7111l64",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.b89f3ljm",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.87e3elpd",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.5a4a3xo1",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.cd2fofau",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.40e2k777",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.f5bbasv6",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.ed36is3l",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.c85a0b0w",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.3fe5368o",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.a4e0k59h",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.dcd8p5hu",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.2cb4mpuy",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.d0c97hme",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.8f5d25qb",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.79ffrw6u",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.937f1mgk",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.ef9d7q3x",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.cd4echj3",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.bf191y9l",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.8feagt48",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.8bcbn765",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.1da75005",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.a155qx59",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.1dabcu1r",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.ecb3ccqh",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.8e5eyak5",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.c9b6839k",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.c18bk46c",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.0352nazi",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.1ecfv1yr",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
         {
           "id": "10.34847/nkl.91b2v0v3",
           "title": "Donn\u00e9es de recherche",
@@ -87,8 +492,8 @@
           ]
         },
         {
-          "id": "10.34847/nkl.1ecfv1yr",
-          "title": "Pr\u00e9sentations",
+          "id": "10.34847/nkl.f4ce78gu",
+          "title": "Images de test",
           "errors": [
             "Required field 'creator' is missing or empty"
           ],
@@ -111,29 +516,6 @@
           ]
         },
         {
-          "id": "10.34847/nkl.f4ce78gu",
-          "title": "Images de test",
-          "errors": [
-            "Required field 'creator' is missing or empty"
-          ],
-          "warnings": [],
-          "suggestions": [
-            "Description is brief, consider adding more detail",
-            "Consider adding keywords for better discoverability"
-          ]
-        },
-        {
-          "id": "10.34847/nkl.fcd8b5hn",
-          "title": "Donn\u00e9es de Recherche Valid\u00e9es",
-          "errors": [
-            "Required field 'creator' is missing or empty"
-          ],
-          "warnings": [],
-          "suggestions": [
-            "Consider adding keywords for better discoverability"
-          ]
-        },
-        {
           "id": "10.34847/nkl.5bb9enu7",
           "title": "Documentation de Recherche Compl\u00e8te",
           "errors": [
@@ -147,6 +529,17 @@
         {
           "id": "10.34847/nkl.fd8c576g",
           "title": "Mat\u00e9riaux de Pr\u00e9sentation Acad\u00e9miques",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.fcd8b5hn",
+          "title": "Donn\u00e9es de Recherche Valid\u00e9es",
           "errors": [
             "Required field 'creator' is missing or empty"
           ],
@@ -181,8 +574,8 @@
     },
     "overall_quality_score": 0.0,
     "recommendations": [
-      "Fix metadata errors in 3 collections",
-      "Fix metadata errors in 10 datasets",
+      "Fix metadata errors in 6 collections",
+      "Fix metadata errors in 40 datasets",
       "Consider improving metadata quality - current score is below 80%",
       "Urgent: Metadata quality is critically low - review and update metadata"
     ]
