@@ -82,19 +82,24 @@ This workflow demonstrates practical application of:
 - Total datasets found: 631
 - Quality report generated successfully
 
-### **v2.3.1 Automation Update** (2025-06-23)
-**New Automation Features Added:**
-- ✅ **One-command execution** - Complete workflow in single command
-- ✅ **Automatic cleanup** - Platform courtesy with test data removal
-- ✅ **Smart metadata generation** - Intelligent content-type detection
-- ✅ **Verification tools** - Confirm cleanup success against live API
-- ✅ **Zero manual steps** - Fully automated ID extraction and processing
+### **v2.4.0 Enhanced Workflow Update** (2025-06-24)
+**NEW: 7-Step Enhanced Workflow with Collection Curation:**
+- ✅ **Complete 7-step automation** - Enhanced workflow including collection metadata curation
+- ✅ **Dual metadata enhancement** - Professional metadata for both datasets AND collections
+- ✅ **Collection-specific intelligence** - Content-aware enhancements for collections
+- ✅ **Ultimate workflow script** - `run_ultimate_workflow.sh` with all 7 steps
+- ✅ **100% automation** - Zero manual steps from upload to cleanup
 
-**Automation Scripts:**
-- `run_workflow_with_cleanup.sh` - **Recommended** one-command execution
-- `create_modifications.py` - Auto-generates professional metadata
+**Enhanced Automation Scripts:**
+- `run_ultimate_workflow.sh` - **NEW** Complete 7-step workflow execution
+- `create_modifications.py` - Auto-generates professional dataset metadata
+- `create_collection_modifications.py` - **NEW** Auto-generates professional collection metadata
 - `cleanup_test_data.py` - Removes test data from platform
 - `verify_cleanup.py` - Confirms successful cleanup
+
+**Workflow Evolution:**
+- v2.3.1: 6-step workflow (datasets only)
+- v2.4.0: 7-step workflow (datasets + collections)
 
 ## 🏗️ **File Structure**
 
@@ -123,13 +128,13 @@ workflow_documentation/
     ├── final_validation.md             # Post-curation validation
     └── workflow_summary.md             # Complete process overview
 
-sample_dataset/ (automation scripts)
-├── AUTOMATION_SCRIPTS.md              # Automation overview ✅ NEW
-├── run_workflow_with_cleanup.sh       # One-command execution ✅ NEW
-├── run_complete_workflow.sh           # Standard workflow ✅ NEW
-├── create_modifications.py            # Smart metadata generator ✅ NEW
-├── cleanup_test_data.py               # Platform cleanup tool ✅ NEW
-├── verify_cleanup.py                  # Cleanup verification ✅ NEW
+sample_dataset/ (v2.4.0 automation scripts)
+├── run_ultimate_workflow.sh           # Complete 7-step workflow ✅ NEW v2.4.0
+├── create_modifications.py            # Dataset metadata generator ✅ UPDATED
+├── create_collection_modifications.py # Collection metadata generator ✅ NEW v2.4.0
+├── cleanup_test_data.py               # Platform cleanup tool
+├── cleanup_all_unakala1_data.py       # Mass cleanup tool
+├── verify_cleanup.py                  # Cleanup verification
 ├── folder_data_items.csv              # Upload configuration
 ├── folder_collections.csv             # Collection configuration
 └── files/                             # Sample data files
@@ -143,14 +148,20 @@ sample_dataset/ (automation scripts)
 
 Choose your preferred execution style:
 
-#### **🎯 Ultimate Simplicity (1 Command)**
+#### **🎯 Ultimate Simplicity (1 Command) - v2.4.0**
 ```bash
-# Standard execution
-./run_complete_workflow.sh your-api-key
+# Complete 7-step workflow with collection enhancement
+./run_ultimate_workflow.sh your-api-key
 
-# With cleanup (recommended for testing)
-./run_workflow_with_cleanup.sh your-api-key --cleanup
+# With automatic cleanup (recommended for testing)
+./run_ultimate_workflow.sh your-api-key --cleanup
 ```
+
+**New v2.4.0 Features:**
+- **Step 4**: Auto-enhancement generation for datasets AND collections
+- **Step 5**: Dataset metadata curation  
+- **Step 6**: Collection metadata curation ✨ **NEW**
+- **Step 7**: Quality analysis and verification
 
 #### **🔧 Step-by-Step (4-6 Commands)**  
 Full control with individual command execution + optional cleanup
@@ -165,7 +176,7 @@ Full control with individual command execution + optional cleanup
 ### **🔧 Option 2: Detailed Validation Workflow**
 
 #### **Prerequisites**
-1. O-Nakala Core v2.3.1+ installed: `pip install -e ".[cli]"`
+1. O-Nakala Core v2.4.0+ installed: `pip install -e ".[cli]"`
 2. NAKALA test API access configured  
 3. Virtual environment activated: `source .venv/bin/activate`
 4. Correct working directory: Ensure you're in project root or examples/sample_dataset
@@ -220,16 +231,20 @@ o-nakala-collection \
 # - collection_modifications.csv 
 # - Any other modification CSV files
 
-# Apply data modifications
+# Step 4: Generate professional metadata enhancements (v2.4.0)
+python create_modifications.py upload_results.csv
+python create_collection_modifications.py collections_output.csv
+
+# Step 5: Apply dataset modifications
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
-  --batch-modify data_modifications.csv \
+  --batch-modify auto_data_modifications.csv \
   --scope datasets
 
-# Apply collection modifications (after updating IDs)
+# Step 6: Apply collection modifications (NEW v2.4.0)
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
-  --batch-modify collection_modifications.csv \
+  --batch-modify auto_collection_modifications.csv \
   --scope collections
 ```
 
@@ -277,11 +292,13 @@ o-nakala-curator \
 
 ### **🔄 Recommended Workflow Patterns**
 
-#### **🚀 Automated Approach (Recommended)**
-1. **One command execution**: `./run_workflow_with_cleanup.sh api-key --cleanup`
-2. **Automatic platform cleanup**: Keeps test environment tidy
-3. **Zero manual intervention**: Complete automation with smart defaults
-4. **Professional results**: Production-ready metadata enhancements
+#### **🚀 Automated Approach (Recommended) - v2.4.0**
+1. **One command execution**: `./run_ultimate_workflow.sh api-key --cleanup`
+2. **Complete 7-step workflow**: Upload → Collections → Enhancement → Dataset Curation → Collection Curation → Quality Analysis
+3. **Dual metadata enhancement**: Professional metadata for both datasets AND collections
+4. **Automatic platform cleanup**: Keeps test environment tidy
+5. **Zero manual intervention**: Complete automation with intelligent defaults
+6. **Professional results**: Production-ready metadata enhancements
 
 #### **🔧 Manual Approach (Advanced)**
 1. **Validate configurations** using appropriate validation tools
@@ -294,11 +311,13 @@ o-nakala-curator \
 
 ### **Processing Efficiency**
 
-#### **Automated Workflow (v2.3.1)**
-- **Total Time**: ~2 minutes end-to-end (including cleanup)
+#### **Enhanced Automated Workflow (v2.4.0)**
+- **Total Time**: ~2.5 minutes end-to-end (including cleanup)
 - **Upload**: ~30 seconds for 14 files across 5 folders
-- **Auto-generation**: ~1 second for metadata enhancements
-- **Metadata Curation**: ~3 seconds for 5 dataset modifications
+- **Collections**: ~30 seconds for 3 collection creation
+- **Auto-generation**: ~2 seconds for dual metadata enhancements (datasets + collections)
+- **Dataset Curation**: ~3 seconds for 5 dataset modifications
+- **Collection Curation**: ~2 seconds for 3 collection modifications ✨ **NEW**
 - **Quality Analysis**: ~30 seconds for comprehensive report
 - **Cleanup**: ~30 seconds for complete platform cleanup
 
@@ -335,6 +354,7 @@ o-nakala-curator \
 **Documentation Generated**: 2025-06-08  
 **Updated with Validation**: 2025-06-09  
 **Updated with Automation**: 2025-06-23  
-**O-Nakala Core Version**: v2.3.1  
-**Validation Success Rate**: 100% (with format recommendations)  
+**Enhanced with 7-Step Workflow**: 2025-06-24  
+**O-Nakala Core Version**: v2.4.0  
+**Validation Success Rate**: 100% (datasets + collections)  
 **Integration Status**: ✅ **Fully Integrated with Endpoint Documentation**

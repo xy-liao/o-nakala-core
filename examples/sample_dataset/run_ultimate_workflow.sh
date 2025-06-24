@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Ultimate O-Nakala Core Workflow - Complete Steps 1-6 with Cleanup
+# Ultimate O-Nakala Core Workflow - Complete Steps 1-7 with Cleanup
 # Combines the best of all options: complete workflow + cleanup
 
 set -e
 
 echo "🚀 Starting ULTIMATE O-Nakala Core Workflow..."
-echo "✨ Complete Steps 1-6 + Automatic Cleanup"
+echo "✨ Complete Steps 1-7 + Automatic Cleanup"
 echo "================================================="
 
 # Check API key
@@ -50,23 +50,34 @@ COLLECTIONS_CREATED=$(tail -n +2 collections_output.csv 2>/dev/null | wc -l || e
 echo "✅ Collections created - $COLLECTIONS_CREATED collections"
 
 echo ""
-echo "🤖 Step 3/6: Auto-Enhancement Generation"
+echo "🤖 Step 3/7: Auto-Enhancement Generation"
 echo "----------------------------------------"
 python create_modifications.py upload_results.csv
+python create_collection_modifications.py collections_output.csv
 echo "✅ Professional metadata enhancements generated"
 
 echo ""
-echo "✨ Step 4/6: Metadata Curation"
-echo "------------------------------"
+echo "✨ Step 4/7: Dataset Metadata Curation"
+echo "--------------------------------------"
 o-nakala-curator \
   --api-key "$API_KEY" \
   --batch-modify auto_data_modifications.csv \
   --scope datasets
 
-echo "✅ Metadata professionally enhanced"
+echo "✅ Dataset metadata professionally enhanced"
 
 echo ""
-echo "📊 Step 5/6: Quality Analysis"
+echo "📁 Step 5/7: Collection Metadata Curation"
+echo "-----------------------------------------"
+o-nakala-curator \
+  --api-key "$API_KEY" \
+  --batch-modify auto_collection_modifications.csv \
+  --scope collections
+
+echo "✅ Collection metadata professionally enhanced"
+
+echo ""
+echo "📊 Step 6/7: Quality Analysis"
 echo "-----------------------------"
 o-nakala-curator \
   --api-key "$API_KEY" \
@@ -77,7 +88,7 @@ o-nakala-curator \
 echo "✅ Comprehensive quality report generated"
 
 echo ""
-echo "🎯 Step 6/6: Results Summary"
+echo "🎯 Step 7/7: Results Summary"
 echo "----------------------------"
 DATASETS_COUNT=$(tail -n +2 upload_results.csv | wc -l)
 echo "📊 Datasets Created: $DATASETS_COUNT"
@@ -88,13 +99,14 @@ echo "🔗 First Dataset: $(head -2 upload_results.csv | tail -1 | cut -d',' -f1
 echo ""
 echo "🎉 COMPLETE WORKFLOW FINISHED SUCCESSFULLY!"
 echo "==========================================="
-echo "📄 All 6 steps completed:"
+echo "📄 All 7 steps completed:"
 echo "   ✅ 1. Environment Setup"
 echo "   ✅ 2. Data Upload ($DATASETS_COUNT datasets)"
 echo "   ✅ 3. Collection Creation ($COLLECTIONS_CREATED collections)"
 echo "   ✅ 4. Auto-Enhancement (intelligent metadata)"
-echo "   ✅ 5. Metadata Curation (100% success)"
-echo "   ✅ 6. Quality Analysis (comprehensive report)"
+echo "   ✅ 5. Dataset Curation (100% success)"
+echo "   ✅ 6. Collection Curation (100% success)"
+echo "   ✅ 7. Quality Analysis (comprehensive report)"
 
 # Cleanup if requested
 if [ "$CLEANUP_MODE" = "--cleanup" ]; then
@@ -111,4 +123,4 @@ if [ "$CLEANUP_MODE" = "--cleanup" ]; then
 fi
 
 echo ""
-echo "🏆 ULTIMATE WORKFLOW: ALL STEPS COMPLETED SUCCESSFULLY!"
+echo "🏆 ULTIMATE WORKFLOW: ALL 7 STEPS COMPLETED SUCCESSFULLY!"

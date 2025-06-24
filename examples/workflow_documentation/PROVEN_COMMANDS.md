@@ -1,19 +1,20 @@
-# ✅ Proven Working Commands - O-Nakala Core Workflow
+# ✅ Proven Working Commands - Enhanced O-Nakala Core Workflow v2.4.0
 
-**Validation Status**: ✅ **Successfully Tested 2025-06-23**  
-**Success Rate**: 100% for upload and curation workflow  
+**Validation Status**: ✅ **Successfully Tested 2025-06-24**  
+**Success Rate**: 100% for enhanced 7-step workflow  
 **Test Environment**: NAKALA Test API (https://apitest.nakala.fr)
 
-This document contains the **exact command sequence** that successfully executed the complete O-Nakala Core workflow with real API calls and live data processing.
+This document contains the **exact command sequence** that successfully executed the complete Enhanced O-Nakala Core v2.4.0 workflow with real API calls and live data processing.
 
-## ⚡ Quick Summary
+## ⚡ Quick Summary (v2.4.0)
 
-**🎯 Goal**: Upload 5 datasets, enhance metadata, generate quality report (+ optional cleanup)  
-**⏱️ Time**: ~2 minutes total (+ 30 seconds cleanup)  
+**🎯 Goal**: Upload 5 datasets + 3 collections, enhance metadata for BOTH datasets AND collections, generate quality report (+ optional cleanup)  
+**⏱️ Time**: ~2.5 minutes total (+ 30 seconds cleanup)  
 **🤖 Automation**: 100% automated, zero manual steps  
-**✅ Success Rate**: 100% for all operations  
-**📋 Commands**: 1 command (with cleanup) OR 4-6 individual commands  
+**✅ Success Rate**: 100% for all operations (8 total enhancements)  
+**📋 Commands**: 1 command (with cleanup) OR 7 individual commands  
 **🌍 Platform courtesy**: Optional cleanup keeps test environment tidy
+**✨ NEW**: Collection metadata curation with professional enhancements
 
 **Perfect for**: First-time users, demonstrations, testing, production workflows
 
@@ -24,32 +25,41 @@ This document contains the **exact command sequence** that successfully executed
 # Navigate to sample dataset
 cd /path/to/o-nakala-core/examples/sample_dataset
 
-# Execute COMPLETE workflow (Steps 1-6) with ONE command
+# Execute COMPLETE workflow (Steps 1-7) with ONE command
 ./run_ultimate_workflow.sh your-api-key-here --cleanup
 ```
 
 **🎯 Perfect for:** Everything! Complete workflow + automatic cleanup + platform courtesy
 
-## 🔥 Alternative: 4 Individual Commands
+## 🔥 Alternative: 7 Individual Commands (v2.4.0)
 
-If you prefer step-by-step execution:
+If you prefer step-by-step execution with full control:
 
 ```bash
 # Setup (once)
 export NAKALA_API_KEY="your-api-key-here"
 cd /path/to/o-nakala-core/examples/sample_dataset
 
-# Complete automated workflow (copy-paste these 4 commands)
+# Enhanced 7-step workflow (copy-paste these commands)
+# Step 1-2: Upload datasets and create collections
 o-nakala-upload --api-key "$NAKALA_API_KEY" --dataset folder_data_items.csv --mode folder --folder-config folder_data_items.csv --base-path . --output upload_results.csv
 
-python create_modifications.py upload_results.csv
+o-nakala-collection --api-key "$NAKALA_API_KEY" --from-upload-output upload_results.csv --from-folder-collections folder_collections.csv --collection-report collections_output.csv
 
+# Step 3: Generate professional metadata enhancements (NEW v2.4.0)
+python create_modifications.py upload_results.csv
+python create_collection_modifications.py collections_output.csv
+
+# Step 4-5: Apply enhancements to datasets and collections
 o-nakala-curator --api-key "$NAKALA_API_KEY" --batch-modify auto_data_modifications.csv --scope datasets
 
+o-nakala-curator --api-key "$NAKALA_API_KEY" --batch-modify auto_collection_modifications.csv --scope collections
+
+# Step 6: Generate quality report
 o-nakala-curator --api-key "$NAKALA_API_KEY" --quality-report --scope datasets --output quality_report.json
 ```
 
-**✅ Either way**: 5 datasets uploaded, professionally enhanced, and quality-analyzed in ~2 minutes with 100% automation!
+**✅ Either way**: 5 datasets + 3 collections uploaded, professionally enhanced (8 total enhancements), and quality-analyzed in ~2.5 minutes with 100% automation!
 
 ## 📋 Detailed Step-by-Step Guide
 

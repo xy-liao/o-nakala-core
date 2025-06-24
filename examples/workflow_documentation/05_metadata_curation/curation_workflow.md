@@ -1,28 +1,60 @@
-# Metadata Curation Workflow
+# Enhanced Metadata Curation Workflow (v2.4.0)
 
 ## Overview
-This phase demonstrates systematic metadata enhancement using batch modification techniques to address quality issues and improve discoverability of datasets and collections.
+This phase demonstrates the enhanced 7-step workflow with systematic metadata enhancement for both datasets AND collections using automated generation and batch modification techniques.
 
 > **📚 Documentation Reference**: For complete Curator endpoint documentation, CSV format specifications, and field transformations, see [Curator Endpoint Documentation](../../../docs/endpoints/curator-endpoint/README.md).
 
-## Validation Status
-**CSV File**: `data_modifications.csv` ✅ **VALIDATED**  
-**Validation Tool**: `tools/curator_validator.py`  
-**Result**: 100% valid, generates 4 metadata entries per row (4 total modifications)
+## v2.4.0 Validation Status
+**Auto-Generated Files**: ✅ **VALIDATED**  
+- `auto_data_modifications.csv` - 5 dataset enhancements
+- `auto_collection_modifications.csv` - 3 collection enhancements  
+**Validation Tool**: `o-nakala-curator --dry-run`  
+**Result**: 100% valid, 8 total professional metadata modifications
 
-## Curation Strategy
+## Enhanced Curation Strategy
 
-### Two-Phase Approach
-1. **Data Item Enhancement** - Enrich dataset metadata with keywords and relations
-2. **Collection Enhancement** - Improve collection descriptions and discoverability
+### Three-Phase Automated Approach (v2.4.0)
+1. **Auto-Enhancement Generation** - Intelligent metadata creation for datasets and collections
+2. **Dataset Enhancement** - Apply professional metadata to all datasets
+3. **Collection Enhancement** - Apply professional metadata to all collections ✨ **NEW**
 
-### Target Improvements
-- Enhanced multilingual keywords for better search visibility
-- Detailed relationship documentation between datasets and research context
-- Expanded descriptions with comprehensive academic context
-- Improved collection-level metadata organization
+### Target Improvements (v2.4.0)
+- **Professional metadata generation** - Content-aware intelligent enhancements
+- **Dual metadata enhancement** - Both datasets AND collections enhanced
+- **Multilingual support** - Complete French/English professional descriptions
+- **Academic-grade content** - Research-ready titles, descriptions, and keywords
+- **Collection-specific intelligence** - Targeted enhancements based on collection type
 
-## Phase 1: Data Item Curation
+## Phase 1: Auto-Enhancement Generation (v2.4.0)
+
+### Automated Metadata Generation
+The v2.4.0 workflow includes intelligent metadata generation that analyzes content and creates professional enhancements automatically.
+
+#### Generation Commands
+```bash
+# Generate dataset enhancements
+python create_modifications.py upload_results.csv
+
+# Generate collection enhancements (NEW v2.4.0)
+python create_collection_modifications.py collections_output.csv
+```
+
+#### auto_data_modifications.csv (Generated)
+Content-aware enhancements for each dataset:
+```csv
+id,action,new_title,new_description,new_keywords
+10.34847/nkl.xxx,modify,fr:Images de Site Web Optimisées|en:Optimized Website Images,fr:Collection d'images...
+```
+
+#### auto_collection_modifications.csv (Generated) ✨ **NEW**
+Collection-specific enhancements based on content type:
+```csv
+id,action,new_title,new_description,new_keywords
+10.34847/nkl.xxx,modify,fr:Collection Code et Données Avancée|en:Advanced Code and Data Collection,fr:Collection professionnelle...
+```
+
+## Phase 2: Dataset Metadata Curation
 
 ### Modification Configuration Analysis
 
@@ -42,18 +74,18 @@ id,action,new_keywords,new_relation
 - **Academic Terminology**: Proper scholarly vocabulary for discoverability
 - **Temporal Context**: Specific references to study timeframes and scope
 
-### Data Item Modification Commands
+### Dataset Modification Commands (v2.4.0)
 
 #### Dry Run Validation
 ```bash
 o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
-  --batch-modify data_modifications.csv \
+  --batch-modify auto_data_modifications.csv \
   --scope datasets \
   --dry-run
 ```
 
-**Dry Run Results:**
+**v2.4.0 Dry Run Results:**
 ```
 Batch modification simulation:
   Total processed: 5
@@ -67,8 +99,47 @@ Batch modification simulation:
 ```bash
 o-nakala-curator \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
-  --batch-modify data_modifications.csv \
+  --batch-modify auto_data_modifications.csv \
   --scope datasets
+```
+
+## Phase 3: Collection Metadata Curation ✨ **NEW v2.4.0**
+
+### Collection Enhancement Strategy
+Professional metadata enhancement specifically designed for collection-level organization:
+
+- **Content-Type Specific**: Different enhancements for Code & Data vs Documents vs Multimedia collections
+- **Academic Language**: Research-grade descriptions and terminology
+- **Multilingual Professional Titles**: Enhanced French/English titles
+- **Targeted Keywords**: Collection-appropriate search terms
+
+### Collection Modification Commands
+
+#### Dry Run Validation
+```bash
+o-nakala-curator \
+  --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+  --batch-modify auto_collection_modifications.csv \
+  --scope collections \
+  --dry-run
+```
+
+**v2.4.0 Collection Results:**
+```
+Batch modification simulation:
+  Total processed: 3
+  Successful: 3
+  Failed: 0
+  Skipped: 0
+  Success rate: 100.0%
+```
+
+#### Production Application
+```bash
+o-nakala-curator \
+  --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+  --batch-modify auto_collection_modifications.csv \
+  --scope collections
 ```
 
 **Application Results:**

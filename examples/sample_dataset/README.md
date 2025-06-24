@@ -36,22 +36,25 @@ This directory contains a comprehensive example dataset designed for testing all
 - `stakeholder_update_2023-06.md` - Progress report
 - `team_meeting_2023-04.md` - Internal meeting notes
 
-## 🎯 Workflow Processing
+## 🎯 Enhanced 7-Step Workflow Processing
 
 ### Data Upload Results
-When processed through O-Nakala Core, this dataset creates:
+When processed through the enhanced O-Nakala Core workflow, this dataset creates:
 
 - **5 Datasets**: One for each file category (code, data, documents, images, presentations)
 - **3 Collections**: Thematically organized groupings
-  - "Code and Data Collection" - Technical files
-  - "Documents Collection" - Research documentation
-  - "Multimedia Collection" - Images and presentations
+  - "Advanced Code and Data Collection" - Technical files with enhanced metadata
+  - "Academic Documentation Collection" - Research documentation with professional descriptions
+  - "Professional Multimedia Collection" - Images and presentations with rich keywords
 
-### Success Metrics
+### Enhanced Success Metrics (v2.4.0)
 - **14 files** successfully uploaded
 - **100% success rate** in processing
 - **Multilingual metadata** support (French/English)
 - **COAR resource types** properly assigned
+- **Professional metadata enhancement** for both datasets AND collections
+- **Automated metadata generation** with intelligent content detection
+- **Complete workflow automation** with 7-step process
 
 ## 🧪 Workshop Exercises
 
@@ -87,36 +90,43 @@ When processed through O-Nakala Core, this dataset creates:
 
 ## 🚀 Usage Instructions
 
-### 1. Basic Upload Workflow
+### 1. Enhanced 7-Step Workflow (Recommended)
+```bash
+# Complete automated workflow with professional metadata enhancement
+./run_ultimate_workflow.sh your_test_api_key --cleanup
+```
+
+**What this does:**
+1. **Upload** - 5 datasets created from sample files
+2. **Collections** - 3 thematic collections organized
+3. **Enhancement Generation** - Professional metadata created for datasets AND collections
+4. **Dataset Curation** - Enhanced metadata applied to all datasets
+5. **Collection Curation** - Enhanced metadata applied to all collections  
+6. **Quality Analysis** - Comprehensive report generated
+7. **Cleanup** - Test data automatically removed (optional)
+
+### 2. Manual Step-by-Step Workflow
 ```bash
 # Set up environment
 export NAKALA_API_KEY="your_test_api_key"
-export PYTHONPATH=/path/to/o-nakala-core
 
-# Upload dataset
-o-nakala-upload \
-  --api-key "$NAKALA_API_KEY" \
-  --dataset folder_data_items.csv \
-  --mode folder \
-  --output upload_results.csv
+# Step 1-2: Upload and create collections
+o-nakala-upload --api-key "$NAKALA_API_KEY" --dataset folder_data_items.csv --mode folder --output upload_results.csv
+o-nakala-collection --api-key "$NAKALA_API_KEY" --from-upload-output upload_results.csv --from-folder-collections folder_collections.csv
 
-# Create collections
-o-nakala-collection \
-  --api-key "$NAKALA_API_KEY" \
-  --from-upload-output upload_results.csv \
-  --from-folder-collections folder_collections.csv
+# Step 3: Generate professional enhancements
+python create_modifications.py upload_results.csv
+python create_collection_modifications.py collections_output.csv
+
+# Step 4-5: Apply enhancements to datasets and collections
+o-nakala-curator --api-key "$NAKALA_API_KEY" --batch-modify auto_data_modifications.csv --scope datasets
+o-nakala-curator --api-key "$NAKALA_API_KEY" --batch-modify auto_collection_modifications.csv --scope collections
+
+# Step 6: Quality analysis
+o-nakala-curator --api-key "$NAKALA_API_KEY" --quality-report --scope datasets --output quality_report.json
 ```
 
-### 2. Quality Analysis
-```bash
-# Run quality report
-o-nakala-curator \
-  --api-key "$NAKALA_API_KEY" \
-  --quality-report \
-  --verbose
-```
-
-### 3. Batch Modifications
+### 3. Workshop Exercises and Custom Modifications
 ```bash
 # Test modifications (dry run)
 o-nakala-curator \
@@ -132,22 +142,31 @@ o-nakala-curator \
   --verbose
 ```
 
-## 📊 Expected Results
+## 📊 Expected Results (Enhanced 7-Step Workflow)
 
 ### Upload Output
 - Creates persistent identifiers (DOIs) for each dataset
 - Generates upload results CSV with collection mappings
 - Processes all 14 files successfully
 
-### Collection Organization
-- Groups related datasets thematically
-- Maintains multilingual metadata
-- Supports complex relationship mapping
+### Collection Organization (Enhanced)
+- Groups related datasets thematically with professional titles
+- Enhanced multilingual metadata for both datasets AND collections
+- Professional descriptions and targeted keywords automatically generated
 
-### Quality Metrics
+### Enhanced Quality Metrics (v2.4.0)
 - 100% metadata completeness for core fields
 - Proper COAR resource type assignments
 - Multilingual support validation
+- **Professional metadata enhancement**: Datasets AND collections enhanced
+- **Automated intelligence**: Content-aware metadata generation
+- **Complete automation**: 7-step workflow with 100% success rate
+
+### New Files Generated
+- `auto_data_modifications.csv` - Professional dataset metadata enhancements
+- `auto_collection_modifications.csv` - Professional collection metadata enhancements
+- `quality_report.json` - Comprehensive analysis report
+- `collections_output.csv` - Collection creation results with IDs
 
 ## 🔧 Configuration Details
 

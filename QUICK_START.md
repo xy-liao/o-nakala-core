@@ -42,13 +42,16 @@ print('✅ O-Nakala Core is ready!')
 "
 ```
 
-### **Step 4: Test Complete Workflow v2.2.0** (2 minutes)
+### **Step 4: Test Enhanced 7-Step Workflow v2.4.0** (2 minutes)
 
 ```bash
 # Navigate to sample dataset directory
 cd examples/sample_dataset
 
-# Test upload validation with folder mode (v2.2.0 validated)
+# Run complete 7-step workflow with automatic cleanup
+./run_ultimate_workflow.sh 33170cfe-f53c-550b-5fb6-4814ce981293 --cleanup
+
+# OR test validation only (without actual upload)
 o-nakala-upload \
   --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
   --dataset folder_data_items.csv \
@@ -56,41 +59,61 @@ o-nakala-upload \
   --folder-config folder_data_items.csv \
   --base-path . \
   --validate-only
-
-# Test collection validation (v2.2.0 validated)
-o-nakala-collection \
-  --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
-  --from-folder-collections folder_collections.csv \
-  --validate-only
 ```
 
-**🎉 Success!** If both commands complete without errors, you're ready to use O-Nakala Core.
+**🎉 Success!** The ultimate workflow creates 5 datasets + 3 collections with professional metadata enhancement and automatically cleans up test data.
+
+### **What the 7-Step Workflow Does:**
+1. **Upload** - 5 datasets from sample files
+2. **Collections** - 3 thematic collections created 
+3. **Enhancement** - Professional metadata generated for datasets AND collections
+4. **Dataset Curation** - Enhanced titles, descriptions, keywords applied
+5. **Collection Curation** - Enhanced metadata applied to collections
+6. **Quality Analysis** - Comprehensive report generated
+7. **Cleanup** - Test data automatically removed (with `--cleanup`)
 
 ---
 
-## **Production Workflow Example**
+## **Production Workflow Example (7 Steps)**
 
-### **Upload Research Data**
+### **Complete Enhanced Workflow**
 
 ```bash
-# Upload your research files
-python -m src.o_nakala_core.upload \
+# Step 1-2: Upload datasets and create collections
+o-nakala-upload \
   --api-key "$NAKALA_API_KEY" \
   --dataset "your_data/folder_data_items.csv" \
   --base-path "your_data" \
   --mode "folder" \
   --output "upload_results.csv"
-```
 
-### **Create Collections**
-
-```bash
-# Organize uploads into collections
-python -m src.o_nakala_core.collection \
+o-nakala-collection \
   --api-key "$NAKALA_API_KEY" \
   --from-folder-collections "your_data/collections.csv" \
   --from-upload-output "upload_results.csv" \
   --collection-report "collections_output.csv"
+
+# Step 3: Generate professional metadata enhancements
+python create_modifications.py upload_results.csv
+python create_collection_modifications.py collections_output.csv
+
+# Step 4-5: Apply enhanced metadata to datasets and collections
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify auto_data_modifications.csv \
+  --scope datasets
+
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify auto_collection_modifications.csv \
+  --scope collections
+
+# Step 6: Generate quality report
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --quality-report \
+  --scope datasets \
+  --output "quality_report.json"
 ```
 
 ### **Enhance Metadata**
