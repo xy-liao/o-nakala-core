@@ -1,0 +1,190 @@
+{
+  "analysis_date": "2025-06-24T15:52:36.261234",
+  "analysis_type": "post_curation_assessment",
+  "quality_report": {
+    "generated_at": "2025-06-24T15:52:36.773887",
+    "scope": "all",
+    "summary": {
+      "total_collections": 3,
+      "total_datasets": 10,
+      "total_groups": 0,
+      "collections_by_status": {
+        "private": 3
+      },
+      "datasets_by_status": {
+        "pending": 10
+      }
+    },
+    "collections_analysis": {
+      "total_items": 3,
+      "valid_items": 0,
+      "items_with_errors": 3,
+      "items_with_warnings": 0,
+      "validation_details": [
+        {
+          "id": "10.34847/nkl.1cfbtkh9",
+          "title": "Collection Documentation Acad\u00e9mique",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.46c6238x",
+          "title": "Collection Multim\u00e9dia Professionnelle",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.992bbc80",
+          "title": "Collection Code et Donn\u00e9es Avanc\u00e9e",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        }
+      ]
+    },
+    "datasets_analysis": {
+      "total_items": 10,
+      "valid_items": 0,
+      "items_with_errors": 10,
+      "items_with_warnings": 0,
+      "validation_details": [
+        {
+          "id": "10.34847/nkl.91b2v0v3",
+          "title": "Donn\u00e9es de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.df2a06mv",
+          "title": "Documents de recherche",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.1ecfv1yr",
+          "title": "Pr\u00e9sentations",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.72cbcs24",
+          "title": "Scripts d'analyse",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.f4ce78gu",
+          "title": "Images de test",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Description is brief, consider adding more detail",
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.fcd8b5hn",
+          "title": "Donn\u00e9es de Recherche Valid\u00e9es",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.5bb9enu7",
+          "title": "Documentation de Recherche Compl\u00e8te",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.fd8c576g",
+          "title": "Mat\u00e9riaux de Pr\u00e9sentation Acad\u00e9miques",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.0d7aw9tf",
+          "title": "Scripts d'Analyse Professionnels",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        },
+        {
+          "id": "10.34847/nkl.c1f5psgb",
+          "title": "Images de Site Web Optimis\u00e9es",
+          "errors": [
+            "Required field 'creator' is missing or empty"
+          ],
+          "warnings": [],
+          "suggestions": [
+            "Consider adding keywords for better discoverability"
+          ]
+        }
+      ]
+    },
+    "overall_quality_score": 0.0,
+    "recommendations": [
+      "Fix metadata errors in 3 collections",
+      "Fix metadata errors in 10 datasets",
+      "Consider improving metadata quality - current score is below 80%",
+      "Urgent: Metadata quality is critically low - review and update metadata"
+    ]
+  }
+}

@@ -14,7 +14,7 @@ This document contains the **exact command sequence** that successfully executed
 **✅ Success Rate**: 100% for all operations (8 total enhancements)  
 **📋 Commands**: 1 command (with cleanup) OR 7 individual commands  
 **🌍 Platform courtesy**: Optional cleanup keeps test environment tidy
-**✨ NEW**: Collection metadata curation with professional enhancements
+**✨ NEW v2.4.0**: Collection metadata curation with professional enhancements - Step 5
 
 **Perfect for**: First-time users, demonstrations, testing, production workflows
 
@@ -48,11 +48,12 @@ o-nakala-collection --api-key "$NAKALA_API_KEY" --from-upload-output upload_resu
 
 # Step 3: Generate professional metadata enhancements (NEW v2.4.0)
 python create_modifications.py upload_results.csv
-python create_collection_modifications.py collections_output.csv
 
-# Step 4-5: Apply enhancements to datasets and collections
+# Step 4: Apply enhancements to datasets
 o-nakala-curator --api-key "$NAKALA_API_KEY" --batch-modify auto_data_modifications.csv --scope datasets
 
+# Step 5: Collection metadata curation (NEW v2.4.0)
+python create_collection_modifications.py collections_output.csv
 o-nakala-curator --api-key "$NAKALA_API_KEY" --batch-modify auto_collection_modifications.csv --scope collections
 
 # Step 6: Generate quality report
@@ -85,13 +86,13 @@ o-nakala-upload \
 ```
 **✅ Creates**: 5 datasets with NAKALA identifiers
 
-### **Step 3: Auto-Generate Enhancements**
+### **Step 3: Auto-Generate Dataset Enhancements**
 ```bash
 python create_modifications.py upload_results.csv
 ```
 **✅ Creates**: `auto_data_modifications.csv` with professional metadata
 
-### **Step 4: Apply Enhancements**
+### **Step 4: Apply Dataset Enhancements**
 ```bash
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
@@ -100,7 +101,18 @@ o-nakala-curator \
 ```
 **✅ Result**: All datasets enhanced with professional titles, descriptions, keywords
 
-### **Step 5: Generate Quality Report**
+### **Step 5: Collection Metadata Curation (NEW v2.4.0)**
+```bash
+python create_collection_modifications.py collections_output.csv
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify auto_collection_modifications.csv \
+  --scope collections
+```
+**✅ Creates**: `auto_collection_modifications.csv` with professional collection metadata  
+**✅ Result**: All collections enhanced with professional titles, descriptions, keywords
+
+### **Step 6: Generate Quality Report**
 ```bash
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
@@ -262,7 +274,7 @@ export NAKALA_API_URL="https://apitest.nakala.fr"  # or https://api.nakala.fr fo
 
 ---
 
-**Documentation Generated**: 2025-06-23  
+**Documentation Generated**: 2025-06-24  
 **Validation Status**: ✅ **Fully Tested and Working**  
-**O-Nakala Core Version**: v2.3.1  
+**O-Nakala Core Version**: v2.4.0  
 **API Environment**: NAKALA Test API
