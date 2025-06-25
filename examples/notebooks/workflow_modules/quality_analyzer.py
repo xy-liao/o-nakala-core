@@ -211,8 +211,8 @@ class QualityAnalyzer:
                 return False
             
             # Basic validation of report structure
-            required_keys = ['timestamp']  # Minimal required structure
-            if not any(key in quality_data for key in required_keys):
+            required_keys = ['generated_at', 'scope', 'summary']  # Minimal required structure
+            if not all(key in quality_data for key in required_keys):
                 self.logger.warning("Quality report missing required structure")
                 return False
             

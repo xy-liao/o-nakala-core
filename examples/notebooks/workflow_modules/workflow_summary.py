@@ -196,7 +196,7 @@ class WorkflowSummary:
     def _calculate_overall_statistics(self, summary: Dict[str, Any]) -> Dict[str, Any]:
         """Calculate overall workflow statistics."""
         stats = {
-            'total_operations': 7,  # Ultimate workflow steps
+            'total_operations': 8,  # Enhanced ultimate workflow steps
             'successful_operations': 0,
             'total_items_created': 0,
             'total_enhancements_applied': 0,
@@ -222,6 +222,18 @@ class WorkflowSummary:
         if summary['enhancement_summary']['collection_enhancements'].get('available', False):
             stats['successful_operations'] += 1
             stats['total_enhancements_applied'] += summary['enhancement_summary']['collection_enhancements'].get('total_modifications', 0)
+        
+        # Operation #6: Validation fixes (part of enhanced curation)
+        if summary.get('curation_summary', {}).get('available', False):
+            stats['successful_operations'] += 1
+        
+        # Operation #7: Publication management  
+        if summary.get('publication_summary', {}).get('available', False):
+            stats['successful_operations'] += 1
+        
+        # Operation #8: Advanced data management
+        if summary.get('advanced_management_summary', {}).get('available', False):
+            stats['successful_operations'] += 1
         
         # Calculate success rate
         stats['workflow_success_rate'] = (stats['successful_operations'] / stats['total_operations']) * 100

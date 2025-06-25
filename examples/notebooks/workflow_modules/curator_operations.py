@@ -89,14 +89,18 @@ class CuratorOperations:
         results = {
             'dataset_curation': None,
             'collection_curation': None,
+            'creator_fixes': None,
             'success': True
         }
         
         try:
-            # Curate datasets
+            # Step 1: Fix critical validation errors (missing creators)
+            results['creator_fixes'] = self.fix_validation_errors()
+            
+            # Step 2: Curate datasets
             results['dataset_curation'] = self.curate_datasets(data_modifications_file)
             
-            # Curate collections
+            # Step 3: Curate collections
             results['collection_curation'] = self.curate_collections(collection_modifications_file)
             
             self._display_curation_summary(results)
@@ -107,6 +111,87 @@ class CuratorOperations:
             results['error'] = str(e)
         
         return results
+    
+    def fix_validation_errors(self) -> Dict[str, Any]:
+        """
+        Fix critical validation errors like missing creator fields.
+        
+        Returns:
+            Dict with validation fix results
+        """
+        self.logger.info("🔧 Fixing critical validation errors...")
+        
+        results = {
+            'items_fixed': 0,
+            'errors_fixed': [],
+            'success': True
+        }
+        
+        try:
+            # Generate creator fixes for datasets and collections
+            creator_fixes = self._generate_creator_fixes()
+            
+            if creator_fixes['datasets_file'].exists():
+                # Apply dataset creator fixes
+                dataset_result = self._execute_curation("datasets", str(creator_fixes['datasets_file']))
+                if dataset_result.get('success'):
+                    results['items_fixed'] += dataset_result.get('modifications_applied', 0)
+                    results['errors_fixed'].append(f"Added creators to {dataset_result.get('modifications_applied', 0)} datasets")
+            
+            if creator_fixes['collections_file'].exists():
+                # Apply collection creator fixes  
+                collection_result = self._execute_curation("collections", str(creator_fixes['collections_file']))
+                if collection_result.get('success'):
+                    results['items_fixed'] += collection_result.get('modifications_applied', 0)
+                    results['errors_fixed'].append(f"Added creators to {collection_result.get('modifications_applied', 0)} collections")
+            
+            self.logger.info(f"✅ Fixed validation errors for {results['items_fixed']} items")
+            
+        except Exception as e:
+            self.logger.error(f"Error fixing validation errors: {e}")
+            results['success'] = False
+            results['error'] = str(e)
+        
+        return results
+    
+    def _generate_creator_fixes(self) -> Dict[str, Path]:
+        """Generate CSV files with creator field fixes."""
+        datasets_file = self.base_path / 'creator_fixes_datasets.csv'
+        collections_file = self.base_path / 'creator_fixes_collections.csv'
+        
+        # Default creator for test environment
+        default_creator = "Test User (test environment)"
+        
+        # Generate dataset creator fixes
+        upload_file = self.base_path / 'upload_results.csv'
+        if upload_file.exists():
+            df = pd.read_csv(upload_file)
+            creator_df = pd.DataFrame({
+                'id': df['identifier'],
+                'action': 'add_metadata',
+                'property': 'creator',
+                'value': default_creator,
+                'lang': 'en'
+            })
+            creator_df.to_csv(datasets_file, index=False)
+        
+        # Generate collection creator fixes
+        collections_output_file = self.base_path / 'collections_output.csv'
+        if collections_output_file.exists():
+            df = pd.read_csv(collections_output_file)
+            creator_df = pd.DataFrame({
+                'id': df['collection_id'],
+                'action': 'add_metadata',
+                'property': 'creator',
+                'value': default_creator,
+                'lang': 'en'
+            })
+            creator_df.to_csv(collections_file, index=False)
+        
+        return {
+            'datasets_file': datasets_file,
+            'collections_file': collections_file
+        }
     
     def _execute_curation(self, scope: Literal["datasets", "collections"], 
                          modifications_file: str) -> Dict[str, Any]:
