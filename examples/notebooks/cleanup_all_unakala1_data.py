@@ -19,7 +19,7 @@ Features:
 - Safety confirmations (unless --force is used)
 - Summary statistics
 
-Author: Claude Code Assistant
+Author: o-nakala-core development team
 Date: 2025-06-23
 Version: 1.0
 """

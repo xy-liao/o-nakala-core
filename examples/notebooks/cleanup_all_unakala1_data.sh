@@ -10,7 +10,7 @@
 #   ./cleanup_all_unakala1_data.sh <api-key>
 #   ./cleanup_all_unakala1_data.sh <api-key> --force
 #
-# Author: Claude Code Assistant
+# Author: o-nakala-core development team
 # Date: 2025-06-23
 
 set -e

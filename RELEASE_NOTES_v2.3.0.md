@@ -154,7 +154,7 @@ All existing:
 - 📖 **Workshop Notebook**: Updated for v2.3.0 with latest examples
 - 🔧 **Documentation**: All guides updated with v2.3.0 references  
 - 📊 **Sample Data**: Validated with actual test results
-- 🛠️ **CLAUDE.md**: Enhanced project instructions
+- 🛠️ **Documentation**: Enhanced project instructions
 
 ---
 
