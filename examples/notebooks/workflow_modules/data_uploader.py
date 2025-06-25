@@ -92,8 +92,8 @@ class DataUploader:
             # Calculate statistics
             stats = {
                 'total_datasets': len(df),
-                'successful_uploads': len(df[df['status'] == 'success']) if 'status' in df.columns else len(df),
-                'failed_uploads': len(df[df['status'] == 'failed']) if 'status' in df.columns else 0,
+                'successful_uploads': len(df[df['status'] == 'OK']) if 'status' in df.columns else len(df),
+                'failed_uploads': len(df[df['status'] != 'OK']) if 'status' in df.columns else 0,
                 'execution_time': execution_time,
                 'results_file': str(self.results_file),
                 'first_dataset_id': df.iloc[0]['identifier'] if len(df) > 0 and 'identifier' in df.columns else None

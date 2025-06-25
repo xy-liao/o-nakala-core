@@ -96,8 +96,8 @@ class CollectionManager:
             # Calculate statistics
             stats = {
                 'total_collections': len(df),
-                'successful_collections': len(df[df['status'] == 'success']) if 'status' in df.columns else len(df),
-                'failed_collections': len(df[df['status'] == 'failed']) if 'status' in df.columns else 0,
+                'successful_collections': len(df[df['creation_status'] == 'SUCCESS']) if 'creation_status' in df.columns else len(df),
+                'failed_collections': len(df[df['creation_status'] != 'SUCCESS']) if 'creation_status' in df.columns else 0,
                 'execution_time': execution_time,
                 'collections_file': str(self.collections_output_file),
                 'first_collection_id': df.iloc[0]['collection_id'] if len(df) > 0 and 'collection_id' in df.columns else None

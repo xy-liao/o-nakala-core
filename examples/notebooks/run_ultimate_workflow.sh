@@ -60,7 +60,9 @@ o-nakala-upload \
   --base-path "$DATASET_DIR" \
   --output "$DATASET_DIR/upload_results.csv"
 
-echo "✅ Upload completed - $(wc -l < "$DATASET_DIR/upload_results.csv") datasets created"
+# Count datasets properly (subtract header line)
+DATASETS_UPLOADED=$(tail -n +2 "$DATASET_DIR/upload_results.csv" | wc -l)
+echo "✅ Upload completed - $DATASETS_UPLOADED datasets created"
 
 echo ""
 echo "📁 Step 2/6: Collection Creation"
@@ -71,9 +73,14 @@ o-nakala-collection \
   --from-folder-collections "$DATASET_DIR/folder_collections.csv" \
   --collection-report "$DATASET_DIR/collections_output.csv"
 
-# Count collections more reliably
+# Move collections_output.csv from notebooks to sample_dataset if it exists there
+if [ -f "collections_output.csv" ]; then
+    mv collections_output.csv "$DATASET_DIR/"
+fi
+
+# Count collections more reliably and fix counting issue
 if [ -f "$DATASET_DIR/collections_output.csv" ]; then
-    COLLECTIONS_CREATED=$(tail -n +2 "$DATASET_DIR/collections_output.csv" 2>/dev/null | wc -l 2>/dev/null || echo "0")
+    COLLECTIONS_CREATED=$(tail -n +2 "$DATASET_DIR/collections_output.csv" 2>/dev/null | grep -v "^$" | wc -l 2>/dev/null || echo "0")
     COLLECTIONS_CREATED=$(echo "$COLLECTIONS_CREATED" | tr -d ' \t\n\r')
 else
     COLLECTIONS_CREATED="0"
@@ -88,16 +95,9 @@ if [ -f "$DATASET_DIR/create_modifications.py" ]; then
     python create_modifications.py upload_results.csv
     echo "✅ Data metadata enhancements generated"
     
-    # Check for collections output and generate collection modifications
-    # The collections_output.csv might be in the notebooks directory
+    # Generate collection modifications using the current collections_output.csv
     if [ -f "collections_output.csv" ]; then
         echo "🔍 Found collections_output.csv in sample_dataset, generating collection enhancements..."
-        python create_collection_modifications.py collections_output.csv
-        echo "✅ Collection metadata enhancements generated"
-        echo "✅ Professional metadata enhancements generated (data + collections)"
-    elif [ -f "../notebooks/collections_output.csv" ]; then
-        echo "🔍 Found collections_output.csv in notebooks, copying and generating enhancements..."
-        cp "../notebooks/collections_output.csv" .
         python create_collection_modifications.py collections_output.csv
         echo "✅ Collection metadata enhancements generated"
         echo "✅ Professional metadata enhancements generated (data + collections)"
@@ -150,8 +150,7 @@ echo "✅ Comprehensive quality report generated"
 echo ""
 echo "🎯 Results Summary"
 echo "----------------------------"
-DATASETS_COUNT=$(tail -n +2 "$DATASET_DIR/upload_results.csv" | wc -l)
-echo "📊 Datasets Created: $DATASETS_COUNT"
+echo "📊 Datasets Created: $DATASETS_UPLOADED"
 echo "📁 Collections Created: $COLLECTIONS_CREATED" 
 echo "📈 Quality Report: $DATASET_DIR/quality_report.json"
 echo "🔗 First Dataset: $(head -2 "$DATASET_DIR/upload_results.csv" | tail -1 | cut -d',' -f1)"
@@ -160,7 +159,7 @@ echo ""
 echo "🎉 COMPLETE WORKFLOW FINISHED SUCCESSFULLY!"
 echo "==========================================="
 echo "📄 All 6 steps completed:"
-echo "   ✅ 1. Data Upload ($DATASETS_COUNT datasets)"
+echo "   ✅ 1. Data Upload ($DATASETS_UPLOADED datasets)"
 echo "   ✅ 2. Collection Creation ($COLLECTIONS_CREATED collections)"
 echo "   ✅ 3. Auto-Enhancement (intelligent metadata)"
 echo "   ✅ 4. Dataset Curation"

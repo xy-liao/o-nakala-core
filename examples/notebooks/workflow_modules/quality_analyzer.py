@@ -237,38 +237,46 @@ class QualityAnalyzer:
         }
         
         try:
-            # Analyze metadata completeness
-            if 'summary' in quality_data:
-                completeness = quality_data['summary'].get('metadata_completeness', 0)
-                if completeness >= 80:
+            # Analyze metadata completeness based on errors
+            total_items = quality_data.get('summary', {}).get('total_collections', 0) + quality_data.get('summary', {}).get('total_datasets', 0)
+            total_errors = quality_data.get('collections_analysis', {}).get('items_with_errors', 0) + quality_data.get('datasets_analysis', {}).get('items_with_errors', 0)
+            
+            if total_items > 0:
+                error_rate = (total_errors / total_items) * 100
+                if error_rate < 20:
                     trends['metadata_completeness'] = 'Excellent'
-                elif completeness >= 60:
+                elif error_rate < 40:
                     trends['metadata_completeness'] = 'Good'
-                elif completeness >= 40:
+                elif error_rate < 60:
                     trends['metadata_completeness'] = 'Fair'
                 else:
                     trends['metadata_completeness'] = 'Needs Improvement'
             
-            # Identify common issues
-            if 'issues' in quality_data:
-                issue_counts = {}
-                for issue in quality_data['issues']:
-                    issue_type = issue.get('type', 'Unknown')
-                    issue_counts[issue_type] = issue_counts.get(issue_type, 0) + 1
-                
-                # Get top 3 most common issues
-                trends['common_issues'] = sorted(
-                    issue_counts.items(), 
-                    key=lambda x: x[1], 
-                    reverse=True
-                )[:3]
+            # Identify common issues from validation details
+            issue_counts = {}
+            
+            # Process collections analysis
+            if 'collections_analysis' in quality_data and 'validation_details' in quality_data['collections_analysis']:
+                for item in quality_data['collections_analysis']['validation_details']:
+                    for error in item.get('errors', []):
+                        issue_counts[error] = issue_counts.get(error, 0) + 1
+            
+            # Process datasets analysis
+            if 'datasets_analysis' in quality_data and 'validation_details' in quality_data['datasets_analysis']:
+                for item in quality_data['datasets_analysis']['validation_details']:
+                    for error in item.get('errors', []):
+                        issue_counts[error] = issue_counts.get(error, 0) + 1
+            
+            # Get top 3 most common issues
+            trends['common_issues'] = sorted(
+                issue_counts.items(), 
+                key=lambda x: x[1], 
+                reverse=True
+            )[:3]
             
             # Extract improvement recommendations
             if 'recommendations' in quality_data:
-                trends['improvement_areas'] = [
-                    rec.get('area', 'Unknown') 
-                    for rec in quality_data['recommendations'][:5]
-                ]
+                trends['improvement_areas'] = quality_data['recommendations'][:5]
             
             return trends
             

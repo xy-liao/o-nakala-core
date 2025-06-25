@@ -169,8 +169,9 @@ class MetadataEnhancer:
             
             stats = {
                 'total_modifications': len(df),
-                'unique_datasets': len(df['identifier'].unique()) if 'identifier' in df.columns else 0,
-                'modification_types': df['property'].value_counts().to_dict() if 'property' in df.columns else {},
+                'enhancements_generated': len(df),  # Add the key the notebook expects
+                'unique_datasets': len(df['id'].unique()) if 'id' in df.columns else 0,
+                'modification_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {},
                 'modifications_file': str(self.data_modifications_file)
             }
             
@@ -194,8 +195,9 @@ class MetadataEnhancer:
             
             stats = {
                 'total_modifications': len(df),
-                'unique_collections': len(df['identifier'].unique()) if 'identifier' in df.columns else 0,
-                'modification_types': df['property'].value_counts().to_dict() if 'property' in df.columns else {},
+                'enhancements_generated': len(df),  # Add the key the notebook expects
+                'unique_collections': len(df['id'].unique()) if 'id' in df.columns else 0,
+                'modification_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {},
                 'modifications_file': str(self.collection_modifications_file)
             }
             

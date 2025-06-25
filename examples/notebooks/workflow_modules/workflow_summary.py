@@ -93,8 +93,8 @@ class WorkflowSummary:
             return {
                 'available': True,
                 'total_datasets': len(df),
-                'successful_uploads': len(df[df['status'] == 'success']) if 'status' in df.columns else len(df),
-                'failed_uploads': len(df[df['status'] == 'failed']) if 'status' in df.columns else 0,
+                'successful_uploads': len(df[df['status'] == 'OK']) if 'status' in df.columns else len(df),
+                'failed_uploads': len(df[df['status'] != 'OK']) if 'status' in df.columns else 0,
                 'first_dataset_id': df.iloc[0]['identifier'] if len(df) > 0 and 'identifier' in df.columns else None,
                 'dataset_types': df['type'].value_counts().to_dict() if 'type' in df.columns else {}
             }
@@ -113,8 +113,8 @@ class WorkflowSummary:
             return {
                 'available': True,
                 'total_collections': len(df),
-                'successful_collections': len(df[df['status'] == 'success']) if 'status' in df.columns else len(df),
-                'failed_collections': len(df[df['status'] == 'failed']) if 'status' in df.columns else 0,
+                'successful_collections': len(df[df['creation_status'] == 'SUCCESS']) if 'creation_status' in df.columns else len(df),
+                'failed_collections': len(df[df['creation_status'] != 'SUCCESS']) if 'creation_status' in df.columns else 0,
                 'first_collection_id': df.iloc[0]['collection_id'] if len(df) > 0 and 'collection_id' in df.columns else None
             }
             
@@ -172,8 +172,8 @@ class WorkflowSummary:
                 summary['data_enhancements'] = {
                     'available': True,
                     'total_modifications': len(df),
-                    'unique_datasets': len(df['identifier'].unique()) if 'identifier' in df.columns else 0,
-                    'property_types': df['property'].value_counts().to_dict() if 'property' in df.columns else {}
+                    'unique_datasets': len(df['id'].unique()) if 'id' in df.columns else 0,
+                    'action_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {}
                 }
             except Exception as e:
                 summary['data_enhancements'] = {'available': False, 'error': str(e)}
@@ -185,8 +185,8 @@ class WorkflowSummary:
                 summary['collection_enhancements'] = {
                     'available': True,
                     'total_modifications': len(df),
-                    'unique_collections': len(df['identifier'].unique()) if 'identifier' in df.columns else 0,
-                    'property_types': df['property'].value_counts().to_dict() if 'property' in df.columns else {}
+                    'unique_collections': len(df['id'].unique()) if 'id' in df.columns else 0,
+                    'action_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {}
                 }
             except Exception as e:
                 summary['collection_enhancements'] = {'available': False, 'error': str(e)}

@@ -167,8 +167,9 @@ class CuratorOperations:
             stats = {
                 'scope': scope,
                 'total_modifications': len(df),
-                'unique_items': len(df['identifier'].unique()) if 'identifier' in df.columns else 0,
-                'modification_types': df['property'].value_counts().to_dict() if 'property' in df.columns else {},
+                'modifications_applied': len(df),  # Add the key the notebook expects
+                'unique_items': len(df['id'].unique()) if 'id' in df.columns else 0,
+                'modification_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {},
                 'execution_time': execution_time,
                 'modifications_file': modifications_file,
                 'success': True
@@ -269,8 +270,8 @@ class CuratorOperations:
             
             summary = {
                 'total_modifications': len(df),
-                'unique_items': len(df['identifier'].unique()) if 'identifier' in df.columns else 0,
-                'properties_modified': df['property'].value_counts().to_dict() if 'property' in df.columns else {},
+                'unique_items': len(df['id'].unique()) if 'id' in df.columns else 0,
+                'properties_modified': df['action'].value_counts().to_dict() if 'action' in df.columns else {},
                 'sample_modifications': df.head(5).to_dict('records') if len(df) > 0 else []
             }
             
