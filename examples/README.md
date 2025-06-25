@@ -18,10 +18,18 @@ This directory contains example datasets, configurations, and workflows for lear
 - **Use case**: Basic upload testing, simple workflows
 - **Contents**: 4 bird images with basic configuration
 
+### `/notebooks/` - Interactive Jupyter Notebooks
+- **Purpose**: Complete workflow demonstrations and tutorials
+- **Use case**: Educational materials, step-by-step learning
+- **Contents**: 
+  - `ultimate_workflow_notebook.ipynb` - Complete NAKALA workflow
+  - `workshop_demo.ipynb` - Workshop demonstration materials
+  - `workflow_modules/` - Python modules for workflow operations
+
 ### `/workflow_documentation/` - Process Documentation
 - **Purpose**: Documented workflows and success metrics
 - **Use case**: Understanding system capabilities and performance
-- **Contents**: Workflow guides, success reports, process documentation
+- **Contents**: Workflow guides, process documentation
 
 ## 🚀 Quick Start
 
@@ -51,14 +59,11 @@ o-nakala-collection \
   --from-folder-collections folder_collections.csv
 ```
 
-### 3. Workshop Exercises
+### 3. Interactive Workflow Tutorial
 ```bash
-cd sample_dataset
-# Use provided workshop CSV files for batch modification exercises
-o-nakala-curator \
-  --api-key YOUR_API_KEY \
-  --batch-modify workshop_basic_modifications.csv \
-  --dry-run
+cd notebooks
+jupyter lab ultimate_workflow_notebook.ipynb
+# Follow the step-by-step workflow in the notebook
 ```
 
 ## 📚 File Types Included
@@ -94,11 +99,10 @@ o-nakala-curator \
 - `folder_collections.csv` - Collection organization template
 - `files/` directory structure - Sample research data
 
-### Workshop Files (MODIFY FOR EXERCISES)
-- `workshop_basic_modifications.csv` - Title/description updates
-- `workshop_keywords_exercise.csv` - Keyword management
-- `workshop_creator_exercise.csv` - Author assignment
-- `workshop_advanced_exercise.csv` - Multi-field updates
+### Workflow Modules
+- `workflow_modules/` - Python modules for complete workflow automation
+- `ultimate_workflow_notebook.ipynb` - Step-by-step interactive tutorial
+- `workshop_demo.ipynb` - Workshop demonstration materials
 
 ## ⚠️ Important Notes
 

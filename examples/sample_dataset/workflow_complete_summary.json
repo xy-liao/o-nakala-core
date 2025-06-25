@@ -1,0 +1,80 @@
+{
+  "workflow_info": {
+    "timestamp": "2025-06-25T12:01:35.428104",
+    "base_path": "../sample_dataset",
+    "api_key_masked": "33170cfe-f...",
+    "workflow_version": "1.0.0"
+  },
+  "upload_summary": {
+    "available": true,
+    "total_datasets": 5,
+    "successful_uploads": 0,
+    "failed_uploads": 0,
+    "first_dataset_id": "10.34847/nkl.16c627r2",
+    "dataset_types": {}
+  },
+  "collections_summary": {
+    "available": true,
+    "total_collections": 3,
+    "successful_collections": 0,
+    "failed_collections": 0,
+    "first_collection_id": "10.34847/nkl.25be884b"
+  },
+  "quality_summary": {
+    "available": true,
+    "analysis_timestamp": "Unknown",
+    "total_items_analyzed": 0,
+    "overall_quality_score": 0.0,
+    "issues_found": 0,
+    "recommendations_count": 4
+  },
+  "enhancement_summary": {
+    "data_enhancements": {
+      "available": true,
+      "total_modifications": 5,
+      "unique_datasets": 0,
+      "property_types": {}
+    },
+    "collection_enhancements": {
+      "available": true,
+      "total_modifications": 3,
+      "unique_collections": 0,
+      "property_types": {}
+    }
+  },
+  "overall_statistics": {
+    "total_operations": 7,
+    "successful_operations": 5,
+    "total_items_created": 8,
+    "total_enhancements_applied": 8,
+    "workflow_success_rate": 71.42857142857143
+  },
+  "execution_timeline": [
+    {
+      "operation": "Upload",
+      "timestamp": "2025-06-25T12:01:30.972624",
+      "file": "upload_results.csv"
+    },
+    {
+      "operation": "Collections",
+      "timestamp": "2025-06-25T12:01:31.417882",
+      "file": "collections_output.csv"
+    },
+    {
+      "operation": "Data Enhancements",
+      "timestamp": "2025-06-25T12:01:31.485135",
+      "file": "auto_data_modifications.csv"
+    },
+    {
+      "operation": "Collection Enhancements",
+      "timestamp": "2025-06-25T12:01:31.508948",
+      "file": "auto_collection_modifications.csv"
+    },
+    {
+      "operation": "Quality Analysis",
+      "timestamp": "2025-06-25T12:01:35.401488",
+      "file": "quality_report.json"
+    }
+  ],
+  "success": true
+}

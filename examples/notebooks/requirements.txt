@@ -1,7 +1,7 @@
-# Requirements for O-Nakala Core Workshop Notebooks (PyPI v2.2.0)
+# Requirements for O-Nakala Core Workshop Notebooks (PyPI v2.3.0)
 #
 # These are the minimal dependencies needed to run the demonstration notebooks.
-# The main package (o-nakala-core v2.2.0) will be installed from PyPI within the notebook.
+# The main package (o-nakala-core v2.3.0) will be installed from PyPI within the notebook.
 
 # Jupyter environment
 jupyter>=1.0.0
@@ -21,8 +21,8 @@ tabulate>=0.9.0
 tqdm>=4.60.0  # Progress bars
 plotly>=5.0.0  # Interactive plots (optional)
 
-# Note: o-nakala-core[cli]==2.2.0 will be installed within the notebook from PyPI
-# This ensures participants get the validated official v2.2.0 published version
+# Note: o-nakala-core[cli]==2.3.0 will be installed within the notebook from PyPI
+# This ensures participants get the validated official v2.3.0 published version
 # 
 # Installation command used in notebook:
-# pip install 'o-nakala-core[cli]==2.2.0'
+# pip install 'o-nakala-core[cli]==2.3.0'

@@ -1,0 +1,4 @@
+collection_id,collection_title,status,data_items_count,data_items_ids,creation_status,error_message,timestamp
+10.34847/nkl.1e67558k,fr:Collection Code et Données|en:Code and Data Collection,private,2,10.34847/nkl.d147ftwg;10.34847/nkl.edaemz2p,SUCCESS,,2025-06-25 12:00:03
+10.34847/nkl.85dchel8,fr:Collection Documents|en:Documents Collection,private,1,10.34847/nkl.a6c3r5nx,SUCCESS,,2025-06-25 12:00:03
+10.34847/nkl.4bccp87v,fr:Collection Multimédia|en:Multimedia Collection,private,2,10.34847/nkl.e4dc8t26;10.34847/nkl.f15377w6,SUCCESS,,2025-06-25 12:00:03

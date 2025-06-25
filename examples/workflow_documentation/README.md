@@ -94,7 +94,6 @@ This workflow demonstrates practical application of:
 - `run_ultimate_workflow.sh` - **NEW** Complete 7-step workflow execution
 - `create_modifications.py` - Auto-generates professional dataset metadata
 - `create_collection_modifications.py` - **NEW** Auto-generates professional collection metadata
-- `cleanup_test_data.py` - Removes test data from platform
 - `verify_cleanup.py` - Confirms successful cleanup
 
 **Workflow Evolution:**
