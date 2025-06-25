@@ -13,6 +13,12 @@ pip install o-nakala-core
 # With CLI tools
 pip install o-nakala-core[cli]
 
+# With machine learning features (NEW in v2.4.1)
+pip install o-nakala-core[ml]
+
+# Complete installation (all features)
+pip install o-nakala-core[cli,ml]
+
 # Install from source
 git clone https://github.com/xy-liao/o-nakala-core.git
 cd o-nakala-core
@@ -60,6 +66,10 @@ o-nakala-curator \
 
 ### Key Capabilities
 - **Foundational metadata management** for core Dublin Core fields
+- **Machine learning metadata curation** with pattern recognition (NEW v2.4.1)
+- **Community pattern analysis** leveraging repository insights (NEW v2.4.1)
+- **Automated metadata pre-population** with contextual suggestions (NEW v2.4.1)
+- **Resource relationship discovery** and mapping (NEW v2.4.1)  
 - **Multilingual metadata** support (French, English, Spanish, German)
 - **Batch operations** for large-scale data management
 - **Quality validation** and enhancement tools
@@ -69,10 +79,21 @@ o-nakala-curator \
 ### 🚧 **Production-Ready Core Features**
 Current implementation provides comprehensive functionality for NAKALA data management including:
 - **Complete API integration** for uploads, collections, and curation
+- **Machine learning curation** with pattern recognition (NEW v2.4.1)
+- **Community-driven insights** from repository analysis (NEW v2.4.1)
+- **Automated metadata pre-population** with contextual suggestions (NEW v2.4.1)
 - **Robust error handling** and validation
 - **CSV-driven workflows** for reproducible research
 - **Quality analysis** and metadata validation
 - **Batch operations** for large-scale data management
+
+### 🔬 **Machine Learning Features** (NEW v2.4.1)
+- **Pattern Learning**: Discovers metadata patterns from existing data
+- **Semantic Analysis**: Content similarity and clustering
+- **Community Analytics**: Repository-wide metadata recommendations
+- **Pre-population Engine**: Context-aware field suggestions
+- **Relationship Discovery**: Finds connections between resources
+- **Predictive Analytics**: Data-driven field value predictions
 
 ## 📖 Documentation
 
@@ -80,6 +101,7 @@ Current implementation provides comprehensive functionality for NAKALA data mana
 - [📤 Upload Guide](docs/user-guides/01-upload-guide.md) - Complete upload workflows
 - [📚 Collection Guide](docs/user-guides/02-collection-guide.md) - Collection management  
 - [📋 Workflow Guide](docs/user-guides/03-workflow-guide.md) - End-to-end processes
+- [🔬 ML-Enhanced Curation](docs/user-guides/06-ml-enhanced-curation.md) - Machine learning features (NEW v2.4.1)
 - [🔧 Curator Field Reference](docs/curator-field-reference.md) - Current field documentation
 - [❓ FAQ](docs/user-guides/05-faq.md) - Common questions and solutions
 
@@ -105,7 +127,7 @@ o-nakala-user-info --help
 ### Example Workflows
 Complete hands-on examples with real datasets:
 
-> **📝 Note**: The API key `33170cfe-f53c-550b-5fb6-4814ce981293` shown below is a **public test key** provided by the NAKALA team at Huma-Num for testing and documentation purposes. It only works on the test environment (https://apitest.nakala.fr) and is safe to use. For production, create your own API key at https://nakala.fr.
+> **📝 Note**: The examples below use a public test API key for demonstration purposes. Find the current test key in [api/api_keys.md](api/api_keys.md). For production use, create your own API key at https://nakala.fr.
 
 ```bash
 cd examples/sample_dataset
@@ -113,27 +135,32 @@ cd examples/sample_dataset
 cat folder_data_items.csv
 cat folder_collections.csv
 
-# Run the complete workflow (v2.3.0 validated)
-o-nakala-upload --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+# Set API key (see api/api_keys.md for test key)
+export NAKALA_API_KEY="[see-api/api_keys.md]"
+
+# Run the complete workflow (v2.4.1 with ML features)
+o-nakala-upload --api-key "$NAKALA_API_KEY" \
   --dataset folder_data_items.csv --mode folder \
   --folder-config folder_data_items.csv --base-path . \
   --output upload_results.csv
 
-o-nakala-collection --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+o-nakala-collection --api-key "$NAKALA_API_KEY" \
   --from-upload-output upload_results.csv \
   --from-folder-collections folder_collections.csv \
   --collection-report collections_output.csv
 
-# Quality analysis
-o-nakala-curator --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \
+# Quality analysis with ML insights (v2.4.1)
+o-nakala-curator --api-key "$NAKALA_API_KEY" \
   --quality-report --scope collections
+# Now includes: ML pattern analysis, community insights, relationship discovery
 ```
 
 The examples cover:
-- Data upload (5 datasets, 14 files)
-- Collection creation (3 thematic collections)  
-- Quality curation and analysis
-- Metadata enhancement
+- Data upload (5 datasets, 14 files) with automated pre-population
+- Collection creation (3 thematic collections) with relationship discovery
+- Machine learning quality curation and analysis
+- ML-driven metadata enhancement
+- Community-driven insights and recommendations
 
 ## 📁 Project Structure
 
@@ -239,7 +266,7 @@ cd examples/simple-dataset
 ## 🌐 Environment Setup
 
 ```bash
-# Required
+# Required - Get test key from api/api_keys.md
 export NAKALA_API_KEY="your-api-key"
 
 # Optional (defaults to test environment)

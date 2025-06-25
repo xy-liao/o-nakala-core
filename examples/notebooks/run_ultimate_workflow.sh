@@ -19,8 +19,10 @@ if [ -z "$1" ]; then
     echo ""
     echo "Example:"
     echo "  cd examples/notebooks"
-    echo "  ./run_ultimate_workflow.sh 33170cfe-f53c-550b-5fb6-4814ce981293"
-    echo "  ./run_ultimate_workflow.sh 33170cfe-f53c-550b-5fb6-4814ce981293 --cleanup"
+    echo "  ./run_ultimate_workflow.sh YOUR_API_KEY"
+    echo "  ./run_ultimate_workflow.sh YOUR_API_KEY --cleanup"
+    echo ""
+    echo "Get test API key from: ../../api/api_keys.md"
     exit 1
 fi
 
