@@ -137,5 +137,9 @@ start_dev_environment.py
 src/o_nakala_core/web_api.py
 .dev-config.md
 
+# Local cleanup scripts (not for public distribution)
+cleanup_all_unakala1_data.py
+cleanup_all_unakala1_data.sh
+
 # Generated cleanup script (user convenience)
 !cleanup.py

@@ -411,12 +411,12 @@ class NakalaMetadataValidator:
         self.config = config
         self.utils = NakalaCommonUtils()
 
-        # Initialize vocabulary service for enhanced validation
+        # Initialize vocabulary service for validation
         try:
             self.vocab_service = create_vocabulary_service(config.base_config)
             self.schema_generator = MetadataSchemaGenerator(self.vocab_service)
             self.vocabulary_enabled = True
-            logger.info("Vocabulary service initialized for enhanced validation")
+            logger.info("Vocabulary service initialized for validation")
         except Exception as e:
             logger.warning(f"Vocabulary service unavailable: {e}")
             self.vocab_service = None
@@ -711,7 +711,7 @@ class NakalaCuratorClient:
         user_context: Dict[str, Any] = None,
         include_optional: bool = True,
     ) -> Optional[MetadataTemplate]:
-        """Generate an intelligent metadata template."""
+        """Generate an automated metadata template."""
         if not self.template_generator:
             logger.warning("Template generation unavailable without vocabulary service")
             return None
@@ -1255,7 +1255,7 @@ class NakalaCuratorClient:
             logger.error(f"Failed to discover relationships: {e}")
             return None
 
-    async def generate_intelligent_template(
+    async def generate_automated_template(
         self,
         resource_type: str,
         file_path: str = None,
@@ -1266,7 +1266,7 @@ class NakalaCuratorClient:
     ) -> Optional[
         Tuple[MetadataTemplate, PrePopulationResult, Optional[RelationshipAnalysis]]
     ]:
-        """Generate an intelligent template with pre-populated values and
+        """Generate an automated template with pre-populated values and
         relationship suggestions."""
         if not self.template_generator or not self.prepopulation_assistant:
             logger.warning(
@@ -1276,7 +1276,7 @@ class NakalaCuratorClient:
 
         try:
             logger.info(
-                f"Generating comprehensive intelligent template for {resource_type}"
+                f"Generating comprehensive automated template for {resource_type}"
             )
 
             # Generate base template
@@ -1341,17 +1341,17 @@ class NakalaCuratorClient:
                 )
 
             logger.info(
-                f"Generated comprehensive intelligent template with "
+                f"Generated comprehensive automated template with "
                 f"{len(prepop_result.populated_fields)} pre-populated fields{rel_suffix}"
             )
 
             return template, prepop_result, relationship_analysis
 
         except Exception as e:
-            logger.error(f"Failed to generate intelligent template: {e}")
+            logger.error(f"Failed to generate automated template: {e}")
             return None
 
-    def export_intelligent_template_csv(
+    def export_automated_template_csv(
         self,
         template: MetadataTemplate,
         prepop_result: PrePopulationResult,
@@ -1359,7 +1359,7 @@ class NakalaCuratorClient:
         mode: str = "create",
         include_suggestions: bool = True,
     ) -> None:
-        """Export intelligent template with pre-populated values as CSV."""
+        """Export automated template with pre-populated values as CSV."""
         try:
             with open(output_path, "w", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
@@ -1430,16 +1430,16 @@ class NakalaCuratorClient:
             )
 
         except Exception as e:
-            logger.error(f"Failed to export intelligent template to CSV: {e}")
+            logger.error(f"Failed to export automated template to CSV: {e}")
             raise
 
-    def generate_intelligent_template_report(
+    def generate_automated_template_report(
         self,
         template: MetadataTemplate,
         prepop_result: PrePopulationResult,
         relationship_analysis: Optional[RelationshipAnalysis] = None,
     ) -> str:
-        """Generate a comprehensive report for the intelligent template."""
+        """Generate a comprehensive report for the automated template."""
         doc = []
         doc.append(f"# Comprehensive Intelligent Template Report: {template.name}")
         doc.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

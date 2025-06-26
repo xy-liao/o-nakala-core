@@ -828,11 +828,11 @@ class AutonomousMetadataEngine:
                                     current_keywords = base_metadata["keywords"].split(
                                         ";"
                                     )
-                                    enhanced_keywords = list(
+                                    updated_keywords = list(
                                         set(current_keywords + community_keywords)
                                     )
                                     base_metadata["keywords"] = ";".join(
-                                        enhanced_keywords[:7]
+                                        updated_keywords[:7]
                                     )
                 except Exception as e:
                     logger.warning(f"Collaborative intelligence failed: {e}")

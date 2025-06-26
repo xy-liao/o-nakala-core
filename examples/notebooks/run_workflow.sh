@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Enhanced Ultimate O-Nakala Core Workflow - Complete Steps 1-8
+# O-Nakala Core Workflow - Complete 8-Step Process
 # Runs from notebooks/ directory and operates on ../sample_dataset/
-# Now with 100% success rate and advanced features
+# Uses o-nakala-core PyPI package v2.4.1
 
 set -e
 
-echo "🚀 Starting ENHANCED ULTIMATE O-Nakala Core Workflow..."
-echo "✨ Complete Steps 1-8 with 100% Success Rate - PyPI v2.4.1"
-echo "============================================================="
+echo "🚀 Starting O-Nakala Core Workflow..."
+echo "✨ Complete 8-step NAKALA data management workflow"
+echo "=================================================="
 
 # Check API key
 if [ -z "$1" ]; then
@@ -20,8 +20,8 @@ if [ -z "$1" ]; then
     echo ""
     echo "Example:"
     echo "  cd examples/notebooks"
-    echo "  ./run_ultimate_workflow.sh YOUR_API_KEY"
-    echo "  ./run_ultimate_workflow.sh YOUR_API_KEY --cleanup"
+    echo "  ./run_workflow.sh YOUR_API_KEY"
+    echo "  ./run_workflow.sh YOUR_API_KEY --cleanup"
     echo ""
     echo "Get test API key from: ../../api/api_keys.md"
     exit 1
@@ -42,7 +42,7 @@ if [ ! -d "$DATASET_DIR" ]; then
     echo "❌ Error: Cannot find sample_dataset directory"
     echo "Please run this script from the notebooks/ directory:"
     echo "  cd examples/notebooks"
-    echo "  ./run_ultimate_workflow.sh your-api-key"
+    echo "  ./run_workflow.sh your-api-key"
     exit 1
 fi
 
@@ -91,26 +91,26 @@ fi
 echo "✅ Collections created - $COLLECTIONS_CREATED collections"
 
 echo ""
-echo "🤖 Step 3/8: ML-Powered Metadata Enhancement"
-echo "---------------------------------------------"
+echo "🤖 Step 3/8: Metadata Enhancement"
+echo "---------------------------------"
 if [ -f "$DATASET_DIR/create_modifications.py" ]; then
     cd "$DATASET_DIR"
     python create_modifications.py upload_results.csv
-    echo "✅ Data metadata enhancements generated"
+    echo "✅ Data metadata modifications generated"
     
     # Generate collection modifications using the current collections_output.csv
     if [ -f "collections_output.csv" ]; then
-        echo "🔍 Found collections_output.csv in sample_dataset, generating collection enhancements..."
+        echo "🔍 Found collections_output.csv in sample_dataset, generating collection modifications..."
         python create_collection_modifications.py collections_output.csv
-        echo "✅ Collection metadata enhancements generated"
-        echo "✅ Professional metadata enhancements generated (data + collections)"
+        echo "✅ Collection metadata modifications generated"
+        echo "✅ Metadata modifications generated (data + collections)"
     else
-        echo "⚠️  Collections file not found - skipping collection enhancements"
-        echo "✅ Data metadata enhancements generated (collections file not found)"
+        echo "⚠️  Collections file not found - skipping collection modifications"
+        echo "✅ Data metadata modifications generated (collections file not found)"
     fi
     cd - > /dev/null
 else
-    echo "⚠️  Skipping enhancement generation - scripts not found"
+    echo "⚠️  Skipping modification generation - scripts not found"
 fi
 
 echo ""
@@ -164,46 +164,46 @@ else
 fi
 
 echo ""
-echo "✨ Step 6/8: Enhanced Dataset Curation"
-echo "--------------------------------------"
+echo "✨ Step 6/8: Dataset Curation"
+echo "-----------------------------"
 if [ -f "$DATASET_DIR/auto_data_modifications.csv" ]; then
     o-nakala-curator \
       --api-key "$API_KEY" \
       --batch-modify "$DATASET_DIR/auto_data_modifications.csv" \
       --scope datasets
-    echo "✅ Dataset metadata professionally enhanced"
+    echo "✅ Dataset metadata updated"
 else
     echo "⚠️  Skipping dataset curation - auto_data_modifications.csv not found"
 fi
 
 echo ""
-echo "📁 Step 7/8: Enhanced Collection Curation"
-echo "-----------------------------------------"
+echo "📁 Step 7/8: Collection Curation"
+echo "--------------------------------"
 if [ -f "$DATASET_DIR/auto_collection_modifications.csv" ]; then
     o-nakala-curator \
       --api-key "$API_KEY" \
       --batch-modify "$DATASET_DIR/auto_collection_modifications.csv" \
       --scope collections
-    echo "✅ Collection metadata professionally enhanced"
+    echo "✅ Collection metadata updated"
 else
     echo "⚠️  Skipping collection curation - auto_collection_modifications.csv not found"
 fi
 
 echo ""
-echo "🚀 Step 8/8: Advanced Data Management & Analytics"
-echo "------------------------------------------------"
+echo "🚀 Step 8/8: Data Management & Analytics"
+echo "---------------------------------------"
 echo "📢 Managing publication status..."
 # Simulate publication management (mark items for publication)
 TOTAL_ITEMS=$((DATASETS_UPLOADED + COLLECTIONS_CREATED))
 echo "✅ Publication management completed - $TOTAL_ITEMS items processed"
 
 echo "🔐 Managing access rights..."
-# Use user info command to demonstrate advanced features
+# Use user info command to demonstrate data management features
 o-nakala-user-info --api-key "$API_KEY" > /dev/null 2>&1 || true
 echo "✅ Access rights and user analytics completed"
 
-echo "📋 Generating comprehensive workflow summary..."
-# Create workflow summary using our enhanced workflow modules if available
+echo "📋 Generating workflow summary..."
+# Create workflow summary using workflow modules if available
 if [ -d "workflow_modules" ]; then
     cd workflow_modules
     python -c "
@@ -237,17 +237,17 @@ echo "📈 Quality Report: $DATASET_DIR/quality_report.json"
 echo "🔗 First Dataset: $(head -2 "$DATASET_DIR/upload_results.csv" | tail -1 | cut -d',' -f1)"
 
 echo ""
-echo "🎉 ENHANCED WORKFLOW FINISHED WITH 100% SUCCESS!"
-echo "==============================================="
-echo "📄 All 8 operations completed successfully:"
+echo "🎉 O-NAKALA CORE WORKFLOW COMPLETED!"
+echo "===================================="
+echo "📄 All 8 operations completed:"
 echo "   ✅ 1. Data Upload ($DATASETS_UPLOADED datasets)"
 echo "   ✅ 2. Collection Creation ($COLLECTIONS_CREATED collections)"
-echo "   ✅ 3. ML-Powered Metadata Enhancement (intelligent generation)"
+echo "   ✅ 3. Metadata Enhancement (automated generation)"
 echo "   ✅ 4. Quality Analysis & Validation (comprehensive report)"
 echo "   ✅ 5. Validation Error Fixes (creator fields added)"
-echo "   ✅ 6. Enhanced Dataset Curation (ML-enhanced metadata)"
-echo "   ✅ 7. Enhanced Collection Curation (professional metadata)"
-echo "   ✅ 8. Advanced Data Management (publication, rights, analytics)"
+echo "   ✅ 6. Dataset Curation (metadata updates)"
+echo "   ✅ 7. Collection Curation (metadata updates)"
+echo "   ✅ 8. Data Management (publication, rights, analytics)"
 
 # Cleanup if requested
 if [ "$CLEANUP_MODE" = "--cleanup" ]; then
@@ -256,9 +256,9 @@ if [ "$CLEANUP_MODE" = "--cleanup" ]; then
     echo "⏳ Waiting 3 seconds (press Ctrl+C to skip cleanup)..."
     sleep 3
     
-    if [ -f "cleanup_all_unakala1_data.py" ]; then
-        echo "🗑️  Running complete user data cleanup..."
-        python cleanup_all_unakala1_data.py "$API_KEY" --force
+    if [ -f "cleanup_test_data.py" ]; then
+        echo "🗑️  Running test data cleanup..."
+        python cleanup_test_data.py "$API_KEY"
     else
         echo "⚠️  No cleanup scripts found - skipping cleanup"
     fi
@@ -268,12 +268,12 @@ fi
 
 echo ""
 echo "📁 Results saved in: $DATASET_DIR/"
-echo "🏆 ENHANCED ULTIMATE WORKFLOW: 100% SUCCESS RATE ACHIEVED!"
+echo "🏆 O-NAKALA CORE WORKFLOW COMPLETED SUCCESSFULLY!"
 echo ""
-echo "✨ O-Nakala Core v2.4.1 PyPI Package Capabilities Demonstrated:"
+echo "✨ O-Nakala Core v2.4.1 PyPI Package Features Demonstrated:"
 echo "   • Complete CRUD operations on NAKALA data"
-echo "   • Machine learning metadata enhancement"
+echo "   • Automated metadata enhancement"
 echo "   • Validation error fixing and quality assurance"
 echo "   • Publication and rights management"
-echo "   • Advanced analytics and comprehensive reporting"
+echo "   • Analytics and comprehensive reporting"
 echo "   • Production-ready workflow automation"
