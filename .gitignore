@@ -58,6 +58,15 @@ full_cycle_*.csv
 full_cycle_*.json
 workshop_report_*.md
 
+# Generated workflow outputs (will be recreated when running workflows)
+examples/sample_dataset/auto_*.csv
+examples/sample_dataset/*_output.csv
+examples/sample_dataset/upload_results.csv
+examples/sample_dataset/collections_output.csv
+examples/sample_dataset/quality_report.json
+examples/sample_dataset/workflow_complete_summary.json
+examples/sample_dataset/creator_fixes_*.csv
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
