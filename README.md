@@ -70,7 +70,7 @@ o-nakala-curator \
 - **Community pattern analysis** leveraging repository insights
 - **Metadata pre-population** with contextual suggestions
 - **Resource relationship discovery** and mapping
-- **Multilingual metadata** support (French, English, Spanish, German)
+- **Multilingual metadata** support
 - **Batch operations** for large-scale data management
 - **Quality validation** and enhancement tools
 - **CSV-driven workflows** for academic reproducibility
