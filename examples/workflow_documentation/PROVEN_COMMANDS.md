@@ -26,7 +26,7 @@ This document contains the **exact command sequence** that successfully executed
 cd /path/to/o-nakala-core/examples/sample_dataset
 
 # Execute COMPLETE workflow (Steps 1-7) with ONE command
-./run_ultimate_workflow.sh your-api-key-here --cleanup
+./run_workflow.sh your-api-key-here --cleanup
 ```
 
 **🎯 Perfect for:** Everything! Complete workflow + automatic cleanup + platform courtesy

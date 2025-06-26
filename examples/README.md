@@ -13,19 +13,14 @@ This directory contains example datasets, configurations, and workflows for lear
   - `files/` - Sample research files (images, code, documents, data, presentations)
   - Workshop exercise files for batch modifications
 
-### `/simple-dataset/` - Minimal Example
-- **Purpose**: Quick start example with image files
-- **Use case**: Basic upload testing, simple workflows
-- **Contents**: 4 bird images with basic configuration
-
 ### `/notebooks/` - Interactive Jupyter Notebooks
 - **Purpose**: Complete workflow demonstrations and tutorials
 - **Use case**: Educational materials, step-by-step learning
 - **Contents**: 
-  - `ultimate_workflow_notebook.ipynb` - Complete NAKALA workflow
-  - `workshop_demo.ipynb` - Workshop demonstration materials
+  - `workflow_notebook.ipynb` - Complete O-Nakala Core workflow
   - `workflow_modules/` - Python modules for workflow operations
-  - `run_ultimate_workflow.sh` - Shell script automation for notebook workflows
+  - `workflow_modules/` - Python modules for workflow operations
+  - `run_workflow.sh` - Shell script automation for notebook workflows
 
 ### `/workflow_documentation/` - Process Documentation
 - **Purpose**: Documented workflows and success metrics
@@ -36,7 +31,7 @@ This directory contains example datasets, configurations, and workflows for lear
 
 ### 1. Basic Upload Test
 ```bash
-cd simple-dataset
+cd sample_dataset
 o-nakala-upload \
   --api-key YOUR_API_KEY \
   --dataset . \
@@ -63,7 +58,7 @@ o-nakala-collection \
 ### 3. Interactive Workflow Tutorial
 ```bash
 cd notebooks
-jupyter lab ultimate_workflow_notebook.ipynb
+jupyter lab workflow_notebook.ipynb
 # Follow the step-by-step workflow in the notebook
 ```
 
@@ -71,9 +66,9 @@ jupyter lab ultimate_workflow_notebook.ipynb
 ```bash
 cd notebooks
 # Execute the complete workflow automatically
-./run_ultimate_workflow.sh
+./run_workflow.sh
 # Or execute with custom parameters
-NAKALA_API_KEY=your_key ./run_ultimate_workflow.sh
+NAKALA_API_KEY=your_key ./run_workflow.sh
 ```
 
 ## 📚 File Types Included
@@ -93,8 +88,8 @@ NAKALA_API_KEY=your_key ./run_ultimate_workflow.sh
 ## 🎓 Educational Use
 
 ### For Workshops
-1. **Level 1**: Use `simple-dataset` for basic concepts
-2. **Level 2**: Use `sample_dataset` for complete workflows
+1. **Interactive**: Use `notebooks/workflow_notebook.ipynb` for step-by-step learning
+2. **Complete**: Use `sample_dataset/` for full workflow demonstrations
 3. **Level 3**: Use workshop CSV files for advanced metadata management
 
 ### For Development
@@ -111,9 +106,9 @@ NAKALA_API_KEY=your_key ./run_ultimate_workflow.sh
 
 ### Workflow Architecture
 - `workflow_modules/` - Python modules for complete workflow automation
-- `ultimate_workflow_notebook.ipynb` - Step-by-step interactive tutorial (depends on workflow_modules)
-- `workshop_demo.ipynb` - Workshop demonstration materials
-- `run_ultimate_workflow.sh` - Shell script that executes the notebook programmatically
+- `workflow_notebook.ipynb` - Step-by-step interactive tutorial (depends on workflow_modules)
+- `workflow_modules/` - Supporting Python modules for notebook operations
+- `run_workflow.sh` - Shell script that executes the notebook programmatically
 
 ## ⚠️ Important Notes
 
@@ -143,20 +138,20 @@ The examples use a **3-layer architecture**:
 
 ### Dependencies
 ```
-ultimate_workflow_notebook.ipynb
+workflow_notebook.ipynb
 ├── workflow_modules/
 │   ├── data_uploader.py
 │   ├── collection_manager.py
 │   ├── curator_operations.py
 │   └── [other modules]
 │       └── o-nakala-core (PyPI package)
-└── run_ultimate_workflow.sh
+└── run_workflow.sh
     └── executes notebook via nbconvert
 ```
 
 ### Usage Options
-- **Interactive**: Run `ultimate_workflow_notebook.ipynb` in Jupyter
-- **Automated**: Run `./run_ultimate_workflow.sh` for batch processing
+- **Interactive**: Run `workflow_notebook.ipynb` in Jupyter
+- **Automated**: Run `./run_workflow.sh` for batch processing
 - **Programmatic**: Import workflow_modules directly in your Python code
 
 ## 📦 Portability & Independence
@@ -173,7 +168,7 @@ pip install o-nakala-core[cli]
 
 # Everything works independently!
 cd /new/location/examples/notebooks
-jupyter lab ultimate_workflow_notebook.ipynb
+jupyter lab workflow_notebook.ipynb
 ```
 
 ### What's Included

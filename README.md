@@ -61,39 +61,39 @@ o-nakala-curator \
 ### Core Modules
 - **📤 Upload**: Batch upload of research datasets with metadata
 - **📚 Collection**: Create and manage thematic collections
-- **🔧 Curator**: Advanced metadata curation and quality management
+- **🔧 Curator**: Metadata curation and quality management
 - **👤 User Info**: Account management and permissions
 
 ### Key Capabilities
-- **Foundational metadata management** for core Dublin Core fields
-- **Machine learning metadata curation** with pattern recognition (NEW v2.4.1)
-- **Community pattern analysis** leveraging repository insights (NEW v2.4.1)
-- **Automated metadata pre-population** with contextual suggestions (NEW v2.4.1)
-- **Resource relationship discovery** and mapping (NEW v2.4.1)  
+- **Metadata management** for core Dublin Core fields
+- **Automated metadata curation** with pattern recognition
+- **Community pattern analysis** leveraging repository insights
+- **Metadata pre-population** with contextual suggestions
+- **Resource relationship discovery** and mapping
 - **Multilingual metadata** support (French, English, Spanish, German)
 - **Batch operations** for large-scale data management
 - **Quality validation** and enhancement tools
 - **CSV-driven workflows** for academic reproducibility
 - **Comprehensive logging** and error handling
 
-### 🚧 **Production-Ready Core Features**
-Current implementation provides comprehensive functionality for NAKALA data management including:
+### 🚧 **Core Features**
+Current implementation provides functionality for NAKALA data management including:
 - **Complete API integration** for uploads, collections, and curation
-- **Machine learning curation** with pattern recognition (NEW v2.4.1)
-- **Community-driven insights** from repository analysis (NEW v2.4.1)
-- **Automated metadata pre-population** with contextual suggestions (NEW v2.4.1)
+- **Automated curation** with pattern recognition
+- **Community insights** from repository analysis
+- **Metadata pre-population** with contextual suggestions
 - **Robust error handling** and validation
 - **CSV-driven workflows** for reproducible research
 - **Quality analysis** and metadata validation
 - **Batch operations** for large-scale data management
 
-### 🔬 **Machine Learning Features** (NEW v2.4.1)
+### 🔬 **Automation Features**
 - **Pattern Learning**: Discovers metadata patterns from existing data
-- **Semantic Analysis**: Content similarity and clustering
+- **Content Analysis**: Content similarity and clustering
 - **Community Analytics**: Repository-wide metadata recommendations
 - **Pre-population Engine**: Context-aware field suggestions
 - **Relationship Discovery**: Finds connections between resources
-- **Predictive Analytics**: Data-driven field value predictions
+- **Data Analysis**: Data-driven field value predictions
 
 ## 📖 Documentation
 
@@ -101,7 +101,7 @@ Current implementation provides comprehensive functionality for NAKALA data mana
 - [📤 Upload Guide](docs/user-guides/01-upload-guide.md) - Complete upload workflows
 - [📚 Collection Guide](docs/user-guides/02-collection-guide.md) - Collection management  
 - [📋 Workflow Guide](docs/user-guides/03-workflow-guide.md) - End-to-end processes
-- [🔬 ML-Enhanced Curation](docs/user-guides/06-ml-enhanced-curation.md) - Machine learning features (NEW v2.4.1)
+- [🔬 Curation Guide](docs/user-guides/06-curation-guide.md) - Metadata curation features
 - [🔧 Curator Field Reference](docs/curator-field-reference.md) - Current field documentation
 - [❓ FAQ](docs/user-guides/05-faq.md) - Common questions and solutions
 
@@ -149,17 +149,17 @@ o-nakala-collection --api-key "$NAKALA_API_KEY" \
   --from-folder-collections folder_collections.csv \
   --collection-report collections_output.csv
 
-# Quality analysis with ML insights (v2.4.1)
+# Quality analysis (v2.4.1)
 o-nakala-curator --api-key "$NAKALA_API_KEY" \
   --quality-report --scope collections
-# Now includes: ML pattern analysis, community insights, relationship discovery
+# Now includes: Pattern analysis, community insights, relationship discovery
 ```
 
 The examples cover:
 - Data upload (5 datasets, 14 files) with automated pre-population
 - Collection creation (3 thematic collections) with relationship discovery
-- Machine learning quality curation and analysis
-- ML-driven metadata enhancement
+- Quality curation and analysis
+- Automated metadata enhancement
 - Community-driven insights and recommendations
 
 ## 📁 Project Structure
@@ -176,7 +176,7 @@ o-nakala-core/
 ├── docs/                      # Documentation and guides
 ├── examples/                  # Sample datasets and workflows
 │   ├── sample_dataset/        # Complete workflow example
-│   └── simple-dataset/        # Basic usage example
+│   └── notebooks/             # Interactive workshop notebooks
 └── api/                       # API reference materials
 ```
 
@@ -234,7 +234,7 @@ o-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
 
 ```bash
 cd examples/notebooks
-jupyter lab workshop_demo.ipynb
+jupyter lab workflow_notebook.ipynb
 ```
 
 The workshop covers:
@@ -259,8 +259,8 @@ cd examples/sample_dataset
 Minimal example for quick testing:
 
 ```bash
-cd examples/simple-dataset
-# Bird images with basic metadata
+cd examples/sample_dataset
+# Complete workflow with professional datasets
 ```
 
 ## 🌐 Environment Setup
@@ -276,18 +276,14 @@ export NAKALA_BASE_URL="https://apitest.nakala.fr"  # Test
 
 ## 🧹 Maintenance
 
-### Cleanup
-Remove development artifacts and reset to clean state:
+### Project Cleanup
+To clean up temporary files and development artifacts:
 
 ```bash
-# Preview what would be cleaned
-python cleanup.py --dry-run
-
-# Clean everything
-python cleanup.py
-
-# Keep log files for debugging  
-python cleanup.py --keep-logs
+# Remove log files and temporary outputs
+find . -name "*.log" -delete
+find . -name "__pycache__" -type d -exec rm -rf {} +
+find . -name "*.pyc" -delete
 ```
 
 ## 🚨 Common Issues

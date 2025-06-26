@@ -36,24 +36,24 @@ This directory contains a comprehensive example dataset designed for testing all
 - `stakeholder_update_2023-06.md` - Progress report
 - `team_meeting_2023-04.md` - Internal meeting notes
 
-## 🎯 Enhanced 7-Step Workflow Processing
+## 🎯 7-Step Workflow Processing
 
 ### Data Upload Results
-When processed through the enhanced O-Nakala Core workflow, this dataset creates:
+When processed through the O-Nakala Core workflow, this dataset creates:
 
 - **5 Datasets**: One for each file category (code, data, documents, images, presentations)
 - **3 Collections**: Thematically organized groupings
-  - "Advanced Code and Data Collection" - Technical files with enhanced metadata
-  - "Academic Documentation Collection" - Research documentation with professional descriptions
-  - "Professional Multimedia Collection" - Images and presentations with rich keywords
+  - "Code and Data Collection" - Technical files with metadata
+  - "Academic Documentation Collection" - Research documentation with descriptions
+  - "Multimedia Collection" - Images and presentations with keywords
 
-### Enhanced Success Metrics (v2.4.0)
+### Success Metrics (v2.4.0)
 - **14 files** successfully uploaded
-- **100% success rate** in processing
+- **Complete processing** of all items
 - **Multilingual metadata** support (French/English)
 - **COAR resource types** properly assigned
-- **Professional metadata enhancement** for both datasets AND collections
-- **Automated metadata generation** with intelligent content detection
+- **Metadata enhancement** for both datasets AND collections
+- **Automated metadata generation** with content detection
 - **Complete workflow automation** with 7-step process
 
 ## 🧪 Workshop Exercises
@@ -93,7 +93,7 @@ When processed through the enhanced O-Nakala Core workflow, this dataset creates
 ### 1. Enhanced 7-Step Workflow (Recommended)
 ```bash
 # Complete automated workflow with professional metadata enhancement
-./run_ultimate_workflow.sh your_test_api_key --cleanup
+./run_workflow.sh your_test_api_key --cleanup
 ```
 
 **What this does:**

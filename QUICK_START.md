@@ -49,7 +49,7 @@ print('✅ O-Nakala Core is ready!')
 cd examples/sample_dataset
 
 # Run complete 7-step workflow with automatic cleanup
-./run_ultimate_workflow.sh 33170cfe-f53c-550b-5fb6-4814ce981293 --cleanup
+./run_workflow.sh 33170cfe-f53c-550b-5fb6-4814ce981293 --cleanup
 
 # OR test validation only (without actual upload)
 o-nakala-upload \
@@ -61,14 +61,14 @@ o-nakala-upload \
   --validate-only
 ```
 
-**🎉 Success!** The ultimate workflow creates 5 datasets + 3 collections with professional metadata enhancement and automatically cleans up test data.
+**🎉 Success!** The workflow creates 5 datasets + 3 collections with metadata enhancement and automatically cleans up test data.
 
 ### **What the 7-Step Workflow Does:**
 1. **Upload** - 5 datasets from sample files
 2. **Collections** - 3 thematic collections created 
-3. **Enhancement** - Professional metadata generated for datasets AND collections
-4. **Dataset Curation** - Enhanced titles, descriptions, keywords applied
-5. **Collection Curation** - Enhanced metadata applied to collections
+3. **Enhancement** - Metadata generated for datasets AND collections
+4. **Dataset Curation** - Updated titles, descriptions, keywords applied
+5. **Collection Curation** - Metadata applied to collections
 6. **Quality Analysis** - Comprehensive report generated
 7. **Cleanup** - Test data automatically removed (with `--cleanup`)
 
@@ -76,7 +76,7 @@ o-nakala-upload \
 
 ## **Production Workflow Example (7 Steps)**
 
-### **Complete Enhanced Workflow**
+### **Complete Workflow**
 
 ```bash
 # Step 1-2: Upload datasets and create collections
@@ -93,11 +93,11 @@ o-nakala-collection \
   --from-upload-output "upload_results.csv" \
   --collection-report "collections_output.csv"
 
-# Step 3: Generate professional metadata enhancements
+# Step 3: Generate metadata enhancements
 python create_modifications.py upload_results.csv
 python create_collection_modifications.py collections_output.csv
 
-# Step 4-5: Apply enhanced metadata to datasets and collections
+# Step 4-5: Apply metadata to datasets and collections
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --batch-modify auto_data_modifications.csv \

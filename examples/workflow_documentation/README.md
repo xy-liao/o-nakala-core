@@ -87,11 +87,11 @@ This workflow demonstrates practical application of:
 - ✅ **Complete 7-step automation** - Enhanced workflow including collection metadata curation
 - ✅ **Dual metadata enhancement** - Professional metadata for both datasets AND collections
 - ✅ **Collection-specific intelligence** - Content-aware enhancements for collections
-- ✅ **Ultimate workflow script** - `run_ultimate_workflow.sh` with all 7 steps
+- ✅ **Workflow script** - `run_workflow.sh` with all 7 steps
 - ✅ **100% automation** - Zero manual steps from upload to cleanup
 
 **Enhanced Automation Scripts:**
-- `run_ultimate_workflow.sh` - **NEW** Complete 7-step workflow execution
+- `run_workflow.sh` - **NEW** Complete 7-step workflow execution
 - `create_modifications.py` - Auto-generates professional dataset metadata
 - `create_collection_modifications.py` - **NEW** Auto-generates professional collection metadata
 - `verify_cleanup.py` - Confirms successful cleanup
@@ -128,11 +128,10 @@ workflow_documentation/
     └── workflow_summary.md             # Complete process overview
 
 sample_dataset/ (v2.4.0 automation scripts)
-├── run_ultimate_workflow.sh           # Complete 7-step workflow ✅ NEW v2.4.0
+├── run_workflow.sh           # Complete 7-step workflow ✅ NEW v2.4.0
 ├── create_modifications.py            # Dataset metadata generator ✅ UPDATED
 ├── create_collection_modifications.py # Collection metadata generator ✅ NEW v2.4.0
-├── cleanup_test_data.py               # Platform cleanup tool
-├── cleanup_all_unakala1_data.py       # Mass cleanup tool
+├── cleanup_test_data.py               # Test data cleanup tool
 ├── verify_cleanup.py                  # Cleanup verification
 ├── folder_data_items.csv              # Upload configuration
 ├── folder_collections.csv             # Collection configuration
@@ -150,10 +149,10 @@ Choose your preferred execution style:
 #### **🎯 Ultimate Simplicity (1 Command) - v2.4.0**
 ```bash
 # Complete 7-step workflow with collection enhancement
-./run_ultimate_workflow.sh your-api-key
+./run_workflow.sh your-api-key
 
 # With automatic cleanup (recommended for testing)
-./run_ultimate_workflow.sh your-api-key --cleanup
+./run_workflow.sh your-api-key --cleanup
 ```
 
 **New v2.4.0 Features:**
@@ -168,8 +167,8 @@ Full control with individual command execution + optional cleanup
 **All approaches provide:**
 ✅ **Zero manual steps** - Complete automation  
 ✅ **2-minute execution** - Upload, enhance, analyze  
-✅ **100% success rate** - Real API validation  
-✅ **Professional results** - Production-ready metadata  
+✅ **Validated processing** - Real API validation  
+✅ **Production results** - Production-ready metadata  
 ✅ **Platform courtesy** - Optional cleanup for test environments
 
 ### **🔧 Option 2: Detailed Validation Workflow**
@@ -292,7 +291,7 @@ o-nakala-curator \
 ### **🔄 Recommended Workflow Patterns**
 
 #### **🚀 Automated Approach (Recommended) - v2.4.0**
-1. **One command execution**: `./run_ultimate_workflow.sh api-key --cleanup`
+1. **One command execution**: `./run_workflow.sh api-key --cleanup`
 2. **Complete 7-step workflow**: Upload → Collections → Enhancement → Dataset Curation → Collection Curation → Quality Analysis
 3. **Dual metadata enhancement**: Professional metadata for both datasets AND collections
 4. **Automatic platform cleanup**: Keeps test environment tidy

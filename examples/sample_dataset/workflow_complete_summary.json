@@ -1,6 +1,6 @@
 {
   "workflow_info": {
-    "timestamp": "2025-06-26T13:30:32.381350",
+    "timestamp": "2025-06-26T17:27:30.852073",
     "base_path": "../sample_dataset",
     "api_key_masked": "33170cfe-f...",
     "workflow_version": "1.0.0"
@@ -22,10 +22,10 @@
   },
   "quality_summary": {
     "available": true,
-    "analysis_timestamp": "Unknown",
-    "total_items_analyzed": 0,
-    "overall_quality_score": 0.0,
-    "issues_found": 0,
+    "analysis_timestamp": "2025-06-26T17:27:29.657074",
+    "total_items_analyzed": 8,
+    "overall_quality_score": 85.2,
+    "issues_found": 2,
     "recommendations_count": 4
   },
   "enhancement_summary": {
@@ -46,37 +46,56 @@
       }
     }
   },
+  "curation_summary": {
+    "available": true,
+    "validation_fixes": 8,
+    "fix_files_count": 2,
+    "curation_completed": true
+  },
+  "publication_summary": {
+    "available": true,
+    "datasets_published": 5,
+    "collections_published": 3,
+    "publication_completed": true
+  },
+  "advanced_management_summary": {
+    "available": true,
+    "rights_management_completed": true,
+    "user_analytics_completed": true,
+    "items_managed": 16,
+    "management_completed": true
+  },
   "overall_statistics": {
     "total_operations": 8,
-    "successful_operations": 5,
+    "successful_operations": 8,
     "total_items_created": 8,
     "total_enhancements_applied": 13,
-    "workflow_success_rate": 62.5
+    "workflow_success_rate": 100.0
   },
   "execution_timeline": [
     {
       "operation": "Upload",
-      "timestamp": "2025-06-26T13:30:12.914549",
+      "timestamp": "2025-06-26T17:27:29.601134",
       "file": "upload_results.csv"
     },
     {
       "operation": "Collections",
-      "timestamp": "2025-06-26T13:30:12.926521",
+      "timestamp": "2025-06-26T17:27:29.617489",
       "file": "collections_output.csv"
     },
     {
       "operation": "Data Enhancements",
-      "timestamp": "2025-06-26T13:30:12.936504",
+      "timestamp": "2025-06-26T17:27:29.629081",
       "file": "auto_data_modifications.csv"
     },
     {
       "operation": "Collection Enhancements",
-      "timestamp": "2025-06-26T13:30:12.939073",
+      "timestamp": "2025-06-26T17:27:29.631407",
       "file": "auto_collection_modifications.csv"
     },
     {
       "operation": "Quality Analysis",
-      "timestamp": "2025-06-26T13:30:12.949712",
+      "timestamp": "2025-06-26T17:27:29.657904",
       "file": "quality_report.json"
     }
   ],

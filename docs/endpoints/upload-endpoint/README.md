@@ -108,11 +108,11 @@ graph LR
 - **Examples tested**: All examples validated with real API calls ✅
 - **Transformation accuracy**: 100% verified against live API ✅
 
-## 🎯 Success Metrics
+## 🎯 Expected Results
 
-When properly configured, the Upload endpoint delivers:
+When properly configured, the Upload endpoint provides:
 
-- **100% success rate** for valid CSV formats
+- **Reliable processing** for valid CSV formats
 - **Automatic file organization** based on research structure  
 - **Comprehensive metadata** with multilingual support
 - **Persistent identifiers** (DOIs) for all datasets

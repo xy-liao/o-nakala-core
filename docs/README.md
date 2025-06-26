@@ -41,8 +41,8 @@ Complete example with academic research data including:
 - Folder-based organization (code, data, documents, images, presentations)
 - Collection definitions
 
-### [Simple Dataset](../examples/simple-dataset/)
-Minimal example for quick testing with bird images.
+### [Interactive Notebooks](../examples/notebooks/)
+Jupyter notebooks for step-by-step workflow learning and exploration.
 
 ## 🎓 Interactive Learning
 

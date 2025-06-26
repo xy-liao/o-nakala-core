@@ -2,7 +2,7 @@
 Advanced Data Management Operations
 
 Handles publication, rights management, and cleanup operations for NAKALA workflow,
-corresponding to Step 8 of the enhanced ultimate workflow.
+corresponding to Step 8 of the workflow.
 """
 
 import json

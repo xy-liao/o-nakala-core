@@ -1,61 +1,61 @@
-# ML-Enhanced Curation Guide
+# Curation Guide
 
-**Version 2.4.1+ Feature** - Advanced metadata curation with machine learning and community analytics.
+**Version 2.4.1+ Feature** - Metadata curation with automated analysis and community features.
 
 ## 🔬 Overview
 
-O-Nakala Core v2.4.1 introduces powerful machine learning capabilities that transform metadata curation from manual work into intelligent, automated processes. The ML features learn from patterns, leverage community knowledge, and provide context-aware suggestions.
+O-Nakala Core v2.4.1 provides metadata curation capabilities that help improve data quality through automated analysis, pattern recognition, and community knowledge integration.
 
 ## 🚀 Quick Start
 
-### Installation with ML Features
+### Installation with Curation Features
 ```bash
-# Install with machine learning capabilities
+# Install with curation capabilities
 pip install o-nakala-core[ml]
 
 # Or complete installation
 pip install o-nakala-core[cli,ml]
 ```
 
-### Basic ML-Enhanced Workflow
+### Basic Curation Workflow
 ```bash
-# Enhanced curator with ML features (automatically enabled)
+# Curator with automated features
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --quality-report \
   --scope all \
   --output quality_report.json
 
-# The curator now includes:
-# - ML pattern analysis
+# The curator includes:
+# - Pattern analysis
 # - Community intelligence insights
 # - Automatic relationship discovery
 # - Predictive field suggestions
 ```
 
-## 🔧 AI Features in Detail
+## 🔧 Automated Features in Detail
 
-### 1. Machine Learning Pattern Learning
+### 1. Pattern Learning
 
-The ML engine discovers metadata patterns from your existing data and the broader NAKALA community.
+The system discovers metadata patterns from your existing data and the broader NAKALA community.
 
-**What it learns:**
+**What it analyzes:**
 - Field correlation patterns (e.g., certain keywords → specific licenses)
 - Content type classification patterns
-- User behavior patterns
+- User workflow patterns
 - Temporal patterns in metadata evolution
 
 **Automatic integration:**
-- Patterns are learned in the background during curator operations
+- Patterns are analyzed in the background during curator operations
 - No additional CLI commands needed
 - Results improve over time as more data is processed
 
-### 2. Collaborative Intelligence
+### 2. Community Intelligence
 
 Leverages community knowledge to provide better metadata suggestions.
 
 **Features:**
-- Community pattern analysis across all NAKALA users
+- Community pattern analysis across NAKALA users
 - Best practice recommendations based on successful datasets
 - Quality benchmarking against similar resources
 - Trend analysis for emerging metadata standards

@@ -4,22 +4,22 @@ This directory contains Jupyter notebooks demonstrating the complete O-Nakala Co
 
 ## 📚 Available Notebooks
 
-### `ultimate_workflow_notebook.ipynb`
-**Complete end-to-end NAKALA workflow demonstration**:
+### `workflow_notebook.ipynb`
+**Complete O-Nakala Core workflow demonstration**:
 - Data upload with folder mode configuration
 - Collection creation and management
 - Metadata enhancement and curation
 - Quality analysis and reporting
 - Comprehensive workflow summary
 
-### `workshop_demo.ipynb`
-**Workshop demonstration materials**:
-- Interactive tutorials for learning NAKALA workflows
-- Hands-on exercises with real test data
-- Step-by-step guidance for common tasks
+### `workflow_modules/`
+**Python workflow modules**:
+- Modular components for O-Nakala Core operations
+- Reusable functions for upload, collection, and curation workflows
+- Supporting modules for the workflow_notebook.ipynb
 
-### `run_ultimate_workflow.sh`
-**Complete workflow automation script**:
+### `run_workflow.sh`
+**O-Nakala Core workflow automation script**:
 - End-to-end workflow execution via CLI
 - Automated data upload, collection creation, and quality analysis
 - Optional cleanup mode to remove test data
@@ -27,7 +27,7 @@ This directory contains Jupyter notebooks demonstrating the complete O-Nakala Co
 
 ### Cleanup Scripts
 **NAKALA test data cleanup utilities**:
-- `cleanup_all_unakala1_data.py` - Remove all data from unakala1 user
+- `cleanup_test_data.py` - Remove test data after workflow completion
 - `cleanup_test_data.py` - Selective cleanup based on upload results
 - `verify_cleanup.py` - Verify cleanup completion
 
@@ -37,7 +37,7 @@ This directory contains Jupyter notebooks demonstrating the complete O-Nakala Co
 **⚠️ IMPORTANT**: The notebooks **require** the `workflow_modules/` directory to function:
 
 ```
-ultimate_workflow_notebook.ipynb
+workflow_notebook.ipynb
 ├── sys.path.append('workflow_modules')  # Required path setup
 ├── from workflow_config import WorkflowConfig
 ├── from data_uploader import DataUploader
@@ -79,23 +79,23 @@ pip install jupyter o-nakala-core[cli]
 ```bash
 cd examples/notebooks
 # IMPORTANT: Must be in the notebooks directory for workflow_modules to be found
-jupyter lab ultimate_workflow_notebook.ipynb
+jupyter lab workflow_notebook.ipynb
 ```
 
 ### Running the Automated Script
 ```bash
 cd examples/notebooks
-./run_ultimate_workflow.sh YOUR_API_KEY
+./run_workflow.sh YOUR_API_KEY
 
 # With cleanup (removes test data afterward)
-./run_ultimate_workflow.sh YOUR_API_KEY --cleanup
+./run_workflow.sh YOUR_API_KEY --cleanup
 ```
 
 ### Manual Cleanup
 ```bash
 cd examples/notebooks
 # Remove all test data for unakala1 user
-python cleanup_all_unakala1_data.py YOUR_API_KEY
+python cleanup_test_data.py YOUR_API_KEY
 
 # Selective cleanup based on upload results
 python cleanup_test_data.py YOUR_API_KEY
@@ -116,9 +116,8 @@ API_URL = "https://apitest.nakala.fr"
 ### Required Files Structure
 ```
 notebooks/
-├── ultimate_workflow_notebook.ipynb    # Main notebook
-├── workshop_demo.ipynb                 # Demo notebook
-├── run_ultimate_workflow.sh            # Automation script
+├── workflow_notebook.ipynb             # Main notebook
+├── run_workflow.sh                     # Automation script
 ├── workflow_modules/                   # REQUIRED modules directory
 │   ├── __init__.py
 │   ├── workflow_config.py
