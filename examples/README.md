@@ -25,6 +25,7 @@ This directory contains example datasets, configurations, and workflows for lear
   - `ultimate_workflow_notebook.ipynb` - Complete NAKALA workflow
   - `workshop_demo.ipynb` - Workshop demonstration materials
   - `workflow_modules/` - Python modules for workflow operations
+  - `run_ultimate_workflow.sh` - Shell script automation for notebook workflows
 
 ### `/workflow_documentation/` - Process Documentation
 - **Purpose**: Documented workflows and success metrics
@@ -66,6 +67,15 @@ jupyter lab ultimate_workflow_notebook.ipynb
 # Follow the step-by-step workflow in the notebook
 ```
 
+### 4. Automated Workflow Execution
+```bash
+cd notebooks
+# Execute the complete workflow automatically
+./run_ultimate_workflow.sh
+# Or execute with custom parameters
+NAKALA_API_KEY=your_key ./run_ultimate_workflow.sh
+```
+
 ## 📚 File Types Included
 
 ### Research Data Examples
@@ -99,10 +109,11 @@ jupyter lab ultimate_workflow_notebook.ipynb
 - `folder_collections.csv` - Collection organization template
 - `files/` directory structure - Sample research data
 
-### Workflow Modules
+### Workflow Architecture
 - `workflow_modules/` - Python modules for complete workflow automation
-- `ultimate_workflow_notebook.ipynb` - Step-by-step interactive tutorial
+- `ultimate_workflow_notebook.ipynb` - Step-by-step interactive tutorial (depends on workflow_modules)
 - `workshop_demo.ipynb` - Workshop demonstration materials
+- `run_ultimate_workflow.sh` - Shell script that executes the notebook programmatically
 
 ## ⚠️ Important Notes
 
@@ -120,6 +131,62 @@ jupyter lab ultimate_workflow_notebook.ipynb
 - Uploads to test API are temporary
 - Production uploads require institutional credentials
 - Workshop data is cleaned up periodically
+
+## 🔄 Workflow Component Relationships
+
+### Architecture Overview
+The examples use a **3-layer architecture**:
+
+1. **o-nakala-core PyPI package** - Core functionality (`pip install o-nakala-core`)
+2. **workflow_modules/** - Custom wrapper modules for complex workflows
+3. **Notebooks & Scripts** - User interfaces (Jupyter notebooks, shell scripts)
+
+### Dependencies
+```
+ultimate_workflow_notebook.ipynb
+├── workflow_modules/
+│   ├── data_uploader.py
+│   ├── collection_manager.py
+│   ├── curator_operations.py
+│   └── [other modules]
+│       └── o-nakala-core (PyPI package)
+└── run_ultimate_workflow.sh
+    └── executes notebook via nbconvert
+```
+
+### Usage Options
+- **Interactive**: Run `ultimate_workflow_notebook.ipynb` in Jupyter
+- **Automated**: Run `./run_ultimate_workflow.sh` for batch processing
+- **Programmatic**: Import workflow_modules directly in your Python code
+
+## 📦 Portability & Independence
+
+### Self-Contained Examples
+The `/examples` directory is **completely portable** and can be copied anywhere:
+
+```bash
+# Copy examples to any location
+cp -r /path/to/o-nakala-core/examples /new/location/
+
+# Install only the PyPI package
+pip install o-nakala-core[cli]
+
+# Everything works independently!
+cd /new/location/examples/notebooks
+jupyter lab ultimate_workflow_notebook.ipynb
+```
+
+### What's Included
+- ✅ Complete sample datasets
+- ✅ All workflow modules
+- ✅ Configuration templates
+- ✅ Shell scripts for automation
+- ✅ Documentation and guides
+
+### External Dependencies
+- **Python 3.8+** with standard libraries
+- **o-nakala-core PyPI package** (`pip install o-nakala-core`)
+- **Jupyter** for interactive notebooks (optional)
 
 ## 📖 Related Documentation
 

@@ -31,17 +31,42 @@ This directory contains Jupyter notebooks demonstrating the complete O-Nakala Co
 - `cleanup_test_data.py` - Selective cleanup based on upload results
 - `verify_cleanup.py` - Verify cleanup completion
 
-## 🔧 Workflow Modules
+## 🔧 Workflow Modules Architecture
 
+### Critical Dependency Relationship
+**⚠️ IMPORTANT**: The notebooks **require** the `workflow_modules/` directory to function:
+
+```
+ultimate_workflow_notebook.ipynb
+├── sys.path.append('workflow_modules')  # Required path setup
+├── from workflow_config import WorkflowConfig
+├── from data_uploader import DataUploader
+├── from collection_manager import CollectionManager
+└── [...other workflow module imports]
+```
+
+### Module Functionality
 The `workflow_modules/` directory contains Python modules that power the notebooks:
 
 - `workflow_config.py` - Configuration management and validation
-- `data_uploader.py` - Dataset upload operations
+- `data_uploader.py` - Dataset upload operations using o-nakala-core
 - `collection_manager.py` - Collection creation and organization
 - `metadata_enhancer.py` - Automatic metadata improvement
 - `curator_operations.py` - Batch metadata curation
 - `quality_analyzer.py` - Quality analysis and reporting
 - `workflow_summary.py` - Comprehensive result summaries
+- `advanced_data_manager.py` - Publication and rights management
+
+### How It Works
+1. **Notebooks import workflow modules** (not o-nakala-core directly)
+2. **Workflow modules import o-nakala-core** (from PyPI package)
+3. **Shell scripts execute notebooks** via nbconvert
+
+### Portability
+The entire `notebooks/` directory is **self-contained and portable**:
+- Copy the whole `notebooks/` folder anywhere
+- Install `pip install o-nakala-core[cli]`
+- Everything works independently
 
 ## 🚀 Quick Start
 
@@ -53,6 +78,7 @@ pip install jupyter o-nakala-core[cli]
 ### Running the Notebooks
 ```bash
 cd examples/notebooks
+# IMPORTANT: Must be in the notebooks directory for workflow_modules to be found
 jupyter lab ultimate_workflow_notebook.ipynb
 ```
 
@@ -85,9 +111,36 @@ API_KEY = "33170cfe-f53c-550b-5fb6-4814ce981293"
 API_URL = "https://apitest.nakala.fr"
 ```
 
-## 📋 Dependencies
+## 📋 Dependencies & File Structure
 
+### Required Files Structure
+```
+notebooks/
+├── ultimate_workflow_notebook.ipynb    # Main notebook
+├── workshop_demo.ipynb                 # Demo notebook
+├── run_ultimate_workflow.sh            # Automation script
+├── workflow_modules/                   # REQUIRED modules directory
+│   ├── __init__.py
+│   ├── workflow_config.py
+│   ├── data_uploader.py
+│   ├── collection_manager.py
+│   ├── curator_operations.py
+│   ├── metadata_enhancer.py
+│   ├── quality_analyzer.py
+│   ├── workflow_summary.py
+│   └── advanced_data_manager.py
+├── requirements.txt                    # Python dependencies
+└── [cleanup scripts and logs]
+```
+
+### Python Dependencies
 See `requirements.txt` for the complete list of dependencies needed to run these notebooks.
+
+**Key Dependencies:**
+- `o-nakala-core[cli]` - Core NAKALA functionality
+- `jupyter` - For interactive notebooks
+- `pandas` - Data processing
+- `pathlib` - File handling
 
 ## 🎯 Learning Objectives
 
