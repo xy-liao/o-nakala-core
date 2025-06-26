@@ -419,4 +419,4 @@ o-nakala-upload --validate-only --api-key YOUR_KEY --dataset your_file.csv --mod
 ---
 
 **Last Updated**: 2025-06-11  
-**O-Nakala Core Version**: v2.2.0 
+**O-Nakala Core Version**: v2.4.3 

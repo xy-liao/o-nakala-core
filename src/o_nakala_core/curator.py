@@ -1056,9 +1056,9 @@ class NakalaCuratorClient:
             doc.append(f"- **Value:** {value}")
             doc.append(f"- **Confidence:** {confidence:.1%}")
 
-        # ML Predictions
+        # Automated Predictions
         if result.ml_predictions:
-            doc.append("\n## Machine Learning Enhancements")
+            doc.append("\n## Automated Metadata Enhancements")
             for prediction in result.ml_predictions:
                 doc.append(f"\n### {prediction.field_name}")
                 doc.append(f"- **Predicted Value:** {prediction.predicted_value}")

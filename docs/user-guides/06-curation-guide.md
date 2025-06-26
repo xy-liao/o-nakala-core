@@ -1,10 +1,10 @@
 # Curation Guide
 
-**Version 2.4.1+ Feature** - Metadata curation with automated analysis and community features.
+**Version 2.4.3+ Feature** - Metadata curation with automated analysis and community features.
 
 ## 🔬 Overview
 
-O-Nakala Core v2.4.1 provides metadata curation capabilities that help improve data quality through automated analysis, pattern recognition, and community knowledge integration.
+O-Nakala Core v2.4.3 provides metadata curation capabilities that help improve data quality through automated analysis, pattern recognition, and community knowledge integration.
 
 ## 🚀 Quick Start
 
@@ -30,7 +30,7 @@ o-nakala-curator \
 # - Pattern analysis
 # - Community intelligence insights
 # - Automatic relationship discovery
-# - Predictive field suggestions
+# - Smart field suggestions
 ```
 
 ## 🔧 Automated Features in Detail
@@ -122,7 +122,7 @@ AI-driven predictions for metadata field values and quality improvements.
 
 ## 🎯 Enhanced Workflow Example
 
-### Traditional Workflow (v2.3.0)
+### Traditional Workflow (v2.4.3)
 ```bash
 # 1. Upload data
 o-nakala-upload --api-key "$KEY" --dataset data.csv --mode csv
@@ -134,11 +134,11 @@ o-nakala-collection --api-key "$KEY" --title "My Collection"
 o-nakala-curator --api-key "$KEY" --quality-report
 ```
 
-### ML-Enhanced Workflow (v2.4.1)
+### Automated Enhancement Workflow (v2.4.3)
 ```bash
 # 1. Upload with intelligent pre-population
 o-nakala-upload --api-key "$KEY" --dataset data.csv --mode csv
-# → AI suggests metadata improvements during upload
+# → Automated system suggests metadata improvements during upload
 
 # 2. Collections with relationship discovery
 o-nakala-collection --api-key "$KEY" --from-upload-output results.csv
@@ -193,7 +193,7 @@ When AI features are enabled, the system can automatically generate suggested mo
 python create_modifications.py upload_results.csv
 
 # The generated modifications now include:
-# - ML-suggested field improvements
+# - Automated field improvements
 # - Community-driven recommendations  
 # - Relationship metadata additions
 # - Predictive quality enhancements
@@ -236,15 +236,15 @@ For large datasets (>100 items), consider:
 
 ### Common Issues
 
-**"ML dependencies not found"**
+**"Enhancement dependencies not found""
 ```bash
-# Install ML dependencies
+# Install enhancement dependencies
 pip install o-nakala-core[ml]
 ```
 
 **"Pattern learning taking too long"**
 ```bash
-# Disable ML for faster operation
+# Disable enhancements for faster operation
 o-nakala-curator --api-key "$KEY" --quality-report --no-ml
 ```
 

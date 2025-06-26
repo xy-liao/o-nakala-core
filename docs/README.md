@@ -17,7 +17,7 @@ Learn how to organize datasets into thematic collections.
 End-to-end workflows for digital humanities research.
 
 ### [🔧 Migration Guide](user-guides/04-v2-migration-guide.md)
-Migrating from v1.0 to v2.0 (if using legacy scripts).
+Upgrading to the latest v2.4.3 with automated enhancement features.
 
 ### [❓ FAQ](user-guides/05-faq.md)
 Frequently asked questions and troubleshooting.

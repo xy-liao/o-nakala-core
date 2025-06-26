@@ -1,8 +1,8 @@
 """
-NAKALA Machine Learning Engine
+NAKALA Automated Enhancement Engine
 
-Advanced AI-driven metadata management with pattern recognition, semantic analysis,
-and autonomous intelligence. Part of the Complete Metadata Management System - Phase 3.
+Advanced pattern recognition and semantic analysis for metadata management
+with intelligent suggestions and community insights.
 """
 
 import logging
@@ -101,7 +101,7 @@ class SemanticEmbedding:
 
 @dataclass
 class PredictionResult:
-    """Result of ML prediction for metadata suggestions."""
+    """Result of automated prediction for metadata suggestions."""
 
     field_name: str
     predicted_value: str
@@ -116,7 +116,7 @@ class PredictionResult:
 
 
 class MLPatternLearner:
-    """Machine learning component for discovering and learning metadata patterns."""
+    """Automated component for discovering and learning metadata patterns."""
 
     def __init__(self, cache_dir: str = None):
         self.cache_dir = (
@@ -467,7 +467,7 @@ class MLPatternLearner:
                 field_name=field_name,
                 predicted_value=best_prediction[0],
                 confidence=best_prediction[1],
-                reasoning=f"ML prediction based on {len(evidence)} evidence sources",
+                reasoning=f"Automated prediction based on {len(evidence)} evidence sources",
                 evidence=evidence,
                 alternatives=alternatives,
             )
@@ -777,7 +777,7 @@ class SemanticAnalyzer:
 
 # Factory functions
 def create_ml_pattern_learner(cache_dir: str = None) -> MLPatternLearner:
-    """Create ML pattern learner with caching."""
+    """Create automated pattern learner with caching."""
     return MLPatternLearner(cache_dir)
 
 

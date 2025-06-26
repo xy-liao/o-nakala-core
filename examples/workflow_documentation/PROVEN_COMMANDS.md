@@ -1,12 +1,12 @@
-# ✅ Proven Working Commands - Enhanced O-Nakala Core Workflow v2.4.0
+# ✅ Proven Working Commands - Enhanced O-Nakala Core Workflow v2.4.3
 
 **Validation Status**: ✅ **Successfully Tested 2025-06-24**  
 **Success Rate**: 100% for enhanced 7-step workflow  
 **Test Environment**: NAKALA Test API (https://apitest.nakala.fr)
 
-This document contains the **exact command sequence** that successfully executed the complete Enhanced O-Nakala Core v2.4.0 workflow with real API calls and live data processing.
+This document contains the **exact command sequence** that successfully executed the complete Enhanced O-Nakala Core v2.4.3 workflow with real API calls and live data processing.
 
-## ⚡ Quick Summary (v2.4.0)
+## ⚡ Quick Summary (v2.4.3)
 
 **🎯 Goal**: Upload 5 datasets + 3 collections, enhance metadata for BOTH datasets AND collections, generate quality report (+ optional cleanup)  
 **⏱️ Time**: ~2.5 minutes total (+ 30 seconds cleanup)  

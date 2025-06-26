@@ -13,7 +13,7 @@ pip install o-nakala-core
 # With CLI tools
 pip install o-nakala-core[cli]
 
-# With machine learning features (NEW in v2.4.1)
+# With enhanced features
 pip install o-nakala-core[ml]
 
 # Complete installation (all features)
@@ -87,7 +87,7 @@ Current implementation provides functionality for NAKALA data management includi
 - **Quality analysis** and metadata validation
 - **Batch operations** for large-scale data management
 
-### 🔬 **Automation Features**
+### 🔬 **Automated Enhancement Features**
 - **Pattern Learning**: Discovers metadata patterns from existing data
 - **Content Analysis**: Content similarity and clustering
 - **Community Analytics**: Repository-wide metadata recommendations
@@ -138,7 +138,7 @@ cat folder_collections.csv
 # Set API key (see api/api_keys.md for test key)
 export NAKALA_API_KEY="[see-api/api_keys.md]"
 
-# Run the complete workflow (v2.4.1 with ML features)
+# Run the complete workflow (v2.4.3 with automated enhancement)
 o-nakala-upload --api-key "$NAKALA_API_KEY" \
   --dataset folder_data_items.csv --mode folder \
   --folder-config folder_data_items.csv --base-path . \
@@ -149,14 +149,14 @@ o-nakala-collection --api-key "$NAKALA_API_KEY" \
   --from-folder-collections folder_collections.csv \
   --collection-report collections_output.csv
 
-# Quality analysis (v2.4.1)
+# Quality analysis (v2.4.3)
 o-nakala-curator --api-key "$NAKALA_API_KEY" \
   --quality-report --scope collections
 # Now includes: Pattern analysis, community insights, relationship discovery
 ```
 
 The examples cover:
-- Data upload (5 datasets, 14 files) with automated pre-population
+- Data upload (5 datasets, 14 files) with smart pre-population
 - Collection creation (3 thematic collections) with relationship discovery
 - Quality curation and analysis
 - Automated metadata enhancement

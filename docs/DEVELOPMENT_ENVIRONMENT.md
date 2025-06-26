@@ -366,6 +366,6 @@ echo $HTTPS_PROXY
 ---
 
 **Last Updated**: 2025-06-10  
-**Validated With**: O-Nakala Core v2.1.2  
+**Validated With**: O-Nakala Core v2.4.3  
 **Test Environment**: https://apitest.nakala.fr  
 **Primary Test Key**: 33170cfe-f53c-550b-5fb6-4814ce981293

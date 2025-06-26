@@ -119,7 +119,7 @@ The script generates two output files:
    - Error messages
    - API responses
 
-## Example Success Output (v2.2.0 Validated):
+## Example Success Output (v2.4.3 Validated):
 ```
 Processing entry 1/5: Images
 Uploading file: site_photograph_1.jpg

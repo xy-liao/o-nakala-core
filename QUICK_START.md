@@ -42,7 +42,7 @@ print('✅ O-Nakala Core is ready!')
 "
 ```
 
-### **Step 4: Test Enhanced 7-Step Workflow v2.4.0** (2 minutes)
+### **Step 4: Test Enhanced 7-Step Workflow v2.4.3** (2 minutes)
 
 ```bash
 # Navigate to sample dataset directory

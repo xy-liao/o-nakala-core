@@ -1,23 +1,25 @@
-# V2.0 Migration Guide
+# O-Nakala Core Migration Guide
 
 ## Overview
 
-This guide helps you migrate from the original Nakala client scripts (v1.0) to the new improved v2.0 architecture while maintaining full backward compatibility.
+This guide helps you upgrade to the latest o-nakala-core v2.4.3 and migrate from older versions to take advantage of new automated enhancement features and improved CLI tools.
 
-## 🔄 Migration Strategy
+## 🚀 Current Version: v2.4.3
 
-### Phase 1: Parallel Operation (Current)
-- Both v1.0 and v2.0 scripts work simultaneously
-- Same configuration files and datasets
-- Identical CLI interfaces and output formats
-- Zero breaking changes
+### Latest Features
+- **Automated Metadata Enhancement**: Pattern recognition and intelligent suggestions
+- **Improved CLI Tools**: Four production-ready commands
+- **Enhanced Quality Analysis**: Comprehensive reporting and validation
+- **Professional Terminology**: Accurate feature descriptions without ML marketing claims
 
-### Phase 2: Testing & Validation
-- Test v2.0 scripts with your existing datasets
-- Compare outputs between v1.0 and v2.0
-- Validate all workflows work correctly
+### Quick Upgrade
+```bash
+# Upgrade to latest version
+pip install --upgrade o-nakala-core[cli]
 
-### Phase 3: Gradual Migration
+# Verify installation
+o-nakala-upload --help
+```
 - Start using v2.0 scripts for new projects
 - Continue using v1.0 for critical production workflows
 - Migrate when confident in v2.0 stability

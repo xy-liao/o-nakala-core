@@ -2,7 +2,7 @@
 Metadata Enhancement Operations
 
 Handles automatic metadata enhancement generation for datasets and collections,
-corresponding to Step 3 of the ultimate workflow.
+corresponding to Step 3 of the automated workflow.
 """
 
 from pathlib import Path
@@ -234,7 +234,7 @@ class MetadataEnhancer:
     
     def _display_enhancement_summary(self, results: Dict[str, Any]):
         """Display enhancement generation summary."""
-        print("\n🤖 Metadata Enhancement Summary")
+        print("\n🤖 Automated Enhancement Summary")
         print("=" * 50)
         
         if results['data_enhancements']:
