@@ -57,12 +57,19 @@ class DataUploader:
             
             for index, row in df.iterrows():
                 try:
-                    # Prepare dataset for upload
+                    # Prepare dataset for upload with proper NAKALA metadata structure
                     dataset_config = {
                         'title': row.get('title', f'Dataset {int(index) + 1}'),
-                        'type': row.get('type', 'dataset'),
+                        'status': row.get('status', 'pending'),
+                        'type': row.get('type', 'http://purl.org/coar/resource_type/c_ddb1'),
                         'description': row.get('description', ''),
-                        'files': row.get('files', '').split(',') if row.get('files') else [],
+                        'creator': row.get('creator', 'Unknown'),
+                        'date': row.get('date', '2024'),
+                        'license': row.get('license', 'CC-BY-4.0'),
+                        'language': row.get('language', 'en'),
+                        'keywords': row.get('keywords', ''),
+                        'accessRights': row.get('accessRights', 'Open Access'),
+                        'file': row.get('file', ''),  # File path from CSV
                         'base_path': self.config['base_path']
                     }
                     
@@ -73,7 +80,7 @@ class DataUploader:
                         'identifier': identifier,
                         'title': dataset_config['title'],
                         'status': 'OK',
-                        'files': ','.join(dataset_config['files']),
+                        'files': dataset_config.get('file', ''),
                         'response': f'{{"code": 201, "message": "Data created", "payload": {{"id": "{identifier}"}}}}'
                     })
                     
