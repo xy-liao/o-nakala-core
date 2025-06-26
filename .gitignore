@@ -150,5 +150,10 @@ src/o_nakala_core/web_api.py
 cleanup_all_unakala1_data.py
 cleanup_all_unakala1_data.sh
 
+# External API documentation (retrieved from NAKALA/Huma-Num sites)
+api/guide_description.md
+api/nakala-apitest.json
+api/nakala_metadata_vocabulary.json
+
 # Generated cleanup script (user convenience)
 !cleanup.py

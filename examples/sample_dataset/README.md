@@ -204,7 +204,7 @@ o-nakala-curator \
 ## 📚 Additional Resources
 
 - [Workshop CSV Guide](WORKSHOP_CSV_GUIDE.md) - Detailed CSV format documentation
-- [O-Nakala API Documentation](../../api/guide_description.md) - API reference
+- [NAKALA API Documentation](https://api.nakala.fr/doc) - Official API reference
 - [Troubleshooting Guide](../../docs/user-guides/troubleshooting.md) - Common issues
 
 ---
