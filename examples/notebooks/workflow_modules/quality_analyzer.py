@@ -110,29 +110,29 @@ class QualityAnalyzer:
         stats = {
             'scope': scope,
             'execution_time': execution_time,
-            'analysis_timestamp': quality_data.get('generated_at', quality_data.get('timestamp', 'Unknown')),
-            'total_items_analyzed': 0,
-            'quality_score': 0.0,
+            'analysis_timestamp': quality_data.get('generated_at', quality_data.get('analysis_info', {}).get('timestamp', 'Unknown')),
+            'items_analyzed': 0,
+            'overall_quality_score': 0.0,
             'issues_found': 0,
-            'recommendations': 0
+            'recommendations_count': 0
         }
         
         # Extract statistics from simulated quality report format
         if 'overall_statistics' in quality_data:
             overall_stats = quality_data['overall_statistics']
-            stats['total_items_analyzed'] = overall_stats.get('total_items_analyzed', 0)
-            stats['quality_score'] = overall_stats.get('overall_quality_score', 0.0)
+            stats['items_analyzed'] = overall_stats.get('total_items_analyzed', 0)
+            stats['overall_quality_score'] = overall_stats.get('overall_quality_score', 0.0)
             stats['issues_found'] = overall_stats.get('items_with_issues', 0)
-            stats['recommendations'] = overall_stats.get('recommendations_count', 0)
+            stats['recommendations_count'] = overall_stats.get('recommendations_count', 0)
         else:
             # Fallback to legacy format
             if 'summary' in quality_data:
                 summary = quality_data['summary']
                 total_collections = summary.get('total_collections', 0)
                 total_datasets = summary.get('total_datasets', 0)
-                stats['total_items_analyzed'] = total_collections + total_datasets
+                stats['items_analyzed'] = total_collections + total_datasets
             
-            stats['quality_score'] = quality_data.get('overall_quality_score', 0.0)
+            stats['overall_quality_score'] = quality_data.get('overall_quality_score', 0.0)
             
             collections_analysis = quality_data.get('collections_analysis', {})
             datasets_analysis = quality_data.get('datasets_analysis', {})
@@ -141,8 +141,8 @@ class QualityAnalyzer:
                 datasets_analysis.get('items_with_errors', 0)
             )
         
-        if 'recommendations' in quality_data and not stats.get('recommendations'):
-            stats['recommendations'] = len(quality_data['recommendations'])
+        if 'recommendations' in quality_data and not stats.get('recommendations_count'):
+            stats['recommendations_count'] = len(quality_data['recommendations'])
         
         # Extract issue categories
         if 'issues' in quality_data:
@@ -158,10 +158,10 @@ class QualityAnalyzer:
         print("\n📊 Quality Analysis Summary")
         print("=" * 50)
         print(f"Scope: {stats['scope'].upper()}")
-        print(f"Items Analyzed: {stats['total_items_analyzed']}")
-        print(f"Overall Quality Score: {stats['quality_score']:.2f}")
+        print(f"Items Analyzed: {stats['items_analyzed']}")
+        print(f"Overall Quality Score: {stats['overall_quality_score']:.2f}")
         print(f"Issues Found: {stats['issues_found']}")
-        print(f"Recommendations: {stats['recommendations']}")
+        print(f"Recommendations: {stats['recommendations_count']}")
         print(f"Analysis Time: {stats['execution_time']:.2f} seconds")
         
         # Display issue categories if available
@@ -206,7 +206,7 @@ class QualityAnalyzer:
                 return False
             
             # Basic validation of report structure
-            required_keys = ['generated_at', 'scope', 'summary']  # Minimal required structure
+            required_keys = ['analysis_info', 'overall_statistics']  # Updated required structure
             if not all(key in quality_data for key in required_keys):
                 self.logger.warning("Quality report missing required structure")
                 return False
