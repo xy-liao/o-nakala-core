@@ -5,13 +5,13 @@ Handles quality analysis and reporting for NAKALA workflow,
 corresponding to Step 6 of the ultimate workflow.
 """
 
-import subprocess
 import json
 import pandas as pd
 from pathlib import Path
 from typing import Dict, Any, Optional, Literal
 import logging
 import time
+from o_nakala_core import NakalaCuratorClient, NakalaConfig, NakalaError
 
 class QualityAnalyzer:
     """Handles quality analysis and reporting operations."""
@@ -48,43 +48,33 @@ class QualityAnalyzer:
         else:
             report_file = self.quality_report_file
         
-        # Prepare command
-        cmd = [
-            "o-nakala-curator",
-            "--api-key", self.config['api_key'],
-            "--quality-report",
-            "--scope", scope,
-            "--output", str(report_file)
-        ]
-        
-        # Execute quality analysis
+        # Create curator client and execute quality analysis
         start_time = time.time()
         try:
-            self.logger.info(f"Executing: {' '.join(cmd)}")
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                cwd=str(self.base_path),
-                timeout=300  # 5 minute timeout
+            config = NakalaConfig(
+                api_url=self.config.get('api_url', 'https://apitest.nakala.fr'),
+                api_key=self.config['api_key']
             )
+            curator_client = NakalaCuratorClient(config)
+            
+            self.logger.info(f"Generating quality report for scope: {scope}")
+            
+            # Generate quality report using curator client
+            quality_data = curator_client.generate_quality_report(scope=scope)
             
             execution_time = time.time() - start_time
             
-            if result.returncode == 0:
-                self.logger.info("✅ Quality analysis completed successfully")
-                return self._process_quality_results(report_file, execution_time, scope)
-            else:
-                error_msg = f"Quality analysis failed: {result.stderr}"
-                self.logger.error(error_msg)
-                raise subprocess.CalledProcessError(result.returncode, cmd, result.stderr)
+            # Save report to file
+            with open(report_file, 'w', encoding='utf-8') as f:
+                json.dump(quality_data, f, indent=2, ensure_ascii=False)
+            
+            self.logger.info("✅ Quality analysis completed successfully")
+            return self._process_quality_results(report_file, execution_time, scope)
                 
-        except subprocess.TimeoutExpired:
-            self.logger.error("Quality analysis timed out after 5 minutes")
-            raise
-        except FileNotFoundError:
-            self.logger.error("o-nakala-curator command not found. Ensure o-nakala-core[cli] is installed.")
-            raise
+        except Exception as e:
+            error_msg = f"Quality analysis failed: {e}"
+            self.logger.error(error_msg)
+            raise NakalaError(error_msg)
     
     def _process_quality_results(self, report_file: Path, execution_time: float, 
                                scope: str) -> Dict[str, Any]:

@@ -1,7 +1,7 @@
 {
   "workflow_info": {
-    "timestamp": "2025-06-25T23:14:26.243611",
-    "base_path": "/Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset",
+    "timestamp": "2025-06-26T09:30:14.657501",
+    "base_path": "../sample_dataset",
     "api_key_masked": "33170cfe-f...",
     "workflow_version": "1.0.0"
   },
@@ -31,10 +31,10 @@
   "enhancement_summary": {
     "data_enhancements": {
       "available": true,
-      "total_modifications": 5,
+      "total_modifications": 10,
       "unique_datasets": 5,
       "action_types": {
-        "modify": 5
+        "add_metadata": 10
       }
     },
     "collection_enhancements": {
@@ -50,7 +50,7 @@
     "total_operations": 8,
     "successful_operations": 5,
     "total_items_created": 8,
-    "total_enhancements_applied": 8,
+    "total_enhancements_applied": 13,
     "workflow_success_rate": 62.5
   },
   "execution_timeline": [
@@ -65,19 +65,19 @@
       "file": "collections_output.csv"
     },
     {
-      "operation": "Quality Analysis",
-      "timestamp": "2025-06-25T23:08:51.749260",
-      "file": "quality_report.json"
-    },
-    {
-      "operation": "Data Enhancements",
-      "timestamp": "2025-06-25T23:14:08.353302",
-      "file": "auto_data_modifications.csv"
-    },
-    {
       "operation": "Collection Enhancements",
       "timestamp": "2025-06-25T23:14:08.382809",
       "file": "auto_collection_modifications.csv"
+    },
+    {
+      "operation": "Data Enhancements",
+      "timestamp": "2025-06-26T09:27:21.674078",
+      "file": "auto_data_modifications.csv"
+    },
+    {
+      "operation": "Quality Analysis",
+      "timestamp": "2025-06-26T09:28:06.055774",
+      "file": "quality_report.json"
     }
   ],
   "success": true

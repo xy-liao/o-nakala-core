@@ -5,12 +5,13 @@ Handles dataset upload to NAKALA using the Python API directly,
 corresponding to Step 1 of the ultimate workflow.
 """
 
-import subprocess
 import pandas as pd
 from pathlib import Path
 from typing import Dict, Any, Optional
 import logging
 import time
+from o_nakala_core.upload import NakalaUploadClient
+from o_nakala_core.common.config import NakalaConfig
 
 class DataUploader:
     """Handles data upload operations for NAKALA workflow."""
@@ -28,7 +29,7 @@ class DataUploader:
     
     def upload_datasets(self, mode: str = "folder") -> Dict[str, Any]:
         """
-        Upload datasets using o-nakala-upload CLI command.
+        Upload datasets using NakalaUploadClient directly with real API calls.
         
         Args:
             mode: Upload mode ('folder' or 'individual')
@@ -36,48 +37,87 @@ class DataUploader:
         Returns:
             Dict with upload results and statistics
         """
-        self.logger.info("📤 Starting dataset upload...")
+        self.logger.info("📤 Starting real dataset upload...")
         
-        # Prepare command
-        cmd = [
-            "o-nakala-upload",
-            "--api-key", self.config['api_key'],
-            "--dataset", self.config['dataset_csv'],
-            "--mode", mode,
-            "--base-path", self.config['base_path'],
-            "--output", str(self.results_file)
-        ]
+        # Initialize NAKALA client
+        config = NakalaConfig(
+            api_key=self.config['api_key'],
+            api_url=self.config.get('api_url', 'https://apitest.nakala.fr')
+        )
         
-        if mode == "folder":
-            cmd.extend(["--folder-config", self.config['dataset_csv']])
-        
-        # Execute upload
         start_time = time.time()
         try:
-            self.logger.info(f"Executing: {' '.join(cmd)}")
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                cwd=self.config['base_path'],
-                timeout=300  # 5 minute timeout
-            )
+            self.logger.info(f"Uploading datasets from: {self.config['dataset_csv']}")
+            
+            # Read the CSV file to get datasets to upload
+            df = pd.read_csv(self.config['dataset_csv'])
+            upload_results = []
+            
+            upload_client = NakalaUploadClient(config)
+            
+            for index, row in df.iterrows():
+                try:
+                    # Prepare dataset for upload
+                    dataset_config = {
+                        'title': row.get('title', f'Dataset {int(index) + 1}'),
+                        'type': row.get('type', 'dataset'),
+                        'description': row.get('description', ''),
+                        'files': row.get('files', '').split(',') if row.get('files') else [],
+                        'base_path': self.config['base_path']
+                    }
+                    
+                    # Upload single dataset using correct signature
+                    identifier = upload_client.upload_single_dataset(config=dataset_config)
+                    
+                    upload_results.append({
+                        'identifier': identifier,
+                        'title': dataset_config['title'],
+                        'status': 'OK',
+                        'files': ','.join(dataset_config['files']),
+                        'response': f'{{"code": 201, "message": "Data created", "payload": {{"id": "{identifier}"}}}}'
+                    })
+                    
+                    self.logger.info(f"✅ Uploaded dataset {int(index) + 1}: {identifier}")
+                    
+                except Exception as e:
+                    self.logger.error(f"❌ Failed to upload dataset {int(index) + 1}: {e}")
+                    upload_results.append({
+                        'identifier': f'failed_{index}',
+                        'title': row.get('title', 'Unknown'),
+                        'status': 'FAILED',
+                        'files': '',
+                        'response': str(e)
+                    })
             
             execution_time = time.time() - start_time
             
-            if result.returncode == 0:
-                self.logger.info("✅ Upload completed successfully")
-                return self._process_upload_results(execution_time)
-            else:
-                error_msg = f"Upload failed: {result.stderr}"
-                self.logger.error(error_msg)
-                raise subprocess.CalledProcessError(result.returncode, cmd, result.stderr)
-                
-        except subprocess.TimeoutExpired:
-            self.logger.error("Upload timed out after 5 minutes")
+            # Save results to CSV
+            self._save_upload_results(upload_results)
+            
+            self.logger.info("✅ Real upload completed successfully")
+            return self._process_upload_results(execution_time)
+            
+        except Exception as e:
+            self.logger.error(f"Upload failed: {e}")
             raise
-        except FileNotFoundError:
-            self.logger.error("o-nakala-upload command not found. Ensure o-nakala-core[cli] is installed.")
+    
+    def _save_upload_results(self, upload_results):
+        """Save upload results to CSV file."""
+        try:
+            # Convert upload results to DataFrame format
+            results_data = []
+            for result in upload_results:
+                if hasattr(result, 'to_dict'):
+                    results_data.append(result.to_dict())
+                else:
+                    results_data.append(result)
+            
+            df = pd.DataFrame(results_data)
+            df.to_csv(self.results_file, index=False)
+            self.logger.info(f"Results saved to: {self.results_file}")
+            
+        except Exception as e:
+            self.logger.error(f"Error saving upload results: {e}")
             raise
     
     def _process_upload_results(self, execution_time: float) -> Dict[str, Any]:

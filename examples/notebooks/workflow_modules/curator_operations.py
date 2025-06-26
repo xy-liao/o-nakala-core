@@ -5,12 +5,12 @@ Handles metadata curation operations for datasets and collections,
 corresponding to Steps 4-5 of the ultimate workflow.
 """
 
-import subprocess
 import pandas as pd
 from pathlib import Path
 from typing import Dict, Any, Optional, Literal
 import logging
 import time
+from o_nakala_core import NakalaCuratorClient, NakalaConfig, NakalaError
 
 class CuratorOperations:
     """Handles curation operations for datasets and collections."""
@@ -196,7 +196,7 @@ class CuratorOperations:
     def _execute_curation(self, scope: Literal["datasets", "collections"], 
                          modifications_file: str) -> Dict[str, Any]:
         """
-        Execute curation using o-nakala-curator CLI command.
+        Execute curation using NakalaCuratorClient directly.
         
         Args:
             scope: Curation scope ('datasets' or 'collections')
@@ -205,72 +205,72 @@ class CuratorOperations:
         Returns:
             Dict with curation execution results
         """
-        # Prepare command
-        cmd = [
-            "o-nakala-curator",
-            "--api-key", self.config['api_key'],
-            "--batch-modify", modifications_file,
-            "--scope", scope
-        ]
-        
-        # Execute curation
-        start_time = time.time()
+        # Create curator client
         try:
-            self.logger.info(f"Executing: {' '.join(cmd)}")
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                cwd=str(self.base_path),
-                timeout=600  # 10 minute timeout for curation
+            config = NakalaConfig(
+                api_url=self.config.get('api_url', 'https://apitest.nakala.fr'),
+                api_key=self.config['api_key']
             )
+            curator_client = NakalaCuratorClient(config)
             
+            # Load modifications from CSV
+            modifications_df = pd.read_csv(modifications_file)
+            modifications = []
+            
+            for _, row in modifications_df.iterrows():
+                # Convert CSV row to modification format
+                changes = {}
+                for col in modifications_df.columns:
+                    if col not in ['id', 'action'] and pd.notna(row[col]):
+                        changes[col] = row[col]
+                
+                modifications.append({
+                    'id': row['id'],
+                    'changes': changes
+                })
+            
+            # Execute curation
+            start_time = time.time()
+            self.logger.info(f"Executing {scope} curation with {len(modifications)} modifications")
+            
+            result = curator_client.batch_modify_metadata(modifications, dry_run=False)
             execution_time = time.time() - start_time
             
-            if result.returncode == 0:
-                self.logger.info(f"✅ {scope.capitalize()} curation completed successfully")
-                return self._process_curation_results(scope, modifications_file, execution_time, result.stdout)
-            else:
-                error_msg = f"{scope.capitalize()} curation failed: {result.stderr}"
-                self.logger.error(error_msg)
-                raise subprocess.CalledProcessError(result.returncode, cmd, result.stderr)
+            self.logger.info(f"✅ {scope.capitalize()} curation completed successfully")
+            return self._process_curation_results(scope, modifications_file, execution_time, result)
                 
-        except subprocess.TimeoutExpired:
-            self.logger.error(f"{scope.capitalize()} curation timed out after 10 minutes")
-            raise
-        except FileNotFoundError:
-            self.logger.error("o-nakala-curator command not found. Ensure o-nakala-core[cli] is installed.")
-            raise
+        except Exception as e:
+            error_msg = f"{scope.capitalize()} curation failed: {e}"
+            self.logger.error(error_msg)
+            raise NakalaError(error_msg)
     
     def _process_curation_results(self, scope: str, modifications_file: str, 
-                                 execution_time: float, stdout: str) -> Dict[str, Any]:
+                                 execution_time: float, batch_result) -> Dict[str, Any]:
         """Process curation results and generate statistics."""
         try:
             # Read modifications file to count operations
             df = pd.read_csv(modifications_file)
             
+            # Get summary from batch result
+            summary = batch_result.get_summary()
+            
             stats = {
                 'scope': scope,
                 'total_modifications': len(df),
-                'modifications_applied': len(df),  # Add the key the notebook expects
+                'modifications_applied': summary['successful'],  # Use actual successful count
                 'unique_items': len(df['id'].unique()) if 'id' in df.columns else 0,
                 'modification_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {},
                 'execution_time': execution_time,
                 'modifications_file': modifications_file,
-                'success': True
+                'success': True,
+                'successful_modifications': summary['successful'],
+                'failed_modifications': summary['failed'],
+                'success_rate': summary['success_rate']
             }
-            
-            # Parse stdout for additional information if available
-            if "successfully modified" in stdout.lower():
-                # Try to extract success count from output
-                import re
-                success_match = re.search(r'(\d+).*successfully', stdout)
-                if success_match:
-                    stats['successful_modifications'] = int(success_match.group(1))
             
             return {
                 'stats': stats,
-                'stdout': stdout,
+                'batch_result': batch_result,
                 'modifications_df': df,
                 'success': True
             }

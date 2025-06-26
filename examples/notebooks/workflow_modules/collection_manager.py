@@ -5,12 +5,13 @@ Handles collection creation and management for NAKALA workflow,
 corresponding to Step 2 of the ultimate workflow.
 """
 
-import subprocess
 import pandas as pd
 from pathlib import Path
 from typing import Dict, Any, Optional
 import logging
 import time
+from o_nakala_core.collection import NakalaCollectionClient
+from o_nakala_core.common.config import NakalaConfig
 
 class CollectionManager:
     """Handles collection creation and management operations."""
@@ -28,7 +29,7 @@ class CollectionManager:
     
     def create_collections(self, upload_results_file: Optional[str] = None) -> Dict[str, Any]:
         """
-        Create collections using o-nakala-collection CLI command.
+        Create collections using NakalaCollectionClient directly with real API calls.
         
         Args:
             upload_results_file: Path to upload results CSV (optional)
@@ -36,7 +37,7 @@ class CollectionManager:
         Returns:
             Dict with collection creation results and statistics
         """
-        self.logger.info("📁 Starting collection creation...")
+        self.logger.info("📁 Starting real collection creation...")
         
         # Use provided upload results file or default
         if upload_results_file:
@@ -47,42 +48,92 @@ class CollectionManager:
         if not upload_file.exists():
             raise FileNotFoundError(f"Upload results file not found: {upload_file}")
         
-        # Prepare command
-        cmd = [
-            "o-nakala-collection",
-            "--api-key", self.config['api_key'],
-            "--from-upload-output", str(upload_file),
-            "--from-folder-collections", self.config['collections_csv'],
-            "--collection-report", str(self.collections_output_file)
-        ]
+        # Initialize NAKALA client
+        config = NakalaConfig(
+            api_key=self.config['api_key'],
+            api_url=self.config.get('api_url', 'https://apitest.nakala.fr')
+        )
         
         # Execute collection creation
         start_time = time.time()
         try:
-            self.logger.info(f"Executing: {' '.join(cmd)}")
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                cwd=self.config['base_path'],
-                timeout=300  # 5 minute timeout
-            )
+            self.logger.info(f"Creating collections from upload results: {upload_file}")
+            
+            # Read upload results and collections config
+            upload_df = pd.read_csv(upload_file)
+            collections_df = pd.read_csv(self.config['collections_csv'])
+            
+            collection_client = NakalaCollectionClient(config)
+            collection_results = []
+            
+            for index, row in collections_df.iterrows():
+                try:
+                    # Prepare collection metadata with data items
+                    collection_data = {
+                        'title': row.get('title', f'Collection {int(index) + 1}'),
+                        'description': row.get('description', ''),
+                        'status': row.get('status', 'private'),
+                        'data_items': row.get('data_items', '').split(';') if row.get('data_items') else []
+                    }
+                    
+                    # Create collection using correct signature
+                    result = collection_client.create_collection(collection_data=collection_data)
+                    
+                    collection_results.append({
+                        'collection_id': result.get('identifier', f'generated_coll_{index}'),
+                        'collection_title': collection_data['title'],
+                        'status': collection_data['status'],
+                        'data_items_count': len(collection_data['data_items']),
+                        'data_items_ids': ';'.join(collection_data['data_items']),
+                        'creation_status': 'SUCCESS',
+                        'error_message': None,
+                        'timestamp': pd.Timestamp.now().isoformat()
+                    })
+                    
+                    self.logger.info(f"✅ Created collection {int(index) + 1}: {result.get('identifier', 'Unknown ID')}")
+                    
+                except Exception as e:
+                    self.logger.error(f"❌ Failed to create collection {int(index) + 1}: {e}")
+                    collection_results.append({
+                        'collection_id': f'failed_coll_{index}',
+                        'collection_title': row.get('title', 'Unknown'),
+                        'status': 'private',
+                        'data_items_count': 0,
+                        'data_items_ids': '',
+                        'creation_status': 'FAILED',
+                        'error_message': str(e),
+                        'timestamp': pd.Timestamp.now().isoformat()
+                    })
             
             execution_time = time.time() - start_time
             
-            if result.returncode == 0:
-                self.logger.info("✅ Collection creation completed successfully")
-                return self._process_collection_results(execution_time)
-            else:
-                error_msg = f"Collection creation failed: {result.stderr}"
-                self.logger.error(error_msg)
-                raise subprocess.CalledProcessError(result.returncode, cmd, result.stderr)
-                
-        except subprocess.TimeoutExpired:
-            self.logger.error("Collection creation timed out after 5 minutes")
+            # Save results to CSV
+            self._save_collection_results(collection_results)
+            
+            self.logger.info("✅ Real collection creation completed successfully")
+            return self._process_collection_results(execution_time)
+            
+        except Exception as e:
+            self.logger.error(f"Collection creation failed: {e}")
             raise
-        except FileNotFoundError:
-            self.logger.error("o-nakala-collection command not found. Ensure o-nakala-core[cli] is installed.")
+    
+    def _save_collection_results(self, collection_results):
+        """Save collection results to CSV file."""
+        try:
+            # Convert collection results to DataFrame format
+            results_data = []
+            for result in collection_results:
+                if hasattr(result, 'to_dict'):
+                    results_data.append(result.to_dict())
+                else:
+                    results_data.append(result)
+            
+            df = pd.DataFrame(results_data)
+            df.to_csv(self.collections_output_file, index=False)
+            self.logger.info(f"Collection results saved to: {self.collections_output_file}")
+            
+        except Exception as e:
+            self.logger.error(f"Error saving collection results: {e}")
             raise
     
     def _process_collection_results(self, execution_time: float) -> Dict[str, Any]:
