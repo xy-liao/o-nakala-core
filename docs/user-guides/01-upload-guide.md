@@ -27,35 +27,41 @@ A Python script for uploading datasets and their associated files to the Nakala 
 ## Usage Examples:
 
 ```bash
-# CSV Mode (Basic)
+# CSV Mode
 o-nakala-upload \
     --api-key "your-api-key" \
     --dataset dataset.csv \
-    --base-path img/
-
-# CSV Mode (Full)
-o-nakala-upload \
-    --api-key "your-api-key" \
-    --api-url "https://apitest.nakala.fr" \
-    --dataset dataset.csv \
-    --base-path img/
+    --mode csv \
+    --output upload_results.csv
 
 # Folder Mode
 o-nakala-upload \
     --api-key "your-api-key" \
+    --dataset folder_data_items.csv \
+    --base-path ./my_dataset \
     --mode folder \
-    --dataset "path/to/dataset" \
-    --folder-config "path/to/folder_config.csv"
+    --folder-config folder_data_items.csv \
+    --output upload_results.csv
+
+# Validation Only (test without uploading)
+o-nakala-upload \
+    --api-key "your-api-key" \
+    --dataset dataset.csv \
+    --mode csv \
+    --validate-only
 ```
 
 ## Command Line Arguments:
 
 - `--api-key`: (Required) Your Nakala API key
 - `--api-url`: (Optional) Nakala API URL (default: https://apitest.nakala.fr)
-- `--dataset`: (Required) Path to dataset CSV file or folder
-- `--image-dir`: (Optional) Directory containing images (for CSV mode)
-- `--mode`: (Optional) Upload mode: 'csv' or 'folder' (default: 'csv')
+- `--dataset`: (Required) Path to dataset CSV file
+- `--base-path`: (Optional) Base directory for files
+- `--mode`: (Required) Upload mode: 'csv' or 'folder'
 - `--folder-config`: (Required for folder mode) Path to folder configuration CSV
+- `--output`: (Optional) Output CSV file path (default: upload_results.csv)
+- `--validate-only`: (Optional) Validate dataset without uploading
+- `--log-level`: (Optional) Logging level: DEBUG, INFO, WARNING, ERROR
 
 ## Dataset Formats:
 

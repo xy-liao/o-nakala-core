@@ -1,312 +1,272 @@
 # Curation Guide
 
-**Version 2.4.3+ Feature** - Metadata curation with automated analysis and community features.
+**Version 2.4.3+ Feature** - Metadata curation and quality management tools.
 
-## 🔬 Overview
+## Overview
 
-O-Nakala Core v2.4.3 provides metadata curation capabilities that help improve data quality through automated analysis, pattern recognition, and community knowledge integration.
+O-Nakala Core v2.4.3 provides metadata curation capabilities to help improve data quality through validation, batch modifications, and quality reporting.
 
-## 🚀 Quick Start
+## Quick Start
 
-### Installation with Curation Features
+### Installation
 ```bash
-# Install with curation capabilities
-pip install o-nakala-core[ml]
-
-# Or complete installation
-pip install o-nakala-core[cli,ml]
+# Standard installation includes curation tools
+pip install o-nakala-core[cli]
 ```
 
 ### Basic Curation Workflow
 ```bash
-# Curator with automated features
+# Generate quality report
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --quality-report \
   --scope all \
   --output quality_report.json
 
-# The curator includes:
-# - Pattern analysis
-# - Community intelligence insights
-# - Automatic relationship discovery
-# - Smart field suggestions
+# Validate metadata
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --validate-metadata \
+  --scope collections
+
+# Detect potential duplicates
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --detect-duplicates \
+  --collections collection_id_1,collection_id_2
 ```
 
-## 🔧 Automated Features in Detail
+## Core Features
 
-### 1. Pattern Learning
+### 1. Quality Reporting
 
-The system discovers metadata patterns from your existing data and the broader NAKALA community.
+Generate comprehensive reports about your metadata quality.
 
 **What it analyzes:**
-- Field correlation patterns (e.g., certain keywords → specific licenses)
-- Content type classification patterns
-- User workflow patterns
-- Temporal patterns in metadata evolution
-
-**Automatic integration:**
-- Patterns are analyzed in the background during curator operations
-- No additional CLI commands needed
-- Results improve over time as more data is processed
-
-### 2. Community Intelligence
-
-Leverages community knowledge to provide better metadata suggestions.
-
-**Features:**
-- Community pattern analysis across NAKALA users
-- Best practice recommendations based on successful datasets
-- Quality benchmarking against similar resources
-- Trend analysis for emerging metadata standards
+- Required field completeness
+- Metadata consistency across items
+- Field format validation
+- License and permission compliance
 
 **Usage:**
 ```bash
-# Quality reports now include community insights
 o-nakala-curator \
   --api-key "$NAKALA_API_KEY" \
   --quality-report \
+  --scope all \
+  --output quality_report.json
+```
+
+### 2. Metadata Validation
+
+Validate metadata against NAKALA requirements before publication.
+
+**Validation checks:**
+- Required fields presence
+- Field format compliance
+- URI and link validity
+- Language code validation
+
+**Usage:**
+```bash
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --validate-metadata \
   --scope collections
 ```
 
-The quality report will include:
-- Community comparison metrics
-- Suggested improvements based on similar successful datasets
-- Trend analysis for your field of research
+### 3. Batch Modifications
 
-### 3. Intelligent Pre-population
+Apply metadata changes to multiple items using CSV files.
 
-Context-aware metadata suggestions based on file content, user history, and community patterns.
+**Supported modifications:**
+- Update titles, descriptions, keywords
+- Change licenses and permissions
+- Modify creator and contributor information
+- Update dates and temporal coverage
 
-**Auto-detection capabilities:**
-- File type analysis → appropriate metadata schemas
-- Content analysis → keyword and description suggestions
-- User context → personalized field suggestions
-- License recommendations based on content type and institution
-
-**Integration:**
-Pre-population works automatically during upload and curation workflows. The system analyzes:
-- File names and extensions
-- File content (when appropriate)
-- User's previous metadata patterns
-- Institutional context
-- Community best practices
-
-### 4. Relationship Discovery
-
-Automatically finds connections between your resources and suggests relationships.
-
-**Discovery types:**
-- Content similarity analysis
-- Temporal relationships (versions, updates)
-- Thematic connections
-- Citation and reference relationships
-- Collection membership suggestions
-
-**Automatic suggestions:**
-The system suggests relationship metadata such as:
-- `isPartOf` relationships for collection membership
-- `references` for citation relationships  
-- `isVersionOf` for version control
-- `relation` for thematic connections
-
-### 5. Predictive Analytics
-
-AI-driven predictions for metadata field values and quality improvements.
-
-**Predictions include:**
-- Missing field suggestions
-- Value corrections for consistency
-- Quality score predictions
-- Completion time estimates for metadata enhancement
-
-## 🎯 Enhanced Workflow Example
-
-### Traditional Workflow (v2.4.3)
+**Workflow:**
 ```bash
-# 1. Upload data
-o-nakala-upload --api-key "$KEY" --dataset data.csv --mode csv
+# 1. Export template for your items
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --export-template modifications_template.csv \
+  --collections collection_id
 
-# 2. Create collections manually
-o-nakala-collection --api-key "$KEY" --title "My Collection"
+# 2. Edit the CSV file with your changes
 
-# 3. Manual quality check
-o-nakala-curator --api-key "$KEY" --quality-report
+# 3. Apply modifications (dry run first)
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify modifications.csv \
+  --dry-run
+
+# 4. Apply actual modifications
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify modifications.csv
 ```
 
-### Automated Enhancement Workflow (v2.4.3)
+### 4. Duplicate Detection
+
+Identify potential duplicate items in your collections.
+
+**Detection methods:**
+- Title similarity analysis
+- File hash comparison
+- Metadata pattern matching
+- Manual review recommendations
+
+**Usage:**
 ```bash
-# 1. Upload with intelligent pre-population
-o-nakala-upload --api-key "$KEY" --dataset data.csv --mode csv
-# → Automated system suggests metadata improvements during upload
-
-# 2. Collections with relationship discovery
-o-nakala-collection --api-key "$KEY" --from-upload-output results.csv
-# → AI suggests collection relationships and optimizations
-
-# 3. Intelligent quality analysis
-o-nakala-curator --api-key "$KEY" --quality-report --scope all
-# → AI provides:
-#   - Community benchmarking
-#   - Predictive quality scores
-#   - Relationship suggestions
-#   - Pattern-based improvements
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --detect-duplicates \
+  --collections collection_id_1,collection_id_2 \
+  --output duplicates_report.json
 ```
 
-## 📊 Understanding AI Output
+## Complete Workflow Example
 
-### Quality Reports with AI Insights
+### End-to-End Curation Process
+```bash
+# 1. Upload your data
+o-nakala-upload \
+  --api-key "$NAKALA_API_KEY" \
+  --dataset folder_data_items.csv \
+  --mode folder \
+  --base-path ./my_dataset \
+  --output upload_results.csv
 
-The enhanced quality reports include new sections:
+# 2. Create collections
+o-nakala-collection \
+  --api-key "$NAKALA_API_KEY" \
+  --from-upload-output upload_results.csv \
+  --from-folder-collections folder_collections.csv
+
+# 3. Generate quality report
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --quality-report \
+  --scope all \
+  --output quality_report.json
+
+# 4. Export modification template
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --export-template modifications.csv \
+  --collections collection_id
+
+# 5. Apply batch modifications
+o-nakala-curator \
+  --api-key "$NAKALA_API_KEY" \
+  --batch-modify modifications.csv \
+  --dry-run
+```
+
+## Quality Report Output
+
+The quality report provides structured analysis in JSON format:
 
 ```json
 {
-  "ai_insights": {
-    "pattern_analysis": {
-      "discovered_patterns": 15,
-      "confidence_score": 0.87,
-      "suggestions": [...]
-    },
-    "community_comparison": {
-      "percentile": 78,
-      "similar_datasets": 142,
-      "best_practices": [...]
-    },
-    "relationship_discovery": {
-      "potential_relationships": 8,
-      "confidence_scores": {...}
-    },
-    "predictive_scores": {
-      "completeness_prediction": 0.92,
-      "quality_forecast": "excellent"
-    }
-  }
+  "summary": {
+    "total_items": 150,
+    "collections": 5,
+    "validation_errors": 12,
+    "missing_required_fields": 8
+  },
+  "field_analysis": {
+    "title": {"complete": 148, "missing": 2},
+    "description": {"complete": 140, "missing": 10},
+    "creator": {"complete": 145, "missing": 5}
+  },
+  "recommendations": [
+    "Complete missing titles for 2 items",
+    "Add descriptions for 10 items",
+    "Validate 3 items with invalid date formats"
+  ]
 }
 ```
 
-### Auto-Generated Modifications
+## Field Reference
 
-When AI features are enabled, the system can automatically generate suggested modifications:
+The curator supports all standard NAKALA metadata fields. Use `--list-fields` to see complete field documentation:
 
 ```bash
-# Enhanced auto-generation (created by create_modifications.py)
-python create_modifications.py upload_results.csv
-
-# The generated modifications now include:
-# - Automated field improvements
-# - Community-driven recommendations  
-# - Relationship metadata additions
-# - Predictive quality enhancements
+o-nakala-curator --list-fields
 ```
 
-## ⚙️ Configuration
-
-### AI Feature Control
-
-AI features are enabled by default when the `[ml]` package is installed. You can control specific features:
-
-```python
-from o_nakala_core.curator import NakalaCuratorClient, CuratorConfig
-
-config = CuratorConfig(
-    enable_ml_learning=True,          # Pattern learning
-    enable_collaborative_intel=True,  # Community insights
-    enable_prepopulation=True,        # Smart suggestions
-    enable_relationship_discovery=True # Auto relationships
-)
-
-curator = NakalaCuratorClient(api_key="...", config=config)
-```
-
-### Performance Considerations
-
-AI features add processing time but provide significant value:
-
-- **Pattern learning**: ~2-5 seconds per operation
-- **Community analysis**: ~1-3 seconds per operation  
-- **Relationship discovery**: ~3-8 seconds per dataset
-- **Predictive analytics**: ~1-2 seconds per prediction
-
-For large datasets (>100 items), consider:
-- Running AI analysis during off-peak hours
-- Using batch operations for efficiency
-- Caching results for repeated operations
-
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
-**"Enhancement dependencies not found""
+**"API authentication failed"**
 ```bash
-# Install enhancement dependencies
-pip install o-nakala-core[ml]
+# Verify your API key is correct
+export NAKALA_API_KEY="your_api_key_here"
+o-nakala-curator --api-key "$NAKALA_API_KEY" --quality-report
 ```
 
-**"Pattern learning taking too long"**
+**"Collection not found"**
 ```bash
-# Disable enhancements for faster operation
-o-nakala-curator --api-key "$KEY" --quality-report --no-ml
+# List your collections first
+o-nakala-user-info --api-key "$NAKALA_API_KEY" --collections-only
 ```
 
-**"Community data unavailable"**
+**"Batch modification failed"**
 ```bash
-# Check internet connection - community analysis requires online access
-# Fallback to local-only analysis if needed
+# Always test with dry-run first
+o-nakala-curator --batch-modify modifications.csv --dry-run
+
+# Check CSV format matches field requirements
+o-nakala-curator --list-fields
 ```
 
-### Performance Optimization
+### Performance Tips
 
 ```bash
-# For large datasets, use batch processing
+# For large datasets, use smaller batch sizes
 o-nakala-curator \
-  --api-key "$KEY" \
   --batch-modify modifications.csv \
-  --batch-size 50 \
-  --scope datasets
+  --batch-size 25
 
-# Enable caching for repeated operations
-export NAKALA_CACHE_ENABLED=true
-export NAKALA_CACHE_TTL=3600  # 1 hour
+# Use scoped operations for better performance
+o-nakala-curator \
+  --quality-report \
+  --scope collections \
+  --collections specific_collection_id
 ```
 
-## 🎓 Best Practices
+## Best Practices
 
-### 1. Gradual Adoption
-- Start with quality reports to see AI insights
-- Review AI suggestions before applying modifications
-- Use dry-run mode for initial testing
+### 1. Test Before Production
+- Always use `--dry-run` for batch modifications
+- Generate quality reports before making changes
+- Validate metadata before publishing
 
-### 2. Community Contribution
-- Your anonymized patterns contribute to community intelligence
-- Better metadata from you improves suggestions for everyone
-- Consider sharing successful patterns with the community
+### 2. Regular Maintenance
+- Run quality reports periodically
+- Check for duplicates after major uploads
+- Update metadata as standards evolve
 
-### 3. Iterative Improvement
-- AI suggestions improve with usage
-- Regular quality reports help track improvement trends
-- Pattern confidence increases over time
+### 3. Batch Processing
+- Use CSV templates for consistent formatting
+- Process related items together
+- Keep modification records for audit trails
 
-### 4. Validation
-- Always review AI-generated modifications
-- Use `--dry-run` for testing AI suggestions
-- Maintain human oversight for critical metadata
+### 4. Field Management
+- Use `--list-fields` to understand field requirements
+- Follow NAKALA metadata schemas
+- Validate URI formats for linked data
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [Curator Field Reference](../curator-field-reference.md) - Complete field documentation
 - [Workflow Guide](03-workflow-guide.md) - End-to-end processes
 - [API Endpoints](../endpoints/) - Technical specifications
 - [FAQ](05-faq.md) - Common questions
 
-## 🚀 What's Next
-
-Future AI enhancements planned:
-- Natural language metadata generation
-- Multi-language AI translation
-- Image content analysis for automatic tagging
-- Citation network analysis
-- Automated research impact predictions
-
 ---
 
-**The AI features represent a significant advancement in research data management, moving from manual curation to intelligent, community-driven metadata enhancement.**
+**The curation tools provide systematic metadata management for research data repositories, ensuring quality and consistency across your NAKALA collections.**

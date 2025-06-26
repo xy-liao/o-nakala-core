@@ -33,7 +33,7 @@ processed_metadata = process_field_value(value, field_config)
 updated_metas = generate_metadata_entries(processed_metadata)
 ```
 
-### **Code Location**: `src/o_nakala_core/curator.py:1627-1720`
+### **Code Location**: `src/o_nakala_core/curator.py:1624+`
 ```python
 def _apply_modification(self, item_id: str, modifications: Dict[str, Any]) -> Dict[str, Any]:
     # Process each modification field
