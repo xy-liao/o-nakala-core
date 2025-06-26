@@ -4,26 +4,29 @@ O-Nakala Core Workflow Modules
 Modular Python components for the NAKALA ultimate workflow, designed for
 interactive Jupyter notebook execution and workshop demonstrations.
 
-Compatible with o-nakala-core v2.4.3 from PyPI.
+Compatible with o-nakala-core v2.4.1 from PyPI.
 """
-
-from o_nakala_core.common.config import NakalaConfig
-from o_nakala_core.upload import NakalaUploadClient
-from o_nakala_core.collection import NakalaCollectionClient
-from o_nakala_core.curator import NakalaCuratorClient, BatchModificationResult, CuratorConfig
-from o_nakala_core.ml_engine import MLPatternLearner
-from o_nakala_core.user_info import NakalaUserInfoClient
 
 __version__ = "1.0.0"
 __author__ = "O-Nakala Core Workshop"
 
+# Import main workflow components
+from .workflow_config import WorkflowConfig
+from .data_uploader import DataUploader
+from .collection_manager import CollectionManager
+from .metadata_enhancer import MetadataEnhancer
+from .curator_operations import CuratorOperations
+from .quality_analyzer import QualityAnalyzer
+from .workflow_summary import WorkflowSummary
+from .advanced_data_manager import AdvancedDataManager
+
 __all__ = [
-    "NakalaConfig",
-    "NakalaUploadClient",
-    "NakalaCollectionClient",
-    "NakalaCuratorClient",
-    "BatchModificationResult",
-    "CuratorConfig",
-    "MLPatternLearner",
-    "NakalaUserInfoClient"
+    "WorkflowConfig",
+    "DataUploader", 
+    "CollectionManager",
+    "MetadataEnhancer",
+    "CuratorOperations",
+    "QualityAnalyzer",
+    "WorkflowSummary",
+    "AdvancedDataManager"
 ]
