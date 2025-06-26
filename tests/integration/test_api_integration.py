@@ -12,9 +12,9 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from src.o_nakala_core.common.config import NakalaConfig
-from src.o_nakala_core.upload import NakalaUploadClient
-from src.o_nakala_core.collection import NakalaCollectionClient
+from o_nakala_core.common.config import NakalaConfig
+from o_nakala_core.upload import NakalaUploadClient
+from o_nakala_core.collection import NakalaCollectionClient
 
 
 @pytest.mark.integration

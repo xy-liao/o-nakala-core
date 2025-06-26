@@ -8,8 +8,8 @@ import pytest
 from unittest.mock import patch
 from pathlib import Path
 
-from src.o_nakala_core.common.config import NakalaConfig
-from src.o_nakala_core.common.exceptions import NakalaValidationError
+from o_nakala_core.common.config import NakalaConfig
+from o_nakala_core.common.exceptions import NakalaValidationError
 
 
 class TestNakalaConfig:

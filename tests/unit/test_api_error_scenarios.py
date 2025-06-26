@@ -13,10 +13,10 @@ from unittest.mock import patch, MagicMock, call
 from requests.exceptions import Timeout, ConnectionError, HTTPError
 import requests
 
-from src.o_nakala_core.upload import NakalaUploadClient
-from src.o_nakala_core.collection import NakalaCollectionClient
-from src.o_nakala_core.common.config import NakalaConfig
-from src.o_nakala_core.common.exceptions import NakalaAPIError, NakalaValidationError
+from o_nakala_core.upload import NakalaUploadClient
+from o_nakala_core.collection import NakalaCollectionClient
+from o_nakala_core.common.config import NakalaConfig
+from o_nakala_core.common.exceptions import NakalaAPIError, NakalaValidationError
 
 
 class TestHTTPErrorResponses:
