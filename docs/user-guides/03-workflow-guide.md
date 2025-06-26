@@ -12,7 +12,7 @@
 📋 **You are here**: User Workflow Guide (practical steps)  
 🔬 **Want to explore features?** → [Feature Demonstration Notebook](../../examples/notebooks/workflow_notebook.ipynb)  
 ⚡ **Just getting started?** → [Upload Guide](01-upload-guide.md) for single operations  
-🎯 **Need help with specific tools?** → [Curation Guide](06-curation-guide.md)
+🎯 **Need help with specific tools?** → [Curation Guide](04-curation-guide.md)
 
 ---
 
@@ -369,8 +369,8 @@ Then review `my_quality_report.json` to see your data quality status.
 
 📋 **You completed**: User Workflow Guide  
 🔬 **Explore more features**: [Feature Demonstration Notebook](../../examples/notebooks/workflow_notebook.ipynb)  
-🎯 **Specific help**: [Upload Guide](01-upload-guide.md) • [Collection Guide](02-collection-guide.md) • [Curation Guide](06-curation-guide.md)  
-❓ **Questions?**: [FAQ](05-faq.md) • [Troubleshooting](troubleshooting.md)
+🎯 **Specific help**: [Upload Guide](01-upload-guide.md) • [Collection Guide](02-collection-guide.md) • [Curation Guide](04-curation-guide.md)  
+❓ **Questions?**: [Troubleshooting](05-troubleshooting.md)
 
 ## Common Workflows
 

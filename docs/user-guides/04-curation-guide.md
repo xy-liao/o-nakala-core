@@ -265,7 +265,7 @@ o-nakala-curator \
 - [Curator Field Reference](../curator-field-reference.md) - Complete field documentation
 - [Workflow Guide](03-workflow-guide.md) - End-to-end processes
 - [API Endpoints](../endpoints/) - Technical specifications
-- [FAQ](05-faq.md) - Common questions
+- [Troubleshooting](05-troubleshooting.md) - Common questions and problem solving
 
 ---
 

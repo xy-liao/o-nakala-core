@@ -18,12 +18,10 @@ Different workflows serve different needs. Pick the one that matches your situat
 - **[Collection Guide](02-collection-guide.md)** - Organizing your data
 
 ### Specialized Tasks  
-- **[Curation Guide](06-curation-guide.md)** - Metadata enhancement and quality management
-- **[Migration Guide](04-v2-migration-guide.md)** - Upgrading from previous versions
+- **[Curation Guide](04-curation-guide.md)** - Metadata enhancement and quality management
 
 ### Support Resources
-- **[FAQ](05-faq.md)** - Common questions and answers
-- **[Troubleshooting](troubleshooting.md)** - Problem solving
+- **[Troubleshooting](05-troubleshooting.md)** - Problem solving and common issues
 
 ## Demo & Learning Resources (Feature Exploration)
 
@@ -42,9 +40,9 @@ Different workflows serve different needs. Pick the one that matches your situat
 **Upload my first dataset** → [Upload Guide](01-upload-guide.md)  
 **Manage a complete research project** → [User Workflow Guide](03-workflow-guide.md)  
 **See what this tool can do** → [Feature Demonstration](../../examples/notebooks/workflow_notebook.ipynb)  
-**Improve my metadata** → [Curation Guide](06-curation-guide.md)  
+**Improve my metadata** → [Curation Guide](04-curation-guide.md)  
 **Organize existing data** → [Collection Guide](02-collection-guide.md)  
-**Fix a problem** → [Troubleshooting](troubleshooting.md)  
+**Fix a problem** → [Troubleshooting](05-troubleshooting.md)  
 **Understand field requirements** → [Field Reference](../curator-field-reference.md)
 
 ### "I am a..."
@@ -52,7 +50,7 @@ Different workflows serve different needs. Pick the one that matches your situat
 **Researcher with data to publish** → Start with [User Workflow Guide](03-workflow-guide.md)  
 **New user exploring options** → Try [Feature Demonstration](../../examples/notebooks/workflow_notebook.ipynb)  
 **Developer integrating o-nakala-core** → Check [API Documentation](../endpoints/)  
-**Data manager with many files** → Use [User Workflow Guide](03-workflow-guide.md) + [Curation Guide](06-curation-guide.md)
+**Data manager with many files** → Use [User Workflow Guide](03-workflow-guide.md) + [Curation Guide](04-curation-guide.md)
 
 ## Documentation Philosophy
 

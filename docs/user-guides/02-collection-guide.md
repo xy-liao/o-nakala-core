@@ -1,178 +1,235 @@
-# Nakala Client Collection Script
+# Collection Organization Guide
 
-A Python script for managing collections on the Nakala platform.
+## Research Data Collections - Group and Organize Your Uploads
 
-## Main Features:
+> **Purpose**: Learn how to create and manage collections to organize your research data  
+> **Audience**: Researchers who have uploaded data and want to organize it logically  
+> **Time**: 10-20 minutes depending on complexity  
+> **Prerequisites**: Completed data upload, have `upload_results.csv` file
 
-1. **Create collection from upload output**: Uses the `output.csv` file from your upload script to automatically create a collection with all successfully uploaded data items.
+## Navigation
 
-2. **Create collection from data ID list**: Allows manual specification of data IDs for collection creation.
+📋 **You are here**: Collection Guide (organizing your data)  
+🔄 **Complete workflow** → [User Workflow Guide](03-workflow-guide.md)  
+📤 **Need to upload first?** → [Upload Guide](01-upload-guide.md)  
+🎯 **Enhance metadata** → [Curation Guide](04-curation-guide.md)
 
-3. **Create collections from folder structure**: Automatically creates collections based on folder organization and configuration files.
+---
 
-4. **Comprehensive metadata support**: Handles multilingual metadata (French/English) including:
-   - Titles and descriptions
-   - Keywords and subjects
-   - Creators and contributors
-   - Publishers and dates
-   - Rights and licenses
-   - Coverage and relations
-   - Sources
+## What Are Collections?
 
-5. **Error handling and retry logic**: Implements robust error handling with automatic retries for failed API calls.
+**Collections** group related datasets together, making your research easier to discover and navigate.
 
-6. **Collection mapping diagnostics**: Provides detailed information about:
-   - Folder matching process
-   - Data item inclusion
-   - Collection creation status
-   - Any unmatched folders
+**Think of collections as:**
+- Digital folders that organize related research materials
+- Thematic groupings (e.g., "2024 Field Study", "Interview Data")
+- Hierarchical organization for complex projects
 
-## Usage Examples:
+**Benefits:**
+- **Better discovery**: Others can find all related materials together
+- **Context**: Provide overarching descriptions for groups of data
+- **Organization**: Logical structure for complex research projects
+- **Navigation**: Easier browsing for users
 
+---
+
+## Quick Collection Creation
+
+### From Your Upload Results
 ```bash
-# Create collection from upload output
 o-nakala-collection \
-    --api-key "your-api-key" \
-    --title "My Bird Collection" \
-    --description "A collection of bird photographs" \
-    --keywords "birds,wildlife,photography" \
+    --api-key "your-key" \
+    --from-upload-output "upload_results.csv" \
+    --from-folder-collections "folder_collections.csv"
+```
+
+**Replace `your-key`** with your actual NAKALA API key
+
+<details>
+<summary>📁 Setting Up Collection Configuration</summary>
+
+### Create `folder_collections.csv`
+This file defines how to group your uploaded items:
+
+```csv
+title,status,description,keywords,creator,data_items
+"en:My Research Project|fr:Mon Projet de Recherche",private,"en:Complete research data from 2024 study|fr:Données complètes de l'étude 2024","research,data,2024","Smith, John","files/data/|files/code/"
+"en:Interview Materials|fr:Matériel d'entretien",private,"en:Transcripts and recordings|fr:Transcriptions et enregistrements","interviews,qualitative","Smith, John","files/interviews/"
+```
+
+### Field Explanations
+- **title**: Collection name (multilingual: `en:English|fr:Français`)
+- **status**: `private` (default) or `public`
+- **description**: What this collection contains
+- **keywords**: Search terms, comma-separated
+- **creator**: Who created this collection
+- **data_items**: Which uploaded folders to include (pipe-separated)
+
+</details>
+
+<details>
+<summary>🛠️ Manual Collection Creation</summary>
+
+### Single Collection from Specific Items
+```bash
+o-nakala-collection \
+    --api-key "your-key" \
+    --title "My Research Collection" \
+    --description "Important research materials" \
+    --keywords "research,data,2024" \
     --status private \
-    --from-upload-output output.csv
+    --data-ids "10.34847/nkl.abc123,10.34847/nkl.def456"
+```
 
-# Create collection from specific data IDs
+### Collection from All Upload Results
+```bash
 o-nakala-collection \
-    --api-key "your-api-key" \
-    --title "Selected Images" \
-    --description "Curated selection of images" \
-    --keywords "selection,curated" \
-    --status public \
-    --data-ids "10.34847/nkl.f1c8y3w0,10.34847/nkl.3bdeo0xj"
+    --api-key "your-key" \
+    --title "Complete Study Data" \
+    --description "All data from the 2024 research study" \
+    --keywords "research,complete,2024" \
+    --from-upload-output "upload_results.csv"
+```
 
-# Create collections from folder structure
+</details>
+
+---
+
+## Collection Organization Strategies
+
+### Strategy 1: By Research Phase
+```
+├── Data Collection Phase (raw data, field notes)
+├── Analysis Phase (processed data, scripts)
+└── Publication Phase (final datasets, figures)
+```
+
+### Strategy 2: By Data Type
+```
+├── Quantitative Data (surveys, measurements)
+├── Qualitative Data (interviews, observations)
+└── Mixed Methods (combined analyses)
+```
+
+### Strategy 3: By Topic/Theme
+```
+├── Climate Measurements (temperature, precipitation)
+├── Soil Analysis (composition, samples)
+└── Vegetation Survey (species, coverage)
+```
+
+---
+
+## Working with Collection Results
+
+### Understanding Your Output
+
+After running collections, you'll get `collections_output.csv`:
+
+```csv
+collection_id,collection_title,status,data_items_count,creation_status
+10.34847/nkl.abc123,"Research Data 2024",private,15,SUCCESS
+10.34847/nkl.def456,"Interview Materials",private,8,SUCCESS
+```
+
+### What This Shows
+- **collection_id**: Unique identifier for citing/sharing
+- **collection_title**: Display name
+- **data_items_count**: Number of datasets included
+- **creation_status**: Whether creation succeeded
+
+<details>
+<summary>📊 Advanced Collection Management</summary>
+
+### Generate Collection Report
+```bash
 o-nakala-collection \
-    --api-key "your-api-key" \
+    --api-key "your-key" \
     --from-folder-collections "folder_collections.csv" \
-    --from-upload-output "output.csv" \
-    --collection-report "collections_output.csv"
+    --from-upload-output "upload_results.csv" \
+    --collection-report "detailed_collections.csv"
 ```
 
-## Folder-Based Collection Creation
-
-The script supports creating collections based on folder structure using two CSV files:
-
-1. **folder_collections.csv**: Defines collection metadata and folder mappings
-   ```csv
-   title,status,description,keywords,language,creator,contributor,publisher,date,rights,coverage,relation,source,data_items
-   fr:Collection Title|en:Collection Title,private,fr:Description|en:Description,fr:keywords|en:keywords,fr,Creator1;Creator2,Contributor1;Contributor2,Publisher,2024-05-21,CC-BY-4.0,fr:coverage|en:coverage,fr:relation|en:relation,fr:source|en:source,folder1|folder2
-   ```
-
-2. **output.csv**: Contains uploaded data items information
-   ```csv
-   file,status,type,title,identifier
-   folder1/file1.txt,OK,type,fr:Title|en:Title,10.34847/nkl.xxxxx
-   ```
-
-## Collection Structure Example
-
-The script creates collections with the following structure:
+### Collection Hierarchy Example
+The system can create nested organization:
 
 ```
-Collections
-├── Code and Data Collection
-│   ├── Code Files
-│   └── Research Data
-├── Documents Collection
-│   └── Research Documents
-└── Multimedia Collection
-    ├── Image Collection
-    └── Presentation Materials
+Research Project 2024
+├── Data Collection
+│   ├── Survey Responses (15 items)
+│   └── Field Measurements (8 items)
+├── Analysis Results
+│   ├── Statistical Output (5 items)
+│   └── Visualizations (12 items)
+└── Documentation
+    ├── Protocols (3 items)
+    └── Reports (7 items)
 ```
 
-## Command Line Arguments:
+### Troubleshooting Collection Issues
 
-- `--api-key`: (Required) Your Nakala API key
-- `--api-url`: (Optional) Nakala API URL (default: https://apitest.nakala.fr)
-- `--title`: Collection title (required for single collection creation)
-- `--description`: Collection description
-- `--keywords`: Comma-separated keywords
-- `--status`: Collection status (private or public, default: private)
-- `--from-upload-output`: Path to upload output CSV file
-- `--data-ids`: Comma-separated list of data IDs
-- `--from-folder-collections`: Path to folder collections configuration CSV
-- `--collection-report`: Path to save collection creation report
+**"No matching data items found"**
+- Check that folder paths in `data_items` match your upload structure
+- Verify `upload_results.csv` contains the expected items
 
-## Output:
+**"Collection creation failed"**
+- Verify your API key is correct
+- Check that required fields (title, creator) are provided
+- Ensure data item IDs exist and are accessible
 
-The script provides:
-- Detailed logging information
-- Collection IDs upon successful creation
-- Error messages if creation fails
-- Collection report in CSV format
-- Log file: `nakala_collection.log`
+</details>
 
-## Example Success Output:
-```
-Found 5 uploaded data items
-Created collection: fr:Collection de Code et Données |en:Code and Data Collection with ID: 10.34847/nkl.xxxxx
-Created collection: fr:Collection de Documents|en:Documents Collection with ID: 10.34847/nkl.yyyyy
-Created collection: fr:Collection Multimédia PERFECT|en:Multimedia Collection with ID: 10.34847/nkl.zzzzz
-Collection report saved to: collections_output.csv
+---
+
+## Best Practices
+
+### 1. **Descriptive Naming**
+```bash
+# Good
+title: "en:Climate Study 2024 - Temperature Data|fr:Étude Climatique 2024 - Données de Température"
+
+# Avoid
+title: "data1"
 ```
 
-## Collection Report Format
+### 2. **Logical Grouping**
+- Group by research question, not just file type
+- Consider how others will discover your work
+- Balance detail with usability (not too many small collections)
 
-The collection report (`collections_output.csv`) includes:
-- Collection ID
-- Collection title
-- Status
-- Number of data items
-- Data item IDs
-- Creation status
-- Error messages (if any)
-- Timestamp
+### 3. **Multilingual Support**
+- Provide both English and French titles/descriptions
+- Use format: `en:English text|fr:Texte français`
+- Include keywords in both languages
 
-This approach provides a flexible and powerful way to manage collections while maintaining proper metadata standards and supporting multilingual content.
+### 4. **Consistent Metadata**
+- Use the same creator format across collections
+- Apply consistent keyword vocabulary
+- Maintain similar description patterns
 
-## Collection Mapping Diagnostics
+---
 
-The script provides detailed diagnostics about the collection creation process:
+## Next Steps
 
-```json
-{
-  "folder": {
-    "code": {
-      "path": "files/code",
-      "matches": [
-        {
-          "title": "fr:Fichiers de code|en:Code Files",
-          "id": "10.34847/nkl.xxxxx"
-        }
-      ]
-    }
-  },
-  "matched_items": ["fr:Fichiers de code|en:Code Files"],
-  "unmatched_folders": []
-}
-```
+### ✅ **You've Organized Your Data**
+Your research is now logically grouped and easier to discover!
 
-This output helps you:
-1. Verify correct folder matching
-2. Check data item inclusion
-3. Identify any unmatched folders
-4. Track collection creation status
+### 🚀 **What's Next?**
+- **Enhance metadata** → [Curation Guide](04-curation-guide.md)
+- **Complete workflow** → [User Workflow Guide](03-workflow-guide.md)
+- **Publish your data** → Change status from private to public
+- **Share collections** → Send collection URLs to collaborators
 
-## Successful Collection Creation
+### 📄 **Files Created**
+- `collections_output.csv` - Details of created collections
+- `nakala_collection.log` - Detailed operation logs
 
-When collections are created successfully, you'll see output like:
+---
 
-```
-Found 5 uploaded data items
-Creating collection: fr:Collection de Code et Données |en:Code and Data Collection
-Created collection: 10.34847/nkl.5aee9iwt
-Created collection: fr:Collection de Code et Données |en:Code and Data Collection with ID: 10.34847/nkl.5aee9iwt
-```
+## Related Guides
 
-The script will create:
-1. A collection report in `collections_output.csv`
-2. Detailed logs in `nakala_collection.log`
-3. Collection IDs for each created collection
+📋 **Collection organization** (you completed this)  
+📤 **Upload your data** → [Upload Guide](01-upload-guide.md)  
+🔧 **Improve metadata** → [Curation Guide](04-curation-guide.md)  
+🔄 **Complete workflow** → [User Workflow Guide](03-workflow-guide.md)  
+❓ **Problems?** → [Troubleshooting](05-troubleshooting.md)
