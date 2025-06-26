@@ -120,12 +120,15 @@ class MetadataEnhancer:
                 try:
                     import create_collection_modifications
                     if hasattr(create_collection_modifications, 'main'):
-                        # Change to the base path and call main with the input file
+                        # Set sys.argv and call main() (it reads from sys.argv internally)
+                        original_argv = sys.argv.copy()
                         original_cwd = os.getcwd()
                         os.chdir(str(self.base_path))
                         try:
-                            create_collection_modifications.main(str(input_file))
+                            sys.argv = ['create_collection_modifications.py', str(input_file.name)]
+                            create_collection_modifications.main()
                         finally:
+                            sys.argv = original_argv
                             os.chdir(original_cwd)
                     else:
                         # Fallback to inline generation
@@ -332,3 +335,35 @@ class MetadataEnhancer:
         # Save modifications to file
         mod_df = pd.DataFrame(modifications)
         mod_df.to_csv(self.collection_modifications_file, index=False)
+    
+    def get_modification_summary(self, scope: str) -> Optional[Dict[str, Any]]:
+        """
+        Get summary of modifications for a specific scope.
+        
+        Args:
+            scope: Scope to summarize ('datasets' or 'collections')
+            
+        Returns:
+            Dict with modification summary or None if file not found
+        """
+        if scope == "datasets":
+            mod_file = self.data_modifications_file
+        else:
+            mod_file = self.collection_modifications_file
+        
+        if not mod_file.exists():
+            return None
+        
+        try:
+            df = pd.read_csv(mod_file)
+            
+            return {
+                'total_modifications': len(df),
+                'unique_items': len(df['id'].unique()) if 'id' in df.columns else 0,
+                'modification_types': df['action'].value_counts().to_dict() if 'action' in df.columns else {},
+                'modifications_file': str(mod_file)
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error reading modification summary for {scope}: {e}")
+            return None
