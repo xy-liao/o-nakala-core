@@ -60,7 +60,6 @@ class NakalaConfig:
 
         logger.debug(f"Initialized NakalaConfig with API URL: {self.api_url}")
 
-
     @classmethod
     def from_env(cls) -> "NakalaConfig":
         """
