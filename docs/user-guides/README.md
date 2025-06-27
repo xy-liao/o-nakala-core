@@ -1,6 +1,18 @@
 # O-Nakala Core User Guides
 
-## Choose Your Workflow
+## 🧭 Navigation & Quick Access
+
+### **📋 User Guide Index**
+
+| Guide | Purpose | Time | Best For |
+|-------|---------|------|----------|
+| **[01-Upload Guide](01-upload-guide.md)** | First dataset upload | 15 min | New users, single files |
+| **[02-Collection Guide](02-collection-guide.md)** | Organize data into collections | 30 min | Data organization |
+| **[03-Workflow Guide](03-workflow-guide.md)** | Complete research workflow | 60 min | Full projects |
+| **[04-Curation Guide](04-curation-guide.md)** | Metadata enhancement | 45 min | Quality improvement |
+| **[05-Troubleshooting](05-troubleshooting.md)** | Problem solving | As needed | When stuck |
+
+### **🎯 Choose Your Workflow**
 
 Different workflows serve different needs. Pick the one that matches your situation:
 
@@ -53,6 +65,18 @@ Different workflows serve different needs. Pick the one that matches your situat
 **Data manager with many files** → Use [User Workflow Guide](03-workflow-guide.md) + [Curation Guide](04-curation-guide.md)
 
 ## Documentation Philosophy
+
+### **O-Nakala Core vs Official NAKALA Docs**
+
+**Important**: O-Nakala Core uses **user-friendly CSV formats** that differ from the official NAKALA API. This is intentional design for ease of use.
+
+| Format | Official NAKALA API | O-Nakala Core |
+|--------|-------------------|---------------|
+| **Creators** | `[{"givenname": "Jean", "surname": "Dupont"}]` | `"Dupont,Jean"` |
+| **Multilingual** | Multiple API calls | `"fr:Titre\|en:Title"` |
+| **Why Different?** | Raw API power | User-friendly simplicity |
+
+**You get both**: Simple CSV input **AND** full API compliance through automatic conversion.
 
 ### User-Focused vs Demo Content
 

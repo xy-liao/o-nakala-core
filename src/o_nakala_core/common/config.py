@@ -60,42 +60,6 @@ class NakalaConfig:
 
         logger.debug(f"Initialized NakalaConfig with API URL: {self.api_url}")
 
-    @classmethod
-    def from_env_file(cls, env_file: str = ".env") -> "NakalaConfig":
-        """
-        Create configuration from environment file.
-
-        Args:
-            env_file: Path to environment file
-
-        Returns:
-            NakalaConfig instance
-        """
-        config_dict = {}
-
-        if os.path.exists(env_file):
-            with open(env_file, "r") as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#") and "=" in line:
-                        key, value = line.split("=", 1)
-                        config_dict[key.strip()] = value.strip()
-
-        # Map environment variables to config fields
-        mapping = {
-            "NAKALA_API_KEY": "api_key",
-            "NAKALA_BASE_URL": "api_url",
-            "NAKALA_DEFAULT_LICENSE": "default_license",
-            "NAKALA_DEFAULT_LANGUAGE": "default_language",
-            "NAKALA_DEFAULT_RIGHTS": "default_rights",
-        }
-
-        kwargs = {}
-        for env_key, config_key in mapping.items():
-            if env_key in config_dict:
-                kwargs[config_key] = config_dict[env_key]
-
-        return cls(**kwargs)
 
     @classmethod
     def from_env(cls) -> "NakalaConfig":

@@ -2,6 +2,45 @@
 
 A comprehensive Python library and CLI toolkit for interacting with the NAKALA research data repository, designed specifically for digital humanities workflows.
 
+## 🎯 User-Friendly Design Philosophy
+
+**O-Nakala Core provides simplified CSV interfaces** while maintaining full compatibility with the official NAKALA API. You work with intuitive formats like `"Dupont,Jean"` for creators and `"fr:Titre|en:Title"` for multilingual fields - the library handles the complex API transformations automatically.
+
+**Key Benefits:**
+- ✅ **Simple CSV formats** instead of complex JSON structures
+- ✅ **Batch operations** from spreadsheet files  
+- ✅ **Full API compliance** - all official NAKALA features supported
+- ✅ **No API knowledge required** - focus on your research data
+
+## 📚 Documentation Navigation
+
+### **🎯 Start Here Based on Your Goal**
+
+| I want to... | Go to... | Time |
+|--------------|----------|------|
+| **Try it quickly** | [Quick Start](#🚀-quick-start) below | 5 min |
+| **Upload my first dataset** | [Upload Guide](docs/user-guides/01-upload-guide.md) | 15 min |
+| **Complete research workflow** | [Workflow Guide](docs/user-guides/03-workflow-guide.md) | 60 min |
+| **Organize data into collections** | [Collection Guide](docs/user-guides/02-collection-guide.md) | 30 min |
+| **Improve metadata quality** | [Curation Guide](docs/user-guides/04-curation-guide.md) | 45 min |
+| **See working examples** | [Examples Directory](examples/) | 20 min |
+| **Learn interactively** | [Jupyter Notebook](examples/notebooks/workflow_notebook.ipynb) | 30 min |
+| **Solve problems** | [Troubleshooting](docs/user-guides/05-troubleshooting.md) | As needed |
+| **Understand API details** | [Endpoint Documentation](docs/endpoints/) | Reference |
+
+### **📂 Documentation Structure**
+
+```
+📖 Documentation Overview
+├── 📘 User Guides - How to accomplish tasks
+├── 🔧 API Reference - Technical specifications  
+├── 💡 Examples - Working code and data
+├── 📋 Official Specs - NAKALA API reference
+└── 🛠️ Development - Setup and contribution
+```
+
+**New to NAKALA?** Start with [User Guides](docs/user-guides/) → Try [Examples](examples/) → Reference [API Docs](docs/endpoints/) as needed.
+
 ## 🚀 Quick Start
 
 ### Installation

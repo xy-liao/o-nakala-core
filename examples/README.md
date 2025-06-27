@@ -2,6 +2,24 @@
 
 This directory contains example datasets, configurations, and workflows for learning and testing the O-Nakala Core system.
 
+## 🧭 Quick Navigation
+
+### **🎯 Choose Your Learning Style**
+
+| Learning Style | Directory | Time | Best For |
+|----------------|-----------|------|----------|
+| **📊 See It Work** | [sample_dataset/](sample_dataset/) | 15 min | Quick validation |
+| **🎓 Learn Step-by-Step** | [notebooks/](notebooks/) | 30 min | Interactive tutorial |
+| **📋 Follow Process** | [workflow_documentation/](workflow_documentation/) | 60 min | Understanding methodology |
+
+### **🚀 Quick Start Options**
+
+| I want to... | Go to... | Command |
+|--------------|----------|---------|
+| **Try basic upload** | [sample_dataset/](sample_dataset/) | `o-nakala-upload --dataset folder_data_items.csv` |
+| **Run full workflow** | [notebooks/](notebooks/) | `jupyter lab workflow_notebook.ipynb` |
+| **See proven results** | [workflow_documentation/](workflow_documentation/) | Browse documentation |
+
 ## 📁 Directory Structure
 
 ### `/sample_dataset/` - Complete Example Dataset
