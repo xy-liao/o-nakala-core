@@ -7,18 +7,18 @@ Get O-Nakala Core working in under 5 minutes with our validated test environment
 ### **Step 1: Install** (1 minute)
 
 ```bash
-# Clone the repository
-git clone https://github.com/xy-liao/o-nakala-core.git
-cd o-nakala-core
+# Install from PyPI (recommended for quick start)
+pip install o-nakala-core[cli,ml]
 
-# Install with all features
-pip install -e ".[dev,cli,ml]"
+# OR clone and install from source
+git clone https://github.com/xy-liao/o-nakala-core.git
+cd o-nakala-core && pip install -e ".[dev,cli,ml]"
 ```
 
 ### **Step 2: Configure Environment** (1 minute)
 
 ```bash
-# Set up validated test API key
+# Set up validated test API key (see api/api_keys.md for details)
 export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
 export NAKALA_API_URL="https://apitest.nakala.fr"
 ```

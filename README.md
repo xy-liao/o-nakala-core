@@ -47,21 +47,16 @@ A comprehensive Python library and CLI toolkit for interacting with the NAKALA r
 
 ```bash
 # Install from PyPI (recommended)
-pip install o-nakala-core
+pip install o-nakala-core[cli,ml]  # Complete installation
 
-# With CLI tools
-pip install o-nakala-core[cli]
-
-# With enhanced features
-pip install o-nakala-core[ml]
-
-# Complete installation (all features)
-pip install o-nakala-core[cli,ml]
+# Alternative options
+pip install o-nakala-core          # Core library only
+pip install o-nakala-core[cli]     # With CLI tools
 
 # Install from source
 git clone https://github.com/xy-liao/o-nakala-core.git
 cd o-nakala-core
-pip install -e .[cli]
+pip install -e .[cli,ml]
 ```
 
 ### Basic Usage
@@ -104,27 +99,15 @@ o-nakala-curator \
 - **👤 User Info**: Account management and permissions
 
 ### Key Capabilities
-- **Metadata management** for core Dublin Core fields
-- **Automated metadata curation** with pattern recognition
-- **Community pattern analysis** leveraging repository insights
+- **Complete API integration** for uploads, collections, and curation
+- **Automated metadata curation** with pattern recognition and community insights
 - **Metadata pre-population** with contextual suggestions
 - **Resource relationship discovery** and mapping
-- **Multilingual metadata** support
-- **Batch operations** for large-scale data management
-- **Quality validation** and enhancement tools
-- **CSV-driven workflows** for academic reproducibility
-- **Comprehensive logging** and error handling
-
-### 🚧 **Core Features**
-Current implementation provides functionality for NAKALA data management including:
-- **Complete API integration** for uploads, collections, and curation
-- **Automated curation** with pattern recognition
-- **Community insights** from repository analysis
-- **Metadata pre-population** with contextual suggestions
-- **Robust error handling** and validation
+- **Multilingual metadata** support with Dublin Core fields
 - **CSV-driven workflows** for reproducible research
-- **Quality analysis** and metadata validation
+- **Quality validation** and enhancement tools
 - **Batch operations** for large-scale data management
+- **Comprehensive error handling** and logging
 
 ### 🔬 **Automated Enhancement Features**
 - **Pattern Learning**: Discovers metadata patterns from existing data
@@ -133,21 +116,6 @@ Current implementation provides functionality for NAKALA data management includi
 - **Pre-population Engine**: Context-aware field suggestions
 - **Relationship Discovery**: Finds connections between resources
 - **Data Analysis**: Data-driven field value predictions
-
-## 📖 Documentation
-
-### User Guides
-- [📤 Upload Guide](docs/user-guides/01-upload-guide.md) - Complete upload workflows
-- [📚 Collection Guide](docs/user-guides/02-collection-guide.md) - Collection management  
-- [📋 Workflow Guide](docs/user-guides/03-workflow-guide.md) - End-to-end processes
-- [🔬 Curation Guide](docs/user-guides/04-curation-guide.md) - Metadata curation features
-- [🛠️ Troubleshooting](docs/user-guides/05-troubleshooting.md) - Problem solving and solutions
-- [🔧 Curator Field Reference](docs/curator-field-reference.md) - Current field documentation
-
-### Technical Reference
-- [📋 Field Reference](docs/curator-field-reference.md) - Complete metadata field documentation
-- [🔧 API Endpoints](docs/endpoints/) - Detailed endpoint specifications and examples
-- [🏛️ Property URI Mapping](docs/property-uri-mapping.md) - NAKALA metadata schema reference
 
 ### Quick Reference
 ```bash
@@ -219,52 +187,6 @@ o-nakala-core/
 └── api/                       # API reference materials
 ```
 
-## 🔧 CLI Reference
-
-### Upload Data
-```bash
-# Upload from CSV configuration
-o-nakala-upload \
-  --api-key YOUR_KEY \
-  --dataset examples/sample_dataset/folder_data_items.csv \
-  --mode csv
-
-# Upload from folder mode (requires --folder-config)
-o-nakala-upload \
-  --api-key YOUR_KEY \
-  --dataset examples/sample_dataset/folder_data_items.csv \
-  --base-path examples/sample_dataset \
-  --mode folder \
-  --folder-config examples/sample_dataset/folder_data_items.csv \
-  --output upload_results.csv
-```
-
-### Manage Collections
-```bash
-# Create from upload results
-o-nakala-collection \
-  --api-key YOUR_KEY \
-  --title "My Collection" \
-  --from-upload-output upload_results.csv
-
-# Create from folder configuration
-o-nakala-collection \
-  --api-key YOUR_KEY \
-  --from-folder-collections examples/sample_dataset/folder_collections.csv \
-  --from-upload-output upload_results.csv
-```
-
-### Curate Metadata
-```bash
-# Generate quality report
-o-nakala-curator --quality-report --api-key YOUR_KEY
-
-# Batch modify metadata
-o-nakala-curator --batch-modify changes.csv --dry-run --api-key YOUR_KEY
-
-# Validate metadata
-o-nakala-curator --validate-metadata --scope datasets --api-key YOUR_KEY
-```
 
 ## 📁 Examples
 
