@@ -216,14 +216,6 @@ cd examples/sample_dataset
 # Review folder_data_items.csv and folder_collections.csv
 ```
 
-### Simple Dataset  
-Minimal example for quick testing:
-
-```bash
-cd examples/sample_dataset
-# Complete workflow with professional datasets
-```
-
 ## 🌐 Environment Setup
 
 ```bash
