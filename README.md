@@ -140,9 +140,9 @@ Current implementation provides functionality for NAKALA data management includi
 - [📤 Upload Guide](docs/user-guides/01-upload-guide.md) - Complete upload workflows
 - [📚 Collection Guide](docs/user-guides/02-collection-guide.md) - Collection management  
 - [📋 Workflow Guide](docs/user-guides/03-workflow-guide.md) - End-to-end processes
-- [🔬 Curation Guide](docs/user-guides/06-curation-guide.md) - Metadata curation features
+- [🔬 Curation Guide](docs/user-guides/04-curation-guide.md) - Metadata curation features
+- [🛠️ Troubleshooting](docs/user-guides/05-troubleshooting.md) - Problem solving and solutions
 - [🔧 Curator Field Reference](docs/curator-field-reference.md) - Current field documentation
-- [❓ FAQ](docs/user-guides/05-faq.md) - Common questions and solutions
 
 ### Technical Reference
 - [📋 Field Reference](docs/curator-field-reference.md) - Complete metadata field documentation
