@@ -34,9 +34,6 @@ ENV/
 .DS_Store
 
 # Project specific
-.env
-.env.*
-!/.env.example
 *.log
 .coverage
 htmlcov/

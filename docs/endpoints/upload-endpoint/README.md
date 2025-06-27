@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-The Upload endpoint (`/datas` POST) is the **primary entry point** for ingesting research data into NAKALA. O-Nakala Core provides two powerful modes for organizing and uploading data with comprehensive metadata management.
+The Upload endpoint (`/datas` POST) is the **primary entry point** for ingesting research data into NAKALA. O-Nakala Core provides two modes for organizing and uploading data with metadata management.
 
 ## 📋 Quick Reference
 
