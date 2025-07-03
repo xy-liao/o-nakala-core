@@ -134,7 +134,7 @@ The examples in `/examples/sample_dataset/` have been:
 - **✅ Successfully tested** for collection creation
 - **✅ Validated** for folder mapping logic
 - **✅ Verified** for multilingual metadata
-- **✅ Confirmed** working with current v2.4.3 implementation
+- **✅ Confirmed** working with current v2.4.5 implementation
 
 **Last validated**: 2025-06-26  
 **Collection success rate**: 100% ✅  

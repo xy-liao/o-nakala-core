@@ -145,7 +145,7 @@ cat folder_collections.csv
 # Set API key (see api/api_keys.md for test key)
 export NAKALA_API_KEY="[see-api/api_keys.md]"
 
-# Run the complete workflow (v2.4.3 with automated enhancement)
+# Run the complete workflow (v2.4.5 with automated enhancement)
 o-nakala-upload --api-key "$NAKALA_API_KEY" \
   --dataset folder_data_items.csv --mode folder \
   --folder-config folder_data_items.csv --base-path . \
@@ -156,7 +156,7 @@ o-nakala-collection --api-key "$NAKALA_API_KEY" \
   --from-folder-collections folder_collections.csv \
   --collection-report collections_output.csv
 
-# Quality analysis (v2.4.3)
+# Quality analysis (v2.4.5)
 o-nakala-curator --api-key "$NAKALA_API_KEY" \
   --quality-report --scope collections
 # Now includes: Pattern analysis, community insights, relationship discovery

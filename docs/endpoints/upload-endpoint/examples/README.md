@@ -118,7 +118,7 @@ The examples in `/examples/sample_dataset/` have been:
 - **✅ Successfully tested** against NAKALA test API
 - **✅ Validated** for metadata completeness  
 - **✅ Verified** for multilingual support
-- **✅ Confirmed** working with current v2.4.3 implementation
+- **✅ Confirmed** working with current v2.4.5 implementation
 
 **Last validated**: 2025-06-26  
 **API compatibility**: NAKALA Test API ✅  

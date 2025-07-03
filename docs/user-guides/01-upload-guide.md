@@ -125,7 +125,7 @@ The script generates two output files:
    - Error messages
    - API responses
 
-## Example Success Output (v2.4.3 Validated):
+## Example Success Output (v2.4.5 Validated):
 ```
 Processing entry 1/5: Images
 Uploading file: site_photograph_1.jpg

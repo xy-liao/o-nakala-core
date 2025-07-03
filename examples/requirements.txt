@@ -1,0 +1,4 @@
+o-nakala-core>=2.4.5
+jupyter
+pandas
+requests

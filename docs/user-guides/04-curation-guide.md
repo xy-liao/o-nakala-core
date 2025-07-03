@@ -1,10 +1,10 @@
 # Curation Guide
 
-**Version 2.4.3+ Feature** - Metadata curation and quality management tools.
+**Version 2.4.5+ Feature** - Metadata curation and quality management tools.
 
 ## Overview
 
-O-Nakala Core v2.4.3 provides metadata curation capabilities to help improve data quality through validation, batch modifications, and quality reporting.
+O-Nakala Core v2.4.5 provides metadata curation capabilities to help improve data quality through validation, batch modifications, and quality reporting.
 
 ## Quick Start
 
