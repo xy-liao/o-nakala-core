@@ -616,7 +616,7 @@ class NakalaCuratorClient:
         # Initialize vocabulary discovery for this curator instance
         self._initialize_vocabulary_discovery()
 
-        # Initialize template generator and intelligence services
+        # Initialize template generator and analysis services
         if self.validator.vocabulary_enabled:
             self.template_generator = create_template_generator(
                 self.validator.vocab_service
@@ -630,7 +630,7 @@ class NakalaCuratorClient:
             self.autonomous_generator = create_autonomous_generator(self.user_client)
             self.predictive_analytics = create_predictive_analytics(self.user_client)
             logger.info(
-                "All intelligence services initialized: template generator, "
+                "All analysis services initialized: template generator, "
                 "pre-population, relationships, autonomous generation, and predictive analytics"
             )
         else:
@@ -640,7 +640,7 @@ class NakalaCuratorClient:
             self.autonomous_generator = None
             self.predictive_analytics = None
             logger.warning(
-                "Intelligence services unavailable without vocabulary service"
+                "Analysis services unavailable without vocabulary service"
             )
 
     def _initialize_vocabulary_discovery(self):
@@ -1270,7 +1270,7 @@ class NakalaCuratorClient:
         relationship suggestions."""
         if not self.template_generator or not self.prepopulation_assistant:
             logger.warning(
-                "Intelligent template generation unavailable without vocabulary service"
+                "Template generation unavailable without vocabulary service"
             )
             return None
 
@@ -1426,7 +1426,7 @@ class NakalaCuratorClient:
                     writer.writerow(example_row)
 
             logger.info(
-                f"Intelligent template exported as {mode} CSV to: {output_path}"
+                f"Template exported as {mode} CSV to: {output_path}"
             )
 
         except Exception as e:
@@ -1441,7 +1441,7 @@ class NakalaCuratorClient:
     ) -> str:
         """Generate a comprehensive report for the automated template."""
         doc = []
-        doc.append(f"# Comprehensive Intelligent Template Report: {template.name}")
+        doc.append(f"# Comprehensive Template Report: {template.name}")
         doc.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         doc.append(f"Processing time: {prepop_result.processing_time:.3f} seconds")
 

@@ -123,7 +123,7 @@ o-nakala-curator \
 
 ## 🔧 Processing Features
 
-### **1. Intelligent CSV Detection**
+### **1. Automated CSV Detection**
 **Code Reference**: `src/o_nakala_core/curator.py:1434`
 ```python
 def _detect_csv_mode(self, fieldnames):

@@ -36,7 +36,7 @@ notebooks/
 
 ## 🔍 Smart Preview Tool
 
-### **Intelligent Metadata Enhancement**
+### **Pattern-based Metadata Enhancement**
 **Key Feature**: Metadata enhancement integrated directly into the preview tool.
 
 **Usage**:
@@ -66,7 +66,7 @@ o-nakala-preview --csv your_data.csv --enhance
 
 ### **1. ✨ Enhanced Workflow** (Recommended)
 ```bash
-# Step 1: Preview with intelligent enhancements
+# Step 1: Preview with pattern-based enhancements
 o-nakala-preview --csv examples/sample_dataset/folder_data_items.csv --enhance --interactive
 
 # Step 2: Upload with enhanced metadata  

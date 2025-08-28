@@ -7,7 +7,7 @@ Complete reference for all fields supported by the o-nakala-core curator module 
 The curator module provides **foundational metadata management** for core Dublin Core fields (~40% of full NAKALA API capabilities). This reference covers currently supported fields, with a roadmap toward [Complete Metadata Management](COMPLETE_METADATA_SYSTEM_DESIGN.md).
 
 **Current Scope**: Basic metadata modification via CSV batch operations  
-**Future Vision**: Dynamic template generation, intelligent pre-population, and comprehensive field support
+**Future Vision**: Dynamic template generation, automated pre-population, and comprehensive field support
 
 See [Complete Metadata System Design](COMPLETE_METADATA_SYSTEM_DESIGN.md) for full roadmap.
 

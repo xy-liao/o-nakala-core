@@ -1,8 +1,8 @@
 """
-NAKALA Automated Enhancement Engine
+NAKALA Pattern Analysis Engine
 
-Advanced pattern recognition and semantic analysis for metadata management
-with intelligent suggestions and community insights.
+Statistical pattern recognition and correlation analysis for metadata management
+with data-driven suggestions based on usage patterns.
 """
 
 import logging

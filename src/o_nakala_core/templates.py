@@ -1,7 +1,7 @@
 """
 NAKALA Template Generator
 
-Provides intelligent metadata template generation with vocabulary integration.
+Provides metadata template generation with vocabulary integration.
 Part of the Complete Metadata Management System - Foundation Phase.
 """
 
@@ -74,7 +74,7 @@ class MetadataTemplate:
 
 
 class TemplateGenerator:
-    """Generates intelligent metadata templates based on resource type and context."""
+    """Generates metadata templates based on resource type and context."""
 
     def __init__(self, vocabulary_service: NakalaVocabularyService):
         self.vocab_service = vocabulary_service

@@ -7,7 +7,7 @@ A Python script for uploading datasets and their associated files to the Nakala 
 1. **Multiple Upload Modes**:
    - CSV-based dataset upload
    - Folder-based dataset upload with automatic organization
-2. **Intelligent File Processing**:
+2. **Automated File Processing**:
    - Automatic file type detection
    - Dynamic MIME type detection
    - File validation and existence checks

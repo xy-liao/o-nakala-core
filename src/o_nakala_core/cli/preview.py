@@ -29,7 +29,7 @@ console = Console()
 
 
 class MetadataEnhancer:
-    """Intelligent metadata enhancement based on content analysis."""
+    """Pattern-based metadata enhancement using keyword matching."""
 
     def __init__(self):
         self.enhancement_patterns = {
@@ -119,7 +119,7 @@ class MetadataEnhancer:
         }
 
     def suggest_enhancements(self, csv_data: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Analyze CSV data and suggest intelligent metadata enhancements."""
+        """Analyze CSV data and suggest metadata enhancements using pattern matching."""
         enhancements = {
             "total_entries": len(csv_data),
             "enhanced_entries": 0,
@@ -479,7 +479,7 @@ class ResearcherAssistant:
     "--interactive", "-i", is_flag=True, help="Interactive mode with assistance"
 )
 @click.option(
-    "--enhance", "-e", is_flag=True, help="Suggest intelligent metadata enhancements"
+    "--enhance", "-e", is_flag=True, help="Suggest metadata enhancements using pattern matching"
 )
 @click.option("--json-output", help="Save JSON preview to file")
 @click.option("--validate-only", is_flag=True, help="Only validate, don't show preview")
@@ -491,7 +491,7 @@ def preview(
     validate_only: bool,
 ):
     """
-    Preview and validate NAKALA metadata CSV files with intelligent enhancements.
+    Preview and validate NAKALA metadata CSV files with pattern-based enhancements.
 
     This tool helps researchers prepare metadata by:
     - Validating CSV structure and field values
@@ -585,7 +585,7 @@ def preview(
         console.print("\n[green]✅ Validation complete[/green]")
         return
 
-    # Step 1.5: Intelligent metadata enhancement (if requested)
+    # Step 1.5: Pattern-based metadata enhancement (if requested)
     enhanced_csv_file = csv_file  # Default to original file
     if enhancer:
         console.print(
@@ -636,7 +636,7 @@ def preview(
 
                 # Interactive enhancement application
                 if interactive:
-                    if Confirm.ask("\n🚀 Apply these intelligent enhancements?"):
+                    if Confirm.ask("\n🚀 Apply these enhancement suggestions?"):
                         # Apply all suggestions
                         selected_suggestions = list(
                             range(len(enhancements["suggestions"]))
