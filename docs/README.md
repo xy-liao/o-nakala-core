@@ -141,8 +141,11 @@ Official NAKALA API documentation and metadata standards from Huma-Num.
 
 ### **Official NAKALA Resources**
 - [NAKALA Platform](https://nakala.fr) - The research data repository
-- [Huma-Num Documentation](https://documentation.huma-num.fr/nakala/) - Official platform guide
-- [NAKALA API](https://api.nakala.fr) - Direct API access
+- [NAKALA API Documentation](https://api.nakala.fr/doc) - Production API reference (Swagger/OpenAPI)
+- [NAKALA Test API Documentation](https://apitest.nakala.fr/doc) - Test environment API reference
+- [Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/) - Official guide for preparing research data
+- [Metadata Description Guide](https://documentation.huma-num.fr/nakala-guide-de-description/) - Official Dublin Core metadata specifications
+- [General NAKALA Documentation](https://documentation.huma-num.fr/nakala/) - Complete platform documentation
 
 ### **Standards and Vocabularies**
 - [Dublin Core Metadata](https://www.dublincore.org/) - Metadata standard
