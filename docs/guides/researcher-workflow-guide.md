@@ -469,9 +469,26 @@ cp examples/sample_dataset/folder_data_items.csv folder_data_items.csv
 - **Documentation**: `/docs/` directory
 - **Examples**: `/examples/` directory  
 - **Sample Dataset**: `/examples/sample_dataset/`
-- **API Reference**: `/api/` directory
+- **API Reference**: `/docs/endpoints/` directory
 - **Community**: GitHub Discussions
 - **Issues**: GitHub Issues
+
+## 📚 Official NAKALA Resources for Researchers
+
+### **Getting Started**
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete researcher guide
+- **[Getting Started with NAKALA](https://documentation.huma-num.fr/nakala/getting-started/)** - Official first steps
+- **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - How to prepare your research data
+
+### **Research Data Management**
+- **[Data Deposit Process](https://documentation.huma-num.fr/nakala/data-deposit-form/)** - Official deposit workflow
+- **[Collection Management](https://documentation.huma-num.fr/nakala/collection-creation-form/)** - Organize your research data
+- **[Metadata Best Practices](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Dublin Core for research data
+
+### **Platform Access**
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe environment for testing your workflow
+- **[NAKALA Production](https://nakala.fr)** - Live research data repository
+- **[API Documentation](https://api.nakala.fr/doc)** - Advanced automation tools
 
 ---
 

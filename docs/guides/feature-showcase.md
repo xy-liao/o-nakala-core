@@ -510,26 +510,26 @@ Ready to dive deeper? Explore these comprehensive guides:
 ### For Beginners
 
 - **[Getting Started Guide](getting-started.md)** - Step-by-step first upload (15 min)
-- **[CSV Format Guide](csv-format.md)** - Master the metadata format (10 min)
-- **[Common Workflows](common-workflows.md)** - Real-world examples (20 min)
+- **[Researcher Workflow Guide](researcher-workflow-guide.md)** - Complete folder-to-repository process (30 min)
+- **[CSV Field Testing Guide](csv-field-testing.md)** - Comprehensive field validation (20 min)
 
 ### For Advanced Users
 
-- **[API Reference](api-reference.md)** - Complete Python API documentation
-- **[Advanced Configurations](advanced-config.md)** - Custom setups and integrations
-- **[Troubleshooting Guide](troubleshooting.md)** - Solutions to common issues
+- **[Extending Preview Tool](extending-preview-tool.md)** - Add custom properties and validation
+- **[User Guides](../user-guides/)** - Complete workflow documentation
+- **[Troubleshooting Guide](../user-guides/05-troubleshooting.md)** - Solutions to common issues
 
 ### For Developers
 
-- **[Contributing Guide](CONTRIBUTING.md)** - Join our development community
-- **[Plugin Development](plugin-development.md)** - Extend O-Nakala Core
-- **[Testing Guide](testing.md)** - Run tests and contribute quality code
+- **[GitHub Repository](https://github.com/xy-liao/o-nakala-core)** - Source code and issues
+- **[Examples Directory](../../examples/)** - Real-world examples and templates
+- **[API Documentation](../endpoints/)** - Complete API reference
 
 ### Interactive Learning
 
-- **[Jupyter Workshop](examples/workshop.ipynb)** - Hands-on tutorial with real data
-- **[Video Tutorials](https://nakala.fr/tutorials)** - Watch step-by-step guides
-- **[Community Examples](https://github.com/nakala-examples)** - Real research workflows
+- **[Interactive Workflow](../../examples/notebooks/workflow_notebook.ipynb)** - Hands-on tutorial with real data
+- **[Sample Dataset](../../examples/sample_dataset/)** - Ready-to-use examples
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Platform guides
 
 ---
 

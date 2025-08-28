@@ -267,6 +267,18 @@ o-nakala-curator \
 - [API Endpoints](../endpoints/) - Technical specifications
 - [Troubleshooting](05-troubleshooting.md) - Common questions and problem solving
 
+## 📚 Official NAKALA Resources
+
+### **Metadata Standards & Quality**
+- **[Metadata Description Guide](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Official Dublin Core specifications for NAKALA
+- **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - Best practices for research data quality
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform standards
+
+### **Quality Assurance**
+- **[User Manual](https://documentation.huma-num.fr/nakala/user-manual/)** - Official best practices
+- **[Test API Documentation](https://apitest.nakala.fr/doc)** - Validate metadata via API
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe environment for quality testing
+
 ---
 
 **The curation tools provide systematic metadata management for research data repositories, ensuring quality and consistency across your NAKALA collections.**

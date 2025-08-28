@@ -174,3 +174,18 @@ o-nakala-upload --api-key "your-api-key" --mode folder --dataset "path/to/datase
 # Step 2: Create collection from uploaded data
 o-nakala-collection --api-key "your-api-key" --title "My Collection" --from-upload-output output.csv
 ```
+
+## 📚 Official NAKALA Resources
+
+### **Platform Documentation**
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform guide
+- **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - How to prepare your research data
+- **[User Manual](https://documentation.huma-num.fr/nakala/user-manual/)** - Step-by-step platform usage
+
+### **API Documentation**
+- **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive API for testing
+- **[Production API Documentation](https://api.nakala.fr/doc)** - Production API reference
+
+### **Platform Access**
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe testing environment
+- **[NAKALA Production](https://nakala.fr)** - Live research data repository

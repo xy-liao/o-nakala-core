@@ -233,3 +233,15 @@ Your research is now logically grouped and easier to discover!
 🔧 **Improve metadata** → [Curation Guide](04-curation-guide.md)  
 🔄 **Complete workflow** → [User Workflow Guide](03-workflow-guide.md)  
 ❓ **Problems?** → [Troubleshooting](05-troubleshooting.md)
+
+## 📚 Official NAKALA Resources
+
+### **Collection Management**
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform guide including collection management
+- **[Collection Creation Guide](https://documentation.huma-num.fr/nakala/collection-creation-form/)** - Official collection creation documentation
+- **[Metadata Standards](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Dublin Core metadata specifications for collections
+
+### **Platform Access**
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Practice collection creation safely
+- **[NAKALA Production](https://nakala.fr)** - Live research data repository
+- **[API Documentation](https://api.nakala.fr/doc)** - Collection management via API

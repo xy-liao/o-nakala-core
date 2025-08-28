@@ -885,8 +885,8 @@ When validation issues persist:
    ```
 
 4. **Check documentation:**
-   - [Curator Field Reference](docs/curator-field-reference.md) - Complete field specifications
-   - [Upload Guide](docs/user-guides/01-upload-guide.md) - Upload procedures
-   - [Troubleshooting](docs/user-guides/05-troubleshooting.md) - Common issues
+   - [Curator Field Reference](../curator-field-reference.md) - Complete field specifications
+   - [Upload Guide](../user-guides/01-upload-guide.md) - Upload procedures
+   - [Troubleshooting](../user-guides/05-troubleshooting.md) - Common issues
 
 This comprehensive testing guide ensures your metadata meets all NAKALA requirements before upload. By following these validation procedures systematically, you can achieve 100% upload success rates and maintain high metadata quality standards for your research data repository.

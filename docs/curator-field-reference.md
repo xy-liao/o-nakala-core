@@ -4,12 +4,12 @@ Complete reference for all fields supported by the o-nakala-core curator module 
 
 ## Overview
 
-The curator module provides **foundational metadata management** for core Dublin Core fields (~40% of full NAKALA API capabilities). This reference covers currently supported fields, with a roadmap toward [Complete Metadata Management](COMPLETE_METADATA_SYSTEM_DESIGN.md).
+The curator module provides **foundational metadata management** for core Dublin Core fields (~40% of full NAKALA API capabilities). This reference covers currently supported fields, with planned expansions for comprehensive metadata management.
 
 **Current Scope**: Basic metadata modification via CSV batch operations  
 **Future Vision**: Dynamic template generation, automated pre-population, and comprehensive field support
 
-See [Complete Metadata System Design](COMPLETE_METADATA_SYSTEM_DESIGN.md) for full roadmap.
+See the **Future Vision** section above for the development roadmap.
 
 ## Data Item Fields
 
@@ -200,7 +200,24 @@ o-nakala-curator validate-metadata data_items.csv \
 
 ## Related Documentation
 
-- [Upload Guide](01-upload-guide.md) - For initial data upload
-- [Collection Guide](02-collection-guide.md) - For collection management
-- [Workflow Guide](03-workflow-guide.md) - For complete workflows
-- [Troubleshooting](troubleshooting.md) - For error resolution
+- [Upload Guide](user-guides/01-upload-guide.md) - For initial data upload
+- [Collection Guide](user-guides/02-collection-guide.md) - For collection management
+- [Workflow Guide](user-guides/03-workflow-guide.md) - For complete workflows
+- [Troubleshooting](user-guides/05-troubleshooting.md) - For error resolution
+
+## 📚 Official NAKALA Metadata Standards
+
+### **Core References**
+- **[Metadata Description Guide](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Complete Dublin Core specifications for NAKALA
+- **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - Official metadata preparation guidelines
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Platform-specific metadata requirements
+
+### **Standards & Vocabularies**
+- **[Dublin Core Metadata](https://www.dublincore.org/)** - Base metadata standard
+- **[COAR Resource Types](https://vocabularies.coar-repositories.org/resource_types/)** - Resource type vocabulary
+- **[Creative Commons Licenses](https://creativecommons.org/licenses/)** - License specifications
+
+### **API Integration**
+- **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive metadata testing
+- **[Production API Documentation](https://api.nakala.fr/doc)** - Live metadata management
+- **[Metadata Validation](https://documentation.huma-num.fr/nakala/metadata-validation/)** - Official validation rules

@@ -176,8 +176,8 @@ jupyter lab workflow_notebook.ipynb
 ## 📖 Related Documentation
 
 - [User Guides](../docs/user-guides/) - Step-by-step instructions
-- [API Reference](../api/) - NAKALA API documentation
-- [Troubleshooting](../docs/user-guides/troubleshooting.md) - Common issues and solutions
+- [API Documentation](../docs/endpoints/) - NAKALA API documentation
+- [Troubleshooting](../docs/user-guides/05-troubleshooting.md) - Common issues and solutions
 
 ## 🤝 Contributing Examples
 

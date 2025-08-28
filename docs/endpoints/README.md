@@ -48,9 +48,12 @@ User-Friendly     Transformation     Correct JSON
 - **[Curator Endpoint](curator-endpoint/)** - Metadata enhancement and quality management
 
 ### Reference Materials
-- **[Official API Specification](/api/nakala-apitest.json)** - Raw NAKALA API (for reference)
-- **[Official Metadata Guide](/api/guide_description.md)** - Huma-Num's metadata standards
-- **[Field Reference](curator-field-reference.md)** - Complete metadata field guide
+- **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive NAKALA test API (Swagger/OpenAPI)
+- **[Production API Documentation](https://api.nakala.fr/doc)** - Interactive NAKALA production API (Swagger/OpenAPI)
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform documentation
+- **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - Official guide for preparing research data
+- **[Metadata Description Guide](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Official Dublin Core metadata specifications
+- **[Field Reference](../curator-field-reference.md)** - Complete metadata field guide
 
 ---
 
@@ -61,8 +64,8 @@ User-Friendly     Transformation     Correct JSON
 | Task | Use This Documentation |
 |------|----------------------|
 | **Using o-nakala-core** | This documentation (CSV formats, CLI commands) |
-| **Understanding NAKALA concepts** | [Official NAKALA Guide](/api/guide_description.md) |
-| **Direct API development** | [Official API Spec](/api/nakala-apitest.json) |
+| **Understanding NAKALA concepts** | [Official NAKALA Guide](../official-documentations/nakala-guide-de-description.md) |
+| **Direct API development** | [Official API Spec](../official-documentations/apitest-nakala.json) |
 | **Metadata standards** | Both (concepts from official, CSV format from ours) |
 
 ### **Complementary, Not Competing**

@@ -416,6 +416,22 @@ o-nakala-upload --validate-only --api-key YOUR_KEY --dataset your_file.csv --mod
 4. Document successful workflows
 5. Maintain collection relationship documentation
 
+## 📚 Official NAKALA Help Resources
+
+### **Technical Support**
+- **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete troubleshooting guide
+- **[User Manual](https://documentation.huma-num.fr/nakala/user-manual/)** - Step-by-step problem resolution
+- **[NAKALA Support](https://documentation.huma-num.fr/nakala/contact/)** - Official technical support
+
+### **API Debugging**
+- **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive debugging and testing
+- **[Production API Documentation](https://api.nakala.fr/doc)** - Live API troubleshooting
+- **[Error Codes Reference](https://documentation.huma-num.fr/nakala/api-errors/)** - Understanding API errors
+
+### **Safe Testing Environment**
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Debug issues safely without affecting live data
+- **[Test Data Guidelines](https://documentation.huma-num.fr/nakala/test-environment/)** - Best practices for testing
+
 ---
 
 **Last Updated**: 2025-06-11  
