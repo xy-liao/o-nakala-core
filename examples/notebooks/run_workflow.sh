@@ -53,23 +53,37 @@ if [ ! -f "$DATASET_DIR/folder_data_items.csv" ]; then
 fi
 
 echo ""
-echo "📤 Step 1/8: Data Upload"
-echo "------------------------"
+echo "✨ Step 1/5: Preview & Enhance Metadata"
+echo "----------------------------------------"
+o-nakala-preview \
+  --csv "$DATASET_DIR/folder_data_items.csv" \
+  --enhance
+
+ENHANCED_CSV="$DATASET_DIR/folder_data_items_enhanced.csv"
+if [ ! -f "$ENHANCED_CSV" ]; then
+    echo "⚠️  Enhancement did not produce a new file, using original."
+    ENHANCED_CSV="$DATASET_DIR/folder_data_items.csv"
+fi
+echo "✅ Metadata enhancement complete. Using: $ENHANCED_CSV"
+
+echo ""
+echo "📤 Step 2/5: Data Upload"
+echo "-------------------------"
 o-nakala-upload \
   --api-key "$API_KEY" \
-  --dataset "$DATASET_DIR/folder_data_items.csv" \
+  --dataset "$ENHANCED_CSV" \
   --mode folder \
-  --folder-config "$DATASET_DIR/folder_data_items.csv" \
+  --folder-config "$ENHANCED_CSV" \
   --base-path "$DATASET_DIR" \
   --output "$DATASET_DIR/upload_results.csv"
 
 # Count datasets properly (subtract header line)
-DATASETS_UPLOADED=$(tail -n +2 "$DATASET_DIR/upload_results.csv" | wc -l)
+DATASETS_UPLOADED=$(awk 'NR > 1' "$DATASET_DIR/upload_results.csv" | wc -l | tr -d ' ')
 echo "✅ Upload completed - $DATASETS_UPLOADED datasets created"
 
 echo ""
-echo "📁 Step 2/8: Collection Creation"
-echo "--------------------------------"
+echo "📁 Step 3/5: Collection Creation"
+echo "---------------------------------"
 o-nakala-collection \
   --api-key "$API_KEY" \
   --from-upload-output "$DATASET_DIR/upload_results.csv" \
@@ -83,44 +97,15 @@ fi
 
 # Count collections more reliably and fix counting issue
 if [ -f "$DATASET_DIR/collections_output.csv" ]; then
-    COLLECTIONS_CREATED=$(tail -n +2 "$DATASET_DIR/collections_output.csv" 2>/dev/null | grep -v "^$" | wc -l 2>/dev/null || echo "0")
-    COLLECTIONS_CREATED=$(echo "$COLLECTIONS_CREATED" | tr -d ' \t\n\r')
+    COLLECTIONS_CREATED=$(awk 'NR > 1 && NF' "$DATASET_DIR/collections_output.csv" | wc -l | tr -d ' ')
 else
     COLLECTIONS_CREATED="0"
 fi
 echo "✅ Collections created - $COLLECTIONS_CREATED collections"
 
 echo ""
-echo "🤖 Step 3/8: Metadata Enhancement"
-echo "---------------------------------"
-if [ -f "create_modifications.py" ]; then
-    python create_modifications.py "$DATASET_DIR/upload_results.csv"
-    echo "✅ Data metadata modifications generated"
-    
-    # Generate collection modifications using collections_output.csv from current directory or sample_dataset
-    collections_file=""
-    if [ -f "collections_output.csv" ]; then
-        collections_file="collections_output.csv"
-    elif [ -f "$DATASET_DIR/collections_output.csv" ]; then
-        collections_file="$DATASET_DIR/collections_output.csv"
-    fi
-    
-    if [ -n "$collections_file" ] && [ -f "create_collection_modifications.py" ]; then
-        echo "🔍 Found collections file: $collections_file, generating collection modifications..."
-        python create_collection_modifications.py "$collections_file"
-        echo "✅ Collection metadata modifications generated"
-        echo "✅ Metadata modifications generated (data + collections)"
-    else
-        echo "⚠️  Collections file or script not found - skipping collection modifications"
-        echo "✅ Data metadata modifications generated (collections file not found)"
-    fi
-else
-    echo "⚠️  Skipping modification generation - scripts not found"
-fi
-
-echo ""
-echo "📊 Step 4/8: Quality Analysis & Validation"
-echo "------------------------------------------"
+echo "📊 Step 4/5: Quality Analysis & Validation"
+echo "-------------------------------------------"
 o-nakala-curator \
   --api-key "$API_KEY" \
   --quality-report \
@@ -130,8 +115,8 @@ o-nakala-curator \
 echo "✅ Comprehensive quality analysis completed"
 
 echo ""
-echo "🔧 Step 5/8: Validation Error Fixes"
-echo "-----------------------------------"
+echo "🔧 Step 5/5: Final Validation Fixes (if needed)"
+echo "------------------------------------------------"
 # Generate creator fixes for validation errors
 if [ -f "$DATASET_DIR/upload_results.csv" ] && [ -f "$DATASET_DIR/collections_output.csv" ]; then
     echo "🔍 Generating creator field fixes for validation errors..."
@@ -169,50 +154,8 @@ else
 fi
 
 echo ""
-echo "✨ Step 6/8: Dataset Curation"
-echo "-----------------------------"
-# Check for auto_data_modifications.csv in both locations
-data_modifications_file=""
-if [ -f "auto_data_modifications.csv" ]; then
-    data_modifications_file="auto_data_modifications.csv"
-elif [ -f "$DATASET_DIR/auto_data_modifications.csv" ]; then
-    data_modifications_file="$DATASET_DIR/auto_data_modifications.csv"
-fi
-
-if [ -n "$data_modifications_file" ]; then
-    o-nakala-curator \
-      --api-key "$API_KEY" \
-      --batch-modify "$data_modifications_file" \
-      --scope datasets
-    echo "✅ Dataset metadata updated"
-else
-    echo "⚠️  Skipping dataset curation - auto_data_modifications.csv not found"
-fi
-
-echo ""
-echo "📁 Step 7/8: Collection Curation"
-echo "--------------------------------"
-# Check for auto_collection_modifications.csv in both locations  
-collection_modifications_file=""
-if [ -f "auto_collection_modifications.csv" ]; then
-    collection_modifications_file="auto_collection_modifications.csv"
-elif [ -f "$DATASET_DIR/auto_collection_modifications.csv" ]; then
-    collection_modifications_file="$DATASET_DIR/auto_collection_modifications.csv"
-fi
-
-if [ -n "$collection_modifications_file" ]; then
-    o-nakala-curator \
-      --api-key "$API_KEY" \
-      --batch-modify "$collection_modifications_file" \
-      --scope collections
-    echo "✅ Collection metadata updated"
-else
-    echo "⚠️  Skipping collection curation - auto_collection_modifications.csv not found"
-fi
-
-echo ""
-echo "🚀 Step 8/8: Data Management & Analytics"
-echo "---------------------------------------"
+echo "🚀 Final Step: Data Management & Analytics"
+echo "-------------------------------------------"
 echo "📢 Managing publication status..."
 # Simulate publication management (mark items for publication)
 TOTAL_ITEMS=$((DATASETS_UPLOADED + COLLECTIONS_CREATED))
@@ -260,15 +203,12 @@ echo "🔗 First Dataset: $(head -2 "$DATASET_DIR/upload_results.csv" | tail -1 
 echo ""
 echo "🎉 O-NAKALA CORE WORKFLOW COMPLETED!"
 echo "===================================="
-echo "📄 All 8 operations completed:"
-echo "   ✅ 1. Data Upload ($DATASETS_UPLOADED datasets)"
-echo "   ✅ 2. Collection Creation ($COLLECTIONS_CREATED collections)"
-echo "   ✅ 3. Metadata Enhancement (automated generation)"
+echo "📄 All modern workflow operations completed:"
+echo "   ✅ 1. Preview & Enhance (proactive metadata improvement)"
+echo "   ✅ 2. Data Upload ($DATASETS_UPLOADED datasets)"
+echo "   ✅ 3. Collection Creation ($COLLECTIONS_CREATED collections)"
 echo "   ✅ 4. Quality Analysis & Validation (comprehensive report)"
-echo "   ✅ 5. Validation Error Fixes (creator fields added)"
-echo "   ✅ 6. Dataset Curation (metadata updates)"
-echo "   ✅ 7. Collection Curation (metadata updates)"
-echo "   ✅ 8. Data Management (publication, rights, analytics)"
+echo "   ✅ 5. Final Validation Fixes (creator fields added)"
 
 # Cleanup if requested
 if [ "$CLEANUP_MODE" = "--cleanup" ]; then
