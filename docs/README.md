@@ -44,7 +44,7 @@ In-depth guides covering all aspects from setup to advanced customization.
 
 **Contents:**
 - getting-started.md - Complete setup and first steps
-- feature-showcase.md - Explore all v2.5.0 features 
+- feature-showcase.md - Explore all v2.5.1 features 
 - researcher-workflow-guide.md - Complete folder-to-repository process
 - extending-preview-tool.md - Add custom properties and validation
 - csv-field-testing.md - Comprehensive field validation

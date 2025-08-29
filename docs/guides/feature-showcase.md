@@ -1,6 +1,6 @@
-# O-Nakala Core v2.5.0 Feature Showcase
+# O-Nakala Core v2.5.1 Feature Showcase
 
-Welcome to O-Nakala Core v2.5.0 - your comprehensive toolkit for managing research data in the NAKALA repository! This guide will take you on an exciting journey through all the powerful features that make research data management effortless and efficient.
+Welcome to O-Nakala Core v2.5.1 - your comprehensive toolkit for managing research data in the NAKALA repository! This guide will take you on an exciting journey through all the powerful features that make research data management effortless and efficient.
 
 ## What You'll Discover
 
@@ -39,7 +39,7 @@ o-nakala-user-info --api-key $NAKALA_API_KEY
 📊 Account Status: Active
 🔑 API Access: Enabled
 ```
-> **New in v2.5.0**: Enhanced user information display with account statistics and permissions overview.
+> **New in v2.5.1**: Enhanced user information display with account statistics and permissions overview.
 
 ---
 
@@ -137,7 +137,7 @@ o-nakala-upload \
 **Expected output**:
 
 ```text
-📤 NAKALA Upload Client v2.5.0
+📤 NAKALA Upload Client v2.5.1
 Processing: folder_data_items_enhanced.csv
 
 🔍 Discovery Phase:
@@ -183,7 +183,7 @@ o-nakala-upload \
   --validate-metadata \
   --parallel
 ```
-**New in v2.5.0**:
+**New in v2.5.1**:
 
 - Parallel file processing for 3x faster uploads
 - Enhanced progress tracking with ETA estimates
@@ -341,7 +341,7 @@ o-nakala-curator \
   --include-recommendations \
   --api-key $NAKALA_API_KEY
 ```
-**New in v2.5.0**:
+**New in v2.5.1**:
 
 - Machine learning-based quality scoring
 - Automated metadata enrichment suggestions
@@ -464,7 +464,7 @@ keywords,research;analysis;data,true
 ```
 ---
 
-## New in v2.5.0 ✨
+## New in v2.5.1 ✨
 
 ### Pattern-based Metadata Enhancement
 
@@ -581,6 +581,6 @@ export NAKALA_BASE_URL="https://api.nakala.fr"  # Production
 
 ---
 
-**Ready to improve your research data management?** Start with our sample dataset and try O-Nakala Core v2.5.0. The tools are designed to help researchers manage their data effectively.
+**Ready to improve your research data management?** Start with our sample dataset and try O-Nakala Core v2.5.1. The tools are designed to help researchers manage their data effectively.
 
-*O-Nakala Core v2.5.0 - Tools for research data management.*
+*O-Nakala Core v2.5.1 - Tools for research data management.*

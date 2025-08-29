@@ -1,4 +1,4 @@
-# Quick Reference: O-Nakala Core v2.5.0
+# Quick Reference: O-Nakala Core v2.5.1
 
 ## 🚀 Essential Commands
 
@@ -52,8 +52,8 @@ file,title,creator,description,type,date,keywords,language,temporal,spatial,lice
 data.csv,"fr:Données de recherche|en:Research Data","Dupont,Jean","fr:Analyse des résultats|en:Results analysis",http://purl.org/coar/resource_type/c_ddb1,2024,"fr:recherche;données|en:research;data",fr,2024,"fr:Global|en:Global",CC-BY-4.0
 ```
 
-### **All Supported Fields (v2.5.0 Complete)**
-| Field | Description | Example | v2.5.0 Status |
+### **All Supported Fields (v2.5.1 Complete)**
+| Field | Description | Example | v2.5.1 Status |
 |-------|-------------|---------|----------------|
 | `title` | Resource title | `"fr:Titre|en:Title"` | ✅ Enhanced |
 | `creator` | Author/Creator | `"Dupont,Jean"` | ✅ Enhanced |
@@ -66,10 +66,10 @@ data.csv,"fr:Données de recherche|en:Research Data","Dupont,Jean","fr:Analyse d
 | `rights` | Rights statement | Custom rights text | ✅ Enhanced |
 | `contributor` | Additional contributors | `"Martin,Paul"` | ✅ Enhanced |
 | `accessRights` | Access level | `Open Access`, `Restricted` | ✅ Enhanced |
-| **`spatial`** | **Geographic coverage** | **`"fr:France|en:France"`** | **🆕 Fixed in v2.5.0** |
-| **`temporal`** | **Time period** | **`"2020-2024"`, `"Medieval"`** | **🆕 Fixed in v2.5.0** |
-| **`alternative`** | **Alternative title** | **`"fr:Titre alt|en:Alt title"`** | **🆕 Fixed in v2.5.0** |
-| **`identifier`** | **Resource ID** | **`"DOI:10.1234/example"`** | **🆕 Fixed in v2.5.0** |
+| **`spatial`** | **Geographic coverage** | **`"fr:France|en:France"`** | **🆕 Fixed in v2.5.1** |
+| **`temporal`** | **Time period** | **`"2020-2024"`, `"Medieval"`** | **🆕 Fixed in v2.5.1** |
+| **`alternative`** | **Alternative title** | **`"fr:Titre alt|en:Alt title"`** | **🆕 Fixed in v2.5.1** |
+| **`identifier`** | **Resource ID** | **`"DOI:10.1234/example"`** | **🆕 Fixed in v2.5.1** |
 
 ## 🎯 COAR Resource Types (Copy-Paste Ready)
 
@@ -164,10 +164,10 @@ done
 
 ## ⚡ Installation & Setup
 
-### **Install v2.5.0**
+### **Install v2.5.1**
 ```bash
 # Complete installation with preview tool
-pip install o-nakala-core[cli,ml]==2.5.0
+pip install o-nakala-core[cli,ml]==2.5.1
 
 # Verify preview tool works
 o-nakala-preview --help
@@ -189,7 +189,7 @@ export NAKALA_BASE_URL="https://api.nakala.fr"     # Production
 
 | Problem | Solution |
 |---------|----------|
-| `o-nakala-preview` not found | `pip install o-nakala-core[cli]==2.5.0` |
+| `o-nakala-preview` not found | `pip install o-nakala-core[cli]==2.5.1` |
 | Invalid COAR resource type | Use interactive preview: choose option 1 |
 | Date format errors | Use `YYYY` or `YYYY-MM-DD` format |
 | Bilingual format issues | Use `"fr:Français|en:English"` pattern |
@@ -210,8 +210,8 @@ python -c "from o_nakala_core.common.utils import NakalaCommonUtils; print(Nakal
 
 ## 📊 Version Comparison
 
-### **What's Better in v2.5.0**
-| Aspect | Before v2.5.0 | v2.5.0 | Improvement |
+### **What's Better in v2.5.1**
+| Aspect | Before v2.5.1 | v2.5.1 | Improvement |
 |--------|---------------|--------|-------------|
 | **Metadata Fields** | ~65 entries | 107 entries | +65% |
 | **Dublin Core** | 11/15 fields | 15/15 fields | Complete |
@@ -220,7 +220,7 @@ python -c "from o_nakala_core.common.utils import NakalaCommonUtils; print(Nakal
 | **Team Workflow** | Individual only | Collaborative preview | Team-ready |
 
 ### **Rescue Mission Completed**
-These fields were **lost in previous versions** and are **rescued in v2.5.0**:
+These fields were **lost in previous versions** and are **rescued in v2.5.1**:
 - ✅ `spatial` - Geographic coverage now preserved
 - ✅ `temporal` - Time periods now captured  
 - ✅ `alternative` - Alternative titles now included
@@ -228,7 +228,7 @@ These fields were **lost in previous versions** and are **rescued in v2.5.0**:
 
 ## 🎉 Success Indicators
 
-### **You're Using v2.5.0 Successfully When:**
+### **You're Using v2.5.1 Successfully When:**
 - [ ] Preview tool shows 15/15 Dublin Core fields for complete data
 - [ ] Upload success rate is 90%+ (vs ~60% previously)
 - [ ] You can see spatial/temporal metadata in NAKALA after upload

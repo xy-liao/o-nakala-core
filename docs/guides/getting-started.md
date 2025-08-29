@@ -1,8 +1,8 @@
-# Getting Started with O-Nakala Core v2.5.0
+# Getting Started with O-Nakala Core v2.5.1
 
 ## The Research Revolution: From Complex API to Simple Workflow
 
-**Welcome to the new era of NAKALA data management!** Version 2.5.0 represents a fundamental shift from "guess-and-hope" uploads to "preview-and-succeed" workflows.
+**Welcome to the new era of NAKALA data management!** Version 2.5.1 represents a fundamental shift from "guess-and-hope" uploads to "preview-and-succeed" workflows.
 
 ## 🎯 Quick Start: 3-Minute Success
 
@@ -10,7 +10,7 @@
 
 ```bash
 # Install the enhanced version
-pip install o-nakala-core[cli,ml]==2.5.0
+pip install o-nakala-core[cli,ml]==2.5.1
 
 # Set your API key (get test key from api/api_keys.md)
 export NAKALA_API_KEY="your-api-key"
@@ -227,10 +227,10 @@ spatial,"fr:France|en:France"  # Specific location
 
 ## 🆘 Troubleshooting
 
-### Common Issues Resolved by v2.5.0
+### Common Issues Resolved by v2.5.1
 
 **Problem**: "My spatial and temporal metadata disappeared after upload"
-**Solution**: ✅ Fixed in v2.5.0 - these fields are now properly captured
+**Solution**: ✅ Fixed in v2.5.1 - these fields are now properly captured
 
 **Problem**: "I don't know what COAR resource type to use"
 **Solution**: ✅ Use `o-nakala-preview --csv data.csv --interactive` for suggestions
@@ -239,7 +239,7 @@ spatial,"fr:France|en:France"  # Specific location
 **Solution**: ✅ Preview tool shows validation errors before upload
 
 **Problem**: "My metadata seems incomplete compared to what I specified"
-**Solution**: ✅ v2.5.0 generates 65% more metadata entries from the same CSV
+**Solution**: ✅ v2.5.1 generates 65% more metadata entries from the same CSV
 
 ### Quick Validation Checklist
 
@@ -260,7 +260,7 @@ o-nakala-preview --csv your_data.csv --validate-only
 > "The preview tool eliminated our upload failures. We can see exactly what metadata NAKALA receives before committing to an upload. Our workflow is now 50% faster and 90% more reliable."
 
 ### CNRS Social Sciences Research Team
-> "Finally, all our Dublin Core spatial and temporal metadata is preserved. Previous versions were silently losing these critical fields. v2.5.0 fixed our data discoverability issues."
+> "Finally, all our Dublin Core spatial and temporal metadata is preserved. Previous versions were silently losing these critical fields. v2.5.1 fixed our data discoverability issues."
 
 ### International Collaborative Project
 > "The bilingual metadata support and COAR integration make our data truly international. The preview tool helps our diverse team understand exactly what's being uploaded."

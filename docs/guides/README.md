@@ -6,7 +6,7 @@
 - [**Getting Started Guide**](getting-started.md) - Complete setup and first steps
 - [**Quick Reference**](quick-reference.md) - Essential commands and 30-second setup
 - [**Complete Researcher Workflow**](researcher-workflow-guide.md) - Step-by-step guide from folders to NAKALA
-- [**Feature Showcase**](feature-showcase.md) - Explore all v2.5.0 features
+- [**Feature Showcase**](feature-showcase.md) - Explore all v2.5.1 features
 
 ### 🔧 **Advanced Usage**
 - [**Extending Preview Tool**](extending-preview-tool.md) - Add custom properties and validation
@@ -60,4 +60,4 @@
 
 ---
 
-*Last Updated: 2025-01-25 | Version: 2.5.0*
+*Last Updated: 2025-01-25 | Version: 2.5.1*

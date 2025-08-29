@@ -1,6 +1,6 @@
 # Extending the O-Nakala Core Preview Tool
 
-**Version**: 2.5.0  
+**Version**: 2.5.1  
 **Target Audience**: Intermediate developers and researchers  
 **Goal**: Extend the preview tool with custom fields, COAR types, and templates
 
@@ -43,7 +43,7 @@ The preview tool has three main extension points:
 - ✅ **Validates CSV structure** and field values
 - ✅ **Generates NAKALA JSON** preview with exact API payload format
 - ✅ **Supports multilingual metadata** (`fr:|en:` format)
-- ✅ **Pattern-based enhancement suggestions** (v2.5.0 feature)
+- ✅ **Pattern-based enhancement suggestions** (v2.5.1 feature)
 - ✅ **Interactive assistance mode** with COAR suggestions
 - ✅ **Extensible field mapping** system
 
@@ -54,8 +54,8 @@ The preview tool has three main extension points:
 ### Required Installation
 
 ```bash
-# Install O-Nakala Core v2.5.0+
-pip install o-nakala-core>=2.5.0
+# Install O-Nakala Core v2.5.1+
+pip install o-nakala-core>=2.5.1
 
 # Verify installation
 o-nakala-preview --help
