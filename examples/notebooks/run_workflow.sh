@@ -2,7 +2,7 @@
 
 # O-Nakala Core Workflow - Complete 8-Step Process
 # Runs from notebooks/ directory and operates on ../sample_dataset/
-# Uses o-nakala-core PyPI package v2.5.0
+# Uses o-nakala-core PyPI package v2.5.1
 
 set -e
 
@@ -231,7 +231,7 @@ echo ""
 echo "📁 Results saved in: $DATASET_DIR/"
 echo "🏆 O-NAKALA CORE WORKFLOW COMPLETED SUCCESSFULLY!"
 echo ""
-echo "✨ O-Nakala Core v2.5.0 PyPI Package Features Demonstrated:"
+echo "✨ O-Nakala Core v2.5.1 PyPI Package Features Demonstrated:"
 echo "   • Complete CRUD operations on NAKALA data"
 echo "   • Automated metadata enhancement"
 echo "   • Validation error fixing and quality assurance"

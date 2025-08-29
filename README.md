@@ -40,8 +40,8 @@ Use the public test environment to try O-Nakala Core:
 ## Installation
 
 ```bash
-# Complete installation with CLI tools
-pip install o-nakala-core[cli]
+# Complete installation with CLI tools (latest stable)
+pip install o-nakala-core[cli]==2.5.1
 
 # Core library only
 pip install o-nakala-core

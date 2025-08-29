@@ -216,16 +216,7 @@ class NakalaCommonUtils:
                         elif person:
                             # For simple string names, still create person objects
                             creator_arrays[property_uri].append({"name": person})
-                elif field_name in ["date", "created"]:
-                    # Handle date fields with proper date type
-                    metas.append(
-                        {
-                            "value": value,
-                            "typeUri": "http://www.w3.org/2001/XMLSchema#date",
-                            "propertyUri": property_uri,
-                        }
-                    )
-                elif field_name in ["license", "accessRights"]:
+                elif field_name in ["date", "license", "accessRights"]:
                     # Handle fields that cannot have language attributes
                     metas.append(
                         {

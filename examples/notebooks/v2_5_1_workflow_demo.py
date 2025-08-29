@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 O-Nakala Core v2.5.0 Enhanced Workflow Demo
+🚀 O-Nakala Core v2.5.1 Enhanced Workflow Demo
 
 Shows the new streamlined workflow with intelligent metadata enhancement
 integrated directly into the preview tool - eliminating scattered scripts!
@@ -11,10 +11,10 @@ import sys
 import subprocess
 from pathlib import Path
 
-def demo_v2_5_0_workflow():
-    """Demonstrate the new v2.5.0 enhanced workflow."""
+def demo_v2_5_1_workflow():
+    """Demonstrate the new v2.5.1 enhanced workflow."""
     
-    print("🎉 O-Nakala Core v2.5.0: The Enhanced Workflow")
+    print("🎉 O-Nakala Core v2.5.1: The Enhanced Workflow")
     print("=" * 60)
     print()
     
@@ -22,7 +22,7 @@ def demo_v2_5_0_workflow():
     dataset_dir = Path("../sample_dataset")
     csv_file = dataset_dir / "folder_data_items.csv"
     
-    print("🎯 NEW v2.5.0 Workflow Benefits:")
+    print("🎯 NEW v2.5.1 Workflow Benefits:")
     print("  ✅ Intelligent metadata enhancement (content-aware)")
     print("  ✅ No more scattered modification scripts")
     print("  ✅ Preview with enhancement suggestions")
@@ -30,7 +30,7 @@ def demo_v2_5_0_workflow():
     print("  ✅ Streamlined single-command workflow")
     print()
     
-    print("📋 Before v2.5.0 (The Old Complicated Way):")
+    print("📋 Before v2.5.1 (The Old Complicated Way):")
     print("  1. o-nakala-upload --csv data.csv")
     print("  2. python create_modifications.py upload_results.csv")
     print("  3. python create_collection_modifications.py collections.csv")
@@ -39,7 +39,7 @@ def demo_v2_5_0_workflow():
     print("  💢 5 separate commands + manual script execution!")
     print()
     
-    print("🚀 After v2.5.0 (The New Streamlined Way):")
+    print("🚀 After v2.5.1 (The New Streamlined Way):")
     print("  1. o-nakala-preview --csv data.csv --enhance --interactive")
     print("  2. o-nakala-upload --csv data_enhanced.csv --api-key KEY")
     print("  ✨ Just 2 commands! Enhancement built into preview!")
@@ -57,18 +57,16 @@ def demo_v2_5_0_workflow():
         # Run enhanced preview in non-interactive mode
         try:
             env = os.environ.copy()
-            env['PYTHONPATH'] = 'src'
             
             result = subprocess.run([
-                'python', '-m', 'o_nakala_core.cli.preview',
+                'o-nakala-preview',
                 '--csv', str(csv_file),
                 '--enhance'
             ], 
             capture_output=True, 
             text=True, 
             timeout=10,
-            env=env,
-            cwd='../..'
+            env=env
             )
             
             if result.returncode == 0:
@@ -91,7 +89,7 @@ def demo_v2_5_0_workflow():
         print("Please ensure you're running from examples/notebooks/")
     
     print()
-    print("💡 Key v2.5.0 Improvements:")
+    print("💡 Key v2.5.1 Improvements:")
     print("  🧠 Content-aware enhancement (detects: code, images, documents, data, presentations)")
     print("  🎨 Professional multilingual metadata generation")
     print("  ⚡ Auto-application of high-confidence improvements")
@@ -105,7 +103,7 @@ def demo_v2_5_0_workflow():
     print("  3. Upload with confidence: o-nakala-upload --csv your_data_enhanced.csv")
     print()
     
-    print("✨ v2.5.0 = No More Scattered Scripts! Everything in Preview Tool!")
+    print("✨ v2.5.1 = No More Scattered Scripts! Everything in Preview Tool!")
 
 if __name__ == "__main__":
-    demo_v2_5_0_workflow()
+    demo_v2_5_1_workflow()
