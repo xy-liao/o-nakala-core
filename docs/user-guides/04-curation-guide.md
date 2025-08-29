@@ -275,9 +275,9 @@ o-nakala-curator \
 - **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform standards
 
 ### **Quality Assurance**
-- **[User Manual](https://documentation.huma-num.fr/nakala/user-manual/)** - Official best practices
+- **[NAKALA User Manual](https://documentation.huma-num.fr/nakala/)** - Official best practices
 - **[Test API Documentation](https://apitest.nakala.fr/doc)** - Validate metadata via API
-- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe environment for quality testing
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe environment for quality testing with sample data
 
 ---
 

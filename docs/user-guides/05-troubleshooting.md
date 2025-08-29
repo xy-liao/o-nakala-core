@@ -420,17 +420,17 @@ o-nakala-upload --validate-only --api-key YOUR_KEY --dataset your_file.csv --mod
 
 ### **Technical Support**
 - **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete troubleshooting guide
-- **[User Manual](https://documentation.huma-num.fr/nakala/user-manual/)** - Step-by-step problem resolution
-- **[NAKALA Support](https://documentation.huma-num.fr/nakala/contact/)** - Official technical support
+- **[NAKALA User Manual](https://documentation.huma-num.fr/nakala/)** - Step-by-step problem resolution
+- **[NAKALA Support](https://documentation.huma-num.fr/nakala/)** - Official technical support
 
 ### **API Debugging**
 - **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive debugging and testing
 - **[Production API Documentation](https://api.nakala.fr/doc)** - Live API troubleshooting
-- **[Error Codes Reference](https://documentation.huma-num.fr/nakala/api-errors/)** - Understanding API errors
+- **[Error Codes Reference](https://documentation.huma-num.fr/nakala/)** - Understanding API errors
 
 ### **Safe Testing Environment**
-- **[NAKALA Test Platform](https://test.nakala.fr)** - Debug issues safely without affecting live data
-- **[Test Data Guidelines](https://documentation.huma-num.fr/nakala/test-environment/)** - Best practices for testing
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Debug issues safely with test accounts (password: IamTesting2020)
+- **[Test Data Guidelines](https://documentation.huma-num.fr/nakala/)** - Best practices for testing
 
 ---
 

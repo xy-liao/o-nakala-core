@@ -477,12 +477,12 @@ cp examples/sample_dataset/folder_data_items.csv folder_data_items.csv
 
 ### **Getting Started**
 - **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete researcher guide
-- **[Getting Started with NAKALA](https://documentation.huma-num.fr/nakala/getting-started/)** - Official first steps
+- **[Getting Started with NAKALA](https://documentation.huma-num.fr/nakala/)** - Official first steps
 - **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - How to prepare your research data
 
 ### **Research Data Management**
-- **[Data Deposit Process](https://documentation.huma-num.fr/nakala/data-deposit-form/)** - Official deposit workflow
-- **[Collection Management](https://documentation.huma-num.fr/nakala/collection-creation-form/)** - Organize your research data
+- **[Data Deposit Process](https://documentation.huma-num.fr/nakala/)** - Official deposit workflow
+- **[Collection Management](https://documentation.huma-num.fr/nakala/)** - Organize your research data
 - **[Metadata Best Practices](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Dublin Core for research data
 
 ### **Platform Access**

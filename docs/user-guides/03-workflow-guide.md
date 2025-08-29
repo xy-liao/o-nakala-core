@@ -461,16 +461,16 @@ o-nakala-collection \
 
 ### **Complete Workflow Documentation**
 - **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Comprehensive platform guide
-- **[Getting Started with NAKALA](https://documentation.huma-num.fr/nakala/getting-started/)** - Official workflow introduction
+- **[Getting Started with NAKALA](https://documentation.huma-num.fr/nakala/)** - Official workflow introduction
 - **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - Prepare your research data properly
 
 ### **Detailed Processes**
-- **[Data Deposit Form](https://documentation.huma-num.fr/nakala/data-deposit-form/)** - Official deposit process
-- **[Collection Creation Form](https://documentation.huma-num.fr/nakala/collection-creation-form/)** - Official collection workflow
+- **[Data Deposit Process](https://documentation.huma-num.fr/nakala/)** - Official deposit process
+- **[Collection Management](https://documentation.huma-num.fr/nakala/)** - Official collection workflow
 - **[Metadata Description Guide](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Complete metadata specifications
 
 ### **API & Advanced Usage**
 - **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive API testing
 - **[Production API Documentation](https://api.nakala.fr/doc)** - Live API reference
-- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe environment for testing workflows
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe environment for testing workflows (test accounts available)
 - **[NAKALA Production](https://nakala.fr)** - Live research data repository 

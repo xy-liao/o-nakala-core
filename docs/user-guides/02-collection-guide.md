@@ -238,7 +238,7 @@ Your research is now logically grouped and easier to discover!
 
 ### **Collection Management**
 - **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform guide including collection management
-- **[Collection Creation Guide](https://documentation.huma-num.fr/nakala/collection-creation-form/)** - Official collection creation documentation
+- **[Collection Creation Guide](https://documentation.huma-num.fr/nakala/)** - Official collection creation documentation
 - **[Metadata Standards](https://documentation.huma-num.fr/nakala-guide-de-description/)** - Dublin Core metadata specifications for collections
 
 ### **Platform Access**

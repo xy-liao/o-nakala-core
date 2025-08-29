@@ -180,12 +180,12 @@ o-nakala-collection --api-key "your-api-key" --title "My Collection" --from-uplo
 ### **Platform Documentation**
 - **[Official NAKALA Documentation](https://documentation.huma-num.fr/nakala/)** - Complete platform guide
 - **[Data Preparation Guide](https://documentation.huma-num.fr/nakala-preparer-ses-donnees/)** - How to prepare your research data
-- **[User Manual](https://documentation.huma-num.fr/nakala/user-manual/)** - Step-by-step platform usage
+- **[NAKALA User Manual](https://documentation.huma-num.fr/nakala/)** - Step-by-step platform usage
 
 ### **API Documentation**
 - **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive API for testing
 - **[Production API Documentation](https://api.nakala.fr/doc)** - Production API reference
 
 ### **Platform Access**
-- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe testing environment
+- **[NAKALA Test Platform](https://test.nakala.fr)** - Safe testing environment with sample accounts
 - **[NAKALA Production](https://nakala.fr)** - Live research data repository
