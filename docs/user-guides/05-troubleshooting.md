@@ -426,7 +426,7 @@ o-nakala-upload --validate-only --api-key YOUR_KEY --dataset your_file.csv --mod
 ### **API Debugging**
 - **[Test API Documentation](https://apitest.nakala.fr/doc)** - Interactive debugging and testing
 - **[Production API Documentation](https://api.nakala.fr/doc)** - Live API troubleshooting
-- **[Error Codes Reference](https://documentation.huma-num.fr/nakala/)** - Understanding API errors
+- **[API Error Codes](https://api.nakala.fr/doc)** - HTTP status codes and response formats for API errors
 
 ### **Safe Testing Environment**
 - **[NAKALA Test Platform](https://test.nakala.fr)** - Debug issues safely with test accounts (password: IamTesting2020)
