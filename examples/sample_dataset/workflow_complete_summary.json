@@ -1,0 +1,83 @@
+{
+  "workflow_info": {
+    "timestamp": "2025-08-29T20:58:02.639742",
+    "base_path": "/Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset",
+    "api_key_masked": "33170cfe-f...",
+    "workflow_version": "1.0.0"
+  },
+  "upload_summary": {
+    "available": true,
+    "total_datasets": 5,
+    "successful_uploads": 5,
+    "failed_uploads": 0,
+    "first_dataset_id": "10.34847/nkl.caf59eo8",
+    "dataset_types": {}
+  },
+  "collections_summary": {
+    "available": true,
+    "total_collections": 3,
+    "successful_collections": 3,
+    "failed_collections": 0,
+    "first_collection_id": "10.34847/nkl.b72a3h08"
+  },
+  "quality_summary": {
+    "available": true,
+    "analysis_timestamp": "Unknown",
+    "total_items_analyzed": 0,
+    "overall_quality_score": 0.0,
+    "issues_found": 0,
+    "recommendations_count": 4
+  },
+  "enhancement_summary": {
+    "data_enhancements": {
+      "available": false
+    },
+    "collection_enhancements": {
+      "available": false
+    }
+  },
+  "curation_summary": {
+    "available": true,
+    "validation_fixes": 8,
+    "fix_files_count": 2,
+    "curation_completed": true
+  },
+  "publication_summary": {
+    "available": true,
+    "datasets_published": 5,
+    "collections_published": 3,
+    "publication_completed": true
+  },
+  "advanced_management_summary": {
+    "available": true,
+    "rights_management_completed": true,
+    "user_analytics_completed": true,
+    "items_managed": 16,
+    "management_completed": true
+  },
+  "overall_statistics": {
+    "total_operations": 8,
+    "successful_operations": 6,
+    "total_items_created": 8,
+    "total_enhancements_applied": 0,
+    "workflow_success_rate": 75.0
+  },
+  "execution_timeline": [
+    {
+      "operation": "Upload",
+      "timestamp": "2025-08-29T20:57:53.317645",
+      "file": "upload_results.csv"
+    },
+    {
+      "operation": "Collections",
+      "timestamp": "2025-08-29T20:57:54.056617",
+      "file": "collections_output.csv"
+    },
+    {
+      "operation": "Quality Analysis",
+      "timestamp": "2025-08-29T20:57:57.924415",
+      "file": "quality_report.json"
+    }
+  ],
+  "success": true
+}
