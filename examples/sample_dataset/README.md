@@ -1,15 +1,15 @@
-# Sample Dataset - Clean Research Data Repository (v2.5.0)
+# Sample Dataset - Clean Research Data Repository (v2.5.1)
 
 ## 📋 Overview
 
 **Clean sample research dataset** containing 14 files across 5 academic categories for testing O-Nakala Core workflows. This directory provides **pure data and configurations only** - all operational scripts have been moved to `../notebooks/` and temporary files removed.
 
-**✨ v2.5.0 Enhancement**: Use with the new enhanced preview tool:
+**✨ v2.5.1 Enhancement**: Use with the new enhanced preview tool:
 ```bash
 o-nakala-preview --csv folder_data_items.csv --enhance --interactive
 ```
 
-## 📂 Directory Structure (v2.5.0 Clean)
+## 📂 Directory Structure (v2.5.1 Clean)
 
 ```
 sample_dataset/
@@ -24,7 +24,7 @@ sample_dataset/
     └── presentations/          # Meeting materials (Markdown)
 ```
 
-### 🗑️ **Cleaned Up (Removed in v2.5.0)**:
+### 🗑️ **Cleaned Up (Removed in v2.5.1)**:
 - ~~`upload_results.csv`~~ → Generated during workflow, not part of sample data
 - ~~`collections_output.csv`~~ → Generated during workflow  
 - ~~`quality_report.json`~~ → Generated during workflow
