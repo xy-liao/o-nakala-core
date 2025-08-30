@@ -13,7 +13,7 @@ This guide helps you obtain and manage API keys for accessing the NAKALA researc
 
 2. **Request API Access**
    - Contact your institution's NAKALA administrator
-   - Or email support@nakala.fr with your use case
+   - Or email nakala@huma-num.fr with your use case
    - API access is typically granted for legitimate research purposes
 
 3. **Locate Your API Key**
@@ -111,7 +111,7 @@ source .env
 
 - **Documentation**: [NAKALA User Guide](https://documentation.huma-num.fr/nakala/)
 - **API Documentation**: [OAI/API Reference](https://documentation.huma-num.fr/nakala-API/)
-- **Technical Support**: support@nakala.fr
+- **Technical Support**: nakala@huma-num.fr
 - **O-Nakala Core Issues**: [GitHub Issues](https://github.com/xy-liao/o-nakala-core/issues)
 - **Community**: NAKALA user forums and mailing lists
 
