@@ -271,4 +271,4 @@ Use the curator tools to validate metadata completeness and maintain high-qualit
 
 **🎯 You're ready to start!** This guide gave you the foundation. Choose your next step from the [role-specific paths above](#next-steps-by-role) or return to the [navigation guide](../START_HERE.md) for more options.
 
-*Updated for O-Nakala Core v2.5.1 - Last revised: August 2025*
+*Last revised: August 2025*

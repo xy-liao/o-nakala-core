@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-🚀 O-Nakala Core v2.5.1 Enhanced Workflow Demo
+O-Nakala Core Enhanced Workflow Demo
 
-Shows the new streamlined workflow with intelligent metadata enhancement
-integrated directly into the preview tool - eliminating scattered scripts!
+Demonstrates the streamlined workflow with intelligent metadata enhancement
+integrated directly into the preview tool.
 """
 
 import os
@@ -11,38 +11,29 @@ import sys
 import subprocess
 from pathlib import Path
 
-def demo_v2_5_1_workflow():
-    """Demonstrate the new v2.5.1 enhanced workflow."""
+def demo_enhanced_workflow():
+    """Demonstrate the enhanced workflow."""
     
-    print("🎉 O-Nakala Core v2.5.1: The Enhanced Workflow")
-    print("=" * 60)
+    print("🎉 O-Nakala Core Enhanced Workflow")
+    print("=" * 50)
     print()
     
     # Paths
     dataset_dir = Path("../sample_dataset")
     csv_file = dataset_dir / "folder_data_items.csv"
     
-    print("🎯 NEW v2.5.1 Workflow Benefits:")
+    print("🎯 Enhanced Workflow Features:")
     print("  ✅ Intelligent metadata enhancement (content-aware)")
-    print("  ✅ No more scattered modification scripts")
+    print("  ✅ Integrated enhancement in preview tool")
     print("  ✅ Preview with enhancement suggestions")
     print("  ✅ Interactive or automatic enhancement application")
-    print("  ✅ Streamlined single-command workflow")
+    print("  ✅ Streamlined workflow")
     print()
     
-    print("📋 Before v2.5.1 (The Old Complicated Way):")
-    print("  1. o-nakala-upload --csv data.csv")
-    print("  2. python create_modifications.py upload_results.csv")
-    print("  3. python create_collection_modifications.py collections.csv")
-    print("  4. o-nakala-curator --batch-modify auto_data_modifications.csv")
-    print("  5. o-nakala-curator --batch-modify auto_collection_modifications.csv")
-    print("  💢 5 separate commands + manual script execution!")
-    print()
-    
-    print("🚀 After v2.5.1 (The New Streamlined Way):")
+    print("📋 Streamlined Workflow:")
     print("  1. o-nakala-preview --csv data.csv --enhance --interactive")
     print("  2. o-nakala-upload --csv data_enhanced.csv --api-key KEY")
-    print("  ✨ Just 2 commands! Enhancement built into preview!")
+    print("  ✨ Enhancement built into preview tool!")
     print()
     
     # Demo the enhanced preview (non-interactive for demo)
@@ -89,7 +80,7 @@ def demo_v2_5_1_workflow():
         print("Please ensure you're running from examples/notebooks/")
     
     print()
-    print("💡 Key v2.5.1 Improvements:")
+    print("💡 Key Enhancement Features:")
     print("  🧠 Content-aware enhancement (detects: code, images, documents, data, presentations)")
     print("  🎨 Professional multilingual metadata generation")
     print("  ⚡ Auto-application of high-confidence improvements")
@@ -103,7 +94,7 @@ def demo_v2_5_1_workflow():
     print("  3. Upload with confidence: o-nakala-upload --csv your_data_enhanced.csv")
     print()
     
-    print("✨ v2.5.1 = No More Scattered Scripts! Everything in Preview Tool!")
+    print("✨ Enhancement Features Integrated into Preview Tool!")
 
 if __name__ == "__main__":
-    demo_v2_5_1_workflow()
+    demo_enhanced_workflow()
