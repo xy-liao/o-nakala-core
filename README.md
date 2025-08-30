@@ -1,5 +1,7 @@
 # O-Nakala Core
 
+**🚀 [START HERE](START_HERE.md) for role-based navigation and quick setup**
+
 A Python library and CLI toolkit for NAKALA research data repository workflows, designed for digital humanities and academic research teams.
 
 ## What is NAKALA?
@@ -15,12 +17,14 @@ Managing research data through NAKALA's web interface can be time-consuming for 
 - **Complete Dublin Core support** with multilingual metadata
 - **Automated collection organization** and curation tools
 
-## Who Should Use This Tool?
+## Quick Access by Role
 
-- Digital humanities researchers managing large document collections
-- Academic teams with multi-file research datasets  
-- Institutions migrating historical archives to NAKALA
-- Anyone needing programmatic access to NAKALA's repository features
+- **🎓 New to NAKALA**: [Getting Started Guide](docs/GETTING_STARTED.md) (15 min)
+- **⚡ Need to upload now**: [Quick Upload Commands](docs/CSV_FORMAT_GUIDE.md#quick-start-minimum-viable-csv)
+- **🔧 Setting up workflows**: [Complete Workflow Guide](docs/user-guides/03-workflow-guide.md)
+- **💻 Developer integration**: [API Reference](docs/API_REFERENCE.md)
+- **🏛️ Institutional deployment**: [Institutional Setup](examples/workflow_documentation/institutional-setup.md)
+- **🚨 Having problems**: [Troubleshooting Guide](docs/user-guides/05-troubleshooting.md)
 
 ## Prerequisites
 
@@ -160,15 +164,28 @@ title,creator,description,type,file
 
 The library automatically transforms simple CSV formats into complete NAKALA API metadata structures.
 
-## Documentation & Examples
+## Documentation Structure
 
-For comprehensive guides, examples, and API documentation, visit the [project repository](https://github.com/xy-liao/o-nakala-core):
+Our streamlined documentation provides clear paths for every user type and experience level:
 
-- **Getting Started Guide** - Step-by-step setup and first upload
-- **Workflow Examples** - Complete research data workflows
-- **Interactive Workshop** - Jupyter notebook with hands-on examples
-- **API Reference** - Detailed technical documentation
-- **Sample Datasets** - Ready-to-use example data and configurations
+### 🚀 **Start Here**
+- **[START_HERE.md](START_HERE.md)** - Role-based navigation to find exactly what you need
+- **[Getting Started](docs/GETTING_STARTED.md)** - Installation, setup, and first successful upload
+
+### 📚 **Learning Paths**
+- **[Research Workflow](docs/guides/researcher-workflow-guide.md)** - Complete folder-to-repository process (45 min)
+- **[Complete Workflow](docs/user-guides/03-workflow-guide.md)** - Systematic 6-step process (60 min)
+- **[Feature Showcase](docs/guides/feature-showcase.md)** - Explore all capabilities (30 min)
+
+### 🔧 **Technical Reference**
+- **[API Reference](docs/API_REFERENCE.md)** - Complete API and Python integration guide
+- **[CSV Format Guide](docs/CSV_FORMAT_GUIDE.md)** - Metadata format specifications
+- **[Field Reference](docs/curator-field-reference.md)** - Complete metadata field guide
+
+### 🏭 **Production Deployment**
+- **[Best Practices](examples/workflow_documentation/best-practices.md)** - Production lessons learned
+- **[Institutional Setup](examples/workflow_documentation/institutional-setup.md)** - Multi-user deployment
+- **[Case Studies](examples/workflow_documentation/)** - Real-world implementation examples
 
 ## Environment Setup
 
