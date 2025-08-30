@@ -86,7 +86,7 @@ The system enforces the existence of key navigation files:
 Key documentation files must include navigation breadcrumbs:
 
 ```markdown
-**📍 You are here:** [START_HERE](../START_HERE.md) → [Section] → Current Guide
+**📍 You are here:** [START_HERE](START_HERE.md) → [Section] → Current Guide
 
 **⏱️ Time:** X minutes | **👥 Audience:** Target audience | **📈 Level:** Beginner/Intermediate/Advanced
 ```
@@ -110,12 +110,12 @@ All guides should include consistent footer navigation:
 - [Troubleshooting](link) - Problem solving
 
 ### 🆘 Need Help?
-- **Quick issues**: [Troubleshooting Guide](../user-guides/05-troubleshooting.md)
+- **Quick issues**: [Troubleshooting Guide](docs/user-guides/05-troubleshooting.md)
 - **Community support**: [GitHub Issues](https://github.com/xy-liao/o-nakala-core/issues)
 
 ---
 
-*📍 **You are here:** [START_HERE](../START_HERE.md) → [Section] → Current Guide*
+*📍 **You are here:** [START_HERE](START_HERE.md) → [Section] → Current Guide*
 ```
 
 ### Link Quality Standards
@@ -186,7 +186,7 @@ python3 scripts/maintain-docs.py --report
    ```markdown
    # MOVED: Content Consolidated
    
-   This file has been moved to [New Location](new-location.md).
+   This file has been moved to a new location.
    ```
 
 3. **Run maintenance tools**:

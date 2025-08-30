@@ -29,7 +29,7 @@ Understanding the complete workflow methodology helps researchers and institutio
 For immediate workflow execution, see:
 - [Sample Dataset](../sample_dataset/) - Working example with 15 files
 - [Interactive Notebook](../notebooks/workflow_notebook.ipynb) - Step-by-step tutorial
-- [Getting Started Guide](../../docs/guides/getting-started.md) - First-time setup
+- [Getting Started Guide](../../docs/GETTING_STARTED.md) - First-time setup
 
 ## Workflow Stages
 

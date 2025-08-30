@@ -509,7 +509,7 @@ Ready to dive deeper? Explore these comprehensive guides:
 
 ### For Beginners
 
-- **[Getting Started Guide](getting-started.md)** - Step-by-step first upload (15 min)
+- **[Getting Started Guide](../GETTING_STARTED.md)** - Step-by-step first upload (15 min)
 - **[Researcher Workflow Guide](researcher-workflow-guide.md)** - Complete folder-to-repository process (30 min)
 - **[CSV Field Testing Guide](csv-field-testing.md)** - Comprehensive field validation (20 min)
 

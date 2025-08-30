@@ -615,7 +615,7 @@ id,action,new_title,new_description,new_keywords,new_creator,new_contributor,new
 
 ## 🔗 Related Documentation
 
-- **[CSV Format Specification](./csv-format-specification.md)** - Complete field format rules
+- **[CSV Format Specification](../../CSV_FORMAT_GUIDE.md#curator-csv-format)** - Complete field format rules
 - **[Examples](../../../examples/sample_dataset/)** - Working curator transformation examples
 - **[Curator Code](../../src/o_nakala_core/curator.py)** - Complete transformation implementation
 - **[CSV Field Mappings](../../src/o_nakala_core/curator.py#L89-L369)** - 280+ field mappings

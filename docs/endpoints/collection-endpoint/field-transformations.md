@@ -495,7 +495,7 @@ title,status,description,keywords,creator,contributor,data_items
 
 ## 🔗 Related Documentation
 
-- **[CSV Format Specification](./csv-format-specification.md)** - Complete field format rules
+- **[CSV Format Specification](../../CSV_FORMAT_GUIDE.md#collection-csv-format)** - Complete field format rules
 - **[Examples](../../../examples/sample_dataset/)** - Working transformation examples
 - **[Common Utils Code](../../src/o_nakala_core/common/utils.py)** - Actual transformation functions
 

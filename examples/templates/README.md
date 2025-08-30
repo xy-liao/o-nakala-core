@@ -25,6 +25,6 @@ o-nakala-collection --from-folder-collections your_collection_template.csv
 ## Field Reference
 
 For complete field specifications, see:
-- [Upload CSV Format](../../docs/endpoints/upload-endpoint/csv-format-specification.md)
-- [Collection CSV Format](../../docs/endpoints/collection-endpoint/csv-format-specification.md)
+- [Upload CSV Format](../../docs/CSV_FORMAT_GUIDE.md#upload-csv-format)
+- [Collection CSV Format](../../docs/CSV_FORMAT_GUIDE.md#collection-csv-format)
 - [Field Reference](../../docs/curator-field-reference.md)

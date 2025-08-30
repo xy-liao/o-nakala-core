@@ -192,15 +192,15 @@ Use these URIs in the `type` field:
 - **[Collection Organization](user-guides/02-collection-guide.md)** - Organize your research data
 
 ### 🔧 **Data Managers**  
-- **[Complete Workflow](docs/user-guides/03-workflow-guide.md)** - 6-step systematic process
-- **[Quality Assurance](examples/workflow_documentation/quality-assurance.md)** - Production-level QA
+- **[Complete Workflow](user-guides/03-workflow-guide.md)** - 6-step systematic process
+- **[Quality Assurance](../examples/workflow_documentation/quality-assurance.md)** - Production-level QA
 
 ### 💻 **Developers**
 - **[API Documentation](API_REFERENCE.md)** - Python integration and automation
-- **[Extending Preview Tool](docs/guides/extending-preview-tool.md)** - Customization and extension
+- **[Extending Preview Tool](guides/extending-preview-tool.md)** - Customization and extension
 
 ### 🏛️ **Institutions**
-- **[Institutional Setup](examples/workflow_documentation/institutional-setup.md)** - Multi-user deployment
+- **[Institutional Setup](../examples/workflow_documentation/institutional-setup.md)** - Multi-user deployment
 - **[Case Studies](examples/workflow_documentation/)** - Real-world implementation examples
 
 ## Common Issues and Solutions
@@ -234,7 +234,7 @@ echo $NAKALA_API_KEY
 echo $NAKALA_API_URL
 ```
 
-> **📖 Complete troubleshooting**: [docs/user-guides/05-troubleshooting.md](docs/user-guides/05-troubleshooting.md)
+> **📖 Complete troubleshooting**: [user-guides/05-troubleshooting.md](user-guides/05-troubleshooting.md)
 
 ## Key Concepts to Remember
 
@@ -253,8 +253,8 @@ Use the curator tools to validate metadata completeness and maintain high-qualit
 ## Support Resources
 
 ### Quick Help
-- **Commands not working?** Check [troubleshooting guide](docs/user-guides/05-troubleshooting.md)
-- **CSV issues?** Use the [interactive preview](docs/guides/csv-field-testing.md)
+- **Commands not working?** Check [troubleshooting guide](user-guides/05-troubleshooting.md)
+- **CSV issues?** Use the [interactive preview](guides/csv-field-testing.md)
 - **Need examples?** Browse [sample dataset](examples/sample_dataset/)
 
 ### Community Support
@@ -265,7 +265,7 @@ Use the curator tools to validate metadata completeness and maintain high-qualit
 ### Advanced Resources
 - **API Reference**: [NAKALA API docs](https://api.nakala.fr/doc)
 - **Field Specifications**: [Metadata standards](curator-field-reference.md)
-- **Best Practices**: [Production lessons](examples/workflow_documentation/best-practices.md)
+- **Best Practices**: [Production lessons](../examples/workflow_documentation/best-practices.md)
 
 ---
 

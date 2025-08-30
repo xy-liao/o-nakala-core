@@ -351,7 +351,7 @@ split -l 500 large_file.csv batch_
 
 ### 🔍 Related Resources
 - [Field Reference](curator-field-reference.md) - Complete metadata field guide
-- [Quick Reference](guides/quick-reference.md) - Essential commands
+- [Essential Commands](#essential-commands) - Quick command reference
 - [Troubleshooting](user-guides/05-troubleshooting.md) - CSV-specific issues
 
 ### 🆘 Need Help?

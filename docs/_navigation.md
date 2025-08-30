@@ -40,7 +40,7 @@
 - ✅ X uploads performed without errors
 
 **If you haven't completed the prerequisites:**
-→ Start with [Getting Started Guide](../GETTING_STARTED.md)
+→ Start with [Getting Started Guide](GETTING_STARTED.md)
 
 ## Advanced Topics Covered
 This guide covers complex scenarios that require solid foundational knowledge.
@@ -79,7 +79,7 @@ This guide covers complex scenarios that require solid foundational knowledge.
 - [Examples](link) - Working code and data
 
 ### 🆘 Need Help?
-- **Quick issues**: [Troubleshooting Guide](../user-guides/05-troubleshooting.md)
+- **Quick issues**: [Troubleshooting Guide](user-guides/05-troubleshooting.md)
 - **Community support**: [GitHub Issues](https://github.com/xy-liao/o-nakala-core/issues)
 - **Start over**: [Navigation Guide](../START_HERE.md)
 
@@ -153,10 +153,10 @@ This guide covers complex scenarios that require solid foundational knowledge.
 For API key setup, see the [complete setup guide](../api/api_keys.md).
 
 <!-- For commands explained in detail elsewhere -->  
-The `o-nakala-preview` command ([full reference](../guides/quick-reference.md#preview-commands)) validates your data before upload.
+The `o-nakala-preview` command ([full reference](CSV_FORMAT_GUIDE.md#essential-commands)) validates your data before upload.
 
 <!-- For troubleshooting -->
-If you encounter errors, check the [troubleshooting section](../user-guides/05-troubleshooting.md#upload-errors) for solutions.
+If you encounter errors, check the [troubleshooting section](user-guides/05-troubleshooting.md#upload-errors) for solutions.
 ```
 
 ### Section References
@@ -202,7 +202,7 @@ o-nakala-preview --version
 # Should output: o-nakala-core X.X.X
 \`\`\`
 
-**Issues with installation?** See [installation troubleshooting](../user-guides/05-troubleshooting.md#installation-issues).
+**Issues with installation?** See [installation troubleshooting](user-guides/05-troubleshooting.md#installation-issues).
 ```
 
 ### Example Section
@@ -235,7 +235,7 @@ After successful execution:
 - ✅ Results saved in `results.csv`  
 - ✅ Ready for collection organization
 
-**Don't see expected results?** Check the [troubleshooting guide](../user-guides/05-troubleshooting.md).
+**Don't see expected results?** Check the [troubleshooting guide](user-guides/05-troubleshooting.md).
 ```
 
 This navigation template provides consistent, user-friendly navigation patterns that implement progressive disclosure and help users find their next steps efficiently.
