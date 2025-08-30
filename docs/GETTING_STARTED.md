@@ -183,13 +183,13 @@ Use these URIs in the `type` field:
 - **Software**: `http://purl.org/coar/resource_type/c_5ce6`
 - **Image**: `http://purl.org/coar/resource_type/c_c513`
 
-> **📖 Complete field reference**: [docs/curator-field-reference.md](docs/curator-field-reference.md)
+> **📖 Complete field reference**: [curator-field-reference.md](curator-field-reference.md)
 
 ## Next Steps by Role
 
 ### 🎓 **Research-Focused Users**
-- **[Research Workflow Guide](docs/guides/researcher-workflow-guide.md)** - Complete folder-to-repository process
-- **[Collection Organization](docs/user-guides/02-collection-guide.md)** - Organize your research data
+- **[Research Workflow Guide](guides/researcher-workflow-guide.md)** - Complete folder-to-repository process
+- **[Collection Organization](user-guides/02-collection-guide.md)** - Organize your research data
 
 ### 🔧 **Data Managers**  
 - **[Complete Workflow](docs/user-guides/03-workflow-guide.md)** - 6-step systematic process
@@ -264,7 +264,7 @@ Use the curator tools to validate metadata completeness and maintain high-qualit
 
 ### Advanced Resources
 - **API Reference**: [NAKALA API docs](https://api.nakala.fr/doc)
-- **Field Specifications**: [Metadata standards](docs/curator-field-reference.md)
+- **Field Specifications**: [Metadata standards](curator-field-reference.md)
 - **Best Practices**: [Production lessons](examples/workflow_documentation/best-practices.md)
 
 ---

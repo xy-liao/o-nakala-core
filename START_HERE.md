@@ -1,5 +1,7 @@
 # 🚀 Start Here: O-Nakala Core Navigation Guide
 
+*📍 **You are here:** Main Navigation → START_HERE.md*
+
 **Welcome to O-Nakala Core!** This single page helps you find exactly what you need based on your role and goals.
 
 ## 🎯 Quick Decision Tree
@@ -37,7 +39,7 @@
 *"I have research files and want them preserved in NAKALA"*
 
 #### Path: Research Data → Repository
-1. **[Getting Started](docs/guides/getting-started.md)** (20 min) - Installation and first steps
+1. **[Getting Started](docs/GETTING_STARTED.md)** (20 min) - Installation and first steps
 2. **[Research Workflow Guide](docs/guides/researcher-workflow-guide.md)** (45 min) - Folder-to-repository process
 3. **[Collection Organization](docs/user-guides/02-collection-guide.md)** (15 min) - Organize your data
 4. **[Quality Validation](docs/user-guides/04-curation-guide.md)** (20 min) - Ensure quality
@@ -87,7 +89,7 @@
 - **API Key Setup**: [Get your NAKALA API key](api/api_keys.md)
 - **First Commands**: Preview → Upload → Organize
 
-**→ [Full Getting Started Guide](docs/guides/getting-started.md)**
+**→ [Full Getting Started Guide](docs/GETTING_STARTED.md)**
 
 ### First Upload
 **Get your first files uploaded successfully.**
@@ -111,7 +113,7 @@ o-nakala-collection --from-upload-output results.csv
 o-nakala-upload --csv data.csv --mode folder --base-path ./files --output results.csv --api-key $NAKALA_API_KEY && o-nakala-collection --from-upload-output results.csv
 ```
 
-**→ [Quick Reference](docs/guides/quick-reference.md)**
+**→ [Quick Reference](docs/CSV_FORMAT_GUIDE.md#essential-commands)**
 
 ### Essential Commands
 ```bash
@@ -208,7 +210,7 @@ o-nakala-user-info --api-key $NAKALA_API_KEY --collections-only
 ### Core User Guides
 | Guide | Purpose | Time | Audience |
 |-------|---------|------|----------|
-| [Getting Started](docs/guides/getting-started.md) | First-time setup and basic usage | 20 min | Everyone |
+| [Getting Started](docs/GETTING_STARTED.md) | First-time setup and basic usage | 20 min | Everyone |
 | [Upload Guide](docs/user-guides/01-upload-guide.md) | Single upload operations | 15 min | All users |
 | [Collection Guide](docs/user-guides/02-collection-guide.md) | Data organization | 15 min | All users |
 | [Workflow Guide](docs/user-guides/03-workflow-guide.md) | Complete systematic process | 60 min | Regular users |
@@ -225,9 +227,9 @@ o-nakala-user-info --api-key $NAKALA_API_KEY --collections-only
 ### Technical Reference
 | Resource | Purpose | Audience |
 |----------|---------|----------|
-| [API Documentation](docs/endpoints/README.md) | Complete API reference | Developers |
+| [API Documentation](docs/API_REFERENCE.md) | Complete API reference | Developers |
 | [Field Reference](docs/curator-field-reference.md) | Metadata field guide | Data managers |
-| [Quick Reference](docs/guides/quick-reference.md) | Essential commands | Experienced users |
+| [Quick Reference](docs/CSV_FORMAT_GUIDE.md#essential-commands) | Essential commands | Experienced users |
 
 ### Production Deployment
 | Resource | Purpose | Time | Audience |
@@ -250,7 +252,7 @@ o-nakala-user-info --api-key $NAKALA_API_KEY --collections-only
 ## 🆘 Support Resources
 
 ### Quick Help
-- **Common Commands**: See [Quick Reference](docs/guides/quick-reference.md)
+- **Common Commands**: See [CSV Format Guide](docs/CSV_FORMAT_GUIDE.md#essential-commands)
 - **Error Messages**: Check [Troubleshooting](docs/user-guides/05-troubleshooting.md)
 - **CSV Issues**: Use [Field Testing Guide](docs/guides/csv-field-testing.md)
 
