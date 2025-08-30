@@ -4,7 +4,7 @@
 
 **Clean sample research dataset** containing 14 files across 5 academic categories for testing O-Nakala Core workflows. This directory provides **pure data and configurations only** - all operational scripts have been moved to `../notebooks/` and temporary files removed.
 
-**✨ v2.5.1 Enhancement**: Use with the new enhanced preview tool:
+**Preview your data** before upload using the enhanced preview tool:
 ```bash
 o-nakala-preview --csv folder_data_items.csv --enhance --interactive
 ```
@@ -24,13 +24,10 @@ sample_dataset/
     └── presentations/          # Meeting materials (Markdown)
 ```
 
-### 🗑️ **Cleaned Up (Removed in v2.5.1)**:
-- ~~`upload_results.csv`~~ → Generated during workflow, not part of sample data
-- ~~`collections_output.csv`~~ → Generated during workflow  
-- ~~`quality_report.json`~~ → Generated during workflow
-- ~~`creator_fixes_*.csv`~~ → Generated during workflow
-- ~~`workflow_complete_summary.json`~~ → Generated during workflow
-- ~~All modification scripts~~ → Integrated into preview tool
+### 📝 **Generated Files** (Not Included)
+These files are created during workflow execution:
+- `upload_results.csv`, `collections_output.csv` - Workflow output files
+- `quality_report.json`, `creator_fixes_*.csv` - Analysis results
 
 ## 🗂️ Data Contents
 
