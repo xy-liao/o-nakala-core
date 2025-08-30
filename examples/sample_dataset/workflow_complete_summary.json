@@ -1,6 +1,6 @@
 {
   "workflow_info": {
-    "timestamp": "2025-08-29T20:58:02.639742",
+    "timestamp": "2025-08-30T17:34:49.386899",
     "base_path": "/Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset",
     "api_key_masked": "33170cfe-f...",
     "workflow_version": "1.0.0"
@@ -10,7 +10,7 @@
     "total_datasets": 5,
     "successful_uploads": 5,
     "failed_uploads": 0,
-    "first_dataset_id": "10.34847/nkl.caf59eo8",
+    "first_dataset_id": "10.34847/nkl.2e06r1xj",
     "dataset_types": {}
   },
   "collections_summary": {
@@ -18,7 +18,7 @@
     "total_collections": 3,
     "successful_collections": 3,
     "failed_collections": 0,
-    "first_collection_id": "10.34847/nkl.b72a3h08"
+    "first_collection_id": "10.34847/nkl.e7312nam"
   },
   "quality_summary": {
     "available": true,
@@ -65,17 +65,17 @@
   "execution_timeline": [
     {
       "operation": "Upload",
-      "timestamp": "2025-08-29T20:57:53.317645",
+      "timestamp": "2025-08-30T17:34:39.165022",
       "file": "upload_results.csv"
     },
     {
       "operation": "Collections",
-      "timestamp": "2025-08-29T20:57:54.056617",
+      "timestamp": "2025-08-30T17:34:39.946851",
       "file": "collections_output.csv"
     },
     {
       "operation": "Quality Analysis",
-      "timestamp": "2025-08-29T20:57:57.924415",
+      "timestamp": "2025-08-30T17:34:44.285972",
       "file": "quality_report.json"
     }
   ],

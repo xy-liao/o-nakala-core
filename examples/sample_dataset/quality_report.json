@@ -1,25 +1,91 @@
 {
-  "generated_at": "2025-08-29T20:57:57.916614",
+  "generated_at": "2025-08-30T17:34:44.278680",
   "scope": "all",
   "summary": {
-    "total_collections": 134,
-    "total_datasets": 481,
+    "total_collections": 140,
+    "total_datasets": 491,
     "total_groups": 0,
     "collections_by_status": {
-      "private": 116,
+      "private": 122,
       "public": 18
     },
     "datasets_by_status": {
-      "pending": 232,
+      "pending": 242,
       "published": 249
     }
   },
   "collections_analysis": {
-    "total_items": 134,
+    "total_items": 140,
     "valid_items": 0,
-    "items_with_errors": 134,
+    "items_with_errors": 140,
     "items_with_warnings": 0,
     "validation_details": [
+      {
+        "id": "10.34847/nkl.fc95iw9b",
+        "title": "Collection Multimédia",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.7a4f2sf9",
+        "title": "Collection Documents",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.e7312nam",
+        "title": "Collection Code et Données",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.fdea67es",
+        "title": "Collection Multimédia",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.ca89314r",
+        "title": "Collection Documents",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.ead71bn5",
+        "title": "Collection Code et Données",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
       {
         "id": "10.34847/nkl.afef20fk",
         "title": "Collection Multimédia",
@@ -32,8 +98,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.ecd6h5sv",
-        "title": "Collection Documents",
+        "id": "10.34847/nkl.b72a3h08",
+        "title": "Collection Code et Données",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -43,8 +109,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.b72a3h08",
-        "title": "Collection Code et Données",
+        "id": "10.34847/nkl.ecd6h5sv",
+        "title": "Collection Documents",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -87,8 +153,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.aafeqz45",
-        "title": "Collection Code et Données",
+        "id": "10.34847/nkl.a7b5l5n5",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -109,19 +175,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.a7b5l5n5",
-        "title": "Collection Multimédia",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.4e9668nx",
-        "title": "Collection Multimédia",
+        "id": "10.34847/nkl.aafeqz45",
+        "title": "Collection Code et Données",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -144,6 +199,17 @@
       {
         "id": "10.34847/nkl.fc2ah233",
         "title": "Collection Code et Données",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.4e9668nx",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -186,8 +252,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7bb0ey25",
-        "title": "Collection Code et Données",
+        "id": "10.34847/nkl.275bu86y",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -208,30 +274,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.275bu86y",
-        "title": "Collection Multimédia",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.7fc86tt2",
-        "title": "Collection Multimédia",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.beeb04ya",
-        "title": "Collection Documents",
+        "id": "10.34847/nkl.7bb0ey25",
+        "title": "Collection Code et Données",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -252,8 +296,19 @@
         ]
       },
       {
-        "id": "10.34847/nkl.1eb96srd",
+        "id": "10.34847/nkl.beeb04ya",
         "title": "Collection Documents",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.7fc86tt2",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -265,6 +320,17 @@
       {
         "id": "10.34847/nkl.bdca088d",
         "title": "Collection Multimédia",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.1eb96srd",
+        "title": "Collection Documents",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -296,8 +362,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.1d007dxf",
-        "title": "Département : Savoie (73) (Lait'Ages)",
+        "id": "10.34847/nkl.94fc2vl2",
+        "title": "Département : Vienne (86) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -318,8 +384,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.94fc2vl2",
-        "title": "Département : Vienne (86) (Lait'Ages)",
+        "id": "10.34847/nkl.1d007dxf",
+        "title": "Département : Savoie (73) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -329,8 +395,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0b40we0j",
-        "title": "Département : Sarthe (72) (Lait'Ages)",
+        "id": "10.34847/nkl.0a17716z",
+        "title": "Département : Puy de Dôme (63) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -351,8 +417,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0a17716z",
-        "title": "Département : Puy de Dôme (63) (Lait'Ages)",
+        "id": "10.34847/nkl.0b40we0j",
+        "title": "Département : Sarthe (72) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -384,8 +450,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.92e65481",
-        "title": "Département : Meurthe-et-Moselle (54) (Lait'Ages)",
+        "id": "10.34847/nkl.d9d8a9m9",
+        "title": "Département : Oise (60) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -406,8 +472,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.d9d8a9m9",
-        "title": "Département : Oise (60) (Lait'Ages)",
+        "id": "10.34847/nkl.92e65481",
+        "title": "Département : Meurthe-et-Moselle (54) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -417,8 +483,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.9bcc29p1",
-        "title": "Département : Lozère (48) (Lait'Ages)",
+        "id": "10.34847/nkl.c66co7p3",
+        "title": "Département : Loir-et-Cher (41) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -439,8 +505,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.c66co7p3",
-        "title": "Département : Loir-et-Cher (41) (Lait'Ages)",
+        "id": "10.34847/nkl.9bcc29p1",
+        "title": "Département : Lozère (48) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -472,8 +538,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.e2a4s4nn",
-        "title": "Département : Hautes-Pyrénées (65) (Lait'Ages)",
+        "id": "10.34847/nkl.dfa63s68",
+        "title": "Département : Indre-et-Loire (37) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -494,8 +560,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.dfa63s68",
-        "title": "Département : Indre-et-Loire (37) (Lait'Ages)",
+        "id": "10.34847/nkl.e2a4s4nn",
+        "title": "Département : Hautes-Pyrénées (65) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -527,6 +593,17 @@
         ]
       },
       {
+        "id": "10.34847/nkl.e4c3p69v",
+        "title": "Département : Gard (30) (Lait'Ages)",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
         "id": "10.34847/nkl.696d65bi",
         "title": "Département : Haute-Savoie (74) (Lait'Ages)",
         "errors": [
@@ -549,8 +626,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.e4c3p69v",
-        "title": "Département : Gard (30) (Lait'Ages)",
+        "id": "10.34847/nkl.bb8b52i2",
+        "title": "Département : Drôme (26) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -582,17 +659,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.bb8b52i2",
-        "title": "Département : Drôme (26) (Lait'Ages)",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.edccjkm0",
         "title": "Département : Charente (16) (Lait'Ages)",
         "errors": [
@@ -615,8 +681,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.598a7uf4",
-        "title": "Département : Bouches-du-Rhône (13) (Lait'Ages)",
+        "id": "10.34847/nkl.146dg7kc",
+        "title": "Département : Aube (10) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -637,8 +703,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.146dg7kc",
-        "title": "Département : Aube (10) (Lait'Ages)",
+        "id": "10.34847/nkl.598a7uf4",
+        "title": "Département : Bouches-du-Rhône (13) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -648,8 +714,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0a1d84cm",
-        "title": "Porte-Faisselle (Lait'Âges)",
+        "id": "10.34847/nkl.2c3fv4d4",
+        "title": "Département : Ariège (09) (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -670,8 +736,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2c3fv4d4",
-        "title": "Département : Ariège (09) (Lait'Ages)",
+        "id": "10.34847/nkl.0a1d84cm",
+        "title": "Porte-Faisselle (Lait'Âges)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -813,8 +879,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.4cf4tn5y",
-        "title": "Moule à fromage (Lait'Ages)",
+        "id": "10.34847/nkl.8cd6xtk9",
+        "title": "Objets en céramique (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -835,19 +901,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.8cd6xtk9",
-        "title": "Objets en céramique (Lait'Ages)",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.fcf2h4v8",
-        "title": "Lait'Ages : Histoire, archéologie, ethnologie des produits laitiers",
+        "id": "10.34847/nkl.4cf4tn5y",
+        "title": "Moule à fromage (Lait'Ages)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -868,19 +923,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.316f0t8c",
-        "title": "Collection Multimédia",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.cff84cpy",
-        "title": "Collection Documents",
+        "id": "10.34847/nkl.fcf2h4v8",
+        "title": "Lait'Ages : Histoire, archéologie, ethnologie des produits laitiers",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -901,7 +945,18 @@
         ]
       },
       {
-        "id": "10.34847/nkl.bdcbve9z",
+        "id": "10.34847/nkl.cff84cpy",
+        "title": "Collection Documents",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.316f0t8c",
         "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -914,6 +969,17 @@
       {
         "id": "10.34847/nkl.c1cc2o84",
         "title": "Collection Documents",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.bdcbve9z",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1039,8 +1105,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0a41x133",
-        "title": "Collection Code et Données",
+        "id": "10.34847/nkl.a24c7cwf",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1061,8 +1127,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.a24c7cwf",
-        "title": "Collection Multimédia",
+        "id": "10.34847/nkl.0a41x133",
+        "title": "Collection Code et Données",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1127,8 +1193,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.574ag1ar",
-        "title": "Fouille de Gergovie, campagne de 1947-1949",
+        "id": "10.34847/nkl.bbe24a86",
+        "title": "Fouille de Gergovie, campagne de 1942-1944",
         "errors": [
           "Required field 'creator' is missing or empty",
           "Required field 'description' is missing or empty"
@@ -1139,8 +1205,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.bbe24a86",
-        "title": "Fouille de Gergovie, campagne de 1942-1944",
+        "id": "10.34847/nkl.574ag1ar",
+        "title": "Fouille de Gergovie, campagne de 1947-1949",
         "errors": [
           "Required field 'creator' is missing or empty",
           "Required field 'description' is missing or empty"
@@ -1184,17 +1250,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.ee7aml8s",
-        "title": "Collection Code et Données",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.9e91c560",
         "title": "Collection Documents",
         "errors": [
@@ -1208,6 +1263,17 @@
       {
         "id": "10.34847/nkl.1b632786",
         "title": "Collection Multimédia",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.ee7aml8s",
+        "title": "Collection Code et Données",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1316,8 +1382,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.dc6ddmvg",
-        "title": "Collection Code et Données",
+        "id": "10.34847/nkl.27ff04gr",
+        "title": "Collection Multimédia",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1338,8 +1404,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.27ff04gr",
-        "title": "Collection Multimédia",
+        "id": "10.34847/nkl.dc6ddmvg",
+        "title": "Collection Code et Données",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1523,14 +1589,122 @@
     ]
   },
   "datasets_analysis": {
-    "total_items": 481,
+    "total_items": 491,
     "valid_items": 0,
-    "items_with_errors": 481,
+    "items_with_errors": 491,
     "items_with_warnings": 0,
     "validation_details": [
       {
-        "id": "10.34847/nkl.06982t7k",
+        "id": "10.34847/nkl.da4c54bg",
+        "title": "Données de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.b408g27m",
         "title": "Documents de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.a9183xn3",
+        "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.58cdttno",
+        "title": "Scripts d'analyse",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.2e06r1xj",
+        "title": "Images de test",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.3e83j92h",
+        "title": "Données de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.e7af0826",
+        "title": "Documents de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.ba6e7mxe",
+        "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.5db5sm0z",
+        "title": "Scripts d'analyse",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.6e55b783",
+        "title": "Images de test",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1553,20 +1727,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.eac3179n",
-        "title": "Présentations",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.a460n286",
-        "title": "Scripts d'analyse",
+        "id": "10.34847/nkl.06982t7k",
+        "title": "Documents de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1589,6 +1751,30 @@
         ]
       },
       {
+        "id": "10.34847/nkl.a460n286",
+        "title": "Scripts d'analyse",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.eac3179n",
+        "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
         "id": "10.34847/nkl.e512hpg9",
         "title": "Données de recherche",
         "errors": [
@@ -1601,8 +1787,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.de0d1952",
-        "title": "Présentations",
+        "id": "10.34847/nkl.968c4854",
+        "title": "Documents de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1613,8 +1799,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.968c4854",
-        "title": "Documents de recherche",
+        "id": "10.34847/nkl.de0d1952",
+        "title": "Présentations",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1685,18 +1871,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.f35ft4o5",
-        "title": "Présentations",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.814e8l5h",
         "title": "Documents de recherche",
         "errors": [
@@ -1709,8 +1883,32 @@
         ]
       },
       {
+        "id": "10.34847/nkl.f35ft4o5",
+        "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
         "id": "10.34847/nkl.b895red0",
         "title": "Données de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.a2eehq95",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1745,18 +1943,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.a2eehq95",
-        "title": "Scripts d'analyse",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.9e7bm0lr",
         "title": "Images de test",
         "errors": [
@@ -1781,20 +1967,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.4aeakfrq",
-        "title": "Documents de recherche",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.8008811o",
-        "title": "Présentations",
+        "id": "10.34847/nkl.e7ccg66e",
+        "title": "Images de test",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1817,8 +1991,20 @@
         ]
       },
       {
-        "id": "10.34847/nkl.e7ccg66e",
-        "title": "Images de test",
+        "id": "10.34847/nkl.8008811o",
+        "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.4aeakfrq",
+        "title": "Documents de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1831,18 +2017,6 @@
       {
         "id": "10.34847/nkl.6a9csq7u",
         "title": "Données de recherche",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.ffaa7410",
-        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -1867,6 +2041,18 @@
       {
         "id": "10.34847/nkl.fdd33hoq",
         "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.ffaa7410",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -2881,18 +3067,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.fe513n0t",
-        "title": "Images de test",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.e78f87zz",
         "title": "Scripts d'analyse",
         "errors": [
@@ -2905,8 +3079,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.1758xltw",
-        "title": "Données de recherche",
+        "id": "10.34847/nkl.fe513n0t",
+        "title": "Images de test",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -2919,6 +3093,18 @@
       {
         "id": "10.34847/nkl.bccbb67c",
         "title": "Documents de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.1758xltw",
+        "title": "Données de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3087,20 +3273,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2e93xi4z",
-        "title": "Scripts d'analyse",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.cb726sg6",
-        "title": "Présentations",
+        "id": "10.34847/nkl.0b674xr3",
+        "title": "Données de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3123,8 +3297,20 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0b674xr3",
-        "title": "Données de recherche",
+        "id": "10.34847/nkl.cb726sg6",
+        "title": "Présentations",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.2e93xi4z",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3219,8 +3405,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.e6503658",
-        "title": "Scripts d'analyse",
+        "id": "10.34847/nkl.2dab5mb1",
+        "title": "Documents de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3243,8 +3429,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2dab5mb1",
-        "title": "Documents de recherche",
+        "id": "10.34847/nkl.e6503658",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3322,7 +3508,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.a3c3ck41",
+        "id": "10.34847/nkl.bd2c6v0f",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -3344,18 +3530,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.bd2c6v0f",
-        "title": "[Sans titre]",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.fe6e244l",
+        "id": "10.34847/nkl.a3c3ck41",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -3367,6 +3542,17 @@
       },
       {
         "id": "10.34847/nkl.4636qnu4",
+        "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.fe6e244l",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -3465,6 +3651,17 @@
         ]
       },
       {
+        "id": "10.34847/nkl.715fxf4c",
+        "title": "Coupe Est Ouest dans la pièce n°1",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
         "id": "10.34847/nkl.3ca63mh9",
         "title": "Plan",
         "errors": [
@@ -3473,17 +3670,6 @@
         "warnings": [],
         "suggestions": [
           "Title is very short, consider expanding",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.715fxf4c",
-        "title": "Coupe Est Ouest dans la pièce n°1",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
           "Consider adding keywords for better discoverability"
         ]
       },
@@ -3510,8 +3696,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.c3ce4dmm",
-        "title": "Croquis schématique du chantier et mesure prises en date du 29 juillet et du 8 août",
+        "id": "10.34847/nkl.7b147l79",
+        "title": "Coupe Est-Ouest, sous l'angle [...] du mur de la pièce n°1",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3532,8 +3718,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7b147l79",
-        "title": "Coupe Est-Ouest, sous l'angle [...] du mur de la pièce n°1",
+        "id": "10.34847/nkl.c3ce4dmm",
+        "title": "Croquis schématique du chantier et mesure prises en date du 29 juillet et du 8 août",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3567,8 +3753,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7619bwq6",
-        "title": "Présentations",
+        "id": "10.34847/nkl.2b02486a",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3579,8 +3765,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2b02486a",
-        "title": "Scripts d'analyse",
+        "id": "10.34847/nkl.7619bwq6",
+        "title": "Présentations",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3627,8 +3813,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.13ea6kvq",
-        "title": "Scripts d'analyse",
+        "id": "10.34847/nkl.6a536c3l",
+        "title": "Présentations",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3639,8 +3825,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.6a536c3l",
-        "title": "Présentations",
+        "id": "10.34847/nkl.13ea6kvq",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3724,8 +3910,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.d380nm41",
-        "title": "Présentations",
+        "id": "10.34847/nkl.af3e2zd1",
+        "title": "Données de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3748,8 +3934,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.af3e2zd1",
-        "title": "Données de recherche",
+        "id": "10.34847/nkl.d380nm41",
+        "title": "Présentations",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3796,8 +3982,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.71cde191",
-        "title": "Documents de recherche",
+        "id": "10.34847/nkl.7903gudi",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3820,8 +4006,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7903gudi",
-        "title": "Scripts d'analyse",
+        "id": "10.34847/nkl.71cde191",
+        "title": "Documents de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3844,8 +4030,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.b4dac496",
-        "title": "Présentations",
+        "id": "10.34847/nkl.6da568u0",
+        "title": "Données de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3868,8 +4054,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.6da568u0",
-        "title": "Données de recherche",
+        "id": "10.34847/nkl.b4dac496",
+        "title": "Présentations",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3904,20 +4090,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7c23od4i",
-        "title": "Données de recherche",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Description is brief, consider adding more detail",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.cb588vqi",
-        "title": "Documents de recherche",
+        "id": "10.34847/nkl.86da0air",
+        "title": "Scripts d'analyse",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3940,8 +4114,20 @@
         ]
       },
       {
-        "id": "10.34847/nkl.86da0air",
-        "title": "Scripts d'analyse",
+        "id": "10.34847/nkl.cb588vqi",
+        "title": "Documents de recherche",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Description is brief, consider adding more detail",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.7c23od4i",
+        "title": "Données de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3964,8 +4150,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.51e31jjk",
-        "title": "Présentations",
+        "id": "10.34847/nkl.7a6djm6i",
+        "title": "Données de recherche",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -3988,8 +4174,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7a6djm6i",
-        "title": "Données de recherche",
+        "id": "10.34847/nkl.51e31jjk",
+        "title": "Présentations",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -4673,17 +4859,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.95435v4y",
-        "title": "Chantier sud - 1936",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.4cf7c668",
         "title": "Plateau de Gergovie - Porte centrale sud Congrés de 1936",
         "errors": [
@@ -4695,8 +4870,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.f777te85",
-        "title": "Plateau de Gergovie - Porte centrale sud Les 2 bâtiments imbriqués Vue de l'extérieur (sud)",
+        "id": "10.34847/nkl.95435v4y",
+        "title": "Chantier sud - 1936",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -4708,6 +4883,17 @@
       {
         "id": "10.34847/nkl.721cz1fy",
         "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.f777te85",
+        "title": "Plateau de Gergovie - Porte centrale sud Les 2 bâtiments imbriqués Vue de l'extérieur (sud)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -4739,7 +4925,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.439e8x5x",
+        "id": "10.34847/nkl.c60f3ikz",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -4761,7 +4947,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.c60f3ikz",
+        "id": "10.34847/nkl.439e8x5x",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -4794,6 +4980,17 @@
         ]
       },
       {
+        "id": "10.34847/nkl.82bdp3gu",
+        "title": "Coupe A.B (Planche III)",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
         "id": "10.34847/nkl.7632n9g7",
         "title": "Wall A-D",
         "errors": [
@@ -4802,17 +4999,6 @@
         "warnings": [],
         "suggestions": [
           "Title is very short, consider expanding",
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.82bdp3gu",
-        "title": "Coupe A.B (Planche III)",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
           "Consider adding keywords for better discoverability"
         ]
       },
@@ -4850,7 +5036,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.5681n14f",
+        "id": "10.34847/nkl.b983i07y",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -4872,7 +5058,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.b983i07y",
+        "id": "10.34847/nkl.5681n14f",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -4927,8 +5113,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.c4efn1g4",
-        "title": "Gergovie 1936 Planche III",
+        "id": "10.34847/nkl.9ebeg073",
+        "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -4938,8 +5124,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.9ebeg073",
-        "title": "[Sans titre]",
+        "id": "10.34847/nkl.c4efn1g4",
+        "title": "Gergovie 1936 Planche III",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -4971,17 +5157,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.fda68h39",
-        "title": "[Sans titre]",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.f53b1gy5",
         "title": "[Sans titre]",
         "errors": [
@@ -4993,25 +5168,13 @@
         ]
       },
       {
-        "id": "10.34847/nkl.cf842tbo",
+        "id": "10.34847/nkl.fda68h39",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
         "warnings": [],
         "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.cf38f90o",
-        "title": "Fouilles",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Title is very short, consider expanding",
           "Consider adding keywords for better discoverability"
         ]
       },
@@ -5028,8 +5191,31 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2d9fl19l",
+        "id": "10.34847/nkl.cf38f90o",
+        "title": "Fouilles",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Title is very short, consider expanding",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.cf842tbo",
         "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.dfdbilvg",
+        "title": "Photo n°2. Parcelles 925-926 : mur de soutènement",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5050,8 +5236,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.dfdbilvg",
-        "title": "Photo n°2. Parcelles 925-926 : mur de soutènement",
+        "id": "10.34847/nkl.2d9fl19l",
+        "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5238,17 +5424,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0dc8a48v",
-        "title": "[Sans titre]",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.ac286i74",
         "title": "[Sans titre]",
         "errors": [
@@ -5260,7 +5435,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.e21ca1fl",
+        "id": "10.34847/nkl.0dc8a48v",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -5272,6 +5447,17 @@
       },
       {
         "id": "10.34847/nkl.cca7pllv",
+        "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.e21ca1fl",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -5326,17 +5512,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2f1bk43u",
-        "title": "[Sans titre]",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.21b85d6r",
         "title": "[Sans titre]",
         "errors": [
@@ -5348,8 +5523,19 @@
         ]
       },
       {
-        "id": "10.34847/nkl.92bf472t",
+        "id": "10.34847/nkl.2f1bk43u",
         "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.f69a16zr",
+        "title": "Figure 9. Fouilles de 1944. Pièce n°6. Mur occidendal et mur sous-jacent",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5370,8 +5556,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.f69a16zr",
-        "title": "Figure 9. Fouilles de 1944. Pièce n°6. Mur occidendal et mur sous-jacent",
+        "id": "10.34847/nkl.92bf472t",
+        "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5503,8 +5689,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.6ce1laxh",
-        "title": "[Sans titre]",
+        "id": "10.34847/nkl.9ec06x8q",
+        "title": "Coupe Sud Nord, dans la tranchée extérieure",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5525,8 +5711,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.9ec06x8q",
-        "title": "Coupe Sud Nord, dans la tranchée extérieure",
+        "id": "10.34847/nkl.6ce1laxh",
+        "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5536,7 +5722,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.f0026233",
+        "id": "10.34847/nkl.453dgob4",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -5558,7 +5744,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.453dgob4",
+        "id": "10.34847/nkl.f0026233",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -5591,8 +5777,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.d0df7p54",
-        "title": "Chantier Sud",
+        "id": "10.34847/nkl.6c3aqjv5",
+        "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5613,8 +5799,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.6c3aqjv5",
-        "title": "[Sans titre]",
+        "id": "10.34847/nkl.d0df7p54",
+        "title": "Chantier Sud",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5679,8 +5865,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.7cf6pg49",
-        "title": "[Sans titre]",
+        "id": "10.34847/nkl.f67azr2m",
+        "title": "Plateau de Gergovie - Porte centrale sud Les 2 bâtiments imbriqués Vue de l'Ouest",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5701,8 +5887,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.f67azr2m",
-        "title": "Plateau de Gergovie - Porte centrale sud Les 2 bâtiments imbriqués Vue de l'Ouest",
+        "id": "10.34847/nkl.7cf6pg49",
+        "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5734,8 +5920,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.a10f3s92",
-        "title": "Plateau de Gergovie - Porte centrale sud Congrés de 1936",
+        "id": "10.34847/nkl.fc14m0an",
+        "title": "Plateau de Gergovie - Porte centrale sud Les 2 bâtiments imbriqués Vue de l'extérieur (sud)",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5756,19 +5942,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.fc14m0an",
-        "title": "Plateau de Gergovie - Porte centrale sud Les 2 bâtiments imbriqués Vue de l'extérieur (sud)",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.31cf68z2",
-        "title": "M.H. Fouilles de Gergovie (parcelle 926) - 1936. Planche IV",
+        "id": "10.34847/nkl.a10f3s92",
+        "title": "Plateau de Gergovie - Porte centrale sud Congrés de 1936",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5780,6 +5955,17 @@
       {
         "id": "10.34847/nkl.cb5fj497",
         "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.31cf68z2",
+        "title": "M.H. Fouilles de Gergovie (parcelle 926) - 1936. Planche IV",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -5844,17 +6030,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.31bb2649",
-        "title": "Chantier sud",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.a9d51d2v",
         "title": "Wall A-D",
         "errors": [
@@ -5863,6 +6038,17 @@
         "warnings": [],
         "suggestions": [
           "Title is very short, consider expanding",
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.31bb2649",
+        "title": "Chantier sud",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
           "Consider adding keywords for better discoverability"
         ]
       },
@@ -5911,7 +6097,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.cfde771p",
+        "id": "10.34847/nkl.74eeenyo",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -5922,7 +6108,7 @@
         ]
       },
       {
-        "id": "10.34847/nkl.74eeenyo",
+        "id": "10.34847/nkl.cfde771p",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -5955,17 +6141,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.8b356es1",
-        "title": "[Sans titre]",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.46caigfh",
         "title": "Gergovia - South Gate - Room I",
         "errors": [
@@ -5978,6 +6153,17 @@
       },
       {
         "id": "10.34847/nkl.dc6b1767",
+        "title": "[Sans titre]",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.8b356es1",
         "title": "[Sans titre]",
         "errors": [
           "Required field 'creator' is missing or empty"
@@ -6161,8 +6347,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.dae89629",
-        "title": "AATON - SAV",
+        "id": "10.34847/nkl.03fbh4w2",
+        "title": "AATON - Rue de la Paix",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6183,30 +6369,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.03fbh4w2",
-        "title": "AATON - Rue de la Paix",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.6e9c606g",
-        "title": "AATON - Prototype A-Minima",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.69f43hi3",
-        "title": "AATON - Reportage de John Fauer",
+        "id": "10.34847/nkl.dae89629",
+        "title": "AATON - SAV",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6227,8 +6391,30 @@
         ]
       },
       {
-        "id": "10.34847/nkl.1f95ji2r",
-        "title": "AATON - Pot dans l'atelier de montage mécanique",
+        "id": "10.34847/nkl.69f43hi3",
+        "title": "AATON - Reportage de John Fauer",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.6e9c606g",
+        "title": "AATON - Prototype A-Minima",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.8c422t83",
+        "title": "AATON - Naturalisation de Th. V. Male",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6249,8 +6435,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.8c422t83",
-        "title": "AATON - Naturalisation de Th. V. Male",
+        "id": "10.34847/nkl.1f95ji2r",
+        "title": "AATON - Pot dans l'atelier de montage mécanique",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6304,8 +6490,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2cd1buhx",
-        "title": "AATON - Chambre sourde",
+        "id": "10.34847/nkl.b895160w",
+        "title": "AATON - Bureau d’études électroniques rue Bayard",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6315,8 +6501,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.b895160w",
-        "title": "AATON - Bureau d’études électroniques rue Bayard",
+        "id": "10.34847/nkl.2cd1buhx",
+        "title": "AATON - Chambre sourde",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6425,17 +6611,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.0dba1451",
-        "title": "AATON - Vue des bureaux Aaton",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.6b1aph94",
         "title": "AATON - Visite de Laurent Didier",
         "errors": [
@@ -6447,8 +6622,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.6ef9v430",
-        "title": "AATON - Visite d'Alfred Cros",
+        "id": "10.34847/nkl.0dba1451",
+        "title": "AATON - Vue des bureaux Aaton",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6460,6 +6635,17 @@
       {
         "id": "10.34847/nkl.a0cc50a5",
         "title": "AATON - Visite de Bruno Carrière",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.6ef9v430",
+        "title": "AATON - Visite d'Alfred Cros",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6491,8 +6677,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.86c0ew3r",
-        "title": "AATON - Rue de la Paix",
+        "id": "10.34847/nkl.2f076wwx",
+        "title": "AATON - Reportage de John Fauer",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6513,19 +6699,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2f076wwx",
-        "title": "AATON - Reportage de John Fauer",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
-        "id": "10.34847/nkl.f7363949",
-        "title": "AATON - Pot dans l'atelier de montage mécanique",
+        "id": "10.34847/nkl.86c0ew3r",
+        "title": "AATON - Rue de la Paix",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6537,6 +6712,17 @@
       {
         "id": "10.34847/nkl.45b15b8n",
         "title": "AATON - Prototype A-Minima",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.f7363949",
+        "title": "AATON - Pot dans l'atelier de montage mécanique",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6667,17 +6853,6 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2bd8fmu1",
-        "title": "AATON - Bureau de contrôle final",
-        "errors": [
-          "Required field 'creator' is missing or empty"
-        ],
-        "warnings": [],
-        "suggestions": [
-          "Consider adding keywords for better discoverability"
-        ]
-      },
-      {
         "id": "10.34847/nkl.57ff900y",
         "title": "AATON - Bureau d'études mécaniques",
         "errors": [
@@ -6689,8 +6864,8 @@
         ]
       },
       {
-        "id": "10.34847/nkl.2d8473vs",
-        "title": "AATON - Beauviala à Aaton",
+        "id": "10.34847/nkl.2bd8fmu1",
+        "title": "AATON - Bureau de contrôle final",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -6713,6 +6888,17 @@
       {
         "id": "10.34847/nkl.e8958lph",
         "title": "AATON - Atelier de montage mécanique",
+        "errors": [
+          "Required field 'creator' is missing or empty"
+        ],
+        "warnings": [],
+        "suggestions": [
+          "Consider adding keywords for better discoverability"
+        ]
+      },
+      {
+        "id": "10.34847/nkl.2d8473vs",
+        "title": "AATON - Beauviala à Aaton",
         "errors": [
           "Required field 'creator' is missing or empty"
         ],
@@ -7037,8 +7223,8 @@
   },
   "overall_quality_score": 0.0,
   "recommendations": [
-    "Fix metadata errors in 134 collections",
-    "Fix metadata errors in 481 datasets",
+    "Fix metadata errors in 140 collections",
+    "Fix metadata errors in 491 datasets",
     "Consider improving metadata quality - current score is below 80%",
     "Urgent: Metadata quality is critically low - review and update metadata"
   ]
