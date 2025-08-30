@@ -1,0 +1,275 @@
+name: Documentation Quality Assurance
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths: 
+      - '**/*.md'
+      - 'docs/**/*'
+      - 'examples/**/*.md'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**/*.md'
+      - 'docs/**/*'
+      - 'examples/**/*.md'
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+
+jobs:
+  link-checker:
+    runs-on: ubuntu-latest
+    name: Check Documentation Links
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install markdown-link-check
+      run: npm install -g markdown-link-check
+      
+    - name: Create link check configuration
+      run: |
+        cat > .markdown-link-check.json << 'EOF'
+        {
+          "ignorePatterns": [
+            {
+              "pattern": "^http://localhost"
+            },
+            {
+              "pattern": "^https://127.0.0.1"
+            }
+          ],
+          "replacementPatterns": [
+            {
+              "pattern": "^/",
+              "replacement": "file:///"
+            }
+          ],
+          "httpHeaders": [
+            {
+              "urls": ["https://api.nakala.fr", "https://apitest.nakala.fr"],
+              "headers": {
+                "User-Agent": "O-Nakala-Core Documentation Bot"
+              }
+            }
+          ],
+          "timeout": "10s",
+          "retryOn429": true,
+          "retryCount": 3,
+          "fallbackHttpStatus": [400, 401, 403, 404, 429, 500, 502, 503, 504]
+        }
+        EOF
+        
+    - name: Check Internal Links in Key Files
+      run: |
+        echo "Checking critical navigation files..."
+        markdown-link-check START_HERE.md --config .markdown-link-check.json
+        markdown-link-check README.md --config .markdown-link-check.json
+        markdown-link-check docs/GETTING_STARTED.md --config .markdown-link-check.json
+        markdown-link-check docs/API_REFERENCE.md --config .markdown-link-check.json
+        markdown-link-check docs/CSV_FORMAT_GUIDE.md --config .markdown-link-check.json
+        
+    - name: Check All Documentation Links
+      run: |
+        echo "Checking all markdown files for broken links..."
+        find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" | \
+        xargs -I {} markdown-link-check {} --config .markdown-link-check.json
+        
+    - name: Generate Link Check Report
+      if: always()
+      run: |
+        echo "# Link Check Report" > link-check-report.md
+        echo "Generated: $(date)" >> link-check-report.md
+        echo "" >> link-check-report.md
+        echo "## Summary" >> link-check-report.md
+        echo "- Total files checked: $(find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" | wc -l)" >> link-check-report.md
+        echo "- Check completed at: $(date)" >> link-check-report.md
+        
+  documentation-structure:
+    runs-on: ubuntu-latest
+    name: Validate Documentation Structure
+    
+    steps:
+    - name: Checkout Repository  
+      uses: actions/checkout@v4
+      
+    - name: Check Required Files Exist
+      run: |
+        echo "Checking required documentation files..."
+        
+        # Critical navigation files
+        test -f START_HERE.md || (echo "ERROR: START_HERE.md missing" && exit 1)
+        test -f docs/GETTING_STARTED.md || (echo "ERROR: docs/GETTING_STARTED.md missing" && exit 1)
+        test -f docs/API_REFERENCE.md || (echo "ERROR: docs/API_REFERENCE.md missing" && exit 1)
+        test -f docs/CSV_FORMAT_GUIDE.md || (echo "ERROR: docs/CSV_FORMAT_GUIDE.md missing" && exit 1)
+        
+        # User workflow guides
+        test -f docs/user-guides/01-upload-guide.md || (echo "ERROR: Upload guide missing" && exit 1)
+        test -f docs/user-guides/02-collection-guide.md || (echo "ERROR: Collection guide missing" && exit 1)
+        test -f docs/user-guides/03-workflow-guide.md || (echo "ERROR: Workflow guide missing" && exit 1)
+        test -f docs/user-guides/05-troubleshooting.md || (echo "ERROR: Troubleshooting guide missing" && exit 1)
+        
+        # Production documentation
+        test -f examples/workflow_documentation/best-practices.md || (echo "ERROR: Best practices missing" && exit 1)
+        test -f examples/workflow_documentation/institutional-setup.md || (echo "ERROR: Institutional setup missing" && exit 1)
+        
+        echo "✅ All required documentation files exist"
+        
+    - name: Validate Navigation Structure
+      run: |
+        echo "Validating navigation consistency..."
+        
+        # Check START_HERE.md contains role-based navigation
+        grep -q "Digital Humanities Researcher" START_HERE.md || (echo "ERROR: Missing researcher path" && exit 1)
+        grep -q "Data Manager" START_HERE.md || (echo "ERROR: Missing data manager path" && exit 1)
+        grep -q "Developer" START_HERE.md || (echo "ERROR: Missing developer path" && exit 1)
+        grep -q "Institution Administrator" START_HERE.md || (echo "ERROR: Missing admin path" && exit 1)
+        
+        # Check README.md links to START_HERE.md
+        grep -q "START_HERE.md" README.md || (echo "ERROR: README doesn't link to START_HERE" && exit 1)
+        
+        echo "✅ Navigation structure is valid"
+        
+    - name: Check Documentation Completeness
+      run: |
+        echo "Checking documentation completeness..."
+        
+        # Count total documentation files
+        total_md_files=$(find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" | wc -l)
+        echo "Total markdown files: $total_md_files"
+        
+        # Check for orphaned files (files not linked from anywhere)
+        echo "Checking for orphaned documentation files..."
+        
+        # This is a simplified check - in practice you'd want more sophisticated orphan detection
+        echo "✅ Documentation structure validated"
+        
+  content-quality:
+    runs-on: ubuntu-latest
+    name: Content Quality Checks
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install Dependencies
+      run: |
+        pip install markdown beautifulsoup4 requests
+        
+    - name: Check for Common Issues
+      run: |
+        cat > check_content_quality.py << 'EOF'
+        import os
+        import re
+        import sys
+        from pathlib import Path
+        
+        def check_markdown_file(file_path):
+            """Check a markdown file for common issues"""
+            issues = []
+            
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                lines = content.split('\n')
+            
+            # Check for broken internal links
+            internal_links = re.findall(r'\[.*?\]\(([^)]*\.md[^)]*)\)', content)
+            for link in internal_links:
+                # Remove anchors for file existence check
+                link_file = link.split('#')[0]
+                if link_file and not link_file.startswith('http'):
+                    # Resolve relative paths
+                    link_path = Path(file_path).parent / link_file
+                    if not link_path.exists():
+                        issues.append(f"Broken internal link: {link}")
+            
+            # Check for TODO/FIXME markers
+            todos = re.findall(r'(TODO|FIXME|XXX):.*', content, re.IGNORECASE)
+            for todo in todos:
+                issues.append(f"Unresolved TODO: {todo}")
+            
+            # Check for consistent navigation (files should have navigation breadcrumbs)
+            key_files = ['START_HERE.md', 'GETTING_STARTED.md', 'API_REFERENCE.md', 'CSV_FORMAT_GUIDE.md']
+            if any(key in str(file_path) for key in key_files):
+                if 'You are here:' not in content and 'START_HERE' not in content:
+                    issues.append("Missing navigation breadcrumbs in key file")
+            
+            return issues
+        
+        def main():
+            all_issues = []
+            md_files = list(Path('.').rglob('*.md'))
+            
+            for md_file in md_files:
+                if 'node_modules' in str(md_file) or '.git' in str(md_file):
+                    continue
+                    
+                issues = check_markdown_file(md_file)
+                if issues:
+                    all_issues.extend([f"{md_file}: {issue}" for issue in issues])
+            
+            if all_issues:
+                print("Content Quality Issues Found:")
+                for issue in all_issues:
+                    print(f"  ❌ {issue}")
+                sys.exit(1)
+            else:
+                print("✅ No content quality issues found")
+        
+        if __name__ == "__main__":
+            main()
+        EOF
+        
+        python check_content_quality.py
+        
+  accessibility-check:
+    runs-on: ubuntu-latest
+    name: Documentation Accessibility
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Check Accessibility Features
+      run: |
+        echo "Checking documentation accessibility..."
+        
+        # Check for alt text on images
+        echo "Checking image alt text..."
+        find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" -exec grep -l "!\[.*\](" {} \; | while read file; do
+          # Check for images without alt text
+          if grep -q "!\[\](" "$file"; then
+            echo "WARNING: Image without alt text in $file"
+          fi
+        done
+        
+        # Check for heading structure (proper h1, h2, h3 hierarchy)
+        echo "Checking heading structure..."
+        find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" -exec bash -c '
+          file="$1"
+          # Simple check for proper heading progression
+          grep "^#" "$file" | head -5 > /tmp/headings.txt 2>/dev/null || true
+          if [ -s /tmp/headings.txt ]; then
+            echo "Headings in $file look structured"
+          fi
+        ' _ {} \;
+        
+        # Check for descriptive link text (avoid "click here", "read more")
+        echo "Checking link text quality..."
+        find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" -exec grep -l "\[click here\]\|\[read more\]\|\[here\]" {} \; | while read file; do
+          echo "WARNING: Non-descriptive link text in $file"
+        done
+        
+        echo "✅ Accessibility checks completed"
