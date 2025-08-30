@@ -94,7 +94,7 @@ def demonstrate_coar_extensibility():
     type_entry = next((e for e in result if "type" in e.get("propertyUri", "")), None)
     if type_entry:
         print(f"  ✅ Accepted COAR URI: {type_entry['value']}")
-        print(f"  📝 Note: Works even though not in predefined suggestions")
+        print("  📝 Note: Works even though not in predefined suggestions")
     
     return result
 

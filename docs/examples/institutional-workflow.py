@@ -207,17 +207,17 @@ def main():
     processor.create_custom_csv_template(template_file, "research_study")
     
     # Demo 2: Process with enhanced preview
-    print(f"\n2️⃣ PROCESS CUSTOM CSV WITH ENHANCED PREVIEW") 
+    print("\n2️⃣ PROCESS CUSTOM CSV WITH ENHANCED PREVIEW") 
     results = processor.validate_and_preview_csv(template_file)
     
-    print(f"\n📊 RESULTS SUMMARY:")
+    print("\n📊 RESULTS SUMMARY:")
     print(f"   • Standard validation: {results['validation']['entries_count']} entries")
     print(f"   • Custom fields recognized: {results['custom_processing']['custom_fields_recognized']}")  
     print(f"   • Total metadata generated: {results['custom_processing']['total_metadata_generated']}")
     print(f"   • Unknown field warnings: {len(results['validation'].get('unknown_fields', []))}")
     
     # Demo 3: Show custom field processing  
-    print(f"\n3️⃣ CUSTOM FIELD PROCESSING DETAILS")
+    print("\n3️⃣ CUSTOM FIELD PROCESSING DETAILS")
     for entry in results["custom_processing"]["entries"]:
         custom_fields = entry["custom_fields_processed"]
         if custom_fields:
@@ -225,11 +225,11 @@ def main():
             for field in custom_fields[:3]:  # Show first 3
                 print(f"     • {field}: ✅ Processed with custom mapping")
     
-    print(f"\n💡 NEXT STEPS:")
-    print(f"   • Modify field mapping in get_custom_field_mapping()")
-    print(f"   • Add your institution's property URIs") 
-    print(f"   • Create templates for your research domains")
-    print(f"   • Use with: processor.validate_and_preview_csv('your_file.csv')")
+    print("\n💡 NEXT STEPS:")
+    print("   • Modify field mapping in get_custom_field_mapping()")
+    print("   • Add your institution's property URIs") 
+    print("   • Create templates for your research domains")
+    print("   • Use with: processor.validate_and_preview_csv('your_file.csv')")
     
     # Cleanup demo files
     Path(template_file).unlink(missing_ok=True)

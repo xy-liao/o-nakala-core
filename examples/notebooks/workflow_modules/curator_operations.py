@@ -289,14 +289,14 @@ class CuratorOperations:
         
         if results['dataset_curation']:
             dataset_stats = results['dataset_curation']['stats']
-            print(f"Dataset Curation:")
+            print("Dataset Curation:")
             print(f"  - Modifications Applied: {dataset_stats['total_modifications']}")
             print(f"  - Datasets Modified: {dataset_stats['unique_items']}")
             print(f"  - Execution Time: {dataset_stats['execution_time']:.2f}s")
         
         if results['collection_curation']:
             collection_stats = results['collection_curation']['stats']
-            print(f"Collection Curation:")
+            print("Collection Curation:")
             print(f"  - Modifications Applied: {collection_stats['total_modifications']}")
             print(f"  - Collections Modified: {collection_stats['unique_items']}")
             print(f"  - Execution Time: {collection_stats['execution_time']:.2f}s")
