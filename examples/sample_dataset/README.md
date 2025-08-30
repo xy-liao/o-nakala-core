@@ -1,4 +1,4 @@
-# Sample Dataset - Clean Research Data Repository (v2.5.1)
+# Sample Dataset - Clean Research Data Repository
 
 ## 📋 Overview
 
@@ -9,7 +9,7 @@
 o-nakala-preview --csv folder_data_items.csv --enhance --interactive
 ```
 
-## 📂 Directory Structure (v2.5.1 Clean)
+## 📂 Directory Structure
 
 ```
 sample_dataset/
