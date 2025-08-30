@@ -700,10 +700,10 @@ def create_collection_client(
 
 def main():
     """
-    Main CLI entry point for o-nakala-collection (v2.2.0).
+    Main CLI entry point for o-nakala-collection (v2.5.1).
 
     Examples:
-        # Create collections from upload results (validated v2.2.0):
+        # Create collections from upload results (validated v2.5.1):
         o-nakala-collection --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
             --from-upload-output upload_results.csv \\
             --from-folder-collections folder_collections.csv \\

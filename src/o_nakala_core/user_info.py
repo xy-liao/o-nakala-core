@@ -277,10 +277,10 @@ class NakalaUserInfoClient:
 
 def main():
     """
-    Main entry point for o-nakala-user-info (v2.2.0).
+    Main entry point for o-nakala-user-info (v2.5.1).
 
     Examples:
-        # Get user collections info (validated v2.2.0):
+        # Get user collections info (validated v2.5.1):
         o-nakala-user-info --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
             --collections-only
 

@@ -815,10 +815,10 @@ def create_upload_client(
 
 def main():
     """
-    Main CLI entry point for o-nakala-upload (v2.2.0).
+    Main CLI entry point for o-nakala-upload (v2.5.1).
 
     Examples:
-        # Folder mode (validated v2.2.0):
+        # Folder mode (validated v2.5.1):
         o-nakala-upload --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
             --dataset folder_data_items.csv --mode folder \\
             --folder-config folder_data_items.csv --base-path . \\

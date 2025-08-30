@@ -2720,10 +2720,10 @@ def print_field_reference():
 
 def main():
     """
-    Main entry point for o-nakala-curator (v2.2.0).
+    Main entry point for o-nakala-curator (v2.5.1).
 
     Examples:
-        # Generate quality report (validated v2.2.0):
+        # Generate quality report (validated v2.5.1):
         o-nakala-curator --api-key "33170cfe-f53c-550b-5fb6-4814ce981293" \\
             --quality-report --scope collections
 
