@@ -6,7 +6,7 @@ A Python library and CLI toolkit for NAKALA research data repository workflows, 
 
 ## What is NAKALA?
 
-NAKALA is France's national research data repository platform, designed for long-term preservation and sharing of academic research data. It serves French academic institutions including EFEO, BnF, and universities, providing a trusted environment for digital humanities and academic research data management.
+NAKALA is a French research data repository platform operated by Huma-Num, designed for long-term preservation and sharing of academic research data. It serves French academic institutions including EFEO, BnF, and universities, providing a trusted environment for digital humanities and academic research data management.
 
 ## Why O-Nakala Core?
 
