@@ -304,7 +304,7 @@ Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
                 for item in items:
                     report += f"- {item}\n"
         
-        report += f"\n## 📈 Large Files (>500 lines)\n"
+        report += "\n## 📈 Large Files (>500 lines)\n"
         large_files = [(f, stats['lines']) for f, stats in metrics['file_sizes'].items() 
                       if stats['lines'] > 500]
         large_files.sort(key=lambda x: x[1], reverse=True)

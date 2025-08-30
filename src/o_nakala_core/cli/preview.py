@@ -526,7 +526,7 @@ def preview(
         sys.exit(1)
 
     if not validation_result["readable"]:
-        console.print(f"[red]❌ Cannot read CSV file[/red]")
+        console.print("[red]❌ Cannot read CSV file[/red]")
         for issue in validation_result["issues"]:
             console.print(f"   • {issue}")
         sys.exit(1)
