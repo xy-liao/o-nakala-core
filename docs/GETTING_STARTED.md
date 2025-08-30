@@ -127,10 +127,10 @@ o-nakala-preview --csv your_data.csv --json-output preview.json
 o-nakala-upload --dataset data.csv --api-key $NAKALA_API_KEY
 
 # Folder mode (files in subdirectories)
-o-nakala-upload --dataset data.csv --mode folder --base-path ./files
+o-nakala-upload --dataset data.csv --mode folder --folder-config data.csv --base-path ./files
 
 # With result tracking
-o-nakala-upload --dataset data.csv --output results.csv --api-key $NAKALA_API_KEY
+o-nakala-upload --dataset data.csv --mode csv --output results.csv --api-key $NAKALA_API_KEY
 ```
 
 ### Collection Management

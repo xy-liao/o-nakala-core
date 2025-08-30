@@ -98,7 +98,7 @@ export NAKALA_API_KEY="your-api-key"
 o-nakala-preview --csv your_data.csv --interactive
 
 # Upload datasets from CSV
-o-nakala-upload --csv your_data.csv --mode folder --folder-config your_data.csv --api-key $NAKALA_API_KEY
+o-nakala-upload --csv your_data.csv --mode folder --folder-config your_data.csv --base-path ./ --api-key $NAKALA_API_KEY
 
 # Create collections
 o-nakala-collection --from-folder-collections collections.csv
@@ -140,7 +140,7 @@ o-nakala-upload \
   --dataset folder_data_items.csv \
   --mode folder \
   --folder-config folder_data_items.csv \
-  --base-path ./data \
+  --base-path ./ \
   --output upload_results.csv
 
 # 4. Create collections (optional)
@@ -153,13 +153,28 @@ o-nakala-collection \
 o-nakala-curator --api-key $NAKALA_API_KEY --quality-report
 ```
 
-## CSV Format Example
+## CSV Format Examples
 
+### Basic Research Data
 **folder_data_items.csv**:
 ```csv
 title,creator,description,type,file
 "Research Analysis Scripts","Dupont,Jean","Python scripts for data analysis","http://purl.org/coar/resource_type/c_5ce6","code/analysis.py"
 "Survey Results 2023","Martin,Claire","Raw survey data","http://purl.org/coar/resource_type/c_ddb1","data/survey.csv"
+```
+
+### Digital Humanities Project
+```csv
+title,creator,description,type,keywords,language,file
+"Medieval Manuscript Transcription","Smith,Alice","Transcribed text from 14th century manuscript","http://purl.org/coar/resource_type/c_6501","medieval;manuscript;paleography","la","texts/manuscript_001.txt"
+"Archaeological Site Photos","Jones,Bob","Excavation documentation photos","http://purl.org/coar/resource_type/c_c513","archaeology;excavation;photography","en","images/site_photos/"
+```
+
+### Scientific Research Dataset
+```csv
+title,creator,description,type,temporal,spatial,license,file
+"Climate Data 2020-2024","Lab Team","Temperature and precipitation measurements","http://purl.org/coar/resource_type/c_ddb1","2020/2024","France","CC-BY-4.0","data/climate_measurements.csv"
+"Research Protocol v2.1","Dr. Martin","Updated experimental protocol","http://purl.org/coar/resource_type/c_18cf","2024","Global","CC-BY-SA-4.0","protocols/experiment_v2.1.pdf"
 ```
 
 The library automatically transforms simple CSV formats into complete NAKALA API metadata structures.
@@ -241,8 +256,8 @@ pip show o-nakala-core
 # ❌ This will fail in folder mode:
 o-nakala-upload --csv data.csv --mode folder
 
-# ✅ Include folder-config parameter:
-o-nakala-upload --csv data.csv --mode folder --folder-config data.csv
+# ✅ Include required parameters:
+o-nakala-upload --csv data.csv --mode folder --folder-config data.csv --base-path ./
 ```
 
 **API Authentication Errors**: If you get 401/403 errors:
@@ -283,12 +298,65 @@ export NAKALA_BASE_URL="https://apitest.nakala.fr"
 Required fields: `title`, `type`  
 Recommended fields: `creator`, `description`, `keywords`
 
+### Specific Error Codes and Solutions
+
+**Error: `[VALIDATION_ERROR] Invalid configuration paths`**
+- **Cause**: Missing or incorrect `--base-path` parameter
+- **Solution**: Add `--base-path ./` for current directory or specify correct path
+```bash
+# ✅ Correct usage
+o-nakala-upload --csv data.csv --mode folder --folder-config data.csv --base-path ./
+```
+
+**Error: `401 Unauthorized` or `403 Forbidden`**
+- **Cause**: Invalid API key or insufficient permissions
+- **Solution**: Verify API key and environment URL
+```bash
+# Test connection
+o-nakala-user-info --api-key $NAKALA_API_KEY
+# Check environment variables
+echo $NAKALA_API_KEY && echo $NAKALA_BASE_URL
+```
+
+**Error: `FileNotFoundError` for referenced files**
+- **Cause**: CSV references files that don't exist or are inaccessible
+- **Solution**: Use preview tool to check file paths
+```bash
+o-nakala-preview --csv your_data.csv --validate-only
+```
+
+**Error: `ConnectionTimeout` or `RequestException`**
+- **Cause**: Network connectivity issues or API downtime
+- **Solution**: Check internet connection and try test environment
+```bash
+# Switch to test environment
+export NAKALA_BASE_URL="https://apitest.nakala.fr"
+export NAKALA_API_KEY="33170cfe-f53c-550b-5fb6-4814ce981293"
+```
+
+### Platform Status and Alternatives
+
+**If NAKALA platform is unavailable**:
+- **Use test environment**: `https://apitest.nakala.fr` (often more stable)
+- **Offline development**: Preview and validate CSV files without uploading
+- **Alternative repositories**: Contact your institution for backup options
+- **Working offline**: All validation and preview tools work without internet
+
+**Emergency workflows**:
+```bash
+# Continue development without uploading
+o-nakala-preview --csv your_data.csv --interactive
+
+# Validate complete workflow offline
+o-nakala-upload --dataset your_data.csv --validate-only --mode folder --base-path ./
+```
+
 ### Getting Help
 
 - **Full API Key Guide**: See `api/api_keys.md`
-- **Sample Data**: Check `examples/sample_dataset/` for working examples
+- **Sample Data**: Check `examples/sample_dataset/` for working examples  
 - **Issues**: [GitHub Issues](https://github.com/xy-liao/o-nakala-core/issues)
-- **NAKALA Platform**: [nakala.fr](https://nakala.fr)
+- **NAKALA Platform**: [nakala.fr](https://nakala.fr) (primary) or use test environment as fallback
 
 ## Support
 

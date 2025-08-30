@@ -109,11 +109,30 @@ source .env
 
 ### Getting Help
 
-- **Documentation**: [NAKALA User Guide](https://documentation.huma-num.fr/nakala/)
-- **API Documentation**: [OAI/API Reference](https://documentation.huma-num.fr/nakala-API/)
+- **Documentation**: [NAKALA User Guide](https://documentation.huma-num.fr/nakala/) (fallback: see local docs/ folder)
+- **API Documentation**: [OAI/API Reference](https://documentation.huma-num.fr/nakala-API/) (fallback: test with working examples)
 - **Technical Support**: nakala@huma-num.fr
 - **O-Nakala Core Issues**: [GitHub Issues](https://github.com/xy-liao/o-nakala-core/issues)
 - **Community**: NAKALA user forums and mailing lists
+
+### Offline/Fallback Resources
+
+If external NAKALA platform resources are unavailable:
+
+1. **Account Creation Issues**: 
+   - Contact your institution's digital humanities center
+   - Try alternative academic repositories temporarily
+   - Use test environment for development and learning
+
+2. **API Documentation Unavailable**:
+   - Use O-Nakala Core's built-in help: `o-nakala-upload --help`
+   - Refer to working examples in `examples/sample_dataset/`
+   - Test commands with `--validate-only` flag first
+
+3. **Platform Maintenance**:
+   - Test environment may remain available during production maintenance
+   - Development work can continue using preview tools offline
+   - Documentation and examples are included in this repository
 
 ## API Key Examples by Institution
 

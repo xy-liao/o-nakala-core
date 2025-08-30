@@ -109,8 +109,8 @@ o-nakala-collection --from-upload-output results.csv
 ### Quick Upload
 **For experienced users who need fast upload.**
 ```bash
-# All-in-one command
-o-nakala-upload --csv data.csv --mode folder --base-path ./files --output results.csv --api-key $NAKALA_API_KEY && o-nakala-collection --from-upload-output results.csv
+# All-in-one command  
+o-nakala-upload --csv data.csv --mode folder --folder-config data.csv --base-path ./files --output results.csv --api-key $NAKALA_API_KEY && o-nakala-collection --from-upload-output results.csv
 ```
 
 **→ [Quick Reference](docs/CSV_FORMAT_GUIDE.md#essential-commands)**
@@ -121,7 +121,7 @@ o-nakala-upload --csv data.csv --mode folder --base-path ./files --output result
 o-nakala-preview --csv data.csv --interactive
 
 # Upload files  
-o-nakala-upload --dataset data.csv --mode folder --output results.csv
+o-nakala-upload --dataset data.csv --mode folder --folder-config data.csv --base-path ./ --output results.csv
 
 # Create collections
 o-nakala-collection --from-upload-output results.csv
