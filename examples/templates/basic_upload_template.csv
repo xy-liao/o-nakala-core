@@ -1,0 +1,3 @@
+file,status,type,title,alternative,creator,contributor,date,license,description,keywords,language,temporal,spatial,accessRights,identifier,rights
+your_file.pdf,pending,http://purl.org/coar/resource_type/c_6501,"Your Document Title","Alternative Title","Last,First","","2024-01-01",CC-BY-4.0,"Description of your document","keywords;separated;by;semicolons",en,2024,"Your Location",Open Access,,
+your_data.csv,pending,http://purl.org/coar/resource_type/c_ddb1,"Your Dataset Title","","Last,First","Contributor,Name","2024-01-01",CC0-1.0,"Description of your dataset","data;research;analysis",en,2024,,Open Access,,
