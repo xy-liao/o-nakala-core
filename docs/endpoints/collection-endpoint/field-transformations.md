@@ -503,4 +503,4 @@ title,status,description,keywords,creator,contributor,data_items
 
 **Transformation Version**: 1.0  
 **Code Compatibility**: NAKALA Client v2.0  
-**Last Updated**: 2025-06-09
+**Last Updated**: 2025-08-30
