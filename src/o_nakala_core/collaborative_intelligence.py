@@ -159,7 +159,7 @@ class CommunityAnalyzer:
             logger.error(f"Failed to analyze community patterns: {e}")
             return self._create_minimal_metrics([])
 
-    async def _compute_community_metrics(
+    def _compute_community_metrics(
         self, resources: List[Dict[str, Any]]
     ) -> CommunityMetrics:
         """Compute comprehensive community metrics."""
