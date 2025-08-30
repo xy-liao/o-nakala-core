@@ -626,7 +626,9 @@ class TestActualCSVFiles:
 
     def test_sample_data_items_csv(self, utils):
         """Test processing the actual folder_data_items.csv file."""
-        csv_path = Path("/Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset/folder_data_items.csv")
+        # Use relative path from project root
+        project_root = Path(__file__).parent.parent.parent.parent
+        csv_path = project_root / "examples" / "sample_dataset" / "folder_data_items.csv"
         
         if not csv_path.exists():
             pytest.skip("Sample CSV file not found")
@@ -645,7 +647,9 @@ class TestActualCSVFiles:
 
     def test_sample_collections_csv(self, utils):
         """Test processing the actual folder_collections.csv file."""
-        csv_path = Path("/Users/syl/Documents/GitHub/o-nakala-core/examples/sample_dataset/folder_collections.csv")
+        # Use relative path from project root
+        project_root = Path(__file__).parent.parent.parent.parent
+        csv_path = project_root / "examples" / "sample_dataset" / "folder_collections.csv"
         
         if not csv_path.exists():
             pytest.skip("Sample CSV file not found")
