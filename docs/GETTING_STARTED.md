@@ -6,7 +6,7 @@ This guide covers installation, first upload, and essential concepts. For role-s
 
 ## What is NAKALA?
 
-NAKALA is France's research data repository, providing persistent identifiers, professional metadata standards, and long-term preservation for academic research. O-Nakala Core makes NAKALA accessible through simple command-line tools and Python integration.
+NAKALA is a French research data repository operated by Huma-Num, providing persistent identifiers, professional metadata standards, and long-term preservation for academic research. O-Nakala Core makes NAKALA accessible through simple command-line tools and Python integration.
 
 ## Prerequisites (5 minutes)
 
