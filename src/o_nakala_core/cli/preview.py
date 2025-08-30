@@ -500,7 +500,7 @@ def preview(
     - Providing suggestions and templates
     - Offering interactive assistance
 
-    NEW in v2.5.1: Use --enhance to automatically improve metadata quality!
+    Use --enhance to automatically improve metadata quality!
     """
 
     console.print(
