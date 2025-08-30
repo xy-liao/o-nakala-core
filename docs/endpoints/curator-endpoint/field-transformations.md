@@ -625,4 +625,4 @@ id,action,new_title,new_description,new_keywords,new_creator,new_contributor,new
 **Transformation Version**: 1.0  
 **Code Compatibility**: NAKALA Curator v2.0  
 **Field Mappings**: 280+ supported transformations  
-**Last Updated**: 2025-06-09
+**Last Updated**: 2025-08-30

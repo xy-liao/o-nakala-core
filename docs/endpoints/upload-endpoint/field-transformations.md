@@ -504,6 +504,6 @@ title,description,creator,keywords,type,license
 
 ---
 
-**Last validated**: 2025-06-08 ✅  
+**Last validated**: 2025-08-30 ✅  
 **Transformation accuracy**: 100% verified against real API ✅  
 **Code references**: Current codebase verified ✅
