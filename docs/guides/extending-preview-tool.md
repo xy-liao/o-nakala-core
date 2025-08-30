@@ -43,7 +43,7 @@ The preview tool has three main extension points:
 - ✅ **Validates CSV structure** and field values
 - ✅ **Generates NAKALA JSON** preview with exact API payload format
 - ✅ **Supports multilingual metadata** (`fr:|en:` format)
-- ✅ **Pattern-based enhancement suggestions** (v2.5.1 feature)
+- ✅ **Pattern-based enhancement suggestions**
 - ✅ **Interactive assistance mode** with COAR suggestions
 - ✅ **Extensible field mapping** system
 
@@ -54,7 +54,7 @@ The preview tool has three main extension points:
 ### Required Installation
 
 ```bash
-# Install O-Nakala Core v2.5.1+
+# Install O-Nakala Core
 pip install o-nakala-core>=2.5.1
 
 # Verify installation
