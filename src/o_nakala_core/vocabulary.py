@@ -7,7 +7,6 @@ Part of the Complete Metadata Management System - Foundation Phase.
 
 import logging
 import json
-import asyncio
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from pathlib import Path
@@ -130,7 +129,7 @@ class NakalaVocabularyService:
         self.vocabularies: Dict[str, List[VocabularyEntry]] = {}
         self.field_schemas: Dict[str, FieldSchema] = {}
 
-    async def discover_vocabularies(
+    def discover_vocabularies(
         self, force_refresh: bool = False
     ) -> Dict[str, List[VocabularyEntry]]:
         """Discover all available vocabularies from NAKALA API."""
@@ -162,7 +161,7 @@ class NakalaVocabularyService:
 
             # Fetch from API
             try:
-                vocab_data = await self._fetch_vocabulary(endpoint)
+                vocab_data = self._fetch_vocabulary(endpoint)
                 vocabulary_entries = self._parse_vocabulary_response(
                     vocab_data, vocab_name
                 )
@@ -191,18 +190,13 @@ class NakalaVocabularyService:
         self.vocabularies = discovered_vocabularies
         return discovered_vocabularies
 
-    async def _fetch_vocabulary(self, endpoint: str) -> Dict[str, Any]:
+    def _fetch_vocabulary(self, endpoint: str) -> Dict[str, Any]:
         """Fetch vocabulary data from NAKALA API."""
         url = f"{self.config.api_url}{endpoint}"
         headers = {"X-API-KEY": self.config.api_key}
 
         try:
-            # Use asyncio to run the blocking request in a thread pool
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(
-                None,
-                lambda: requests.get(url, headers=headers, timeout=self.config.timeout),
-            )
+            response = requests.get(url, headers=headers, timeout=self.config.timeout)
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
@@ -465,7 +459,7 @@ def create_vocabulary_service(
 
 
 # Async helper for running sync code
-async def discover_nakala_vocabularies(
+def discover_nakala_vocabularies(
     api_url: str = "https://apitest.nakala.fr",
     api_key: str = None,
     force_refresh: bool = False,
@@ -473,4 +467,4 @@ async def discover_nakala_vocabularies(
     """Convenience function to discover vocabularies."""
     config = NakalaConfig(api_url=api_url, api_key=api_key)
     service = create_vocabulary_service(config)
-    return await service.discover_vocabularies(force_refresh=force_refresh)
+    return service.discover_vocabularies(force_refresh=force_refresh)
