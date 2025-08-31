@@ -674,7 +674,7 @@ class NakalaCuratorClient:
         )
         return [s.value for s in suggestions]
 
-    async def get_field_schema(self, property_uri: str) -> Optional[Dict[str, Any]]:
+    def get_field_schema(self, property_uri: str) -> Optional[Dict[str, Any]]:
         """Get schema information for a metadata field."""
         if not self.validator.schema_generator:
             return None

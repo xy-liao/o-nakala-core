@@ -124,7 +124,7 @@ class CommunityAnalyzer:
         except Exception as e:
             logger.warning(f"Failed to save community data: {e}")
 
-    async def analyze_community_patterns(self) -> CommunityMetrics:
+    def analyze_community_patterns(self) -> CommunityMetrics:
         """Analyze repository-wide patterns and community behavior."""
         logger.info("Analyzing community metadata patterns...")
 
@@ -144,7 +144,7 @@ class CommunityAnalyzer:
                 return self._create_minimal_metrics(all_resources)
 
             # Analyze patterns
-            metrics = await self._compute_community_metrics(all_resources)
+            metrics = self._compute_community_metrics(all_resources)
 
             # Update community patterns
             self._update_community_patterns(all_resources, metrics)
@@ -729,7 +729,7 @@ class CollaborativeIntelligenceEngine:
         # Collaborative insights storage
         self.insights_cache: Dict[str, CollaborativeInsight] = {}
 
-    async def analyze_and_learn(self) -> Dict[str, Any]:
+    def analyze_and_learn(self) -> Dict[str, Any]:
         """Perform comprehensive collaborative analysis and learning."""
         results = {
             "community_metrics": None,
@@ -745,7 +745,7 @@ class CollaborativeIntelligenceEngine:
             # Analyze community patterns
             logger.info("Starting collaborative intelligence analysis...")
             community_metrics = (
-                await self.community_analyzer.analyze_community_patterns()
+                self.community_analyzer.analyze_community_patterns()
             )
             results["community_metrics"] = asdict(community_metrics)
 
@@ -825,7 +825,7 @@ class CollaborativeIntelligenceEngine:
                 return meta.get("value", "")
         return ""
 
-    async def get_intelligent_suggestions(
+    def get_intelligent_suggestions(
         self, context: Dict[str, Any]
     ) -> List[PredictionResult]:
         """Get intelligent suggestions combining ML and collaborative intelligence."""

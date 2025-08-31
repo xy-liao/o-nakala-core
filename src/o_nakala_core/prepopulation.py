@@ -70,7 +70,7 @@ class UserContextService:
         self.user_client = user_client
         self.utils = NakalaCommonUtils()
 
-    async def build_user_context(self, api_key: str) -> UserContext:
+    def build_user_context(self, api_key: str) -> UserContext:
         """Build comprehensive user context from available data."""
         logger.info("Building user context for pre-population")
 
@@ -86,10 +86,10 @@ class UserContextService:
 
             # Analyze user's existing data for patterns
             if user_profile.get("datasets"):
-                await self._analyze_datasets(context, user_profile["datasets"])
+                self._analyze_datasets(context, user_profile["datasets"])
 
             if user_profile.get("collections"):
-                await self._analyze_collections(context, user_profile["collections"])
+                self._analyze_collections(context, user_profile["collections"])
 
             # Extract domain expertise from keywords and titles
             context.domain_expertise = self._extract_domain_expertise(user_profile)
@@ -154,7 +154,7 @@ class UserContextService:
 
         return "en"
 
-    async def _analyze_datasets(
+    def _analyze_datasets(
         self, context: UserContext, datasets: List[Dict[str, Any]]
     ):
         """Analyze user's datasets for patterns."""
@@ -198,7 +198,7 @@ class UserContextService:
             context.frequent_collaborators, 10
         )
 
-    async def _analyze_collections(
+    def _analyze_collections(
         self, context: UserContext, collections: List[Dict[str, Any]]
     ):
         """Analyze user's collections for organizational patterns."""
@@ -339,7 +339,7 @@ class FileMetadataExtractor:
     def __init__(self):
         self.utils = NakalaCommonUtils()
 
-    async def extract_file_metadata(self, file_path: str) -> Dict[str, Any]:
+    def extract_file_metadata(self, file_path: str) -> Dict[str, Any]:
         """Extract metadata from a file."""
         file_path = Path(file_path)
 
@@ -375,7 +375,7 @@ class FileMetadataExtractor:
 
             # Extract technical metadata based on file type
             if metadata["mime_type"]:
-                metadata["technical_metadata"] = await self._extract_technical_metadata(
+                metadata["technical_metadata"] = self._extract_technical_metadata(
                     file_path, metadata["mime_type"]
                 )
 
@@ -501,7 +501,7 @@ class FileMetadataExtractor:
 
         return keywords[:5]  # Limit to 5 keywords
 
-    async def _extract_technical_metadata(
+    def _extract_technical_metadata(
         self, file_path: Path, mime_type: str
     ) -> Dict[str, Any]:
         """Extract technical metadata based on file type."""
