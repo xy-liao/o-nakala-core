@@ -540,7 +540,7 @@ class PrePopulationAssistant:
         self.file_extractor = FileMetadataExtractor()
         self.utils = NakalaCommonUtils()
 
-    async def pre_populate_template(
+    def pre_populate_template(
         self,
         template: MetadataTemplate,
         api_key: str,
@@ -553,12 +553,12 @@ class PrePopulationAssistant:
         logger.info(f"Pre-populating template: {template.name}")
 
         # Build user context
-        user_context = await self.context_service.build_user_context(api_key)
+        user_context = self.context_service.build_user_context(api_key)
 
         # Extract file metadata if file provided
         file_metadata = {}
         if file_path:
-            file_metadata = await self.file_extractor.extract_file_metadata(file_path)
+            file_metadata = self.file_extractor.extract_file_metadata(file_path)
 
         # Combine contexts
         combined_context = {
@@ -574,7 +574,7 @@ class PrePopulationAssistant:
         analysis_notes = []
 
         for field in template.fields:
-            field_result = await self._populate_field(field, combined_context)
+            field_result = self._populate_field(field, combined_context)
 
             if field_result["value"] is not None:
                 populated_fields[field.name] = field_result["value"]
@@ -602,7 +602,7 @@ class PrePopulationAssistant:
         )
         return result
 
-    async def _populate_field(
+    def _populate_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate a single field based on context."""
@@ -612,31 +612,31 @@ class PrePopulationAssistant:
 
         # Field-specific population logic
         if field.name == "title":
-            result.update(await self._populate_title_field(field, context))
+            result.update(self._populate_title_field(field, context))
         elif field.name == "description":
-            result.update(await self._populate_description_field(field, context))
+            result.update(self._populate_description_field(field, context))
         elif field.name == "creator":
-            result.update(await self._populate_creator_field(field, context))
+            result.update(self._populate_creator_field(field, context))
         elif field.name == "date":
-            result.update(await self._populate_date_field(field, context))
+            result.update(self._populate_date_field(field, context))
         elif field.name == "language":
-            result.update(await self._populate_language_field(field, context))
+            result.update(self._populate_language_field(field, context))
         elif field.name == "keywords":
-            result.update(await self._populate_keywords_field(field, context))
+            result.update(self._populate_keywords_field(field, context))
         elif field.name == "license":
-            result.update(await self._populate_license_field(field, context))
+            result.update(self._populate_license_field(field, context))
         elif field.name == "type":
-            result.update(await self._populate_type_field(field, context))
+            result.update(self._populate_type_field(field, context))
         elif field.name == "contributor":
-            result.update(await self._populate_contributor_field(field, context))
+            result.update(self._populate_contributor_field(field, context))
         elif field.name == "spatial":
-            result.update(await self._populate_spatial_field(field, context))
+            result.update(self._populate_spatial_field(field, context))
         elif field.name == "temporal":
-            result.update(await self._populate_temporal_field(field, context))
+            result.update(self._populate_temporal_field(field, context))
 
         return result
 
-    async def _populate_title_field(
+    def _populate_title_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate title field."""
@@ -652,7 +652,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_description_field(
+    def _populate_description_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate description field."""
@@ -668,7 +668,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_creator_field(
+    def _populate_creator_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate creator field."""
@@ -684,7 +684,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_date_field(
+    def _populate_date_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate date field."""
@@ -696,7 +696,7 @@ class PrePopulationAssistant:
             "notes": ["Date populated with current date"],
         }
 
-    async def _populate_language_field(
+    def _populate_language_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate language field."""
@@ -710,7 +710,7 @@ class PrePopulationAssistant:
             "notes": ["Language populated from user preferences"],
         }
 
-    async def _populate_keywords_field(
+    def _populate_keywords_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate keywords field."""
@@ -743,7 +743,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_license_field(
+    def _populate_license_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate license field."""
@@ -765,7 +765,7 @@ class PrePopulationAssistant:
             "notes": ["Default license suggested"],
         }
 
-    async def _populate_type_field(
+    def _populate_type_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate type field."""
@@ -781,7 +781,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_contributor_field(
+    def _populate_contributor_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate contributor field."""
@@ -802,7 +802,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_spatial_field(
+    def _populate_spatial_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate spatial field."""
@@ -818,7 +818,7 @@ class PrePopulationAssistant:
 
         return {"value": None, "confidence": 0.0, "suggestions": [], "notes": []}
 
-    async def _populate_temporal_field(
+    def _populate_temporal_field(
         self, field: TemplateField, context: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Populate temporal field."""
