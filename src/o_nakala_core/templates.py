@@ -103,7 +103,7 @@ class TemplateGenerator:
             "status": (1, "technical"),
         }
 
-    async def generate_template(
+    def generate_template(
         self,
         resource_type: str,
         template_name: str = None,
@@ -137,7 +137,7 @@ class TemplateGenerator:
         # Generate template fields
         template_fields = []
         for field_name in all_fields:
-            field = await self._generate_template_field(
+            field = self._generate_template_field(
                 field_name, resource_type, user_context
             )
             if field:
@@ -212,7 +212,7 @@ class TemplateGenerator:
 
         return recommended
 
-    async def _generate_template_field(
+    def _generate_template_field(
         self, field_name: str, resource_type: str, user_context: Dict[str, Any] = None
     ) -> Optional[TemplateField]:
         """Generate a template field with all metadata."""
@@ -239,7 +239,7 @@ class TemplateGenerator:
         controlled_vocab = self._get_controlled_vocabulary(field_name)
 
         # Generate examples
-        examples = await self._generate_examples(
+        examples = self._generate_examples(
             field_name, controlled_vocab, user_context
         )
 
@@ -321,7 +321,7 @@ class TemplateGenerator:
 
         return vocab_mappings.get(field_name)
 
-    async def _generate_examples(
+    def _generate_examples(
         self,
         field_name: str,
         controlled_vocab: Optional[str],
@@ -513,7 +513,7 @@ def create_template_generator(
 
 
 # Convenience function for quick template generation
-async def generate_quick_template(
+def generate_quick_template(
     resource_type: str,
     api_url: str = "https://apitest.nakala.fr",
     api_key: str = None,
@@ -527,4 +527,4 @@ async def generate_quick_template(
     vocab_service = create_vocabulary_service(config)
     generator = create_template_generator(vocab_service)
 
-    return await generator.generate_template(resource_type, user_context=user_context)
+    return generator.generate_template(resource_type, user_context=user_context)

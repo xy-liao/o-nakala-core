@@ -393,7 +393,7 @@ class RelationshipDiscoveryService:
         self.similarity_analyzer = ContentSimilarityAnalyzer()
         self.relationship_classifier = RelationshipTypeClassifier()
 
-    async def discover_relationships(
+    def discover_relationships(
         self,
         source_metadata: Dict[str, Any],
         source_id: str = None,
@@ -442,7 +442,7 @@ class RelationshipDiscoveryService:
                 target_metadata = self._extract_resource_metadata(resource)
 
                 # Calculate overall similarity
-                similarity = await self._calculate_resource_similarity(
+                similarity = self._calculate_resource_similarity(
                     source_metadata, target_metadata
                 )
                 similarity_matrix[target_id] = similarity
@@ -491,7 +491,7 @@ class RelationshipDiscoveryService:
             similarity_matrix=similarity_matrix,
         )
 
-    async def _calculate_resource_similarity(
+    def _calculate_resource_similarity(
         self, source_metadata: Dict[str, Any], target_metadata: Dict[str, Any]
     ) -> float:
         """Calculate overall similarity between two resources."""

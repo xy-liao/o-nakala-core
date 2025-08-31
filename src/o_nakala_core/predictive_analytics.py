@@ -733,7 +733,7 @@ class PredictiveAnalyticsEngine:
         self.default_timeframes = ["1_week", "1_month", "3_months", "1_year"]
         self.min_data_points = 5
 
-    async def generate_predictive_analysis(
+    def generate_predictive_analysis(
         self,
         custom_timeframes: List[str] = None,
         include_quality: bool = True,
@@ -749,7 +749,7 @@ class PredictiveAnalyticsEngine:
 
         try:
             # Gather historical data
-            historical_data = await self._gather_historical_data()
+            historical_data = self._gather_historical_data()
 
             # Initialize result
             quality_predictions = []
@@ -822,7 +822,7 @@ class PredictiveAnalyticsEngine:
             logger.error(f"Predictive analysis failed: {e}")
             raise
 
-    async def _gather_historical_data(
+    def _gather_historical_data(
         self,
     ) -> Dict[str, Dict[str, List[Tuple[datetime, float]]]]:
         """Gather historical data for analysis."""

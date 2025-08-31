@@ -650,7 +650,7 @@ class NakalaCuratorClient:
             # In a real implementation, this would run asynchronously
             # For now, we'll note that vocabularies will be loaded on first use
 
-    async def get_field_suggestions(
+    def get_field_suggestions(
         self, field_name: str, partial_value: str, limit: int = 5
     ) -> List[str]:
         """Get vocabulary suggestions for a field."""
@@ -704,7 +704,7 @@ class NakalaCuratorClient:
             logger.warning(f"Failed to generate schema for {property_uri}: {e}")
             return None
 
-    async def generate_metadata_template(
+    def generate_metadata_template(
         self,
         resource_type: str,
         template_name: str = None,
@@ -742,7 +742,7 @@ class NakalaCuratorClient:
             except Exception as e:
                 logger.debug(f"Could not get user profile for template context: {e}")
 
-            template = await self.template_generator.generate_template(
+            template = self.template_generator.generate_template(
                 resource_type=resource_type,
                 template_name=template_name,
                 user_context=user_context,
@@ -875,7 +875,7 @@ class NakalaCuratorClient:
 
         return "\n".join(doc)
 
-    async def generate_autonomous_metadata(
+    def generate_autonomous_metadata(
         self,
         file_path: str,
         resource_type: str = None,
@@ -918,7 +918,7 @@ class NakalaCuratorClient:
                     f"Could not get user profile for autonomous generation: {e}"
                 )
 
-            result = await self.autonomous_generator.generate_autonomous_metadata(
+            result = self.autonomous_generator.generate_autonomous_metadata(
                 file_path=file_path,
                 resource_type=resource_type,
                 target_template=target_template,
@@ -1089,7 +1089,7 @@ class NakalaCuratorClient:
 
         return "\n".join(doc)
 
-    async def generate_predictive_analysis_report(
+    def generate_predictive_analysis_report(
         self,
         custom_timeframes: List[str] = None,
         include_quality: bool = True,
@@ -1107,7 +1107,7 @@ class NakalaCuratorClient:
         try:
             logger.info("Generating predictive analysis report...")
 
-            result = await self.predictive_analytics.generate_predictive_analysis(
+            result = self.predictive_analytics.generate_predictive_analysis(
                 custom_timeframes=custom_timeframes,
                 include_quality=include_quality,
                 include_completeness=include_completeness,
@@ -1225,7 +1225,7 @@ class NakalaCuratorClient:
 
         return "\n".join(doc)
 
-    async def discover_relationships_for_metadata(
+    def discover_relationships_for_metadata(
         self,
         metadata: Dict[str, Any],
         resource_id: str = None,
@@ -1239,7 +1239,7 @@ class NakalaCuratorClient:
             return None
 
         try:
-            analysis = await self.relationship_service.discover_relationships(
+            analysis = self.relationship_service.discover_relationships(
                 source_metadata=metadata,
                 source_id=resource_id,
                 max_suggestions=max_suggestions,
@@ -1255,7 +1255,7 @@ class NakalaCuratorClient:
             logger.error(f"Failed to discover relationships: {e}")
             return None
 
-    async def generate_automated_template(
+    def generate_automated_template(
         self,
         resource_type: str,
         file_path: str = None,
@@ -1280,7 +1280,7 @@ class NakalaCuratorClient:
             )
 
             # Generate base template
-            template = await self.generate_metadata_template(
+            template = self.generate_metadata_template(
                 resource_type=resource_type,
                 template_name=template_name,
                 include_optional=include_optional,
@@ -1291,7 +1291,7 @@ class NakalaCuratorClient:
                 return None
 
             # Pre-populate the template
-            prepop_result = await self.prepopulation_assistant.pre_populate_template(
+            prepop_result = self.prepopulation_assistant.pre_populate_template(
                 template=template,
                 api_key=self.config.api_key,
                 file_path=file_path,
@@ -1303,7 +1303,7 @@ class NakalaCuratorClient:
             if include_relationships and prepop_result.populated_fields:
                 try:
                     relationship_analysis = (
-                        await self.discover_relationships_for_metadata(
+                        self.discover_relationships_for_metadata(
                             metadata=prepop_result.populated_fields, max_suggestions=5
                         )
                     )

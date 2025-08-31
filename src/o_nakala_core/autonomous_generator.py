@@ -757,7 +757,7 @@ class AutonomousMetadataEngine:
         self.enable_ml_enhancement = True
         self.enable_collaborative_insights = True
 
-    async def generate_autonomous_metadata(
+    def generate_autonomous_metadata(
         self,
         file_path: str,
         resource_type: str = None,
@@ -808,7 +808,7 @@ class AutonomousMetadataEngine:
             if self.enable_collaborative_insights:
                 try:
                     analysis_results = (
-                        await self.collaborative_engine.analyze_and_learn()
+                        self.collaborative_engine.analyze_and_learn()
                     )
                     if analysis_results.get("collaborative_insights"):
                         collaborative_insights = analysis_results[
