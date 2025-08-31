@@ -639,9 +639,7 @@ class NakalaCuratorClient:
             self.relationship_service = None
             self.autonomous_generator = None
             self.predictive_analytics = None
-            logger.warning(
-                "Analysis services unavailable without vocabulary service"
-            )
+            logger.warning("Analysis services unavailable without vocabulary service")
 
     def _initialize_vocabulary_discovery(self):
         """Initialize vocabulary discovery in the background."""
@@ -1269,9 +1267,7 @@ class NakalaCuratorClient:
         """Generate an automated template with pre-populated values and
         relationship suggestions."""
         if not self.template_generator or not self.prepopulation_assistant:
-            logger.warning(
-                "Template generation unavailable without vocabulary service"
-            )
+            logger.warning("Template generation unavailable without vocabulary service")
             return None
 
         try:
@@ -1302,10 +1298,8 @@ class NakalaCuratorClient:
             relationship_analysis = None
             if include_relationships and prepop_result.populated_fields:
                 try:
-                    relationship_analysis = (
-                        self.discover_relationships_for_metadata(
-                            metadata=prepop_result.populated_fields, max_suggestions=5
-                        )
+                    relationship_analysis = self.discover_relationships_for_metadata(
+                        metadata=prepop_result.populated_fields, max_suggestions=5
                     )
 
                     # Enhance pre-population with relationship suggestions
@@ -1425,9 +1419,7 @@ class NakalaCuratorClient:
 
                     writer.writerow(example_row)
 
-            logger.info(
-                f"Template exported as {mode} CSV to: {output_path}"
-            )
+            logger.info(f"Template exported as {mode} CSV to: {output_path}")
 
         except Exception as e:
             logger.error(f"Failed to export automated template to CSV: {e}")

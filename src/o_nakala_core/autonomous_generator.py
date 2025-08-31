@@ -807,9 +807,7 @@ class AutonomousMetadataEngine:
             collaborative_insights = []
             if self.enable_collaborative_insights:
                 try:
-                    analysis_results = (
-                        self.collaborative_engine.analyze_and_learn()
-                    )
+                    analysis_results = self.collaborative_engine.analyze_and_learn()
                     if analysis_results.get("collaborative_insights"):
                         collaborative_insights = analysis_results[
                             "collaborative_insights"

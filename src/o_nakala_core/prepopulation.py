@@ -154,9 +154,7 @@ class UserContextService:
 
         return "en"
 
-    def _analyze_datasets(
-        self, context: UserContext, datasets: List[Dict[str, Any]]
-    ):
+    def _analyze_datasets(self, context: UserContext, datasets: List[Dict[str, Any]]):
         """Analyze user's datasets for patterns."""
         for dataset in datasets[-10:]:  # Analyze last 10 datasets
             metas = dataset.get("metas", [])

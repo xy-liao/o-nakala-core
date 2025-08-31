@@ -239,9 +239,7 @@ class TemplateGenerator:
         controlled_vocab = self._get_controlled_vocabulary(field_name)
 
         # Generate examples
-        examples = self._generate_examples(
-            field_name, controlled_vocab, user_context
-        )
+        examples = self._generate_examples(field_name, controlled_vocab, user_context)
 
         # Generate help text
         help_text = self._generate_help_text(field_name, data_type, controlled_vocab)

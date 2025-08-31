@@ -744,9 +744,7 @@ class CollaborativeIntelligenceEngine:
         try:
             # Analyze community patterns
             logger.info("Starting collaborative intelligence analysis...")
-            community_metrics = (
-                self.community_analyzer.analyze_community_patterns()
-            )
+            community_metrics = self.community_analyzer.analyze_community_patterns()
             results["community_metrics"] = asdict(community_metrics)
 
             # Learn ML patterns from community data

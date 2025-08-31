@@ -10,20 +10,17 @@ import csv
 import json
 import sys
 import os
-from typing import Dict, List, Any, Optional, Tuple
-from pathlib import Path
+from typing import Dict, List, Any, Optional
 import click
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.prompt import Confirm, Prompt
-from rich.text import Text
 
 # Import our core utilities
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from o_nakala_core.common.utils import NakalaCommonUtils
-from o_nakala_core.common.exceptions import NakalaError
 
 console = Console()
 
@@ -479,7 +476,10 @@ class ResearcherAssistant:
     "--interactive", "-i", is_flag=True, help="Interactive mode with assistance"
 )
 @click.option(
-    "--enhance", "-e", is_flag=True, help="Suggest metadata enhancements using pattern matching"
+    "--enhance",
+    "-e",
+    is_flag=True,
+    help="Suggest metadata enhancements using pattern matching",
 )
 @click.option("--json-output", help="Save JSON preview to file")
 @click.option("--validate-only", is_flag=True, help="Only validate, don't show preview")
