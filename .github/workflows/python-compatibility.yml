@@ -70,6 +70,9 @@ jobs:
         pip install ".[cli,dev,ml]"
         
     - name: Test Basic Import
+      env:
+        NAKALA_API_KEY: "33170cfe-f53c-550b-5fb6-4814ce981293"
+        NAKALA_API_URL: "https://apitest.nakala.fr"
       run: |
         python -c "import o_nakala_core; print('[OK] Basic import successful')"
         python -c "from o_nakala_core.common import NakalaConfig; print('[OK] Config import successful')"
@@ -88,6 +91,9 @@ jobs:
         
     - name: Run Core Unit Tests
       shell: bash
+      env:
+        NAKALA_API_KEY: "33170cfe-f53c-550b-5fb6-4814ce981293"
+        NAKALA_API_URL: "https://apitest.nakala.fr"
       run: |
         if [ -d "tests/unit" ]; then
           python -m pytest tests/unit/ -v --tb=short
@@ -109,6 +115,9 @@ jobs:
         fi
         
     - name: Test CSV Processing with Sample Data
+      env:
+        NAKALA_API_KEY: "33170cfe-f53c-550b-5fb6-4814ce981293"
+        NAKALA_API_URL: "https://apitest.nakala.fr"
       run: |
         python -c "
         from o_nakala_core.common.utils import NakalaCommonUtils
