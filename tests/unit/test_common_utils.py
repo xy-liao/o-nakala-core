@@ -130,18 +130,33 @@ class TestNakalaPathResolver:
 
     def test_resolver_initialization(self, resolver, mock_config):
         """Test resolver initialization."""
-        # Path.resolve() might resolve symlinks, so check that base_path is contained
-        assert (
-            mock_config.base_path in str(resolver.base_path)
-            or str(resolver.base_path) in mock_config.base_path
-        )
+        # Path.resolve() might resolve symlinks, so compare normalized paths
+        import os
+        config_normalized = os.path.normpath(mock_config.base_path)
+        resolver_normalized = os.path.normpath(str(resolver.base_path))
+        
+        # Try file comparison first, fall back to string comparison
+        paths_equal = False
+        try:
+            paths_equal = os.path.samefile(config_normalized, resolver_normalized)
+        except (OSError, ValueError):
+            # If samefile fails, use string comparison
+            paths_equal = (
+                config_normalized in resolver_normalized
+                or resolver_normalized in config_normalized
+            )
+        
+        assert paths_equal
 
     def test_get_absolute_path(self, resolver):
         """Test getting absolute paths from relative."""
         rel_path = "relative/path/to/file.txt"
         result = resolver.get_absolute_path(rel_path)
         assert os.path.isabs(result)
-        assert rel_path in result
+        # Convert to normalized path components for Windows compatibility
+        rel_normalized = os.path.normpath(rel_path)
+        result_normalized = os.path.normpath(result)
+        assert rel_normalized in result_normalized or rel_path.replace('/', os.sep) in result
 
     def test_get_relative_path(self, resolver):
         """Test getting relative paths."""
@@ -310,4 +325,21 @@ class TestConfigurationIntegration:
             resolved = resolver.get_absolute_path(test_path)
 
             assert os.path.isabs(resolved)
-            assert temp_dir in resolved
+            # Use normalized paths for Windows compatibility
+            temp_normalized = os.path.normpath(temp_dir)
+            resolved_normalized = os.path.normpath(resolved)
+            
+            # Check if the temp directory is contained in the resolved path
+            contains_base = temp_normalized in resolved_normalized
+            
+            # Fallback: check if the resolved path starts with the temp directory
+            if not contains_base:
+                try:
+                    # Get the common path to check if they're related
+                    common_path = os.path.commonpath([temp_normalized, resolved_normalized])
+                    contains_base = os.path.normpath(common_path) == temp_normalized
+                except (ValueError, OSError):
+                    # On Windows, different drives can cause commonpath to fail
+                    pass
+            
+            assert contains_base
