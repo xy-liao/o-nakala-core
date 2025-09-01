@@ -87,6 +87,7 @@ jobs:
         echo "[OK] All CLI commands available"
         
     - name: Run Core Unit Tests
+      shell: bash
       run: |
         if [ -d "tests/unit" ]; then
           python -m pytest tests/unit/ -v --tb=short
@@ -96,6 +97,7 @@ jobs:
         
     - name: Run Integration Tests (if dev dependencies)
       if: matrix.test-dev-deps == true
+      shell: bash
       env:
         NAKALA_API_KEY: "33170cfe-f53c-550b-5fb6-4814ce981293"
         NAKALA_API_URL: "https://apitest.nakala.fr"
@@ -137,6 +139,7 @@ jobs:
     
     steps:
     - name: Check Overall Results
+      shell: bash
       run: |
         echo "# Python Compatibility Test Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
