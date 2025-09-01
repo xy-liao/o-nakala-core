@@ -120,12 +120,13 @@ jobs:
         NAKALA_API_URL: "https://apitest.nakala.fr"
       run: |
         python -c "
-        from o_nakala_core.common.utils import NakalaCommonUtils
         import os
+        import csv
         if os.path.exists('examples/sample_dataset/folder_data_items.csv'):
-            utils = NakalaCommonUtils()
-            data = utils.load_csv_data('examples/sample_dataset/folder_data_items.csv')
-            print(f'[OK] Successfully loaded {len(data)} rows from sample CSV')
+            with open('examples/sample_dataset/folder_data_items.csv', 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                data = list(reader)
+                print(f'[OK] Successfully loaded {len(data)} rows from sample CSV')
         else:
             print('[WARN] Sample dataset not found, skipping CSV test')
         "
