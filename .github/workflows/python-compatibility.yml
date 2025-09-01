@@ -71,7 +71,8 @@ jobs:
       run: |
         python -c "import o_nakala_core; print('✅ Basic import successful')"
         python -c "from o_nakala_core.common import NakalaConfig; print('✅ Config import successful')"
-        python -c "from o_nakala_core.upload_client import UploadClient; print('✅ Client import successful')"
+        python -c "from o_nakala_core.upload import NakalaUploadClient; print('✅ Upload client import successful')"
+        python -c "from o_nakala_core.user_info import NakalaUserInfoClient; print('✅ User info client import successful')"
         
     - name: Test CLI Commands Availability
       if: matrix.test-minimal != true
