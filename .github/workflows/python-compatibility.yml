@@ -71,10 +71,10 @@ jobs:
         
     - name: Test Basic Import
       run: |
-        python -c "import o_nakala_core; print('✅ Basic import successful')"
-        python -c "from o_nakala_core.common import NakalaConfig; print('✅ Config import successful')"
-        python -c "from o_nakala_core.upload import NakalaUploadClient; print('✅ Upload client import successful')"
-        python -c "from o_nakala_core.user_info import NakalaUserInfoClient; print('✅ User info client import successful')"
+        python -c "import o_nakala_core; print('[OK] Basic import successful')"
+        python -c "from o_nakala_core.common import NakalaConfig; print('[OK] Config import successful')"
+        python -c "from o_nakala_core.upload import NakalaUploadClient; print('[OK] Upload client import successful')"
+        python -c "from o_nakala_core.user_info import NakalaUserInfoClient; print('[OK] User info client import successful')"
         
     - name: Test CLI Commands Availability
       if: matrix.test-minimal != true
@@ -84,14 +84,14 @@ jobs:
         o-nakala-curator --help
         o-nakala-user-info --help
         o-nakala-preview --help
-        echo "✅ All CLI commands available"
+        echo "[OK] All CLI commands available"
         
     - name: Run Core Unit Tests
       run: |
         if [ -d "tests/unit" ]; then
           python -m pytest tests/unit/ -v --tb=short
         else
-          echo "⚠️  No unit tests directory found, skipping unit tests"
+          echo "[WARN] No unit tests directory found, skipping unit tests"
         fi
         
     - name: Run Integration Tests (if dev dependencies)
@@ -103,7 +103,7 @@ jobs:
         if [ -d "tests/integration" ]; then
           python -m pytest tests/integration/ -v --tb=short
         else
-          echo "⚠️  No integration tests directory found, skipping integration tests"
+          echo "[WARN] No integration tests directory found, skipping integration tests"
         fi
         
     - name: Test CSV Processing with Sample Data
@@ -114,9 +114,9 @@ jobs:
         if os.path.exists('examples/sample_dataset/folder_data_items.csv'):
             utils = NakalaCommonUtils()
             data = utils.load_csv_data('examples/sample_dataset/folder_data_items.csv')
-            print(f'✅ Successfully loaded {len(data)} rows from sample CSV')
+            print(f'[OK] Successfully loaded {len(data)} rows from sample CSV')
         else:
-            print('⚠️  Sample dataset not found, skipping CSV test')
+            print('[WARN] Sample dataset not found, skipping CSV test')
         "
         
     - name: Test Package Metadata
@@ -144,13 +144,13 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         
         if [[ "${{ needs.test-matrix.result }}" == "success" ]]; then
-          echo "✅ **All compatibility tests passed!**" >> $GITHUB_STEP_SUMMARY
+          echo "[OK] **All compatibility tests passed!**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "The package is confirmed compatible with:" >> $GITHUB_STEP_SUMMARY
           echo "- Python 3.9, 3.10, 3.11, 3.12, 3.13" >> $GITHUB_STEP_SUMMARY
           echo "- Ubuntu, Windows, and macOS" >> $GITHUB_STEP_SUMMARY
         else
-          echo "❌ **Some compatibility tests failed**" >> $GITHUB_STEP_SUMMARY
+          echo "[FAIL] **Some compatibility tests failed**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Please check the individual job results above for details." >> $GITHUB_STEP_SUMMARY
         fi
