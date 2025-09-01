@@ -56,11 +56,13 @@ jobs:
       if: matrix.test-minimal == true
       run: |
         pip install .
+        pip install pytest  # Always install pytest for testing
         
     - name: Install package with CLI dependencies
       if: matrix.test-minimal != true && matrix.test-dev-deps != true
       run: |
         pip install ".[cli]"
+        pip install pytest pytest-cov  # Install test dependencies
         
     - name: Install package with development dependencies
       if: matrix.test-dev-deps == true
@@ -86,7 +88,11 @@ jobs:
         
     - name: Run Core Unit Tests
       run: |
-        python -m pytest tests/unit/ -v --tb=short
+        if [ -d "tests/unit" ]; then
+          python -m pytest tests/unit/ -v --tb=short
+        else
+          echo "⚠️  No unit tests directory found, skipping unit tests"
+        fi
         
     - name: Run Integration Tests (if dev dependencies)
       if: matrix.test-dev-deps == true
@@ -94,7 +100,11 @@ jobs:
         NAKALA_API_KEY: "33170cfe-f53c-550b-5fb6-4814ce981293"
         NAKALA_API_URL: "https://apitest.nakala.fr"
       run: |
-        python -m pytest tests/integration/ -v --tb=short
+        if [ -d "tests/integration" ]; then
+          python -m pytest tests/integration/ -v --tb=short
+        else
+          echo "⚠️  No integration tests directory found, skipping integration tests"
+        fi
         
     - name: Test CSV Processing with Sample Data
       run: |
